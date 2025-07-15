@@ -132,7 +132,7 @@ function Pool() {
       token2: getTokenAddress("SUI"),
       token1Symbol: "haSUI",
       token2Symbol: "SUI",
-      img1: "https://encrypted-tbn0.gstatic.com/images?q=tbn:9GcRvd9yv6JWLikNWB-MxU2OyErJiqffAcLi8mw&s",
+      img1: "https://encrypted-tbn0.gstatic.com/images?q=tbnn:9GcRvd9yv6JWLikNWB-MxU2OyErJiqffAcLi8mw&s",
       img2: "https://archive.cetus.zone/assets/image/sui/sui.png",
       feeRate: "0.01%",
       tvl: "0",
@@ -441,7 +441,6 @@ function Pool() {
       apr: "0",
       rewardImg: "https://i.meee.com.tw/SdliTGK.png",
     },
-    //未添加代币地址
     {
       pair: "WETH-ETH",
       token1: getTokenAddress("Wrapped Ether"),
@@ -592,8 +591,8 @@ function Pool() {
         .pool-container {
           display: flex;
           flex-direction: column;
-          gap: 32px;
-          padding: 32px;
+          gap: 24px;
+          padding: 24px;
           background: var(--card-bg);
           color: var(--text-color);
           min-height: 100vh;
@@ -602,90 +601,92 @@ function Pool() {
           margin: 0 auto;
           width: 100%;
           box-sizing: border-box;
-          border-radius: 20px;
-          box-shadow: 0 8px 32px var(--shadow-color);
+          border-radius: 16px;
+          box-shadow: 0 4px 24px var(--shadow-color);
         }
         .reward-countdown-container {
           display: flex;
           justify-content: center;
           align-items: center;
           width: 100%;
-          padding: 16px;
+          padding: 12px;
           background: linear-gradient(135deg, #3b82f6, #10b981);
-          border-radius: 12px;
-          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
+          border-radius: 10px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          transition: transform 0.3s ease;
         }
         .reward-countdown-container:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+          transform: translateY(-2px);
         }
         .reward-countdown {
           display: flex;
           align-items: center;
-          gap: 12px;
-          font-size: 16px;
-          font-weight: 700;
+          gap: 8px;
+          font-size: 14px;
+          font-weight: 600;
           color: #ffffff;
-          padding: 12px 20px;
-          border-radius: 10px;
+          padding: 10px 16px;
+          border-radius: 8px;
           background: rgba(255, 255, 255, 0.1);
           border: 1px solid rgba(255, 255, 255, 0.2);
+          flex-wrap: wrap;
+          justify-content: center;
         }
         .reward-countdown img {
-          width: 28px;
-          height: 28px;
+          width: 24px;
+          height: 24px;
           border-radius: 50%;
-          border: 2px solid rgba(255, 255, 255, 0.3);
+          border: 1px solid rgba(255, 255, 255, 0.3);
         }
         .reward-countdown span {
           color: #ffffff;
         }
         .reward-countdown .countdown-time {
           color: #ffd700;
-          font-weight: 800;
+          font-weight: 700;
         }
         .pool-header {
           display: flex;
-          justify-content: space-between;
-          align-items: center;
-          flex-wrap: wrap;
+          flex-direction: column;
           gap: 16px;
-          padding: 20px;
+          padding: 16px;
           background: var(--modal-bg);
-          border-radius: 16px;
+          border-radius: 12px;
           border: 1px solid var(--border-color);
         }
         .pool-title {
-          font-size: 28px;
+          font-size: 24px;
           font-weight: 700;
           margin: 0;
           color: var(--text-color);
-          letter-spacing: -0.5px;
+          letter-spacing: -0.4px;
         }
         .tab-group {
           display: flex;
-          gap: 8px;
+          gap: 6px;
           background: var(--search-bg);
-          border-radius: 10px;
-          padding: 6px;
+          border-radius: 8px;
+          padding: 4px;
           border: 1px solid var(--border-color);
+          justify-content: center;
         }
         .tab-button {
-          padding: 10px 20px;
-          border-radius: 8px;
+          padding: 8px 16px;
+          border-radius: 6px;
           background: none;
           border: none;
           color: var(--text-secondary);
-          font-size: 15px;
+          font-size: 14px;
           font-weight: 600;
           cursor: pointer;
           transition: all 0.2s ease;
+          min-width: 100px;
+          text-align: center;
         }
         .tab-button.active {
           background: var(--primary-color);
           color: #ffffff;
-          box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+          box-shadow: 0 2px 6px rgba(59, 130, 246, 0.2);
         }
         .tab-button:hover {
           background: var(--hover-bg);
@@ -693,22 +694,25 @@ function Pool() {
         }
         .button-group {
           display: flex;
-          gap: 12px;
-          align-items: center;
+          gap: 8px;
+          flex-wrap: wrap;
+          justify-content: center;
         }
         .action-button {
-          padding: 12px 16px;
-          border-radius: 10px;
+          padding: 10px 14px;
+          border-radius: 8px;
           border: none;
           cursor: pointer;
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 600;
           transition: all 0.2s ease;
-          white-space: nowrap;
+          min-width: 120px;
+          text-align: center;
+          touch-action: manipulation;
         }
         .action-button:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 4px 16px var(--shadow-color);
+          transform: translateY(-1px);
+          box-shadow: 0 3px 12px var(--shadow-color);
         }
         .create-pool-button {
           background: var(--primary-color);
@@ -728,9 +732,9 @@ function Pool() {
         .pool-table-header {
           display: flex;
           background: var(--modal-bg);
-          border-radius: 12px;
-          padding: 16px 24px;
-          font-size: 13px;
+          border-radius: 10px;
+          padding: 12px 16px;
+          font-size: 12px;
           font-weight: 600;
           color: var(--text-secondary);
           text-transform: uppercase;
@@ -741,7 +745,7 @@ function Pool() {
           text-align: left;
         }
         .pool-table-header div:nth-child(1) {
-          flex: 2;
+          flex: 1.5;
         }
         .pool-table-header div:nth-child(7) {
           text-align: right;
@@ -749,59 +753,59 @@ function Pool() {
         .pool-list {
           display: flex;
           flex-direction: column;
-          gap: 12px;
-          background: transparent;
+          gap: 10px;
         }
         .pool-item {
           display: flex;
-          align-items: center;
+          flex-direction: column;
           background: var(--modal-bg);
-          border-radius: 12px;
-          padding: 20px 24px;
+          border-radius: 10px;
+          padding: 16px;
           transition: all 0.2s ease;
           cursor: pointer;
           border: 1px solid var(--border-color);
         }
         .pool-item:hover {
           background: var(--hover-bg);
-          transform: translateY(-2px);
-          box-shadow: 0 4px 16px var(--shadow-color);
+          transform: translateY(-1px);
+          box-shadow: 0 3px 12px var(--shadow-color);
         }
         .pool-token-info {
-          flex: 2;
           display: flex;
           align-items: center;
-          gap: 16px;
+          gap: 12px;
+          margin-bottom: 12px;
         }
         .token-images {
           display: flex;
           align-items: center;
         }
         .token-images img {
-          width: 36px;
-          height: 36px;
+          width: 32px;
+          height: 32px;
           border-radius: 50%;
           object-fit: cover;
-          border: 2px solid var(--border-color);
+          border: 1px solid var(--border-color);
           transition: transform 0.2s ease;
         }
         .token-images img:hover {
           transform: scale(1.1);
         }
         .token-images img:last-child {
-          margin-left: -10px;
+          margin-left: -8px;
         }
         .token-details {
           display: flex;
           flex-direction: row;
           align-items: center;
-          gap: 8px;
+          gap: 6px;
+          flex-wrap: wrap;
         }
         .token-pair {
           display: flex;
           align-items: center;
-          gap: 8px;
-          font-size: 18px;
+          gap: 6px;
+          font-size: 16px;
           font-weight: 600;
         }
         .token-pair p {
@@ -810,145 +814,274 @@ function Pool() {
         }
         .token-pair span {
           color: var(--text-secondary);
-          font-size: 18px;
+          font-size: 16px;
         }
         .fee-rate {
           background: var(--input-bg);
-          padding: 6px 12px;
-          border-radius: 20px;
-          font-size: 12px;
+          padding: 4px 10px;
+          border-radius: 16px;
+          font-size: 11px;
           color: var(--text-color);
           display: inline-block;
           border: 1px solid var(--border-color);
-          vertical-align: middle;
         }
         .pool-data {
-          flex: 1;
-          font-size: 15px;
+          font-size: 14px;
           color: var(--text-color);
           font-weight: 500;
+          margin-bottom: 8px;
+          display: flex;
+          gap: 6px;
+          align-items: center;
+        }
+        .data-label {
+          font-size: 12px;
+          font-weight: 600;
+          color: var(--text-secondary);
+          text-transform: uppercase;
+          display: none;
         }
         .apr-container {
-          flex: 1;
           display: flex;
           align-items: center;
-          gap: 12px;
+          gap: 10px;
+          margin-bottom: 8px;
         }
         .apr-text {
-          font-size: 15px;
+          font-size: 14px;
           color: var(--success-color);
           font-weight: 600;
         }
         .reward-container {
-          flex: 1;
           display: flex;
           align-items: center;
-          gap: 12px;
+          gap: 10px;
+          margin-bottom: 8px;
         }
         .reward-container img {
-          width: 28px;
-          height: 28px;
+          width: 24px;
+          height: 24px;
           border-radius: 50%;
-          border: 2px solid var(--border-color);
+          border: 1px solid var(--border-color);
           transition: transform 0.2s ease;
         }
         .reward-container img:hover {
           transform: scale(1.1);
         }
         .reward-container img:nth-child(2) {
-          margin-left: -10px;
+          margin-left: -8px;
         }
         .reward-container img:nth-child(3) {
-          margin-left: -10px;
+          margin-left: -8px;
         }
         .pool-action {
-          flex: 1;
           display: flex;
-          justify-content: flex-end;
-          gap: 12px;
+          justify-content: center;
+          gap: 10px;
         }
         .deposit-button {
-          padding: 10px 20px;
+          padding: 10px;
           background: var(--primary-color);
           color: #ffffff;
-          border-radius: 10px;
+          border-radius: 8px;
           border: none;
           cursor: pointer;
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 600;
           transition: all 0.2s ease;
+          width: 100%;
+          max-width: 200px;
+          text-align: center;
+          touch-action: manipulation;
         }
         .deposit-button:hover {
           background: var(--button-hover-bg);
-          transform: translateY(-2px);
-          box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+          transform: translateY(-1px);
+          box-shadow: 0 2px 6px rgba(59, 130, 246, 0.2);
         }
         .no-positions {
           display: flex;
           justify-content: center;
           align-items: center;
-          height: 200px;
+          height: 150px;
           background: var(--modal-bg);
-          border-radius: 12px;
-          font-size: 16px;
+          border-radius: 10px;
+          font-size: 14px;
           color: var(--text-secondary);
           border: 1px solid var(--border-color);
         }
+        @media (min-width: 1024px) {
+          .pool-header {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+          }
+          .button-group {
+            flex-wrap: nowrap;
+            justify-content: flex-end;
+          }
+          .pool-item {
+            flex-direction: row;
+            align-items: center;
+            gap: 12px;
+          }
+          .pool-token-info {
+            flex: 1.5;
+            margin-bottom: 0;
+          }
+          .pool-data {
+            flex: 1;
+            margin-bottom: 0;
+          }
+          .apr-container, .reward-container {
+            flex: 1;
+            margin-bottom: 0;
+          }
+          .pool-action {
+            flex: 1;
+            justify-content: flex-end;
+          }
+          .deposit-button {
+            width: auto;
+          }
+        }
         @media (max-width: 768px) {
+          .pool-container {
+            padding: 16px;
+            border-radius: 10px;
+          }
+          .pool-title {
+            font-size: 20px;
+            text-align: center;
+          }
+          .reward-countdown {
+            font-size: 12px;
+            padding: 8px;
+            text-align: center;
+          }
+          .reward-countdown img {
+            width: 20px;
+            height: 20px;
+          }
+          .reward-countdown-container {
+            padding: 8px;
+          }
+          .action-button {
+            padding: 8px 10px;
+            font-size: 12px;
+            min-width: 100px;
+          }
           .pool-table-header {
             display: none;
           }
           .pool-item {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 16px;
-            padding: 16px;
-          }
-          .pool-token-info, .pool-data, .apr-container, .reward-container, .pool-action {
-            width: 100%;
-            justify-content: flex-start;
-          }
-          .pool-action {
-            justify-content: center;
-          }
-          .deposit-button {
-            width: 100%;
-            text-align: center;
-          }
-          .pool-container {
-            padding: 16px;
-            border-radius: 12px;
-          }
-          .pool-title {
-            font-size: 24px;
-          }
-          .token-details {
-            flex-direction: column;
-            align-items: flex-start;
-          }
-          .reward-countdown {
-            font-size: 14px;
-            padding: 8px 12px;
-            flex-direction: column;
+            padding: 12px;
+            gap: 12px;
+            display: grid;
+            grid-template-columns: 1fr;
             gap: 8px;
           }
+          .token-images img {
+            width: 28px;
+            height: 28px;
+          }
+          .token-pair {
+            font-size: 14px;
+          }
+          .token-pair span {
+            font-size: 14px;
+          }
+          .fee-rate {
+            font-size: 10px;
+            padding: 3px 8px;
+          }
+          .pool-data, .apr-text {
+            font-size: 12px;
+          }
+          .data-label {
+            display: inline;
+          }
+          .reward-container img {
+            width: 20px;
+            height: 20px;
+          }
+          .deposit-button {
+            font-size: 12px;
+            padding: 8px;
+          }
+        }
+        @media (max-width: 480px) {
+          .pool-container {
+            padding: 12px;
+            gap: 16px;
+          }
+          .pool-title {
+            font-size: 18px;
+          }
+          .tab-group {
+            flex-direction: column;
+            gap: 4px;
+          }
+          .tab-button {
+            padding: 6px;
+            font-size: 12px;
+            min-width: 0;
+          }
+          .action-button {
+            padding: 6px 8px;
+            font-size: 11px;
+            min-width: 90px;
+          }
+          .reward-countdown {
+            font-size: 11px;
+            padding: 6px;
+            gap: 6px;
+          }
           .reward-countdown img {
+            width: 18px;
+            height: 18px;
+          }
+          .pool-item {
+            padding: 10px;
+          }
+          .token-images img {
             width: 24px;
             height: 24px;
           }
-          .reward-countdown-container {
-            padding: 12px;
-          }
-          .action-button {
-            padding: 10px 12px;
+          .token-pair {
             font-size: 13px;
+          }
+          .token-pair span {
+            font-size: 13px;
+          }
+          .fee-rate {
+            font-size: 9px;
+          }
+          .pool-data, .apr-text {
+            font-size: 11px;
+          }
+          .data-label {
+            font-size: 11px;
+          }
+          .reward-container img {
+            width: 18px;
+            height: 18px;
+          }
+          .deposit-button {
+            font-size: 11px;
+            padding: 6px;
+            max-width: 150px;
+          }
+          .no-positions {
+            font-size: 12px;
+            height: 120px;
           }
         }
       `}</style>
       <div className="reward-countdown-container">
         <div className="reward-countdown">
           <img
-            src="https://i.meee.com.tw/SdliTGK.png" // Placeholder for $Seal logo
+            src="https://i.meee.com.tw/SdliTGK.png"
             alt="$Seal"
           />
           <span>🎁 Provide liquidity to pools to earn extra $Seal token rewards!</span>
@@ -1027,9 +1160,9 @@ function Pool() {
                   <span className="fee-rate">{pool.feeRate}</span>
                 </div>
               </div>
-              <div className="pool-data">{pool.tvl}</div>
-              <div className="pool-data">{pool.volume}</div>
-              <div className="pool-data">{pool.fees}</div>
+              <div className="pool-data"><span className="data-label">Liquidity:</span> {pool.tvl}</div>
+              <div className="pool-data"><span className="data-label">Volume (24H):</span> {pool.volume}</div>
+              <div className="pool-data"><span className="data-label">Fee (24H):</span> {pool.fees}</div>
               <div className="reward-container">
                 <img
                   alt="reward"
@@ -1048,7 +1181,7 @@ function Pool() {
                 />
               </div>
               <div className="apr-container">
-                <p className="apr-text">{pool.apr} APR</p>
+                <p className="apr-text"><span className="data-label">APR:</span> {pool.apr}</p>
               </div>
               <div className="pool-action">
                 <button

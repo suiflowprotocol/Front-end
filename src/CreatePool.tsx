@@ -57,7 +57,7 @@ const tokens: Token[] = [
 ];
 
 function CreatePool({ newPoolToken1, setNewPoolToken1, newPoolToken2, setNewPoolToken2, feeRate, setFeeRate, onClose }: CreatePoolProps) {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState<1 | 2 | 3>(1);
   const [initialPrice, setInitialPrice] = useState("");
   const [amount1, setAmount1] = useState("");
   const [amount2, setAmount2] = useState("");
@@ -76,11 +76,11 @@ function CreatePool({ newPoolToken1, setNewPoolToken1, newPoolToken2, setNewPool
   });
 
   const handleNextStep = () => {
-    if (step < 3) setStep(step + 1);
+    if (step < 3) setStep((step + 1) as 1 | 2 | 3);
   };
 
   const handlePrevStep = () => {
-    if (step > 1) setStep(step - 1);
+    if (step > 1) setStep((step - 1) as 1 | 2 | 3);
   };
 
   const handleCreatePool = () => {
@@ -106,7 +106,7 @@ function CreatePool({ newPoolToken1, setNewPoolToken1, newPoolToken2, setNewPool
   const selectToken = (token: Token, type: string) => {
     if (type === "token1") {
       setNewPoolToken1(token.symbol);
-    } else {
+    }else {
       setNewPoolToken2(token.symbol);
     }
     setShowTokenModal(null);
@@ -120,7 +120,6 @@ function CreatePool({ newPoolToken1, setNewPoolToken1, newPoolToken2, setNewPool
       setImportError("Please enter a valid token address");
       return;
     }
-    // Mock token import logic
     const newToken: Token = {
       symbol: `TOKEN${importedTokens.length + 1}`,
       address: importAddress,
@@ -147,6 +146,20 @@ function CreatePool({ newPoolToken1, setNewPoolToken1, newPoolToken2, setNewPool
   return (
     <div className="create-pool-modal">
       <style>{`
+        :root {
+          --card-bg: #0f172a;
+          --modal-bg: #1e293b;
+          --text-color: #f8fafc;
+          --text-secondary: #94a3b8;
+          --primary-color: #3b82f6;
+          --button-hover-bg: #2563eb;
+          --border-color: #334155;
+          --shadow-color: rgba(0, 0, 0, 0.2);
+          --success-color: #10b981;
+          --input-bg: #2d3748;
+          --hover-bg: #334155;
+        }
+
         .create-pool-modal {
           position: fixed;
           top: 0;
@@ -154,38 +167,41 @@ function CreatePool({ newPoolToken1, setNewPoolToken1, newPoolToken2, setNewPool
           width: 100%;
           height: 100%;
           background-color: rgba(0, 0, 0, 0.6);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
           display: flex;
           justify-content: center;
           align-items: center;
           z-index: 1000;
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         .modal-content {
-          background-color: #1A1F2B;
-          color: #FFFFFF;
-          padding: 24px;
-          border-radius: 16px;
+          background: var(--modal-bg);
+          color: var(--text-color);
+          padding: 12px;
+          border-radius: 10px;
           width: 100%;
-          max-width: 520px;
-          max-height: 80vh;
+          max-width: 460px;
+          max-height: 85vh;
           overflow-y: auto;
           display: flex;
           flex-direction: column;
-          gap: 20px;
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+          gap: 10px;
+          box-shadow: 0 4px 16px var(--shadow-color);
           animation: fadeIn 0.3s ease-out;
           scrollbar-width: thin;
-          scrollbar-color: #2A3435 #1A1F2B;
+          scrollbar-color: var(--border-color) var(--modal-bg);
+          border: 1px solid var(--border-color);
         }
         .modal-content::-webkit-scrollbar {
-          width: 8px;
+          width: 6px;
         }
         .modal-content::-webkit-scrollbar-track {
-          background: #1A1F2B;
+          background: var(--modal-bg);
         }
         .modal-content::-webkit-scrollbar-thumb {
-          background: #2A3435;
-          border-radius: 4px;
+          background: var(--border-color);
+          border-radius: 3px;
         }
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(10px); }
@@ -199,326 +215,392 @@ function CreatePool({ newPoolToken1, setNewPoolToken1, newPoolToken2, setNewPool
         .back-button {
           display: flex;
           align-items: center;
-          gap: 8px;
+          gap: 6px;
           background: none;
           border: none;
-          color: #A0AEC0;
+          color: var(--text-secondary);
           cursor: pointer;
-          font-size: 14px;
+          font-size: 12px;
           font-weight: 500;
           transition: color 0.2s ease, transform 0.1s;
         }
         .back-button:hover {
-          color: #FFFFFF;
+          color: var(--text-color);
           transform: translateX(-2px);
         }
         .steps-container {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          gap: 12px;
-          padding: 12px 0;
+          gap: 8px;
+          padding: 8px 0;
         }
         .step-item {
           display: flex;
           align-items: center;
-          gap: 8px;
+          gap: 6px;
         }
         .step-number {
-          width: 28px;
-          height: 28px;
-          background-color: #2F80ED;
+          width: 24px;
+          height: 24px;
+          background-color: var(--primary-color);
           border-radius: 50%;
           display: flex;
           justify-content: center;
           align-items: center;
-          font-size: 14px;
+          font-size: 12px;
           font-weight: 600;
           transition: background-color 0.2s ease;
         }
         .step-number.inactive {
-          background-color: #2A3435;
+          background-color: var(--border-color);
         }
         .step-divider {
           flex: 1;
-          height: 3px;
-          background-color: #2A3435;
-          border-radius: 2px;
+          height: 2px;
+          background-color: var(--border-color);
+          border-radius: 1px;
         }
         .step-text {
-          font-size: 12px;
-          color: #A0AEC0;
+          font-size: 11px;
+          color: var(--text-secondary);
           font-weight: 400;
         }
         .step-title {
-          font-size: 14px;
+          font-size: 12px;
           font-weight: 600;
-          color: #FFFFFF;
+          color: var(--text-color);
         }
         .select-pair-container {
           display: flex;
           flex-direction: column;
-          gap: 16px;
-          min-height: 300px;
+          gap: 10px;
+          min-height: 200px;
         }
         .select-pair-title {
-          font-size: 20px;
+          font-size: 16px;
           font-weight: 700;
-          color: #FFFFFF;
+          color: var(--text-color);
           margin: 0;
         }
         .select-pair-text {
-          font-size: 14px;
-          color: #A0AEC0;
+          font-size: 12px;
+          color: var(--text-secondary);
           font-weight: 400;
-          line-height: 1.5;
+          line-height: 1.4;
+          margin: 4px 0;
         }
         .token-select-container {
           display: flex;
-          gap: 12px;
+          gap: 8px;
         }
         .token-select {
           flex: 1;
-          padding: 12px 16px;
-          background-color: #232D2E;
-          border-radius: 10px;
-          border: 1px solid #2A3435;
-          color: #FFFFFF;
-          font-size: 15px;
+          padding: 8px 10px;
+          background-color: var(--input-bg);
+          border-radius: 8px;
+          border: 1px solid var(--border-color);
+          color: var(--text-color);
+          font-size: 13px;
           font-weight: 500;
           cursor: pointer;
           transition: background-color 0.2s ease, border-color 0.2s ease;
           display: flex;
           align-items: center;
-          gap: 8px;
+          gap: 6px;
         }
         .token-select:hover {
-          background-color: #2A3435;
-          border-color: #3B4A4C;
+          background-color: var(--hover-bg);
+          border-color: var(--border-color);
         }
         .token-select img {
-          width: 24px;
-          height: 24px;
+          width: 20px;
+          height: 20px;
           border-radius: 50%;
         }
         .fee-tier-container {
           display: flex;
           flex-direction: column;
-          gap: 12px;
+          gap: 8px;
         }
         .fee-tier-select {
-          padding: 12px 16px;
-          background-color: #232D2E;
-          border-radius: 10px;
-          border: 1px solid #2A3435;
-          color: #FFFFFF;
-          font-size: 15px;
+          padding: 8px 10px;
+          background-color: var(--input-bg);
+          border-radius: 8px;
+          border: 1px solid var(--border-color);
+          color: var(--text-color);
+          font-size: 13px;
           font-weight: 500;
           cursor: pointer;
           transition: background-color 0.2s ease, border-color 0.2s ease;
         }
         .fee-tier-select:hover {
-          background-color: #2A3435;
-          border-color: #3B4A4C;
+          background-color: var(--hover-bg);
+          border-color: var(--border-color);
         }
         .token-pair-header {
           display: flex;
           align-items: center;
-          gap: 16px;
-          padding: 16px;
-          background-color: #232D2E;
-          border-radius: 12px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          gap: 8px;
+          padding: 8px;
+          background-color: var(--input-bg);
+          border-radius: 8px;
+          border: 1px solid var(--border-color);
         }
         .token-pair-images {
           display: flex;
           align-items: center;
         }
         .token-pair-images img {
-          width: 36px;
-          height: 36px;
+          width: 24px;
+          height: 24px;
           border-radius: 50%;
           object-fit: cover;
-          border: 2px solid #1A1F2B;
+          border: 1px solid var(--modal-bg);
         }
         .token-pair-images img:last-child {
-          margin-left: -12px;
+          margin-left: -8px;
         }
         .token-pair-info {
           display: flex;
-          flex-direction: column;
-          gap: 6px;
+          align-items: center;
+          gap: 8px;
           flex: 1;
         }
         .token-pair-name {
-          font-size: 18px;
+          font-size: 14px;
           font-weight: 600;
-          color: #FFFFFF;
+          color: var(--text-color);
           margin: 0;
         }
         .fee-rate {
-          background-color: #2F80ED;
-          padding: 6px 12px;
-          border-radius: 16px;
-          font-size: 13px;
-          color: #FFFFFF;
+          background-color: var(--primary-color);
+          padding: 3px 8px;
+          border-radius: 10px;
+          font-size: 11px;
+          color: #ffffff;
           font-weight: 500;
-          display: inline-block;
+        }
+        .edit-button {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          background: none;
+          border: none;
+          color: var(--text-secondary);
+          cursor: pointer;
+          font-size: 12px;
+          font-weight: 500;
+          transition: color 0.2s ease;
+        }
+        .edit-button:hover {
+          color: var(--text-color);
         }
         .input-group {
           display: flex;
           align-items: center;
-          background-color: #232D2E;
-          border-radius: 10px;
-          padding: 12px;
-          border: 1px solid #2A3435;
+          background-color: var(--input-bg);
+          border-radius: 8px;
+          padding: 8px;
+          border: 1px solid var(--border-color);
           transition: border-color 0.2s ease;
         }
         .input-group:hover {
-          border-color: #3B4A4C;
+          border-color: var(--border-color);
         }
         .input-field {
           flex: 1;
           background: none;
           border: none;
-          color: #FFFFFF;
-          font-size: 16px;
+          color: var(--text-color);
+          font-size: 14px;
           font-weight: 500;
           outline: none;
-          padding: 8px;
+          padding: 4px;
         }
         .input-addon {
-          font-size: 14px;
-          color: #A0AEC0;
+          font-size: 12px;
+          color: var(--text-secondary);
           font-weight: 500;
-          padding-right: 12px;
+          padding-right: 8px;
         }
-        .current-price {
-          font-size: 14px;
-          color: #A0AEC0;
-          font-weight: 400;
+        .price-range-container {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+        .price-range-tabs {
+          display: flex;
+          gap: 6px;
+        }
+        .price-range-tab {
+          padding: 6px 10px;
+          background-color: var(--input-bg);
+          border-radius: 8px;
+          border: 1px solid var(--border-color);
+          color: var(--text-color);
+          font-size: 12px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+        .price-range-tab.active {
+          background-color: var(--primary-color);
+          color: #ffffff;
+        }
+        .price-range-inputs {
+          display: flex;
+          gap: 8px;
+        }
+        .price-range-input-group {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          background-color: var(--input-bg);
+          padding: 8px;
+          border-radius: 8px;
+          border: 1px solid var(--border-color);
+        }
+        .price-range-input-group p {
+          font-size: 12px;
+          color: var(--text-secondary);
           text-align: center;
-          margin-top: 8px;
+          margin: 0;
+        }
+        .price-range-input-group input {
+          background: none;
+          border: none;
+          color: var(--text-color);
+          font-size: 12px;
+          font-weight: 500;
+          outline: none;
+          text-align: center;
+          width: 100%;
         }
         .deposit-input-container {
           display: flex;
           flex-direction: column;
-          gap: 16px;
+          gap: 10px;
         }
         .deposit-input-group {
           display: flex;
           flex-direction: column;
-          gap: 12px;
-          background-color: #232D2E;
-          padding: 16px;
-          border-radius: 12px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          gap: 8px;
+          background-color: var(--input-bg);
+          padding: 10px;
+          border-radius: 8px;
+          box-shadow: 0 2px 6px var(--shadow-color);
+          border: 1px solid var(--border-color);
         }
         .deposit-input {
           display: flex;
           align-items: center;
-          gap: 12px;
+          gap: 8px;
         }
         .deposit-input input {
           flex: 1;
           background: none;
           border: none;
-          color: #FFFFFF;
-          font-size: 24px;
+          color: var(--text-color);
+          font-size: 18px;
           font-weight: 600;
           outline: none;
         }
         .deposit-addon {
           display: flex;
           align-items: center;
-          gap: 8px;
+          gap: 6px;
         }
         .deposit-addon img {
-          width: 28px;
-          height: 28px;
+          width: 22px;
+          height: 22px;
           border-radius: 50%;
         }
         .deposit-addon p {
-          font-size: 16px;
+          font-size: 13px;
           font-weight: 500;
-          color: #FFFFFF;
+          color: var(--text-color);
         }
         .deposit-display {
           display: flex;
           align-items: center;
-          gap: 12px;
-          padding: 12px;
-          background-color: #1A1F2B;
-          border-radius: 10px;
+          gap: 8px;
+          padding: 8px;
+          background-color: var(--modal-bg);
+          border-radius: 8px;
+          border: 1px solid var(--border-color);
         }
         .deposit-display p {
           flex: 1;
-          font-size: 24px;
+          font-size: 18px;
           font-weight: 600;
-          color: #A0AEC0;
+          color: var(--text-secondary);
         }
         .total-amount {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 16px;
-          background-color: #232D2E;
-          border-radius: 12px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          padding: 10px;
+          background-color: var(--input-bg);
+          border-radius: 8px;
+          box-shadow: 0 2px 6px var(--shadow-color);
+          border: 1px solid var(--border-color);
         }
         .total-amount p:first-child {
-          font-size: 14px;
+          font-size: 12px;
           font-weight: 500;
-          color: #A0AEC0;
+          color: var(--text-secondary);
         }
         .total-amount p:last-child {
-          font-size: 16px;
+          font-size: 13px;
           font-weight: 600;
-          color: #FFFFFF;
+          color: var(--text-color);
         }
         .deposit-ratio {
           display: flex;
           flex-direction: column;
-          gap: 12px;
-          padding: 16px;
-          background-color: #232D2E;
-          border-radius: 12px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          gap: 8px;
+          padding: 10px;
+          background-color: var(--input-bg);
+          border-radius: 8px;
+          box-shadow: 0 2px 6px var(--shadow-color);
+          border: 1px solid var(--border-color);
         }
         .ratio-item {
           display: flex;
           align-items: center;
-          gap: 8px;
+          gap: 6px;
         }
         .ratio-item img {
-          width: 24px;
-          height: 24px;
+          width: 20px;
+          height: 20px;
           border-radius: 50%;
         }
         .ratio-item p {
-          font-size: 14px;
+          font-size: 12px;
           font-weight: 500;
-          color: #FFFFFF;
+          color: var(--text-color);
         }
         .continue-button {
-          padding: 14px;
-          background-color: #2F80ED;
-          color: #FFFFFF;
-          border-radius: 10px;
+          padding: 10px;
+          background-color: var(--primary-color);
+          color: #ffffff;
+          border-radius: 8px;
           border: none;
           cursor: pointer;
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 600;
           transition: background-color 0.2s ease, transform 0.1s;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 2px 6px var(--shadow-color);
         }
         .continue-button:disabled {
-          background-color: #2A3435;
+          background-color: var(--border-color);
           cursor: not-allowed;
           box-shadow: none;
         }
         .continue-button:hover:not(:disabled) {
-          background-color: #1A5ECC;
+          background-color: var(--button-hover-bg);
           transform: translateY(-2px);
         }
         .token-modal-container {
@@ -534,15 +616,18 @@ function CreatePool({ newPoolToken1, setNewPoolToken1, newPoolToken2, setNewPool
           z-index: 1100;
         }
         .token-modal-content {
-          background-color: #1A1F2B;
-          border-radius: 16px;
+          background: var(--modal-bg);
+          border-radius: 10px;
           width: 100%;
-          max-width: 400px;
-          padding: 20px;
+          max-width: 360px;
+          max-height: 60vh;
+          padding: 12px;
           display: flex;
           flex-direction: column;
-          gap: 16px;
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+          gap: 10px;
+          box-shadow: 0 4px 16px var(--shadow-color);
+          border: 1px solid var(--border-color);
+          overflow-y: auto;
         }
         .token-modal-header {
           display: flex;
@@ -550,137 +635,138 @@ function CreatePool({ newPoolToken1, setNewPoolToken1, newPoolToken2, setNewPool
           align-items: center;
         }
         .token-modal-title {
-          font-size: 20px;
+          font-size: 16px;
           font-weight: 700;
-          color: #FFFFFF;
+          color: var(--text-color);
           margin: 0;
         }
         .token-modal-close-btn {
           background: none;
           border: none;
           cursor: pointer;
-          color: #A0AEC0;
+          color: var(--text-secondary);
           transition: color 0.2s ease;
         }
         .token-modal-close-btn:hover {
-          color: #FFFFFF;
+          color: var(--text-color);
         }
         .token-modal-close-icon {
-          width: 24px;
-          height: 24px;
+          width: 18px;
+          height: 18px;
         }
         .token-modal-body {
           display: flex;
           flex-direction: column;
-          gap: 16px;
+          gap: 10px;
         }
         .search-group {
           display: flex;
           flex-direction: column;
-          gap: 8px;
+          gap: 6px;
         }
         .search-icon {
-          width: 20px;
-          height: 20px;
+          width: 16px;
+          height: 16px;
           position: absolute;
           top: 50%;
-          left: 12px;
+          left: 8px;
           transform: translateY(-50%);
         }
         .search-input {
-          padding: 12px 12px 12px 40px;
-          background-color: #232D2E;
-          border: 1px solid #2A3435;
-          border-radius: 10px;
-          color: #FFFFFF;
-          font-size: 14px;
+          padding: 8px 8px 8px 32px;
+          background-color: var(--input-bg);
+          border: 1px solid var(--border-color);
+          border-radius: 8px;
+          color: var(--text-color);
+          font-size: 12px;
           outline: none;
           transition: border-color 0.2s ease;
         }
         .search-input:hover, .search-input:focus {
-          border-color: #3B4A4C;
+          border-color: var(--border-color);
         }
         .error {
-          color: #FF5555;
-          font-size: 12px;
+          color: #ff5555;
+          font-size: 10px;
           text-align: center;
         }
         .import-button {
-          padding: 12px;
-          background-color: #2F80ED;
-          color: #FFFFFF;
-          border-radius: 10px;
+          padding: 8px;
+          background-color: var(--primary-color);
+          color: #ffffff;
+          border-radius: 8px;
           border: none;
           cursor: pointer;
-          font-size: 14px;
+          font-size: 12px;
           font-weight: 600;
           transition: background-color 0.2s ease;
         }
         .import-button:hover {
-          background-color: #1A5ECC;
+          background-color: var(--button-hover-bg);
         }
         .token-tabs {
           display: flex;
-          gap: 8px;
-          border-bottom: 1px solid #2A3435;
+          gap: 6px;
+          border-bottom: 1px solid var(--border-color);
         }
         .token-tab {
-          padding: 8px 16px;
+          padding: 6px 10px;
           cursor: pointer;
-          color: #A0AEC0;
-          font-size: 14px;
+          color: var(--text-secondary);
+          font-size: 12px;
           font-weight: 500;
           transition: color 0.2s ease;
         }
         .token-tab[data-active="true"] {
-          color: #FFFFFF;
-          border-bottom: 2px solid #2F80ED;
+          color: var(--text-color);
+          border-bottom: 2px solid var(--primary-color);
         }
         .token-tab:hover {
-          color: #FFFFFF;
+          color: var(--text-color);
         }
         .token-list {
           display: flex;
           flex-direction: column;
-          gap: 8px;
-          max-height: 300px;
+          gap: 6px;
+          max-height: 160px;
           overflow-y: auto;
           scrollbar-width: thin;
-          scrollbar-color: #2A3435 #1A1F2B;
+          scrollbar-color: var(--border-color) var(--modal-bg);
         }
         .token-list::-webkit-scrollbar {
-          width: 8px;
+          width: 6px;
         }
         .token-list::-webkit-scrollbar-track {
-          background: #1A1F2B;
+          background: var(--modal-bg);
         }
         .token-list::-webkit-scrollbar-thumb {
-          background: #2A3435;
-          border-radius: 4px;
+          background: var(--border-color);
+          border-radius: 3px;
         }
         .token-list-item {
           display: flex;
           align-items: center;
-          gap: 12px;
-          padding: 12px;
-          background-color: #232D2E;
-          border-radius: 10px;
+          gap: 8px;
+          padding: 8px;
+          background-color: var(--input-bg);
+          border-radius: 8px;
           cursor: pointer;
           transition: background-color 0.2s ease;
+          border: 1px solid var(--border-color);
         }
         .token-list-item:hover {
-          background-color: #2A3435;
+          background-color: var(--hover-bg);
         }
         .token-list-icon {
-          width: 32px;
-          height: 32px;
+          width: 24px;
+          height: 24px;
           border-radius: 50%;
         }
         .token-info {
           flex: 1;
           display: flex;
           flex-direction: column;
-          gap: 4px;
+          gap: 2px;
         }
         .token-name-group {
           display: flex;
@@ -688,30 +774,30 @@ function CreatePool({ newPoolToken1, setNewPoolToken1, newPoolToken2, setNewPool
           gap: 4px;
         }
         .token-name {
-          font-size: 16px;
+          font-size: 13px;
           font-weight: 600;
-          color: #FFFFFF;
+          color: var(--text-color);
           margin: 0;
         }
         .verified-icon {
-          width: 16px;
-          height: 16px;
+          width: 12px;
+          height: 12px;
         }
         .token-symbol {
-          font-size: 14px;
-          color: #A0AEC0;
+          font-size: 11px;
+          color: var(--text-secondary);
           margin: 0;
         }
         .token-details {
           display: flex;
           flex-direction: column;
           align-items: flex-end;
-          gap: 4px;
+          gap: 2px;
         }
         .token-balance {
-          font-size: 16px;
+          font-size: 13px;
           font-weight: 600;
-          color: #FFFFFF;
+          color: var(--text-color);
           margin: 0;
         }
         .token-address-group {
@@ -720,62 +806,182 @@ function CreatePool({ newPoolToken1, setNewPoolToken1, newPoolToken2, setNewPool
           gap: 4px;
         }
         .token-address {
-          font-size: 12px;
-          color: #A0AEC0;
+          font-size: 10px;
+          color: var(--text-secondary);
           margin: 0;
         }
         .token-link svg {
-          width: 12px;
-          height: 12px;
-          stroke: #A0AEC0;
+          width: 10px;
+          height: 10px;
+          stroke: var(--text-secondary);
           transition: stroke 0.2s ease;
         }
         .token-link:hover svg {
-          stroke: #FFFFFF;
+          stroke: var(--text-color);
         }
         .no-tokens {
           text-align: center;
-          color: #A0AEC0;
-          font-size: 14px;
-          margin: 16px 0;
+          color: var(--text-secondary);
+          font-size: 12px;
+          margin: 10px 0;
+        }
+        @media (max-width: 768px) {
+          .modal-content {
+            padding: 10px;
+            max-width: 95%;
+          }
+          .select-pair-title {
+            font-size: 14px;
+          }
+          .select-pair-text {
+            font-size: 11px;
+          }
+          .token-select-container {
+            flex-direction: column;
+            gap: 6px;
+          }
+          .token-select {
+            padding: 6px 8px;
+            font-size: 12px;
+          }
+          .token-select img {
+            width: 18px;
+            height: 18px;
+          }
+          .fee-tier-select {
+            padding: 6px 8px;
+            font-size: 12px;
+          }
+          .continue-button {
+            padding: 8px;
+            font-size: 13px;
+          }
+          .token-modal-content {
+            max-width: 95%;
+            padding: 10px;
+            max-height: 65vh;
+          }
+          .token-modal-title {
+            font-size: 14px;
+          }
+          .search-input {
+            padding: 6px 6px 6px 28px;
+            font-size: 11px;
+          }
+          .search-icon {
+            width: 14px;
+            height: 14px;
+            left: 6px;
+          }
+          .token-list-item {
+            padding: 6px;
+          }
+          .token-list-icon {
+            width: 22px;
+            height: 22px;
+          }
+          .token-name {
+            font-size: 12px;
+          }
+          .token-symbol {
+            font-size: 10px;
+          }
+          .token-balance {
+            font-size: 12px;
+          }
+          .token-address {
+            font-size: 9px;
+          }
+          .token-pair-header {
+            padding: 6px;
+            gap: 6px;
+          }
+          .token-pair-images img {
+            width: 20px;
+            height: 20px;
+          }
+          .token-pair-name {
+            font-size: 12px;
+          }
+          .fee-rate {
+            padding: 2px 6px;
+            font-size: 10px;
+          }
+          .edit-button {
+            font-size: 11px;
+          }
+          .edit-button svg {
+            width: 16px;
+            height: 16px;
+          }
+          .input-group {
+            padding: 6px;
+          }
+          .input-field {
+            font-size: 13px;
+            padding: 3px;
+          }
+          .input-addon {
+            font-size: 11px;
+          }
+          .price-range-tabs {
+            gap: 4px;
+          }
+          .price-range-tab {
+            padding: 4px 8px;
+            font-size: 11px;
+          }
+          .price-range-inputs {
+            gap: 6px;
+            flex-direction: column;
+          }
+          .price-range-input-group {
+            padding: 6px;
+          }
+          .price-range-input-group p {
+            font-size: 11px;
+          }
+          .price-range-input-group input {
+            font-size: 11px;
+          }
         }
       `}</style>
       <div className="modal-content">
         <div className="modal-header">
           <button className="back-button" onClick={onClose}>
-            <svg aria-hidden="true" fill="#A0AEC0" width="20px" height="20px">
+            <svg aria-hidden="true" fill="var(--text-secondary)" width="16px" height="16px">
               <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
             </svg>
             Back
           </button>
         </div>
-        <div className="steps-container">
-          <div className="step-item">
-            <div className={`step-number ${step === 1 ? '' : 'inactive'}`}>1</div>
-            <div>
-              <p className="step-text">Step 1</p>
-              <p className="step-title">Select token & fee tier</p>
-            </div>
-          </div>
-          <div className="step-divider" />
-          <div className="step-item">
-            <div className={`step-number ${step === 2 ? '' : 'inactive'}`}>2</div>
-            <div>
-              <p className="step-text">Step 2</p>
-              <p className="step-title">Set initial price</p>
-            </div>
-          </div>
-          <div className="step-divider" />
-          <div className="step-item">
-            <div className={`step-number ${step === 3 ? '' : 'inactive'}`}>3</div>
-            <div>
-              <p className="step-text">Step 3</p>
-              <p className="step-title">Enter deposit amounts</p>
-            </div>
-          </div>
-        </div>
         {step === 1 && (
           <div className="select-pair-container">
+            <div className="steps-container">
+              <div className="step-item">
+                <div className={`step-number ${step === 1 ? '' : 'inactive'}`}>1</div>
+                <div>
+                  <p className="step-text">Step 1</p>
+                  <p className="step-title">Select token & fee tier</p>
+                </div>
+              </div>
+              <div className="step-divider" />
+              <div className="step-item">
+                <div className={`step-number ${step as number === 2 ? '' : 'inactive'}`}>2</div>
+                <div>
+                  <p className="step-text">Step 2</p>
+                  <p className="step-title">Set initial price</p>
+                </div>
+              </div>
+              <div className="step-divider" />
+              <div className="step-item">
+                <div className={`step-number ${step as number === 3 ? '' : 'inactive'}`}>3</div>
+                <div>
+                  <p className="step-text">Step 3</p>
+                  <p className="step-title">Enter deposit amounts</p>
+                </div>
+              </div>
+            </div>
             <div>
               <h2 className="select-pair-title">Select Pair</h2>
               <p className="select-pair-text">Choose the tokens for your liquidity pool.</p>
@@ -815,9 +1021,12 @@ function CreatePool({ newPoolToken1, setNewPoolToken1, newPoolToken2, setNewPool
                 value={feeRate}
                 onChange={(e) => setFeeRate(e.target.value)}
               >
-                <option value="0.03">0.03%</option>
+                <option value="0.01">0.01%</option>
+                <option value="0.05">0.05%</option>
+                <option value="0.20">0.20%</option>
                 <option value="0.25">0.25%</option>
                 <option value="1.00">1.00%</option>
+                <option value="2.00">2.00%</option>
               </select>
             </div>
             <button
@@ -846,34 +1055,84 @@ function CreatePool({ newPoolToken1, setNewPoolToken1, newPoolToken2, setNewPool
                 <p className="token-pair-name">{newPoolToken1} - {newPoolToken2}</p>
                 <span className="fee-rate">{feeRate}%</span>
               </div>
+              <button className="edit-button" onClick={() => setStep(1)}>
+                <svg aria-hidden="true" fill="var(--text-secondary)" width="16px" height="16px">
+                  <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+                </svg>
+                Edit
+              </button>
             </div>
             <div>
               <h2 className="select-pair-title">Set Initial Price</h2>
+              <p className="select-pair-text">Please set an initial price for this new pool to start.</p>
               <div className="input-group">
                 <input
                   className="input-field"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   placeholder="0.0"
                   value={initialPrice}
                   onChange={(e) => setInitialPrice(e.target.value)}
+                  style={{ width: 'calc(100% - 8px)', fontVariant: 'tabular-nums' }}
                 />
                 <span className="input-addon">{newPoolToken2} per {newPoolToken1}</span>
               </div>
-              <p className="current-price">
-                {initialPrice ? `Current Price: 1 ${newPoolToken1} = ${initialPrice} ${newPoolToken2}` : "Current Price: --"}
-              </p>
+            </div>
+            <div className="price-range-container">
+              <h2 className="select-pair-title">Set Price Range</h2>
+              <div className="price-range-tabs">
+                <div className="price-range-tab active">Full Range</div>
+                <div className="price-range-tab" style={{ opacity: 0.5, cursor: 'not-allowed' }}>Custom Range</div>
+              </div>
+              <div className="price-range-inputs">
+                <div className="price-range-input-group">
+                  <p>Min Price</p>
+                  <input value="0" readOnly />
+                  <p>{newPoolToken2} per {newPoolToken1}</p>
+                </div>
+                <div className="price-range-input-group">
+                  <p>Max Price</p>
+                  <input value="∞" readOnly />
+                  <p>{newPoolToken2} per {newPoolToken1}</p>
+                </div>
+              </div>
             </div>
             <button
               className="continue-button"
               disabled={!isStep2Valid}
               onClick={handleNextStep}
             >
-              Continue
+              Enter Initial Price
             </button>
           </div>
         )}
         {step === 3 && (
           <div className="select-pair-container">
+            <div className="steps-container">
+              <div className="step-item">
+                <div className={`step-number ${step as number === 1 ? '' : 'inactive'}`}>1</div>
+                <div>
+                  <p className="step-text">Step 1</p>
+                  <p className="step-title">Select token & fee tier</p>
+                </div>
+              </div>
+              <div className="step-divider" />
+              <div className="step-item">
+                <div className={`step-number ${step as number === 2 ? '' : 'inactive'}`}>2</div>
+                <div>
+                  <p className="step-text">Step 2</p>
+                  <p className="step-title">Set initial price</p>
+                </div>
+              </div>
+              <div className="step-divider" />
+              <div className="step-item">
+                <div className={`step-number ${step as number === 3 ? '' : 'inactive'}`}>3</div>
+                <div>
+                  <p className="step-text">Step 3</p>
+                  <p className="step-title">Enter deposit amounts</p>
+                </div>
+              </div>
+            </div>
             <div className="token-pair-header">
               <div className="token-pair-images">
                 <img
@@ -1055,8 +1314,8 @@ function CreatePool({ newPoolToken1, setNewPoolToken1, newPoolToken2, setNewPool
                             >
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                width="12"
-                                height="12"
+                                width="10"
+                                height="10"
                                 viewBox="0 0 24 24"
                                 fill="none"
                                 stroke="currentColor"

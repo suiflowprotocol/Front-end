@@ -134,7 +134,7 @@ function App() {
     }
     try {
       const tokenData = await client.getObject({
-        id: importAddress,
+        id:importAddress,
         options: { showContent: true },
       });
       const content = tokenData.data?.content as any;

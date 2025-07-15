@@ -58,7 +58,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 32px;
+  padding: 12px 16px;
   background: linear-gradient(90deg, #1e293b 0%, #0f172a 100%);
   border-bottom: 1px solid var(--border-color);
   box-shadow: 0 4px 12px var(--shadow-color);
@@ -67,6 +67,7 @@ body {
   z-index: 1000;
   width: 100%;
   max-width: 1440px;
+  flex-wrap: wrap;
 }
 
 .logo-container {
@@ -76,7 +77,7 @@ body {
 }
 
 .logo-image {
-  height: 40px;
+  height: 32px;
   transition: transform 0.3s ease;
 }
 
@@ -86,7 +87,7 @@ body {
 
 .logo-text {
   font-family: 'Poppins', sans-serif;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--text-color);
   letter-spacing: 1px;
@@ -97,7 +98,9 @@ body {
 .nav-menu {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .nav-item {
@@ -105,10 +108,10 @@ body {
   display: flex;
   align-items: center;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--text-color);
-  padding: 8px 16px;
+  padding: 6px 12px;
   border-radius: 8px;
   transition: all 0.3s ease;
 }
@@ -166,18 +169,18 @@ body {
 .wallet-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 .wallet-button {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 16px;
+  padding: 6px 12px;
   background: var(--primary-color);
   color: #ffffff;
-  border-radius: 24px;
-  font-size: 14px;
+  border-radius: 20px;
+  font-size: 13px;
   font-weight: 600;
   transition: all 0.3s ease;
   border: none;
@@ -189,16 +192,16 @@ body {
 }
 
 .wallet-button img {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
 }
 
 .icon-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   background: var(--modal-bg);
   border-radius: 8px;
   cursor: pointer;
@@ -214,12 +217,12 @@ body {
 .icon-button-svg {
   fill: var(--text-color);
   stroke: var(--text-color);
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
 }
 
 .main-content {
-  padding: 32px;
+  padding: 16px;
   min-height: calc(100vh - 72px);
   display: flex;
   flex-direction: column;
@@ -233,12 +236,12 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 16px;
+  padding: 12px;
   background: linear-gradient(135deg, #3b82f6, #10b981);
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .reward-announcement-container:hover {
@@ -248,10 +251,11 @@ body {
 
 .reward-announcement {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  font-size: 16px;
+  gap: 8px;
+  font-size: 14px;
   font-weight: 700;
   font-family: 'Inter', sans-serif;
   color: #ffffff;
@@ -259,12 +263,12 @@ body {
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  white-space: nowrap;
+  text-align: center;
 }
 
 .reward-announcement img {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   border: 2px solid rgba(255, 255, 255, 0.3);
 }
@@ -272,19 +276,20 @@ body {
 .countdown-time {
   color: #ffd700;
   font-weight: 800;
+  font-size: 14px;
 }
 
 .swap-panel {
   width: 100%;
   max-width: 480px;
   background: var(--card-bg);
-  padding: 24px;
-  border-radius: 20px;
+  padding: 16px;
+  border-radius: 16px;
   border: 1px solid var(--border-color);
-  box-shadow: 0 8px 32px var(--shadow-color);
+  box-shadow: 0 8px 24px var(--shadow-color);
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
 .swap-header {
@@ -295,7 +300,7 @@ body {
 }
 
 .swap-title {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 600;
   color: var(--text-color);
 }
@@ -311,8 +316,8 @@ body {
   background: var(--input-bg);
   border: 1px solid var(--border-color);
   color: var(--text-color);
-  font-size: 14px;
-  padding: 6px 12px;
+  font-size: 13px;
+  padding: 6px 10px;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -323,8 +328,8 @@ body {
 }
 
 .settings-icon {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   stroke: var(--text-secondary);
 }
 
@@ -337,18 +342,18 @@ body {
   border-radius: 12px;
   box-shadow: 0 4px 12px var(--shadow-color);
   z-index: 10;
-  padding: 16px;
-  width: 200px;
+  padding: 12px;
+  width: 180px;
 }
 
 .slippage-modal-content {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .slippage-modal-title {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--text-color);
 }
@@ -356,17 +361,17 @@ body {
 .slippage-options {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
 }
 
 .slippage-option {
   flex: 1;
-  padding: 8px;
+  padding: 6px;
   background: var(--input-bg);
   border: 1px solid var(--border-color);
   border-radius: 8px;
   color: var(--text-color);
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
   text-align: center;
   transition: all 0.2s ease;
@@ -383,32 +388,32 @@ body {
 
 .custom-slippage {
   display: flex;
-  gap: 8px;
-  margin-top: 8px;
+  gap: 6px;
+  margin-top: 6px;
 }
 
 .custom-slippage-input {
   flex: 1;
-  padding: 8px;
+  padding: 6px;
   background: var(--input-bg);
   border: 1px solid var(--border-color);
   border-radius: 8px;
   color: var(--text-color);
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .custom-slippage-input:focus {
   outline: none;
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
 }
 
 .custom-slippage-submit {
-  padding: 8px 16px;
+  padding: 6px 12px;
   background: var(--primary-color);
   color: #ffffff;
   border: none;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -421,9 +426,9 @@ body {
   background: transparent;
   color: var(--primary-color);
   border: 2px solid var(--primary-color);
-  padding: 12px 16px;
+  padding: 10px 14px;
   border-radius: 10px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -445,10 +450,10 @@ body {
 .input-card {
   background: var(--card-bg);
   border-radius: 12px;
-  padding: 16px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   border: 1px solid var(--border-color);
   transition: all 0.3s ease;
 }
@@ -456,7 +461,7 @@ body {
 .input-label {
   display: flex;
   justify-content: space-between;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--text-secondary);
 }
@@ -465,28 +470,25 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .swap-input {
   flex: 1;
   border: none;
   outline: none;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 500;
   background: transparent;
   color: var(--text-color);
-  width: 160px;
+  width: 100%;
+  min-width: 0;
   transition: all 0.3s ease;
 }
 
 .swap-input:focus {
   color: var(--text-color);
-}
-
-@media (min-width: 768px) {
-  .swap-input {
-    width: auto;
-  }
 }
 
 .swap-input:disabled {
@@ -497,8 +499,8 @@ body {
 .token-selector {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
+  gap: 6px;
+  padding: 6px 10px;
   background: var(--modal-bg);
   border-radius: 8px;
   cursor: pointer;
@@ -510,20 +512,20 @@ body {
 }
 
 .token-icon {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
 }
 
 .token-selector span {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 500;
   color: var(--text-color);
 }
 
 .chevron-down {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   stroke: var(--text-secondary);
 }
 
@@ -535,8 +537,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   background: var(--modal-bg);
   border-radius: 50%;
   border: 1px solid var(--border-color);
@@ -550,8 +552,8 @@ body {
 }
 
 .swap-arrow {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   stroke: var(--text-secondary);
 }
 
@@ -559,35 +561,38 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .price-text {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-secondary);
 }
 
 .balance-group {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .balance-group span {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-secondary);
 }
 
 .balance-buttons {
   display: flex;
-  gap: 8px;
+  gap: 6px;
 }
 
 .balance-button {
   background: var(--input-bg);
   border: 1px solid var(--border-color);
   color: var(--primary-color);
-  font-size: 12px;
-  padding: 4px 12px;
+  font-size: 11px;
+  padding: 4px 10px;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -600,11 +605,11 @@ body {
 
 .action-button {
   width: 100%;
-  padding: 14px 20px;
+  padding: 12px 16px;
   background: var(--primary-color);
   color: #ffffff;
   border-radius: 10px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -624,38 +629,38 @@ body {
 }
 
 .import-button {
-  margin-top: 12px;
-  padding: 12px;
-  font-size: 15px;
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 14px;
 }
 
 .error {
   color: var(--error-color);
-  font-size: 14px;
-  margin-top: 12px;
+  font-size: 13px;
+  margin-top: 10px;
   text-align: center;
 }
 
 .success {
   color: var(--success-color);
-  font-size: 14px;
-  margin-top: 12px;
+  font-size: 13px;
+  margin-top: 10px;
   text-align: center;
 }
 
 .info-panel {
-  margin-top: 16px;
-  font-size: 14px;
+  margin-top: 12px;
+  font-size: 13px;
   background: var(--card-bg);
   border-radius: 10px;
-  padding: 16px;
+  padding: 12px;
   border: 1px solid var(--border-color);
 }
 
 .info-panel p {
   display: flex;
   justify-content: space-between;
-  margin: 8px 0;
+  margin: 6px 0;
   color: var(--text-secondary);
 }
 
@@ -670,13 +675,14 @@ body {
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  padding: 24px;
+  padding: 16px;
 }
 
 .token-modal-content {
   background: var(--card-bg);
   border-radius: 16px;
   width: 100%;
+  max-width: 400px;
   max-height: 80vh;
   padding: 16px;
   border: 1px solid var(--border-color);
@@ -686,14 +692,14 @@ body {
 }
 
 .token-modal-header {
-  padding-bottom: 12px;
+  padding-bottom: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .token-modal-title {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
   color: var(--text-color);
   margin: 0;
@@ -703,7 +709,7 @@ body {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 8px;
+  padding: 6px;
   transition: transform 0.3s ease, color 0.3s ease;
 }
 
@@ -713,29 +719,29 @@ body {
 }
 
 .token-modal-close-icon {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   color: var(--text-secondary);
 }
 
 .token-modal-body {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .search-group {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .search-icon {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   position: absolute;
-  left: 12px;
+  left: 10px;
   top: 50%;
   transform: translateY(-50%);
   opacity: 0.6;
@@ -743,10 +749,10 @@ body {
 
 .search-input {
   width: 100%;
-  padding: 12px 12px 12px 44px;
+  padding: 10px 10px 10px 36px;
   border: 1px solid var(--border-color);
   border-radius: 10px;
-  font-size: 14px;
+  font-size: 13px;
   background: var(--search-bg);
   color: var(--text-color);
   outline: none;
@@ -769,16 +775,16 @@ body {
 
 .token-tabs {
   display: flex;
-  gap: 8px;
-  padding-bottom: 8px;
+  gap: 6px;
+  padding-bottom: 6px;
   border-bottom: 1px solid var(--border-color);
 }
 
 .token-tab {
-  padding: 6px 16px;
+  padding: 6px 12px;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--text-secondary);
   position: relative;
@@ -793,7 +799,7 @@ body {
 .token-tab[data-active="true"]::after {
   content: '';
   position: absolute;
-  bottom: -9px;
+  bottom: -7px;
   left: 0;
   width: 100%;
   height: 2px;
@@ -814,7 +820,7 @@ body {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   scrollbar-width: thin;
   scrollbar-color: var(--hover-bg) var(--modal-bg);
 }
@@ -835,7 +841,7 @@ body {
 .token-list-item {
   display: flex;
   align-items: center;
-  padding: 10px 8px;
+  padding: 8px 6px;
   border-radius: 10px;
   cursor: pointer;
   transition: background 0.3s ease;
@@ -846,10 +852,10 @@ body {
 }
 
 .token-list-icon {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  margin-right: 12px;
+  margin-right: 10px;
 }
 
 .token-info {
@@ -865,19 +871,19 @@ body {
 }
 
 .token-name {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   color: var(--text-color);
   margin: 0;
 }
 
 .verified-icon {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
 }
 
 .token-symbol {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-secondary);
   margin: 0;
 }
@@ -890,7 +896,7 @@ body {
 }
 
 .token-balance {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--text-color);
   margin: 0;
@@ -903,14 +909,14 @@ body {
 }
 
 .token-address {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-secondary);
   margin: 0;
 }
 
 .token-link svg {
-  width: 12px;
-  height: 12px;
+  width: 11px;
+  height: 11px;
   stroke: var(--text-secondary);
   transition: stroke 0.3s ease;
 }
@@ -923,14 +929,14 @@ body {
   width: 100%;
   max-width: 480px;
   text-align: center;
-  padding: 24px;
+  padding: 16px;
   background: var(--card-bg);
   border-radius: 16px;
   border: 1px solid var(--border-color);
 }
 
 .placeholder-text {
-  font-size: 16px;
+  font-size: 15px;
   color: var(--text-secondary);
 }
 
@@ -942,55 +948,500 @@ body {
   .swap-panel {
     max-width: 520px;
   }
+  .logo-image {
+    height: 40px;
+  }
+  .logo-text {
+    font-size: 24px;
+  }
+  .nav-item {
+    font-size: 16px;
+    padding: 8px 16px;
+  }
+  .wallet-button {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+  .wallet-button img {
+    width: 24px;
+    height: 24px;
+  }
+  .icon-button {
+    width: 36px;
+    height: 36px;
+  }
+  .icon-button-svg {
+    width: 20px;
+    height: 20px;
+  }
+  .main-content {
+    padding: 32px;
+  }
+  .reward-announcement {
+    flex-direction: row;
+    font-size: 16px;
+    gap: 12px;
+    white-space: nowrap;
+  }
+  .reward-announcement img {
+    width: 28px;
+    height: 28px;
+  }
+  .countdown-time {
+    font-size: 16px;
+  }
+  .reward-announcement-container {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .swap-title {
+    font-size: 24px;
+  }
+  .settings-button {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+  .settings-icon {
+    width: 20px;
+    height: 20px;
+  }
+  .slippage-modal {
+    width: 200px;
+    padding: 16px;
+  }
+  .slippage-modal-title {
+    font-size: 16px;
+  }
+  .slippage-option {
+    padding: 8px;
+    font-size: 14px;
+  }
+  .custom-slippage-input {
+    padding: 8px;
+    font-size: 14px;
+  }
+  .custom-slippage-submit {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+  .secondary-button {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+  .input-card {
+    padding: 16px;
+    gap: 12px;
+  }
+  .input-label {
+    font-size: 14px;
+  }
+  .swap-input {
+    font-size: 24px;
+    width: auto;
+  }
+  .token-selector {
+    padding: 8px 12px;
+  }
+  .token-icon {
+    width: 28px;
+    height: 28px;
+  }
+  .token-selector span {
+    font-size: 18px;
+  }
+  .chevron-down {
+    width: 16px;
+    height: 16px;
+  }
+  .swap-icon {
+    width: 36px;
+    height: 36px;
+  }
+  .swap-arrow {
+    width: 18px;
+    height: 18px;
+  }
+  .price-text {
+    font-size: 14px;
+  }
+  .balance-group span {
+    font-size: 14px;
+  }
+  .balance-button {
+    font-size: 12px;
+    padding: 4px 12px;
+  }
+  .action-button {
+    padding: 14px 20px;
+    font-size: 16px;
+  }
+  .import-button {
+    margin-top: 12px;
+    padding: 12px;
+    font-size: 15px;
+  }
+  .error {
+    font-size: 14px;
+    margin-top: 12px;
+  }
+  .success {
+    font-size: 14px;
+    margin-top: 12px;
+  }
+  .info-panel {
+    margin-top: 16px;
+    font-size: 14px;
+    padding: 16px;
+  }
+  .info-panel p {
+    margin: 8px 0;
+  }
+  .token-modal-content {
+    max-width: 480px;
+  }
+  .token-modal-title {
+    font-size: 20px;
+  }
+  .token-modal-close-btn {
+    padding: 8px;
+  }
+  .token-modal-close-icon {
+    width: 20px;
+    height: 20px;
+  }
+  .token-modal-body {
+    gap: 12px;
+  }
+  .search-group {
+    gap: 8px;
+  }
+  .search-icon {
+    width: 24px;
+    height: 24px;
+    left: 12px;
+  }
+  .search-input {
+    padding: 12px 12px 12px 44px;
+    font-size: 14px;
+  }
+  .token-tabs {
+    gap: 8px;
+    padding-bottom: 8px;
+  }
+  .token-tab {
+    padding: 6px 16px;
+    font-size: 14px;
+  }
+  .token-tab[data-active="true"]::after {
+    bottom: -9px;
+  }
+  .token-list {
+    gap: 8px;
+  }
+  .token-list-item {
+    padding: 10px 8px;
+  }
+  .token-list-icon {
+    width: 32px;
+    height: 32px;
+    margin-right: 12px;
+  }
+  .token-name {
+    font-size: 16px;
+  }
+  .verified-icon {
+    width: 16px;
+    height: 16px;
+  }
+  .token-symbol {
+    font-size: 12px;
+  }
+  .token-balance {
+    font-size: 14px;
+  }
+  .token-address {
+    font-size: 12px;
+  }
+  .token-link svg {
+    width: 12px;
+    height: 12px;
+  }
+  .positions-placeholder {
+    padding: 24px;
+  }
+  .placeholder-text {
+    font-size: 16px;
+  }
 }
 
 @media (max-width: 768px) {
   .header {
-    padding: 12px 16px;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
   }
   .nav-menu {
-    gap: 12px;
+    width: 100%;
+    justify-content: space-around;
   }
   .nav-item {
-    font-size: 14px;
-    padding: 6px 12px;
+    flex: 1;
+    text-align: center;
+    padding: 6px;
+    font-size: 13px;
+  }
+  .dropdown {
+    width: 100%;
+    left: 0;
+    top: calc(100% + 4px);
+  }
+  .dropdown-item {
+    font-size: 13px;
+    padding: 8px 12px;
+  }
+  .wallet-actions {
+    width: 100%;
+    justify-content: center;
+    gap: 8px;
+  }
+  .wallet-button {
+    flex: 1;
+    justify-content: center;
+  }
+  .main-content {
+    padding: 12px;
   }
   .swap-panel {
     max-width: 100%;
-    padding: 16px;
   }
   .token-modal-content {
-    max-width: 90%;
+    max-width: 95%;
   }
   .swap-input {
-    font-size: 20px;
-  }
-  .logo-text {
-    font-size: 20px;
+    font-size: 18px;
   }
   .reward-announcement {
-    font-size: 14px;
-    padding: 8px 12px;
-    flex-direction: column;
-    gap: 8px;
-    white-space: normal;
-    text-align: center;
+    font-size: 13px;
+    padding: 8px;
   }
   .reward-announcement img {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
   }
   .countdown-time {
-    font-size: 14px;
+    font-size: 13px;
   }
   .reward-announcement-container {
-    padding: 12px;
-    margin-bottom: 12px;
+    padding: 8px;
+    margin-bottom: 8px;
   }
   .slippage-modal {
-    top: 100%;
-    right: 0;
     width: 100%;
-    max-width: 200px;
+    max-width: 180px;
+    right: 0;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 8px;
+  }
+  .logo-text {
+    font-size: 18px;
+  }
+  .nav-item {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+  .wallet-button {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+  .wallet-button img {
+    width: 18px;
+    height: 18px;
+  }
+  .icon-button {
+    width: 28px;
+    height: 28px;
+  }
+  .icon-button-svg {
+    width: 16px;
+    height: 16px;
+  }
+  .main-content {
+    padding: 8px;
+  }
+  .swap-panel {
+    padding: 12px;
+  }
+  .swap-title {
+    font-size: 18px;
+  }
+  .settings-button {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+  .settings-icon {
+    width: 16px;
+    height: 16px;
+  }
+  .slippage-modal {
+    width: 100%;
+    max-width: 160px;
+  }
+  .slippage-modal-title {
+    font-size: 14px;
+  }
+  .slippage-option {
+    font-size: 12px;
+    padding: 6px;
+  }
+  .custom-slippage-input {
+    font-size: 12px;
+    padding: 6px;
+  }
+  .custom-slippage-submit {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+  .input-card {
+    padding: 10px;
+    gap: 8px;
+  }
+  .input-label {
+    font-size: 12px;
+  }
+  .swap-input {
+    font-size: 16px;
+  }
+  .token-selector {
+    padding: 6px 8px;
+  }
+  .token-icon {
+    width: 20px;
+    height: 20px;
+  }
+  .token-selector span {
+    font-size: 14px;
+  }
+  .chevron-down {
+    width: 12px;
+    height: 12px;
+  }
+  .swap-icon {
+    width: 28px;
+    height: 28px;
+  }
+  .swap-arrow {
+    width: 14px;
+    height: 14px;
+  }
+  .price-text {
+    font-size: 12px;
+  }
+  .balance-group span {
+    font-size: 12px;
+  }
+  .balance-button {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+  .action-button {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+  .error {
+    font-size: 12px;
+    margin-top: 8px;
+  }
+  .success {
+    font-size: 12px;
+    margin-top: 8px;
+  }
+  .info-panel {
+    margin-top: 10px;
+    font-size: 12px;
+    padding: 10px;
+  }
+  .info-panel p {
+    margin: 6px 0;
+  }
+  .token-modal-content {
+    padding: 12px;
+  }
+  .token-modal-title {
+    font-size: 16px;
+  }
+  .token-modal-close-btn {
+    padding: 6px;
+  }
+  .token-modal-close-icon {
+    width: 16px;
+    height: 16px;
+  }
+  .token-modal-body {
+    gap: 8px;
+  }
+  .search-group {
+    gap: 6px;
+  }
+  .search-icon {
+    width: 18px;
+    height: 18px;
+    left: 8px;
+  }
+  .search-input {
+    padding: 8px 8px 8px 32px;
+    font-size: 12px;
+  }
+  .token-tabs {
+    gap: 6px;
+    padding-bottom: 6px;
+  }
+  .token-tab {
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+  .token-tab[data-active="true"]::after {
+    bottom: -7px;
+  }
+  .token-list {
+    gap: 6px;
+  }
+  .token-list-item {
+    padding: 6px 4px;
+  }
+  .token-list-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+  }
+  .token-name {
+    font-size: 14px;
+  }
+  .verified-icon {
+    width: 12px;
+    height: 12px;
+  }
+  .token-symbol {
+    font-size: 10px;
+  }
+  .token-balance {
+    font-size: 12px;
+  }
+  .token-address {
+    font-size: 10px;
+  }
+  .token-link svg {
+    width: 10px;
+    height: 10px;
+  }
+  .positions-placeholder {
+    padding: 12px;
+  }
+  .placeholder-text {
+    font-size: 14px;
   }
 }
