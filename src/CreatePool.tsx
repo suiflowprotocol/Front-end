@@ -1,6 +1,9 @@
 import { useState } from "react";
+import Step1SelectPair from "./Step1SelectPair";
+import Step2SetPrice from "./Step2SetPrice";
+import Step3DepositAmounts from "./Step3DepositAmounts";
 
-interface Token {
+export interface Token {
   symbol: string;
   address: string;
   icon: string;
@@ -54,6 +57,195 @@ const tokens: Token[] = [
     description: "CETUS Token",
     decimals: 6,
   },
+  {
+    symbol: "DEEP",
+    address: "0xdeeb7a4662eec9f2f3def03fb937a663dddaa2e215b8078a284d026b7946c270::deep::DEEP",
+    icon: "https://images.deepbook.tech/icon.svg",
+    description: "DeepBook Token",
+    decimals: 6,
+  },
+  {
+    symbol: "WAL",
+    address: "0x356a26eb9e012a68958082340d4c4116e7f55615cf27affcff209cf0ae544f59::wal::WAL",
+    icon: "https://file.coinexstatic.com/2025-03-26/43F8485DCB687E365E3187192861D19E.webp",
+    description: "WAL Token",
+    decimals: 6,
+  },
+  {
+    symbol: "HEADAL",
+    address: "0x3a304c7feba2d819ea57c3542d68439ca2c386ba02159c740f7b406e592c62ea::haedal::HAEDAL",
+    icon: "https://s2.coinmarketcap.com/static/img/coins/200x200/36369.png",
+    description: "HEADAL Token",
+    decimals: 6,
+  },
+  {
+    symbol: "SCA",
+    address: "0x7016aae72cfc67f2fadf55769c0a7dd54291a583b63051a5ed71081cce836ac6::sca::SCA",
+    icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkPpvd1akVvyP8sgi3PMYAwbCnWuuIS37OKg&s",
+    description: "Scallop Token",
+    decimals: 6,
+  },
+  {
+    symbol: "haSUI",
+    address: "0xbde4ba4c2e274a60ce15c1cfff9e5c42e41654ac8b6d906a57efa4bd3c29f47d::hasui::HASUI",
+    icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvd9yv6JWLikNWB-MxU2OyErJiqffAcLi8mw&s",
+    description: "haSUI Token",
+    decimals: 6,
+  },
+  {
+    symbol: "BUCK",
+    address: "0xce7ff77a83ea0cb6fd39bd8748e2ec89a3f41e8efdc3f4eb123e0ca37b184db2::buck::BUCK",
+    icon: "https://imagedelivery.net/cBNDGgkrsEA-b_ixIp9SkQ/buck.svg/public",
+    description: "Bucket USD",
+    decimals: 6,
+  },
+  {
+    symbol: "OKX Wrapped BTC",
+    address: "0x876a4b7bce8aeaef60464c11f4026903e9afacab79b9b142686158aa86560b50::xbtc::XBTC",
+    icon: "https://static.coinall.ltd/cdn/oksupport/common/20250512-095503.72e1f41d9b9a06.png",
+    description: "XBTC",
+    decimals: 6,
+  },
+  {
+    symbol: "Tether (Sui Bridge)",
+    address: "0x375f70cf2ae4c00bf37117d0c85a2c71545e6ee05c4a5c7d282cd66a4504b068::usdt::USDT",
+    icon: "https://momentum-statics.s3.us-west-1.amazonaws.com/suiUSDT.png",
+    description: "suiUSDT",
+    decimals: 6,
+  },
+  {
+    symbol: "AUSD",
+    address: "0x2053d08c1e2bd02791056171aab0fd12bd7cd7efad2ab8f6b9c8902f14df2ff2::ausd::AUSD",
+    icon: "https://static.agora.finance/ausd-token-icon.svg",
+    description: "AUSD",
+    decimals: 6,
+  },
+  {
+    symbol: "ALPHA Token",
+    address: "0xfe3afec26c59e874f3c1d60b8203cb3852d2bb2aa415df9548b8d688e6683f93::alpha::ALPHA",
+    icon: "https://imagedelivery.net/cBNDGgkrsEA-b_ixIp9SkQ/_MCfJKCnm7HFHwGk_JW1B-AU9kjOe3FtYe-ay75YcgI.png/public",
+    description: "ALPHA",
+    decimals: 6,
+  },
+  {
+    symbol: "Sudo LP Token",
+    address: "0xc44d97a4bc4e5a33ca847b72b123172c88a6328196b71414f32c3070233604b2::slp::SLP",
+    icon: "https://arweave.net/_SEJoeyOw0uVJbu-kcJZ1BFP1E5j4OWOdQnv4s51rU0",
+    description: "SLP",
+    decimals: 6,
+  },
+  {
+    symbol: "AlphaFi Staked SUI",
+    address: "0xd1b72982e40348d069bb1ff701e634c117bb5f741f44dff91e472d3b01461e55::stsui::STSUI",
+    icon: "https://images.alphafi.xyz/stSUI.png",
+    description: "stSUI",
+    decimals: 6,
+  },
+  {
+    symbol: "SEND",
+    address: "0xb45fcfcc2cc07ce0702cc2d229621e046c906ef14d9b25e8e4d25f6e8763fef7::send::SEND",
+    icon: "https://suilend-assets.s3.us-east-2.amazonaws.com/SEND/SEND.svg",
+    description: "SEND",
+    decimals: 6,
+  },
+  {
+    symbol: "ZO Perpetuals LP Token",
+    address: "0xf7fade57462e56e2eff1d7adef32e4fd285b21fd81f983f407bb7110ca766cda::zlp::ZLP",
+    icon: "https://img.zofinance.io/zlp.png",
+    description: "ZLP",
+    decimals: 6,
+  },
+  {
+    symbol: "LOFI",
+    address: "0xf22da9a24ad027cccb5f2d496cbe91de953d363513db08a3a734d361c7c17503::LOFI::LOFI",
+    icon: "https://cdn.tusky.io/5ab323c3-19e1-48b1-a5e2-f01b2fb3a097",
+    description: "LOFI",
+    decimals: 6,
+  },
+  {
+    symbol: "Lorenzo stBTC",
+    address: "0x5f496ed5d9d045c5b788dc1bb85f54100f2ede11e46f6a232c29daada4c5bdb6::coin::COIN",
+    icon: "https://imagedelivery.net/cBNDGgkrsEA-b_ixIp9SkQ/stBTC.png/public",
+    description: "stBTC",
+    decimals: 6,
+  },
+  {
+    symbol: "Ondo US Dollar Yield",
+    address: "0x960b531667636f39e85867775f52f6b1f220a058c4de786905bdf761e06a56bb::usdy::USDY",
+    icon: "https://ondo.finance/images/tokens/usdy.svg",
+    description: "USDY",
+    decimals: 6,
+  },
+  {
+    symbol: "wUSDT",
+    address: "0xc060006111016b8a020ad5b33834984a437aaa7d3c74c18e09a95d48aceab08c::coin::COIN",
+    icon: "https://imagedelivery.net/cBNDGgkrsEA-b_ixIp9SkQ/images.png/public",
+    description: "wUSDT",
+    decimals: 6,
+  },
+  {
+    symbol: "Lombard Staked BTC",
+    address: "0x3e8e9423d80e1774a7ca128fccd8bf5f1f7753be658c5e645929037f7c819040::lbtc::LBTC",
+    icon: "https://www.lombard.finance/lbtc/LBTC.png",
+    description: "LBTC",
+    decimals: 6,
+  },
+  {
+    symbol: "Attention",
+    address: "0x0ef38abcdaaafedd1e2d88929068a3f65b59bf7ee07d7e8f573c71df02d27522::attn::ATTN",
+    icon: "https://imagedelivery.net/cBNDGgkrsEA-b_ixIp9SkQ/attention.png/public",
+    description: "ATTN",
+    decimals: 6,
+  },
+  {
+    symbol: "First Digital USD",
+    address: "0xf16e6b723f242ec745dfd7634ad072c42d5c1d9ac9d62a39c381303eaa57693a::fdusd::FDUSD",
+    icon: "https://cdn.1stdigital.com/icon/fdusd.svg",
+    description: "FDUSD",
+    decimals: 6,
+  },
+  {
+    symbol: "sudeng",
+    address: "0x8993129d72e733985f7f1a00396cbd055bad6f817fee36576ce483c8bbb8b87b::sudeng::SUDENG",
+    icon: "https://i.imgur.com/j2EuFh5.png",
+    description: "HIPPO",
+    decimals: 6,
+  },
+  {
+    symbol: "Wrapped Bitcoin(Sui Bridge)",
+    address: "0xaafb102dd0902f5055cadecd687fb5b71ca82ef0e0285d90afde828ec58ca96b::btc::BTC",
+    icon: "https://bridge-assets.sui.io/suiWBTC.png",
+    description: "wBTC",
+    decimals: 6,
+  },
+  {
+    symbol: "haWAL",
+    address: "0x8b4d553839b219c3fd47608a0cc3d5fcc572cb25d41b7df3833208586a8d2470::hawal::HAWAL",
+    icon: "https://assets.haedal.xyz/logos/hawal.svg",
+    description: "haWAL",
+    decimals: 6,
+  },
+  {
+    symbol: "Volo Staked SUI",
+    address: "0x549e8b69270defbfafd4f94e17ec44cdbdd99820b33bda2278dea3b9a32d3f55::cert::CERT",
+    icon: "https://strapi-dev.scand.app/uploads/volo_SUI_Logo_f28ed9c6a1.png",
+    description: "vSUI",
+    decimals: 6,
+  },
+  {
+    symbol: "Wrapped Ether(Wormhole)",
+    address: "0xaf8cd5edc19c4512f4259f0bee101a40d41ebed738ade5874359610ef8eeced5::coin::COIN",
+    icon: "https://momentum-statics.s3.us-west-1.amazonaws.com/WETH.png",
+    description: "wETH",
+    decimals: 6,
+  },
+  {
+    symbol: "Wrapped BTC",
+    address: "0x027792d9fed7f9844eb4839566001bb6f6cb4804f66aa2da6fe1ee242d896881::coin::COIN",
+    icon: "https://strapi-dev.scand.app/uploads/Bitcoin_svg_3d3d928a26.png",
+    description: "wBTC",
+    decimals: 6,
+  },
 ];
 
 function CreatePool({ newPoolToken1, setNewPoolToken1, newPoolToken2, setNewPoolToken2, feeRate, setFeeRate, onClose }: CreatePoolProps) {
@@ -73,6 +265,33 @@ function CreatePool({ newPoolToken1, setNewPoolToken1, newPoolToken2, setNewPool
     "0xb3f153e6279045694086e8176c65e8e0f5d33aeeeb220a57b5865b849e5be5ba::NS::NS": "200.0",
     "0xa16e100fcb99689d481f31a2315519923fdf45916a4fa18c5513008f5101237d::navx::NAVX": "150.0",
     "0xd52c440f67dd960bc76f599a16065abd5fbc251b78f18d9dce3578ccc44462a9::cetus::CETUS": "300.0",
+    "0xdeeb7a4662eec9f2f3def03fb937a663dddaa2e215b8078a284d026b7946c270::deep::DEEP": "100.0",
+    "0x356a26eb9e012a68958082340d4c4116e7f55615cf27affcff209cf0ae544f59::wal::WAL": "200.0",
+    "0x3a304c7feba2d819ea57c3542d68439ca2c386ba02159c740f7b406e592c62ea::haedal::HAEDAL": "150.0",
+    "0x7016aae72cfc67f2fadf55769c0a7dd54291a583b63051a5ed71081cce836ac6::sca::SCA": "120.0",
+    "0xbde4ba4c2e274a60ce15c1cfff9e5c42e41654ac8b6d906a57efa4bd3c29f47d::hasui::HASUI": "180.0",
+    "0xce7ff77a83ea0cb6fd39bd8748e2ec89a3f41e8efdc3f4eb123e0ca37b184db2::buck::BUCK": "400.0",
+    "0x876a4b7bce8aeaef60464c11f4026903e9afacab79b9b142686158aa86560b50::xbtc::XBTC": "50.0",
+    "0x375f70cf2ae4c00bf37117d0c85a2c71545e6ee05c4a5c7d282cd66a4504b068::usdt::USDT": "600.0",
+    "0x2053d08c1e2bd02791056171aab0fd12bd7cd7efad2ab8f6b9c8902f14df2ff2::ausd::AUSD": "300.0",
+    "0xfe3afec26c59e874f3c1d60b8203cb3852d2bb2aa415df9548b8d688e6683f93::alpha::ALPHA": "80.0",
+    "0xc44d97a4bc4e5a33ca847b72b123172c88a6328196b71414f32c3070233604b2::slp::SLP": "90.0",
+    "0xd1b72982e40348d069bb1ff701e634c117bb5f741f44dff91e472d3b01461e55::stsui::STSUI": "110.0",
+    "0xb45fcfcc2cc07ce0702cc2d229621e046c906ef14d9b25e8e4d25f6e8763fef7::send::SEND": "70.0",
+    "0xf7fade57462e56e2eff1d7adef32e4fd285b21fd81f983f407bb7110ca766cda::zlp::ZLP": "60.0",
+    "0xf22da9a24ad027cccb5f2d496cbe91de953d363513db08a3a734d361c7c17503::LOFI::LOFI": "40.0",
+    "0x5f496ed5d9d045c5b788dc1bb85f54100f2ede11e46f6a232c29daada4c5bdb6::coin::COIN": "30.0",
+    "0x960b531667636f39e85867775f52f6b1f220a058c4de786905bdf761e06a56bb::usdy::USDY": "200.0",
+    "0xc060006111016b8a020ad5b33834984a437aaa7d3c74c18e09a95d48aceab08c::coin::COIN": "250.0",
+    "0x3e8e9423d80e1774a7ca128fccd8bf5f1f7753be658c5e645929037f7c819040::lbtc::LBTC": "20.0",
+    "0x0ef38abcdaaafedd1e2d88929068a3f65b59bf7ee07d7e8f573c71df02d27522::attn::ATTN": "15.0",
+    "0xf16e6b723f242ec745dfd7634ad072c42d5c1d9ac9d62a39c381303eaa57693a::fdusd::FDUSD": "300.0",
+    "0x8993129d72e733985f7f1a00396cbd055bad6f817fee36576ce483c8bbb8b87b::sudeng::SUDENG": "25.0",
+    "0xaafb102dd0902f5055cadecd687fb5b71ca82ef0e0285d90afde828ec58ca96b::btc::BTC": "35.0",
+    "0x8b4d553839b219c3fd47608a0cc3d5fcc572cb25d41b7df3833208586a8d2470::hawal::HAWAL": "45.0",
+    "0x549e8b69270defbfafd4f94e17ec44cdbdd99820b33bda2278dea3b9a32d3f55::cert::CERT": "55.0",
+    "0xaf8cd5edc19c4512f4259f0bee101a40d41ebed738ade5874359610ef8eeced5::coin::COIN": "65.0",
+    "0x027792d9fed7f9844eb4839566001bb6f6cb4804f66aa2da6fe1ee242d896881::coin::COIN": "75.0",
   });
 
   const handleNextStep = () => {
@@ -106,7 +325,7 @@ function CreatePool({ newPoolToken1, setNewPoolToken1, newPoolToken2, setNewPool
   const selectToken = (token: Token, type: string) => {
     if (type === "token1") {
       setNewPoolToken1(token.symbol);
-    }else {
+    } else {
       setNewPoolToken2(token.symbol);
     }
     setShowTokenModal(null);
@@ -188,7 +407,6 @@ function CreatePool({ newPoolToken1, setNewPoolToken1, newPoolToken2, setNewPool
           flex-direction: column;
           gap: 10px;
           box-shadow: 0 4px 16px var(--shadow-color);
-          animation: fadeIn 0.3s ease-out;
           scrollbar-width: thin;
           scrollbar-color: var(--border-color) var(--modal-bg);
           border: 1px solid var(--border-color);
@@ -562,7 +780,6 @@ function CreatePool({ newPoolToken1, setNewPoolToken1, newPoolToken2, setNewPool
           flex-direction: column;
           gap: 8px;
           padding: 10px;
-          background-color: var(--input-bg);
           border-radius: 8px;
           box-shadow: 0 2px 6px var(--shadow-color);
           border: 1px solid var(--border-color);
@@ -956,261 +1173,55 @@ function CreatePool({ newPoolToken1, setNewPoolToken1, newPoolToken2, setNewPool
           </button>
         </div>
         {step === 1 && (
-          <div className="select-pair-container">
-            <div className="steps-container">
-              <div className="step-item">
-                <div className={`step-number ${step === 1 ? '' : 'inactive'}`}>1</div>
-                <div>
-                  <p className="step-text">Step 1</p>
-                  <p className="step-title">Select token & fee tier</p>
-                </div>
-              </div>
-              <div className="step-divider" />
-              <div className="step-item">
-                <div className={`step-number ${step as number === 2 ? '' : 'inactive'}`}>2</div>
-                <div>
-                  <p className="step-text">Step 2</p>
-                  <p className="step-title">Set initial price</p>
-                </div>
-              </div>
-              <div className="step-divider" />
-              <div className="step-item">
-                <div className={`step-number ${step as number === 3 ? '' : 'inactive'}`}>3</div>
-                <div>
-                  <p className="step-text">Step 3</p>
-                  <p className="step-title">Enter deposit amounts</p>
-                </div>
-              </div>
-            </div>
-            <div>
-              <h2 className="select-pair-title">Select Pair</h2>
-              <p className="select-pair-text">Choose the tokens for your liquidity pool.</p>
-            </div>
-            <div className="token-select-container">
-              <div className="token-select" onClick={() => setShowTokenModal("token1")}>
-                {newPoolToken1 ? (
-                  <>
-                    <img
-                      src={tokens.find(t => t.symbol === newPoolToken1)?.icon || "https://example.com/unknown-token.png"}
-                      alt={newPoolToken1}
-                    />
-                    <span>{newPoolToken1}</span>
-                  </>
-                ) : (
-                  <span>Select Base Token</span>
-                )}
-              </div>
-              <div className="token-select" onClick={() => setShowTokenModal("token2")}>
-                {newPoolToken2 ? (
-                  <>
-                    <img
-                      src={tokens.find(t => t.symbol === newPoolToken2)?.icon || "https://example.com/unknown-token.png"}
-                      alt={newPoolToken2}
-                    />
-                    <span>{newPoolToken2}</span>
-                  </>
-                ) : (
-                  <span>Select Quote Token</span>
-                )}
-              </div>
-            </div>
-            <div className="fee-tier-container">
-              <p className="select-pair-text">Fee Tier - The percentage of fees you will earn.</p>
-              <select
-                className="fee-tier-select"
-                value={feeRate}
-                onChange={(e) => setFeeRate(e.target.value)}
-              >
-                <option value="0.01">0.01%</option>
-                <option value="0.05">0.05%</option>
-                <option value="0.20">0.20%</option>
-                <option value="0.25">0.25%</option>
-                <option value="1.00">1.00%</option>
-                <option value="2.00">2.00%</option>
-              </select>
-            </div>
-            <button
-              className="continue-button"
-              disabled={!newPoolToken1 || !newPoolToken2}
-              onClick={handleNextStep}
-            >
-              Continue
-            </button>
-          </div>
+          <Step1SelectPair
+            newPoolToken1={newPoolToken1}
+            newPoolToken2={newPoolToken2}
+            feeRate={feeRate}
+            setNewPoolToken1={setNewPoolToken1}
+            setNewPoolToken2={setNewPoolToken2}
+            setFeeRate={setFeeRate}
+            setShowTokenModal={setShowTokenModal}
+            handleNextStep={handleNextStep}
+            tokens={tokens}
+            importedTokens={importedTokens}
+            selectToken={selectToken}
+            balances={balances}
+            activeList={activeList}
+            setActiveList={setActiveList}
+            importAddress={importAddress}
+            setImportAddress={setImportAddress}
+            importError={importError}
+            setImportError={setImportError}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            importToken={importToken} showTokenModal={null}          />
         )}
         {step === 2 && (
-          <div className="select-pair-container">
-            <div className="token-pair-header">
-              <div className="token-pair-images">
-                <img
-                  src={tokens.find(t => t.symbol === newPoolToken1)?.icon || "https://example.com/unknown-token.png"}
-                  alt={newPoolToken1}
-                />
-                <img
-                  src={tokens.find(t => t.symbol === newPoolToken2)?.icon || "https://example.com/unknown-token.png"}
-                  alt={newPoolToken2}
-                />
-              </div>
-              <div className="token-pair-info">
-                <p className="token-pair-name">{newPoolToken1} - {newPoolToken2}</p>
-                <span className="fee-rate">{feeRate}%</span>
-              </div>
-              <button className="edit-button" onClick={() => setStep(1)}>
-                <svg aria-hidden="true" fill="var(--text-secondary)" width="16px" height="16px">
-                  <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
-                </svg>
-                Edit
-              </button>
-            </div>
-            <div>
-              <h2 className="select-pair-title">Set Initial Price</h2>
-              <p className="select-pair-text">Please set an initial price for this new pool to start.</p>
-              <div className="input-group">
-                <input
-                  className="input-field"
-                  type="text"
-                  inputMode="numeric"
-                  placeholder="0.0"
-                  value={initialPrice}
-                  onChange={(e) => setInitialPrice(e.target.value)}
-                  style={{ width: 'calc(100% - 8px)', fontVariant: 'tabular-nums' }}
-                />
-                <span className="input-addon">{newPoolToken2} per {newPoolToken1}</span>
-              </div>
-            </div>
-            <div className="price-range-container">
-              <h2 className="select-pair-title">Set Price Range</h2>
-              <div className="price-range-tabs">
-                <div className="price-range-tab active">Full Range</div>
-                <div className="price-range-tab" style={{ opacity: 0.5, cursor: 'not-allowed' }}>Custom Range</div>
-              </div>
-              <div className="price-range-inputs">
-                <div className="price-range-input-group">
-                  <p>Min Price</p>
-                  <input value="0" readOnly />
-                  <p>{newPoolToken2} per {newPoolToken1}</p>
-                </div>
-                <div className="price-range-input-group">
-                  <p>Max Price</p>
-                  <input value="∞" readOnly />
-                  <p>{newPoolToken2} per {newPoolToken1}</p>
-                </div>
-              </div>
-            </div>
-            <button
-              className="continue-button"
-              disabled={!isStep2Valid}
-              onClick={handleNextStep}
-            >
-              Enter Initial Price
-            </button>
-          </div>
+          <Step2SetPrice
+            newPoolToken1={newPoolToken1}
+            newPoolToken2={newPoolToken2}
+            feeRate={feeRate}
+            initialPrice={initialPrice}
+            setInitialPrice={setInitialPrice}
+            setStep={setStep}
+            handleNextStep={handleNextStep}
+            isStep2Valid={isStep2Valid}
+            tokens={tokens}
+          />
         )}
         {step === 3 && (
-          <div className="select-pair-container">
-            <div className="steps-container">
-              <div className="step-item">
-                <div className={`step-number ${step as number === 1 ? '' : 'inactive'}`}>1</div>
-                <div>
-                  <p className="step-text">Step 1</p>
-                  <p className="step-title">Select token & fee tier</p>
-                </div>
-              </div>
-              <div className="step-divider" />
-              <div className="step-item">
-                <div className={`step-number ${step as number === 2 ? '' : 'inactive'}`}>2</div>
-                <div>
-                  <p className="step-text">Step 2</p>
-                  <p className="step-title">Set initial price</p>
-                </div>
-              </div>
-              <div className="step-divider" />
-              <div className="step-item">
-                <div className={`step-number ${step as number === 3 ? '' : 'inactive'}`}>3</div>
-                <div>
-                  <p className="step-text">Step 3</p>
-                  <p className="step-title">Enter deposit amounts</p>
-                </div>
-              </div>
-            </div>
-            <div className="token-pair-header">
-              <div className="token-pair-images">
-                <img
-                  src={tokens.find(t => t.symbol === newPoolToken1)?.icon || "https://example.com/unknown-token.png"}
-                  alt={newPoolToken1}
-                />
-                <img
-                  src={tokens.find(t => t.symbol === newPoolToken2)?.icon || "https://example.com/unknown-token.png"}
-                  alt={newPoolToken2}
-                />
-              </div>
-              <div className="token-pair-info">
-                <p className="token-pair-name">{newPoolToken1} - {newPoolToken2}</p>
-                <span className="fee-rate">{feeRate}%</span>
-              </div>
-            </div>
-            <div className="deposit-input-container">
-              <h2 className="select-pair-title">Deposit Amounts</h2>
-              <div className="deposit-input-group">
-                <div className="deposit-input">
-                  <input
-                    type="number"
-                    placeholder="0.0"
-                    value={amount1}
-                    onChange={(e) => handleAmount1Change(e.target.value)}
-                    className="deposit-input"
-                  />
-                  <div className="deposit-addon">
-                    <img
-                      src={tokens.find(t => t.symbol === newPoolToken1)?.icon || "https://example.com/unknown-token.png"}
-                      alt={newPoolToken1}
-                    />
-                    <p>{newPoolToken1}</p>
-                  </div>
-                </div>
-              </div>
-              <div className="deposit-input-group">
-                <div className="deposit-display">
-                  <p>{amount2 || "0.0"}</p>
-                  <div className="deposit-addon">
-                    <img
-                      src={tokens.find(t => t.symbol === newPoolToken2)?.icon || "https://example.com/unknown-token.png"}
-                      alt={newPoolToken2}
-                    />
-                    <p>{newPoolToken2}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="total-amount">
-              <p>Total Amount</p>
-              <p>--</p>
-            </div>
-            <div className="deposit-ratio">
-              <p className="select-pair-text">Deposit Ratio</p>
-              <div className="ratio-item">
-                <img
-                  src={tokens.find(t => t.symbol === newPoolToken1)?.icon || "https://example.com/unknown-token.png"}
-                  alt={newPoolToken1}
-                />
-                <p>{newPoolToken1} 50%</p>
-              </div>
-              <div className="ratio-item">
-                <img
-                  src={tokens.find(t => t.symbol === newPoolToken2)?.icon || "https://example.com/unknown-token.png"}
-                  alt={newPoolToken2}
-                />
-                <p>{newPoolToken2} 50%</p>
-              </div>
-            </div>
-            <button
-              className="continue-button"
-              disabled={!isStep3Valid}
-              onClick={handleCreatePool}
-            >
-              Create Pool
-            </button>
-          </div>
+          <Step3DepositAmounts
+            newPoolToken1={newPoolToken1}
+            newPoolToken2={newPoolToken2}
+            feeRate={feeRate}
+            amount1={amount1}
+            amount2={amount2}
+            handleAmount1Change={handleAmount1Change}
+            handleCreatePool={handleCreatePool}
+            isStep3Valid={isStep3Valid}
+            step={step}
+            tokens={tokens}
+          />
         )}
         {showTokenModal && (
           <div className="token-modal-container">

@@ -683,6 +683,7 @@ function Pool() {
           min-width: 100px;
           text-align: center;
         }
+        .tab Facile: 0
         .tab-button.active {
           background: var(--primary-color);
           color: #ffffff;
@@ -802,11 +803,15 @@ function Pool() {
           flex-wrap: wrap;
         }
         .token-pair {
-          display: flex;
+          display: inline-flex;
           align-items: center;
           gap: 6px;
           font-size: 16px;
           font-weight: 600;
+          white-space: nowrap;
+          max-width: 150px;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
         .token-pair p {
           margin: 0;
@@ -858,6 +863,13 @@ function Pool() {
           gap: 10px;
           margin-bottom: 8px;
         }
+        .reward-container .data-label {
+          font-size: 12px;
+          font-weight: 600;
+          color: var(--text-secondary);
+          text-transform: uppercase;
+          display: none;
+        }
         .reward-container img {
           width: 24px;
           height: 24px;
@@ -868,10 +880,7 @@ function Pool() {
         .reward-container img:hover {
           transform: scale(1.1);
         }
-        .reward-container img:nth-child(2) {
-          margin-left: -8px;
-        }
-        .reward-container img:nth-child(3) {
+        .reward-container img:not(:first-child) {
           margin-left: -8px;
         }
         .pool-action {
@@ -987,6 +996,10 @@ function Pool() {
           }
           .token-pair {
             font-size: 14px;
+            white-space: nowrap;
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
           .token-pair span {
             font-size: 14px;
@@ -999,6 +1012,9 @@ function Pool() {
             font-size: 12px;
           }
           .data-label {
+            display: inline;
+          }
+          .reward-container .data-label {
             display: inline;
           }
           .reward-container img {
@@ -1050,6 +1066,10 @@ function Pool() {
           }
           .token-pair {
             font-size: 13px;
+            white-space: nowrap;
+            max-width: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
           .token-pair span {
             font-size: 13px;
@@ -1063,9 +1083,15 @@ function Pool() {
           .data-label {
             font-size: 11px;
           }
+          .reward-container .data-label {
+            font-size: 11px;
+          }
           .reward-container img {
             width: 18px;
             height: 18px;
+          }
+          .reward-container img:not(:first-child) {
+            margin-left: -8px;
           }
           .deposit-button {
             font-size: 11px;
@@ -1164,6 +1190,7 @@ function Pool() {
               <div className="pool-data"><span className="data-label">Volume (24H):</span> {pool.volume}</div>
               <div className="pool-data"><span className="data-label">Fee (24H):</span> {pool.fees}</div>
               <div className="reward-container">
+                <span className="data-label">Reward:</span>
                 <img
                   alt="reward"
                   src={pool.rewardImg}
