@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { ConnectButton, useCurrentAccount, useSuiClient, useSignAndExecuteTransaction } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
 import { Link, Route, Routes } from "react-router-dom";
-import { PriceServiceConnection } from "@pythnetwork/price-service-client";
 import Pool from "./Pool";
 import TokenModal, { tokens } from "./TokenModal";
 import CoverPage from "./CoverPage";
@@ -39,47 +38,44 @@ function App() {
   const [expectedOutput, setExpectedOutput] = useState("0.0");
   const [priceImpact, setPriceImpact] = useState("0.00");
   const [countdown, setCountdown] = useState("0h 0m 0s");
-  const [pythPrices, setPythPrices] = useState<{ [key: string]: number }>({ usdc: 0, sui: 0 });
+  const [prices, setPrices] = useState<{ [key: string]: { price: number; change_24h: number } }>({});
   const [priceDifference, setPriceDifference] = useState("0.00");
   const [isLoadingOutput, setIsLoadingOutput] = useState(false);
-  const [priceSource, setPriceSource] = useState<"Pyth" | "CoinGecko">("Pyth");
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [priceHistory, setPriceHistory] = useState<{ [key: string]: { x: number; y: number }[] }>({});
 
   const PACKAGE_ID = "0xb90158d50ac951784409a6876ac860e24564ed5257e51944d3c693efb9fdbd78";
   const POOL_REGISTRY = "0xfc8c69858d070b639b3db15ff0f78a10370950434c5521c83eaa7e2285db8d2a";
   const CETUS_AGGREGATOR = "0x...";
+  const COINGECKO_API = "https://api.coingecko.com/api/v3";
 
-  const pythConnection = new PriceServiceConnection("https://hermes.pyth.network");
-
-  const pythPriceFeedIds: { [key: string]: string } = {
-    "BTC/USD": "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43",
-    "ARB/USD": "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace",
-    "SUI/USD": "0x23d7315113f5b1d3ba7a83604c44b94d79b4ef4b6e11d6d33698c8b4b1082e26",
-    "SOL/USD": "0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d",
-    "APT/USD": "0x03ae4db29ed4ae33d323568895aa00337e658e348b37509f5372ae51f0af00d5",
-    "SEI/USD": "0x53614f1cb0c031d4af66c04cb9c756234adad0e1cee85303795091499a4084eb",
-    "AVAX/USD": "0x93da3352f9f1d105fdfe4971cfa80e9dd777bfc5d0f683ebb6e1294b92137bb7",
-    "TIA/USD": "0x09f7c1d7dfbb7df2b8fe3d3d87ee94a2259d212da4f30c1f0540d066dfa44723",
-    "POL/USD": "0xffd11c5a1cfd42f80afb2df4d9f264c15f956d68153335374ec10722edd70472",
-    "BLUE/USD": "0x04cfeb7b143eb9c48e9b074125c1a3447b85f59c31164dc20c1beaa6f21f2b6b",
-    "DEEP/USD": "0x29bdd5248234e33bd93d3b81100b5fa32eaa5997843847e2c2cb16d7c6d9f7ff",
-    "SEND/USD": "0x7d19b607c945f7edf3a444289c86f7b58dcd8b18df82deadf925074807c99b59",
-    "USDC/USD": "0xeaa020c61cc479712813461ce153894a96a6c00b21ed0cfc2798d1f9a9e9c94a",
-    "USDT/USD": "0x2b89b9dc8fdf9f34709a5b106b472f0f39bb6ca9ce04b0fd7f2e971688e2e53b",
-    "AUSD/USD": "0xd9912df360b5b7f21a122f15bdd5e27f62ce5e72bd316c291f7c86620e07fb2a",
-    "AFSUI/USD": "0x17cd845b16e874485b2684f8b8d1517d744105dbb904eec30222717f4bc9ee0d",
-    "HASUI/USD": "0x6120ffcf96395c70aa77e72dcb900bf9d40dccab228efca59a17b90ce423d5e8",
-    "VSUI/USD": "0x57ff7100a282e4af0c91154679c5dae2e5dcacb93fd467ea9cb7e58afdcfde27",
-    "NAVX/USD": "0x88250f854c019ef4f88a5c073d52a18bb1c6ac437033f5932cd017d24917ab46",
-    "SCA/USD": "0x7e17f0ac105abe9214deb9944c30264f5986bf292869c6bd8e8da3ccd92d79bc",
-    "USDY/USD": "0xe393449f6aff8a4b6d3e1165a7c9ebec103685f3b41e60db4277b5b6d10e7326",
-    "FUD/USD": "0x6a4090703da959247727f2b490eb21aea95c8684ecfac675f432008830890c75",
-    "BUCK/USD": "0xfdf28a46570252b25fd31cb257973f865afc5ca2f320439e45d95e0394bc7382",
-    "CETUS/USD": "0xe5b274b2611143df055d6e7cd8d93fe1961716bcd4dca1cad87a83bc1e78c1ef",
-    "HAEDAL/USD": "0xe67d98cc1fbd94f569d5ba6c3c3c759eb3ffc5d2b28e64538a53ae13efad8fd1",
+  const coinGeckoIds: { [key: string]: string } = {
+    SUI: "sui",
+    USDC: "usd-coin",
+    USDT: "tether",
+    BTC: "bitcoin",
+    ARB: "arbitrum",
+    SOL: "solana",
+    APT: "aptos",
+    SEI: "sei",
+    AVAX: "avalanche",
+    TIA: "celestia",
+    POL: "matic-network",
+    BLUE: "blue",
+    DEEP: "deep",
+    SEND: "send",
+    AUSD: "ausd",
+    AFSUI: "afsui",
+    HASUI: "hasui",
+    VSUI: "vsui",
+    NAVX: "navx",
+    SCA: "scallop",
+    USDY: "usdy",
+    FUD: "fud",
+    BUCK: "buck",
+    CETUS: "cetus-protocol",
+    HAEDAL: "haedal",
   };
-
-  const COINGECKO_API = "https://api.coingecko.com/api/v3/simple/price";
 
   useEffect(() => {
     const updateCountdown = () => {
@@ -199,108 +195,48 @@ function App() {
     }
   };
 
-  const coinGeckoIds: { [key: string]: string } = {
-    SUI: "sui",
-    USDC: "usd-coin",
-    USDT: "tether",
-    BTC: "bitcoin",
-    ARB: "arbitrum",
-    SOL: "solana",
-    APT: "aptos",
-    SEI: "sei",
-    AVAX: "avalanche",
-    TIA: "celestia",
-    POL: "matic-network",
-    BLUE: "blue",
-    DEEP: "deep",
-    SEND: "send",
-    AUSD: "ausd",
-    AFSUI: "afsui",
-    HASUI: "hasui",
-    VSUI: "vsui",
-    NAVX: "navx",
-    SCA: "scallop",
-    USDY: "usdy",
-    FUD: "fud",
-    BUCK: "buck",
-    CETUS: "cetus-protocol",
-    HAEDAL: "haedal",
-  };
-
   useEffect(() => {
     const fetchPrices = async () => {
       try {
-        const newPrices: { [key: string]: number } = {};
+        const newPrices: { [key: string]: { price: number; change_24h: number } } = {};
         const tokensToFetch = [...tokens, ...importedTokens].filter(
           (token) => token.address && !token.address.includes("...")
         );
 
-        let priceSourceUsed: "Pyth" | "CoinGecko" = "Pyth";
-        const pythTokens = tokensToFetch.filter((token) =>
-          Object.keys(pythPriceFeedIds).some((pair) =>
-            pair.includes(token.symbol.toUpperCase())
-          )
+        const coinGeckoTokens = tokensToFetch.filter(
+          (token) => coinGeckoIds[token.symbol.toUpperCase()]
         );
-        const pythFeedIds = pythTokens
-          .map((token) => pythPriceFeedIds[`${token.symbol.toUpperCase()}/USD`])
-          .filter((id): id is string => id !== undefined);
-
-        if (pythFeedIds.length > 0) {
-          try {
-            const priceData = await pythConnection.getLatestPriceFeeds(pythFeedIds);
-            if (priceData) {
-              priceData.forEach((price, index) => {
-                const token = pythTokens[index];
-                if (price) {
-                  const priceValue = Number(price.getPriceUnchecked().price) / Math.pow(10, price.getPriceUnchecked().expo);
-                  newPrices[token.symbol.toLowerCase()] = priceValue;
-                }
-              });
-            }
-          } catch (pythError) {
-            console.warn("Pyth price fetch failed, falling back to CoinGecko:", pythError);
-            priceSourceUsed = "CoinGecko";
-          }
-        }
-
-        if (Object.keys(newPrices).length === 0 && priceSourceUsed === "CoinGecko") {
-          const coinGeckoTokens = tokensToFetch.filter(
-            (token) => coinGeckoIds[token.symbol.toUpperCase()]
+        if (coinGeckoTokens.length > 0) {
+          const coinGeckoIdsToFetch = coinGeckoTokens
+            .map((token) => coinGeckoIds[token.symbol.toUpperCase()])
+            .join(",");
+          const response = await fetch(
+            `${COINGECKO_API}/simple/price?ids=${coinGeckoIdsToFetch}&vs_currencies=usd&include_24hr_change=true`
           );
-          if (coinGeckoTokens.length > 0) {
-            try {
-              const coinGeckoIdsToFetch = coinGeckoTokens
-                .map((token) => coinGeckoIds[token.symbol.toUpperCase()])
-                .join(",");
-              const response = await fetch(
-                `${COINGECKO_API}?ids=${coinGeckoIdsToFetch}&vs_currencies=usd`
-              );
-              if (!response.ok) {
-                throw new Error(`CoinGecko API responded with status ${response.status}`);
-              }
-              const data = await response.json();
-              coinGeckoTokens.forEach((token) => {
-                const cgId = coinGeckoIds[token.symbol.toUpperCase()];
-                if (data[cgId]?.usd) {
-                  newPrices[token.symbol.toLowerCase()] = newPrices[token.symbol.toLowerCase()] || data[cgId].usd;
-                }
-              });
-            } catch (coinGeckoError) {
-              console.error("CoinGecko price fetch failed:", coinGeckoError);
-            }
+          if (!response.ok) {
+            throw new Error(`CoinGecko API responded with status ${response.status}`);
           }
+          const data = await response.json();
+          coinGeckoTokens.forEach((token) => {
+            const cgId = coinGeckoIds[token.symbol.toUpperCase()];
+            if (data[cgId]?.usd) {
+              newPrices[token.symbol.toLowerCase()] = {
+                price: data[cgId].usd,
+                change_24h: data[cgId].usd_24h_change,
+              };
+            }
+          });
         }
 
         if (Object.keys(newPrices).length === 0) {
-          setError("Unable to fetch price data from Pyth Network or CoinGecko");
+          setError("Unable to fetch price data from CoinGecko");
         } else {
-          setPythPrices(newPrices);
-          setPriceSource(priceSourceUsed);
+          setPrices(newPrices);
           setError("");
         }
       } catch (err) {
         console.error("Failed to fetch prices:", err);
-        setError("Failed to fetch price data from Pyth Network or CoinGecko");
+        setError("Failed to fetch price data from CoinGecko");
       }
     };
 
@@ -308,6 +244,61 @@ function App() {
     const interval = setInterval(fetchPrices, 60000);
     return () => clearInterval(interval);
   }, [importedTokens]);
+
+  const fetchPriceHistory = async (tokenSymbol: string) => {
+    const cgId = coinGeckoIds[tokenSymbol.toUpperCase()];
+    if (!cgId) return null;
+    try {
+      const response = await fetch(
+        `${COINGECKO_API}/coins/${cgId}/market_chart?vs_currency=usd&days=1&interval=hourly`
+      );
+      if (!response.ok) {
+        throw new Error(`CoinGecko market chart API responded with status ${response.status}`);
+      }
+      const data = await response.json();
+      return data.prices.map(([timestamp, price]: [number, number]) => ({
+        x: timestamp,
+        y: price,
+      }));
+    } catch (err) {
+      console.error(`Failed to fetch price history for ${tokenSymbol}:`, err);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    const fetchTokenPriceHistory = async () => {
+      const symbols = [getTokenInfo(tokenX).symbol, getTokenInfo(tokenY).symbol];
+      const newPriceHistory: { [key: string]: { x: number; y: number }[] } = {};
+
+      for (const symbol of symbols) {
+        const data = await fetchPriceHistory(symbol);
+        if (data) {
+          newPriceHistory[symbol.toLowerCase()] = data;
+        } else {
+          newPriceHistory[symbol.toLowerCase()] = [];
+        }
+      }
+
+      setPriceHistory(newPriceHistory);
+    };
+
+    fetchTokenPriceHistory();
+  }, [tokenX, tokenY]);
+
+  const generatePath = (symbol: string) => {
+    const priceData = priceHistory[symbol.toLowerCase()] || [];
+    if (!priceData || priceData.length < 2) return "M15,10L180,10";
+    const minPrice = Math.min(...priceData.map((p) => p.y));
+    const maxPrice = Math.max(...priceData.map((p) => p.y));
+    const priceRange = maxPrice - minPrice || 1;
+    const points = priceData.map((p, i) => {
+      const x = 15 + (i / (priceData.length - 1)) * 150;
+      const y = 16 - ((p.y - minPrice) / priceRange) * 12;
+      return `${x},${y}`;
+    });
+    return `M${points.join("L")}`;
+  };
 
   useEffect(() => {
     const fetchPoolId = async () => {
@@ -475,8 +466,8 @@ function App() {
 
           const tokenXSymbol = getTokenInfo(tokenX).symbol.toLowerCase();
           const tokenYSymbol = getTokenInfo(tokenY).symbol.toLowerCase();
-          const marketPrice = pythPrices[tokenXSymbol] && pythPrices[tokenYSymbol]
-            ? pythPrices[tokenXSymbol] / pythPrices[tokenYSymbol]
+          const marketPrice = prices[tokenXSymbol]?.price && prices[tokenYSymbol]?.price
+            ? prices[tokenXSymbol].price / prices[tokenYSymbol].price
             : 0;
           const priceDiff = marketPrice ? Math.abs((spotPrice - marketPrice) / marketPrice) * 100 : 0;
           setPriceDifference(priceDiff.toFixed(2));
@@ -506,7 +497,7 @@ function App() {
     };
 
     fetchBalancesAndOutput();
-  }, [account, tokenX, tokenY, debouncedAmountIn, slippage, poolId, isReverseSwap, client, importedTokens, pythPrices]);
+  }, [account, tokenX, tokenY, debouncedAmountIn, slippage, poolId, isReverseSwap, client, importedTokens, prices]);
 
   const handleSwapTokens = () => {
     setTokenX(tokenY);
@@ -679,8 +670,8 @@ function App() {
     });
   };
 
-  const exchangeRate = pythPrices[getTokenInfo(tokenX).symbol.toLowerCase()] && pythPrices[getTokenInfo(tokenY).symbol.toLowerCase()]
-    ? (pythPrices[getTokenInfo(tokenX).symbol.toLowerCase()] / pythPrices[getTokenInfo(tokenY).symbol.toLowerCase()]).toFixed(6)
+  const exchangeRate = prices[getTokenInfo(tokenX).symbol.toLowerCase()]?.price && prices[getTokenInfo(tokenY).symbol.toLowerCase()]?.price
+    ? (prices[getTokenInfo(tokenX).symbol.toLowerCase()].price / prices[getTokenInfo(tokenY).symbol.toLowerCase()].price).toFixed(6)
     : "0.000000";
 
   return (
@@ -843,7 +834,7 @@ function App() {
                         </div>
                       </div>
                       <div className="input-footer">
-                        <span className="price-text">${(parseFloat(balances[tokenX] || "0") * (pythPrices[getTokenInfo(tokenX).symbol.toLowerCase()] || 0)).toFixed(2)}</span>
+                        <span className="price-text">${(parseFloat(balances[tokenX] || "0") * (prices[getTokenInfo(tokenX).symbol.toLowerCase()]?.price || 0)).toFixed(2)}</span>
                         <div className="balance-group">
                           <span>Balance: {balances[tokenX] || "0.0"}</span>
                           <div className="balance-buttons">
@@ -877,7 +868,7 @@ function App() {
                         </div>
                       </div>
                       <div className="input-footer">
-                        <span className="price-text">${(parseFloat(balances[tokenY] || "0") * (pythPrices[getTokenInfo(tokenY).symbol.toLowerCase()] || 0)).toFixed(2)}</span>
+                        <span className="price-text">${(parseFloat(balances[tokenY] || "0") * (prices[getTokenInfo(tokenY).symbol.toLowerCase()]?.price || 0)).toFixed(2)}</span>
                         <div className="balance-group">
                           <span>Balance: {balances[tokenY] || "0.0"}</span>
                         </div>
@@ -988,7 +979,7 @@ function App() {
                               aria-controls="popover-content-price-diff-info"
                               className="css-6su6fj"
                             >
-                              <span className={`price-source-tag ${priceSource.toLowerCase()}`}>{priceSource}</span>
+                              <span className="price-source-tag coingecko">CoinGecko</span>
                             </div>
                             <div className="chakra-popover__popper css-1cyw1a8" style={{ visibility: "hidden", position: "absolute", minWidth: "max-content", inset: "0px auto auto 0px" }}>
                               <section
@@ -1024,19 +1015,18 @@ function App() {
                       </button>
                     </div>
                     <div className="price-reference-content css-47ju1k">
-                      {[{ token: tokenX, price: pythPrices[getTokenInfo(tokenX).symbol.toLowerCase()] || 0, change: "+0.00%" }, { token: tokenY, price: pythPrices[getTokenInfo(tokenY).symbol.toLowerCase()] || 0, change: "-2.15%" }].map(({ token, price, change }, index) => (
+                      {[{ token: tokenX, symbol: getTokenInfo(tokenX).symbol }, { token: tokenY, symbol: getTokenInfo(tokenY).symbol }].map(({ token, symbol }, index) => (
                         <div key={index} className="token-price css-tyic7d">
                           <div className="token-info css-1igwmid">
                             <div className="token-details css-token-details">
                               <div className="icon-wrapper css-kjafn5">
                                 <div className="icon css-tkdzxl">
-                                  <img className="chakra-image css-rmmdki" src={getTokenInfo(token).icon} alt={getTokenInfo(token).symbol} />
+                                  <img className="chakra-image css-rmmdki" src={getTokenInfo(token).icon} alt={symbol} />
                                 </div>
                               </div>
                               <div className="token-name-details css-token-name-details">
                                 <div className="token-name-group css-token-name-group">
-                                  <p className="chakra-text css-1f7xwte">{getTokenInfo(token).symbol}</p>
-                                  
+                                  <p className="chakra-text css-1f7xwte">{symbol}</p>
                                 </div>
                                 <div className="token-address css-t4u65q">
                                   <div className="address-details css-1a87bas">
@@ -1056,12 +1046,14 @@ function App() {
                               <div className="price-source css-price-source">
                                 <img
                                   className="chakra-image css-price-source-img"
-                                  src={priceSource === "Pyth" ? "https://s2.coinmarketcap.com/static/img/coins/200x200/28177.png" : "https://play-lh.googleusercontent.com/2wCIQWu9gHP2vp2cvhJEcFw2ys7uuZV2wL0qZrENyE-iOEzYJHcdLHChr2lQ7R3YxYQ"}
-                                  alt={priceSource}
+                                  src="https://play-lh.googleusercontent.com/2wCIQWu9gHP2vp2cvhJEcFw2ys7uuZV2wL0qZrENyE-iOEzYJHcdLHChr2lQ7R3YxYQ"
+                                  alt="CoinGecko"
                                   style={{ width: "20px", height: "20px" }}
                                 />
-                                <p className="chakra-text css-v4hq1a">${price.toFixed(3)}</p>
-                                <p className={`chakra-text ${change.startsWith("+") ? "css-1m1g51m" : "css-1ec3nbv"}`}>{change}</p>
+                                <p className="chakra-text css-v4hq1a">${(prices[symbol.toLowerCase()]?.price || 0).toFixed(3)}</p>
+                                <p className={`chakra-text ${prices[symbol.toLowerCase()]?.change_24h >= 0 ? "css-1m1g51m" : "css-1ec3nbv"}`}>
+                                  {(prices[symbol.toLowerCase()]?.change_24h || 0).toFixed(2)}%
+                                </p>
                               </div>
                             </div>
                             <div className="price-chart css-1r938vg">
@@ -1078,7 +1070,13 @@ function App() {
                                       </linearGradient>
                                     </defs>
                                     <g className="recharts-layer recharts-line">
-                                      <path stroke="url(#priceLine)" strokeWidth="2" fill="none" className="recharts-curve recharts-line-curve" d={index === 0 ? "M15,13.856L38.571,13.851L62.143,13.451L85.714,14.252L109.286,11.856L132.857,15.012L156.429,4.988L180,12.998" : "M15,4.002L38.571,9.756L62.143,7.007L85.714,15.998L109.286,13.701L132.857,11.176L156.429,7.757L180,10.17"}></path>
+                                      <path
+                                        stroke="url(#priceLine)"
+                                        strokeWidth="2"
+                                        fill="none"
+                                        className="recharts-curve recharts-line-curve"
+                                        d={generatePath(symbol)}
+                                      />
                                       <g className="recharts-layer"></g>
                                     </g>
                                   </svg>
