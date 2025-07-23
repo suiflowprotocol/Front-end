@@ -1101,18 +1101,9 @@ body {
   flex: 1;
 }
 
-.css-token-details {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-}
+.css-token-details { display: flex; flex-direction: row; align-items: center; gap: 4px; }
 
-.css-token-name-details {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
+.css-token-name-details { display: flex; flex-direction: column; gap: 2px; }
 
 .css-v4hq1a {
   font-size: 14px;
@@ -1515,11 +1506,7 @@ body {
   gap: 4px;
 }
 
-.css-price-source {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
+.css-price-source { display: flex; flex-direction: row; align-items: center; gap: 8px; }
 
 .css-price-source-img {
   width: 20px;

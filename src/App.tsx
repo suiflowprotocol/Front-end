@@ -43,6 +43,7 @@ function App() {
   const [priceDifference, setPriceDifference] = useState("0.00");
   const [isLoadingOutput, setIsLoadingOutput] = useState(false);
   const [priceSource, setPriceSource] = useState<"Pyth" | "CoinGecko">("Pyth");
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   const PACKAGE_ID = "0xb90158d50ac951784409a6876ac860e24564ed5257e51944d3c693efb9fdbd78";
   const POOL_REGISTRY = "0xfc8c69858d070b639b3db15ff0f78a10370950434c5521c83eaa7e2285db8d2a";
@@ -111,20 +112,20 @@ function App() {
   }, []);
 
   const useDebounce = (value: string, delay: number) => {
-  const [debouncedValue, setDebouncedValue] = useState(value);
+    const [debouncedValue, setDebouncedValue] = useState(value);
 
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedValue(value);
-    }, delay);
+    useEffect(() => {
+      const handler = setTimeout(() => {
+        setDebouncedValue(value);
+      }, delay);
 
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [value, delay]);
+      return () => {
+        clearTimeout(handler);
+      };
+    }, [value, delay]);
 
-  return debouncedValue;
-};
+    return debouncedValue;
+  };
 
   const debouncedAmountIn = useDebounce(amountIn, 300);
 
@@ -670,11 +671,11 @@ function App() {
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text).then(() => {
-      setSuccess("Address copied to clipboard!");
-      setTimeout(() => setSuccess(""), 2000);
+      setToast({ message: "Address copied successfully!", type: "success" });
+      setTimeout(() => setToast(null), 3000);
     }).catch(() => {
-      setError("Failed to copy address");
-      setTimeout(() => setError(""), 2000);
+      setToast({ message: "Failed to copy address", type: "error" });
+      setTimeout(() => setToast(null), 3000);
     });
   };
 
@@ -684,6 +685,11 @@ function App() {
 
   return (
     <div className="container">
+      {toast && (
+        <div className={`toast toast-${toast.type}`}>
+          <p>{toast.message}</p>
+        </div>
+      )}
       <Routes>
         <Route
           path="/"
@@ -1028,17 +1034,19 @@ function App() {
                                 </div>
                               </div>
                               <div className="token-name-details css-token-name-details">
-                                <p className="chakra-text css-1f7xwte">{getTokenInfo(token).symbol}</p>
-                                <p className="chakra-text css-18pnfvf">{getTokenInfo(token).description}</p>
-                              </div>
-                            </div>
-                            <div className="token-address css-t4u65q">
-                              <div className="address-details css-1a87bas">
-                                <p className="chakra-text css-43igym">{token.slice(0, 6)}...{token.slice(-4)}</p>
-                                <div className="css-1ke24j5" onClick={() => copyToClipboard(token)}>
-                                  <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px" viewBox="0 0 24 24">
-                                    <path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2m2 4v10h10V7H7m2 2h6v2H9V9m0 4h6v2H9v-2z"></path>
-                                  </svg>
+                                <div className="token-name-group css-token-name-group">
+                                  <p className="chakra-text css-1f7xwte">{getTokenInfo(token).symbol}</p>
+                                  <p className="chakra-text css-18pnfvf">{getTokenInfo(token).description}</p>
+                                </div>
+                                <div className="token-address css-t4u65q">
+                                  <div className="address-details css-1a87bas">
+                                    <p className="chakra-text css-43igym">{token.slice(0, 6)}...{token.slice(-4)}</p>
+                                    <div className="css-1ke24j5" onClick={() => copyToClipboard(token)}>
+                                      <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px" viewBox="0 0 24 24">
+                                        <path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2m2 4v10h10V7H7m2 2h6v2H9V9m0 4h6v2H9v-2z"></path>
+                                      </svg>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -1048,13 +1056,13 @@ function App() {
                               <div className="price-source css-price-source">
                                 <img
                                   className="chakra-image css-price-source-img"
-                                  src={priceSource === "Pyth" ? "https://pyth.network/logo.png" : "https://coingecko.com/logo.png"}
+                                  src={priceSource === "Pyth" ? "https://s2.coinmarketcap.com/static/img/coins/200x200/28177.png" : "https://play-lh.googleusercontent.com/2wCIQWu9gHP2vp2cvhJEcFw2ys7uuZV2wL0qZrENyE-iOEzYJHcdLHChr2lQ7R3YxYQ"}
                                   alt={priceSource}
                                   style={{ width: "20px", height: "20px" }}
                                 />
                                 <p className="chakra-text css-v4hq1a">${price.toFixed(3)}</p>
+                                <p className={`chakra-text ${change.startsWith("+") ? "css-1m1g51m" : "css-1ec3nbv"}`}>{change}</p>
                               </div>
-                              <p className={`chakra-text ${change.startsWith("+") ? "css-1m1g51m" : "css-1ec3nbv"}`}>{change}</p>
                             </div>
                             <div className="price-chart css-1r938vg">
                               <div className="recharts-responsive-container" style={{ width: "100%", height: "100%", minWidth: "0" }}>
