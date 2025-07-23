@@ -695,54 +695,53 @@ function App() {
                     <img src="https://i.meee.com.tw/SdliTGK.png" alt="Logo" className="logo-image" />
                     <span className="logo-text">Seal</span>
                   </div>
+                  <div className={`nav-menu ${isMenuOpen ? "open" : ""}`}>
+                    <div className={`nav-item ${openDropdown === "trade" ? "open" : ""}`} onClick={() => toggleDropdown("trade")}>
+                      <span className="nav-text">Trade</span>
+                      <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
+                        <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+                      </svg>
+                      <div className={`dropdown ${openDropdown === "trade" ? "open" : ""}`}>
+                        <Link to="/swap" className="dropdown-item">Swap</Link>
+                      </div>
+                    </div>
+                    <div className={`nav-item ${openDropdown === "earn" ? "open" : ""}`} onClick={() => toggleDropdown("earn")}>
+                      <span className="nav-text">Earn</span>
+                      <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
+                        <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+                      </svg>
+                      <div className={`dropdown ${openDropdown === "earn" ? "open" : ""}`}>
+                        <Link to="/pool" className="dropdown-item">Pool</Link>
+                      </div>
+                    </div>
+                    <div className={`nav-item ${openDropdown === "bridge" ? "open" : ""}`} onClick={() => toggleDropdown("bridge")}>
+                      <span className="nav-text">Bridge</span>
+                      <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
+                        <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+                      </svg>
+                      <div className={`dropdown ${openDropdown === "bridge" ? "open" : ""}`}>
+                        <a href="https://bridge.sui.io/" target="_blank" rel="noopener noreferrer" className="dropdown-item">Sui Bridge</a>
+                        <a href="https://bridge.cetus.zone/sui" target="_blank" rel="noopener noreferrer" className="dropdown-item">Wormhole</a>
+                      </div>
+                    </div>
+                    <div className={`nav-item ${openDropdown === "more" ? "open" : ""}`} onClick={() => toggleDropdown("more")}>
+                      <span className="nav-text">More</span>
+                      <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
+                        <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+                      </svg>
+                      <div className={`dropdown ${openDropdown === "more" ? "open" : ""}`}>
+                        <a href="#" className="dropdown-item">Docs</a>
+                        <a href="#" className="dropdown-item">Leaderboard</a>
+                      </div>
+                    </div>
+                  </div>
                   <div className="wallet-actions">
                     <ConnectButton />
-                   
                     <button className="hamburger-menu" onClick={toggleMenu}>
                       <svg className="hamburger-icon" viewBox="0 0 24 24" width="24px" height="24px">
                         <path d="M3 6h18M3 12h18M3 18h18" stroke="var(--text-color)" strokeWidth="2" strokeLinecap="round" />
                       </svg>
                     </button>
-                  </div>
-                </div>
-                <div className={`nav-menu ${isMenuOpen ? "open" : ""}`}>
-                  <div className={`nav-item ${openDropdown === "trade" ? "open" : ""}`} onClick={() => toggleDropdown("trade")}>
-                    <span className="nav-text">Trade</span>
-                    <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
-                      <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
-                    </svg>
-                    <div className={`dropdown ${openDropdown === "trade" ? "open" : ""}`}>
-                      <Link to="/swap" className="dropdown-item">Swap</Link>
-                    </div>
-                  </div>
-                  <div className={`nav-item ${openDropdown === "earn" ? "open" : ""}`} onClick={() => toggleDropdown("earn")}>
-                    <span className="nav-text">Earn</span>
-                    <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
-                      <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
-                    </svg>
-                    <div className={`dropdown ${openDropdown === "earn" ? "open" : ""}`}>
-                      <Link to="/pool" className="dropdown-item">Pool</Link>
-                    </div>
-                  </div>
-                  <div className={`nav-item ${openDropdown === "bridge" ? "open" : ""}`} onClick={() => toggleDropdown("bridge")}>
-                    <span className="nav-text">Bridge</span>
-                    <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
-                      <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
-                    </svg>
-                    <div className={`dropdown ${openDropdown === "bridge" ? "open" : ""}`}>
-                      <a href="https://bridge.sui.io/" target="_blank" rel="noopener noreferrer" className="dropdown-item">Sui Bridge</a>
-                      <a href="https://bridge.cetus.zone/sui" target="_blank" rel="noopener noreferrer" className="dropdown-item">Wormhole</a>
-                    </div>
-                  </div>
-                  <div className={`nav-item ${openDropdown === "more" ? "open" : ""}`} onClick={() => toggleDropdown("more")}>
-                    <span className="nav-text">More</span>
-                    <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
-                      <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
-                    </svg>
-                    <div className={`dropdown ${openDropdown === "more" ? "open" : ""}`}>
-                      <a href="#" className="dropdown-item">Docs</a>
-                      <a href="#" className="dropdown-item">Leaderboard</a>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -1001,7 +1000,7 @@ function App() {
                       </div>
                     </div>
                   )}
-                  <div className="price-reference-panel css-rrtj52">
+                  <div className="price-reference-panel css-rrtj52" style={{ backgroundColor: "#E6F0FA" }}>
                     <div className="price-reference-header css-f7m5r6">
                       <p className="chakra-text css-5z699w">Price Reference</p>
                       <button
