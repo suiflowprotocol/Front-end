@@ -1046,7 +1046,7 @@ function App() {
                               <div className="price-source css-price-source">
                                 <img
                                   className="chakra-image css-price-source-img"
-                                  src="https://play-lh.googleusercontent.com/2wCIQWu9gHP2vp2cvhJEcFw2ys7uuZV2wL0qZrENyE-iOEzYJHcdLHChr2lQ7R3YxYQ"
+                                  src="https://upload.wikimedia.org/wikipedia/commons/b/b0/CoinGecko_logo.png"
                                   alt="CoinGecko"
                                   style={{ width: "20px", height: "20px" }}
                                 />
