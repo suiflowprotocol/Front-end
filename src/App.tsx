@@ -1036,7 +1036,7 @@ function App() {
                               <div className="token-name-details css-token-name-details">
                                 <div className="token-name-group css-token-name-group">
                                   <p className="chakra-text css-1f7xwte">{getTokenInfo(token).symbol}</p>
-                                  <p className="chakra-text css-18pnfvf">{getTokenInfo(token).description}</p>
+                                  
                                 </div>
                                 <div className="token-address css-t4u65q">
                                   <div className="address-details css-1a87bas">

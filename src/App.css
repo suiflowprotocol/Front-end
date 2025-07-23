@@ -1513,6 +1513,26 @@ body {
   height: 20px;
 }
 
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 1000;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.toast-success {
+  background: var(--success-color);
+  color: #000;
+}
+.toast-error {
+  background: var(--error-color);
+  color: #fff;
+}
+
 
 .css-1r938vg {
   width: 100%;
