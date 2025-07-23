@@ -42,5 +42,15 @@ To build the dApp for deployment, run:
 pnpm build
 ```
 This will generate a production-ready build in the dist/ directory.
+
 ### License
 This project is open-sourced under the MIT license.
+2. Publish the Contract
+You can publish the contract to a local network or testnet:
+```bash
+sui client publish --gas-budget 100000000
+```
+Once published, the Sui CLI will return the package ID of your deployed contract. You can then start interacting with the AMM module using this package ID.
+
+3.✍️ License
+MIT License © SealProtocol
