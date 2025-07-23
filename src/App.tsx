@@ -111,20 +111,20 @@ function App() {
   }, []);
 
   const useDebounce = (value: string, delay: number) => {
-    const [debouncedValue, setDebouncedValue] = useState(value);
+  const [debouncedValue, setDebouncedValue] = useState(value);
 
-    useEffect(() => {
-      const handler = setTimeout(() => {
-        setDebouncedValue(value);
-      }, delay);
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
 
-      return () => {
-        clearTimeout(handler);
-      };
-    }, [value, delay]);
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
 
-    return debouncedValue;
-  };
+  return debouncedValue;
+};
 
   const debouncedAmountIn = useDebounce(amountIn, 300);
 
@@ -982,7 +982,7 @@ function App() {
                               aria-controls="popover-content-price-diff-info"
                               className="css-6su6fj"
                             >
-                              <span className="price-source-tag pyth">Pyth</span>
+                              <span className={`price-source-tag ${priceSource.toLowerCase()}`}>{priceSource}</span>
                             </div>
                             <div className="chakra-popover__popper css-1cyw1a8" style={{ visibility: "hidden", position: "absolute", minWidth: "max-content", inset: "0px auto auto 0px" }}>
                               <section
@@ -1000,7 +1000,7 @@ function App() {
                       </div>
                     </div>
                   )}
-                  <div className="price-reference-panel css-rrtj52" style={{ backgroundColor: "#E6F0FA" }}>
+                  <div className="price-reference-panel css-rrtj52">
                     <div className="price-reference-header css-f7m5r6">
                       <p className="chakra-text css-5z699w">Price Reference</p>
                       <button
@@ -1021,13 +1021,15 @@ function App() {
                       {[{ token: tokenX, price: pythPrices[getTokenInfo(tokenX).symbol.toLowerCase()] || 0, change: "+0.00%" }, { token: tokenY, price: pythPrices[getTokenInfo(tokenY).symbol.toLowerCase()] || 0, change: "-2.15%" }].map(({ token, price, change }, index) => (
                         <div key={index} className="token-price css-tyic7d">
                           <div className="token-info css-1igwmid">
-                            <div className="icon-wrapper css-kjafn5">
-                              <div className="icon css-tkdzxl">
-                                <img className="chakra-image css-rmmdki" src={getTokenInfo(token).icon} alt={getTokenInfo(token).symbol} />
+                            <div className="token-details css-token-details">
+                              <div className="icon-wrapper css-kjafn5">
+                                <div className="icon css-tkdzxl">
+                                  <img className="chakra-image css-rmmdki" src={getTokenInfo(token).icon} alt={getTokenInfo(token).symbol} />
+                                </div>
                               </div>
-                              <div className="token-name-details">
-                                <p className="chakra-text css-1f7xwte">{getTokenInfo(token).description}</p>
-                                <p className="chakra-text css-18pnfvf">{getTokenInfo(token).symbol}</p>
+                              <div className="token-name-details css-token-name-details">
+                                <p className="chakra-text css-1f7xwte">{getTokenInfo(token).symbol}</p>
+                                <p className="chakra-text css-18pnfvf">{getTokenInfo(token).description}</p>
                               </div>
                             </div>
                             <div className="token-address css-t4u65q">
@@ -1041,21 +1043,26 @@ function App() {
                               </div>
                             </div>
                           </div>
-                          <div className="price-info-container">
-                            <div className="price-info css-1igwmid">
-                              <div className="price-source">
-                                <span className={`price-source-tag ${priceSource.toLowerCase()}`}>{priceSource}</span>
+                          <div className="price-info-container css-price-info-container">
+                            <div className="price-info css-price-info">
+                              <div className="price-source css-price-source">
+                                <img
+                                  className="chakra-image css-price-source-img"
+                                  src={priceSource === "Pyth" ? "https://pyth.network/logo.png" : "https://coingecko.com/logo.png"}
+                                  alt={priceSource}
+                                  style={{ width: "20px", height: "20px" }}
+                                />
                                 <p className="chakra-text css-v4hq1a">${price.toFixed(3)}</p>
                               </div>
                               <p className={`chakra-text ${change.startsWith("+") ? "css-1m1g51m" : "css-1ec3nbv"}`}>{change}</p>
                             </div>
                             <div className="price-chart css-1r938vg">
                               <div className="recharts-responsive-container" style={{ width: "100%", height: "100%", minWidth: "0" }}>
-                                <div className="recharts-wrapper" style={{ position: "relative", cursor: "default", width: "100%", height: "100%", maxHeight: "24px", maxWidth: "210px" }}>
-                                  <svg className="recharts-surface" width="210" height="24" viewBox="0 0 210 24" style={{ width: "100%", height: "100%" }}>
+                                <div className="recharts-wrapper" style={{ position: "relative", cursor: "default", width: "100%", height: "100%", maxHeight: "20px", maxWidth: "180px" }}>
+                                  <svg className="recharts-surface" width="180" height="20" viewBox="0 0 180 20" style={{ width: "100%", height: "100%" }}>
                                     <defs>
                                       <clipPath id={`recharts${index + 1}-clip`}>
-                                        <rect x="20" y="5" height="14" width="170"></rect>
+                                        <rect x="15" y="4" height="12" width="150"></rect>
                                       </clipPath>
                                       <linearGradient id="priceLine" x1="0" y1="0" x2="1" y2="0">
                                         <stop offset="0%" stopColor="rgba(117, 200, 255, 1)"></stop>
@@ -1063,7 +1070,7 @@ function App() {
                                       </linearGradient>
                                     </defs>
                                     <g className="recharts-layer recharts-line">
-                                      <path stroke="url(#priceLine)" strokeWidth="2" fill="none" className="recharts-curve recharts-line-curve" d={index === 0 ? "M20,16.528L44.286,16.521L68.571,16.041L92.857,17.102L117.143,13.856L141.429,18.215L165.714,5.785L190,15.798" : "M20,5.002L44.286,11.756L68.571,9.007L92.857,18.998L117.143,16.701L141.429,14.176L165.714,10.757L190,13.17"}></path>
+                                      <path stroke="url(#priceLine)" strokeWidth="2" fill="none" className="recharts-curve recharts-line-curve" d={index === 0 ? "M15,13.856L38.571,13.851L62.143,13.451L85.714,14.252L109.286,11.856L132.857,15.012L156.429,4.988L180,12.998" : "M15,4.002L38.571,9.756L62.143,7.007L85.714,15.998L109.286,13.701L132.857,11.176L156.429,7.757L180,10.17"}></path>
                                       <g className="recharts-layer"></g>
                                     </g>
                                   </svg>
