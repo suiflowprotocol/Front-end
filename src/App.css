@@ -72,9 +72,9 @@ body {
 
 .header {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: row; /* 确保在同一行显示 */
+  justify-content: space-between; /* 确保内容均匀分布 */
+  align-items: center; /* 垂直居中对齐 */
   padding: 12px 16px;
   background: var(--card-bg);
   border-bottom: 1px solid var(--border-color);
@@ -88,8 +88,8 @@ body {
 
 .header-top {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: space-between; /* 确保内容均匀分布 */
+  align-items: center; /* 垂直居中对齐 */
   width: 100%;
 }
 
@@ -138,10 +138,10 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  flex-wrap: wrap;
-  justify-content: center;
-  width: 100%;
-  transition: max-height 0.3s ease, opacity 0.3s ease;
+  flex-wrap: nowrap; /* 确保不换行 */
+  margin: 0 auto; /* 将导航菜单居中 */
+  flex-grow: 1; /* 允许导航菜单扩展以填充可用空间 */
+  justify-content: center; /* 水平居中 */
 }
 
 .nav-item {
@@ -152,7 +152,7 @@ body {
   font-size: 14px;
   font-weight: 500;
   color: var(--text-color);
-  padding: 6px 12px;
+  padding: 6px 12px; /* 调整内边距以适应一行显示 */
   border-radius: 8px;
   transition: all 0.3s ease;
 }
