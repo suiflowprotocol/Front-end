@@ -52,7 +52,7 @@ export const tokens = [
   },
   {
     symbol: "HEADAL",
-    address: "0x3a304c7feba2d819ea57c3542d68439ca2c386ba02159c740f7b406e592c62ea::haedal::HAEDAL",
+    address: "0x3a304c7feba2d819ea57c3542d68439ca2c386ba02159c740f7b406e592c62ea::HEADAL::HEADAL",
     icon: "https://s2.coinmarketcap.com/static/img/coins/200x200/36369.png",
     description: "HEADAL Token",
     decimals: 6,
@@ -200,7 +200,7 @@ export const tokens = [
   {
     symbol: "haWAL",
     address: "0x8b4d553839b219c3fd47608a0cc3d5fcc572cb25d41b7df3833208586a8d2470::hawal::HAWAL",
-    icon: "https://assets.haedal.xyz/logos/hawal.svg",
+    icon: "https://assets.HEADAL.xyz/logos/hawal.svg",
     description: "haWAL",
     decimals: 6,
   },

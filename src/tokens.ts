@@ -64,7 +64,7 @@ export const tokens: Token[] = [
     symbol: "haWAL",
     address: "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::hawal::HAWAL",
     decimals: 8,
-    image: "https://assets.haedal.xyz/logos/hawal.svg",
+    image: "https://assets.HEADAL.xyz/logos/hawal.svg",
   },
   {
     symbol: "Wrapped Ether(Wormhole)",

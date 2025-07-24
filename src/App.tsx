@@ -8,6 +8,7 @@ import CoverPage from "./CoverPage";
 import "./App.css";
 import "./App2.css";
 
+// Main application component for token swapping
 function App() {
   const [showTokenModal, setShowTokenModal] = useState<string | null>(null);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -39,44 +40,49 @@ function App() {
   const [priceImpact, setPriceImpact] = useState("0.00");
   const [countdown, setCountdown] = useState("0h 0m 0s");
   const [prices, setPrices] = useState<{ [key: string]: { price: number; change_24h: number } }>({});
+  const [priceHistory, setPriceHistory] = useState<{ [key: string]: { x: number; y: number }[] }>({});
   const [priceDifference, setPriceDifference] = useState("0.00");
   const [isLoadingOutput, setIsLoadingOutput] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
-  const [priceHistory, setPriceHistory] = useState<{ [key: string]: { x: number; y: number }[] }>({});
 
   const PACKAGE_ID = "0xb90158d50ac951784409a6876ac860e24564ed5257e51944d3c693efb9fdbd78";
   const POOL_REGISTRY = "0xfc8c69858d070b639b3db15ff0f78a10370950434c5521c83eaa7e2285db8d2a";
-  const CETUS_AGGREGATOR = "0x...";
-  const COINGECKO_API = "https://api.coingecko.com/api/v3";
+  const CETUS_AGGREGATOR = "0xsome_cetus_aggregator_id"; // Replace with actual Cetus aggregator package ID
+  const CRYPTOCOMPARE_API = "https://min-api.cryptocompare.com/data";
 
-  const coinGeckoIds: { [key: string]: string } = {
-    SUI: "sui",
-    USDC: "usd-coin",
-    USDT: "tether",
-    BTC: "bitcoin",
-    ARB: "arbitrum",
-    SOL: "solana",
-    APT: "aptos",
-    SEI: "sei",
-    AVAX: "avalanche",
-    TIA: "celestia",
-    POL: "matic-network",
-    BLUE: "blue",
-    DEEP: "deep",
-    SEND: "send",
-    AUSD: "ausd",
-    AFSUI: "afsui",
-    HASUI: "hasui",
-    VSUI: "vsui",
-    NAVX: "navx",
-    SCA: "scallop",
-    USDY: "usdy",
-    FUD: "fud",
-    BUCK: "buck",
-    CETUS: "cetus-protocol",
-    HAEDAL: "haedal",
+  // Mapping of token symbols to CryptoCompare IDs
+  const cryptoCompareIds: { [key: string]: string } = {
+    SUI: "SUI",
+    USDC: "USDC",
+    USDT: "USDT",
+    BTC: "BTC",
+    ARB: "ARB",
+    SOL: "SOL",
+    APT: "APT",
+    SEI: "SEI",
+    AVAX: "AVAX",
+    TIA: "TIA",
+    POL: "MATIC",
+    BLUE: "BLUE",
+    AUSD: "AUSD",
+    AFSUI: "AFSUI",
+    VSUI: "VSUI",
+    NAVX: "NAVX",
+    USDY: "USDY",
+    FUD: "FUD",
+    HEADAL: "HEADAL",
+    NS: "NS",
+    CETUS: "CETUS",
+    DEEP: "DEEP",
+    WAL: "WAL",
+    SCA: "SCA",
+    HASUI: "HASUI",
+    BUCK: "BUCK",
+    "OKX_WRAPPED_BTC": "BTC", // Assuming OKX Wrapped BTC maps to BTC
+    "TETHER_SUI_BRIDGE": "USDT" // Assuming Tether (Sui Bridge) maps to USDT
   };
 
+  // Update countdown timer for UTC+8
   useEffect(() => {
     const updateCountdown = () => {
       const now = new Date();
@@ -107,6 +113,7 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
+  // Custom hook for debouncing input
   const useDebounce = (value: string, delay: number) => {
     const [debouncedValue, setDebouncedValue] = useState(value);
 
@@ -125,11 +132,13 @@ function App() {
 
   const debouncedAmountIn = useDebounce(amountIn, 300);
 
+  // Get token decimals based on address
   const getTokenDecimals = (tokenAddress: string) => {
     const token = [...tokens, ...importedTokens].find((t) => t.address === tokenAddress);
     return token?.decimals || 6;
   };
 
+  // Set input amount to half of balance
   const setHalfBalance = () => {
     const balance = parseFloat(balances[tokenX] || "0");
     if (balance > 0) {
@@ -137,6 +146,7 @@ function App() {
     }
   };
 
+  // Set input amount to max balance
   const setMaxBalance = () => {
     const balance = parseFloat(balances[tokenX] || "0");
     if (balance > 0) {
@@ -144,8 +154,9 @@ function App() {
     }
   };
 
+  // Handle slippage selection
   const handleSlippageSelect = (value: string) => {
-    if (value === "customastar") {
+    if (value === "custom") {
       setCustomSlippage("");
     } else {
       setSlippage(value);
@@ -153,6 +164,7 @@ function App() {
     }
   };
 
+  // Handle custom slippage input
   const handleCustomSlippage = () => {
     const value = parseFloat(customSlippage);
     if (isNaN(value) || value < 0 || value > 100) {
@@ -164,6 +176,7 @@ function App() {
     setCustomSlippage("");
   };
 
+  // Import a new token by address
   const importToken = async () => {
     if (!importAddress) {
       setImportError("Please enter a valid token address");
@@ -191,10 +204,85 @@ function App() {
       setImportAddress("");
       setActiveList("Imported");
     } catch (err) {
-      setImportError("Unable to import token: Invalid address or metadata");
+      setImportError("Failed to import token: Invalid address or metadata");
     }
   };
 
+  // Fetch current price and 24h change for a token
+  const fetchTokenPrice = async (symbol: string) => {
+    const ccId = cryptoCompareIds[symbol.toUpperCase()];
+    if (!ccId) {
+      console.warn(`No CryptoCompare ID found for ${symbol}`);
+      return null;
+    }
+    try {
+      // Fetch current price
+      const currentResponse = await fetch(
+        `${CRYPTOCOMPARE_API}/price?fsym=${ccId}&tsyms=USD`,
+        { signal: AbortSignal.timeout(5000) } // 5s timeout
+      );
+      if (!currentResponse.ok) {
+        throw new Error(`CryptoCompare API responded with status: ${currentResponse.status}`);
+      }
+      const currentData = await currentResponse.json();
+      const currentPrice = currentData.USD;
+
+      // Fetch price from 24 hours ago
+      const twentyFourHoursAgo = Math.floor((Date.now() - 24 * 60 * 60 * 1000) / 1000);
+      const historicalResponse = await fetch(
+        `${CRYPTOCOMPARE_API}/pricehistorical?fsym=${ccId}&tsyms=USD&ts=${twentyFourHoursAgo}`,
+        { signal: AbortSignal.timeout(5000) }
+      );
+      if (!historicalResponse.ok) {
+        throw new Error(`CryptoCompare historical price API responded with status: ${historicalResponse.status}`);
+      }
+      const historicalData = await historicalResponse.json();
+      const pastPrice = historicalData[ccId]?.USD || 0;
+      const change_24h = pastPrice > 0 ? ((currentPrice - pastPrice) / pastPrice * 100) : 0;
+
+      return {
+        price: currentPrice || 0,
+        change_24h: change_24h
+      };
+    } catch (err) {
+      console.error(`Failed to fetch price for ${symbol}:`, err);
+      return null;
+    }
+  };
+
+  // Fetch 7-day price history for a token
+  const fetchPriceHistory = async (symbol: string) => {
+    const ccId = cryptoCompareIds[symbol.toUpperCase()];
+    if (!ccId) {
+      console.warn(`No CryptoCompare ID found for ${symbol} (price history)`);
+      return [];
+    }
+    try {
+      const prices = [];
+      const now = Math.floor(Date.now() / 1000);
+      for (let i = 0; i < 7; i++) {
+        const timestamp = now - (i * 24 * 60 * 60);
+        const response = await fetch(
+          `${CRYPTOCOMPARE_API}/pricehistorical?fsym=${ccId}&tsyms=USD&ts=${timestamp}`,
+          { signal: AbortSignal.timeout(5000) }
+        );
+        if (!response.ok) {
+          throw new Error(`CryptoCompare historical price API responded with status: ${response.status}`);
+        }
+        const data = await response.json();
+        prices.push({
+          x: timestamp * 1000,
+          y: data[ccId]?.USD || 0
+        });
+      }
+      return prices.reverse();
+    } catch (err) {
+      console.error(`Failed to fetch price history for ${symbol}:`, err);
+      return [];
+    }
+  };
+
+  // Fetch prices for all tokens
   useEffect(() => {
     const fetchPrices = async () => {
       try {
@@ -203,40 +291,20 @@ function App() {
           (token) => token.address && !token.address.includes("...")
         );
 
-        const coinGeckoTokens = tokensToFetch.filter(
-          (token) => coinGeckoIds[token.symbol.toUpperCase()]
-        );
-        if (coinGeckoTokens.length > 0) {
-          const coinGeckoIdsToFetch = coinGeckoTokens
-            .map((token) => coinGeckoIds[token.symbol.toUpperCase()])
-            .join(",");
-          const response = await fetch(
-            `${COINGECKO_API}/simple/price?ids=${coinGeckoIdsToFetch}&vs_currencies=usd&include_24hr_change=true`
-          );
-          if (!response.ok) {
-            throw new Error(`CoinGecko API responded with status ${response.status}`);
-          }
-          const data = await response.json();
-          coinGeckoTokens.forEach((token) => {
-            const cgId = coinGeckoIds[token.symbol.toUpperCase()];
-            if (data[cgId]?.usd) {
-              newPrices[token.symbol.toLowerCase()] = {
-                price: data[cgId].usd,
-                change_24h: data[cgId].usd_24h_change,
-              };
-            }
-          });
+        for (const token of tokensToFetch) {
+          const priceData = await fetchTokenPrice(token.symbol);
+          newPrices[token.symbol.toLowerCase()] = priceData || { price: 0, change_24h: 0 };
         }
 
+        setPrices(newPrices);
         if (Object.keys(newPrices).length === 0) {
-          setError("Unable to fetch price data from CoinGecko");
+          setError("Unable to fetch price data for any token");
         } else {
-          setPrices(newPrices);
           setError("");
         }
       } catch (err) {
         console.error("Failed to fetch prices:", err);
-        setError("Failed to fetch price data from CoinGecko");
+        setError("Unable to fetch price data");
       }
     };
 
@@ -245,27 +313,7 @@ function App() {
     return () => clearInterval(interval);
   }, [importedTokens]);
 
-  const fetchPriceHistory = async (tokenSymbol: string) => {
-    const cgId = coinGeckoIds[tokenSymbol.toUpperCase()];
-    if (!cgId) return null;
-    try {
-      const response = await fetch(
-        `${COINGECKO_API}/coins/${cgId}/market_chart?vs_currency=usd&days=1&interval=hourly`
-      );
-      if (!response.ok) {
-        throw new Error(`CoinGecko market chart API responded with status ${response.status}`);
-      }
-      const data = await response.json();
-      return data.prices.map(([timestamp, price]: [number, number]) => ({
-        x: timestamp,
-        y: price,
-      }));
-    } catch (err) {
-      console.error(`Failed to fetch price history for ${tokenSymbol}:`, err);
-      return null;
-    }
-  };
-
+  // Fetch price history for selected tokens
   useEffect(() => {
     const fetchTokenPriceHistory = async () => {
       const symbols = [getTokenInfo(tokenX).symbol, getTokenInfo(tokenY).symbol];
@@ -273,11 +321,7 @@ function App() {
 
       for (const symbol of symbols) {
         const data = await fetchPriceHistory(symbol);
-        if (data) {
-          newPriceHistory[symbol.toLowerCase()] = data;
-        } else {
-          newPriceHistory[symbol.toLowerCase()] = [];
-        }
+        newPriceHistory[symbol.toLowerCase()] = data || [];
       }
 
       setPriceHistory(newPriceHistory);
@@ -286,6 +330,7 @@ function App() {
     fetchTokenPriceHistory();
   }, [tokenX, tokenY]);
 
+  // Generate SVG path for price chart
   const generatePath = (symbol: string) => {
     const priceData = priceHistory[symbol.toLowerCase()] || [];
     if (!priceData || priceData.length < 2) return "M15,10L180,10";
@@ -300,6 +345,7 @@ function App() {
     return `M${points.join("L")}`;
   };
 
+  // Fetch pool ID for selected token pair
   useEffect(() => {
     const fetchPoolId = async () => {
       if (!tokenX || !tokenY) {
@@ -358,7 +404,7 @@ function App() {
           setError("");
         } else {
           setPoolId("");
-          setError("No corresponding pool found");
+          setError("No matching trading pool found");
           setIsReverseSwap(false);
         }
       } catch (err) {
@@ -371,6 +417,7 @@ function App() {
     fetchPoolId();
   }, [tokenX, tokenY, client]);
 
+  // Fetch balances and calculate expected output
   useEffect(() => {
     const fetchBalancesAndOutput = async () => {
       if (!account) {
@@ -438,9 +485,9 @@ function App() {
           const feeRate = parseInt(poolContent.fields.fee_rate);
 
           if (isNaN(reserveX) || isNaN(reserveY) || isNaN(feeRate) || reserveX <= 0 || reserveY <= 0) {
-            setError("Pool reserve or fee data invalid");
+            setError("Invalid pool reserve or fee data");
             setExpectedOutput("0.0");
-            setMinAmountOut("1");
+            setMinAmountOut("0");
             setPriceImpact("0.00");
             setPriceDifference("0.00");
             setIsLoadingOutput(false);
@@ -485,7 +532,7 @@ function App() {
           setPriceDifference("0.00");
         }
       } catch (err) {
-        console.error("Failed to fetch balances or output:", err);
+        console.error("Failed to fetch balances or expected output:", err);
         setError(`Unable to fetch balances or expected output: ${err instanceof Error ? err.message : "Unknown error"}`);
         setExpectedOutput("0.0");
         setMinAmountOut("0");
@@ -499,6 +546,7 @@ function App() {
     fetchBalancesAndOutput();
   }, [account, tokenX, tokenY, debouncedAmountIn, slippage, poolId, isReverseSwap, client, importedTokens, prices]);
 
+  // Swap token pair
   const handleSwapTokens = () => {
     setTokenX(tokenY);
     setTokenY(tokenX);
@@ -509,6 +557,7 @@ function App() {
     setPriceDifference("0.00");
   };
 
+  // Select a token for swapping
   const selectToken = (token: any, type: string) => {
     const newTokenAddress = token.address;
     if (type === "tokenX" && newTokenAddress === tokenY) {
@@ -533,17 +582,19 @@ function App() {
     setError("");
   };
 
+  // Get token information by address
   const getTokenInfo = (address: string) => {
     return [...tokens, ...importedTokens].find((token) => token.address === address) || tokens[0];
   };
 
+  // Execute swap transaction
   const handleSwap = async () => {
     if (!account) {
       setError("Please connect wallet");
       return;
     }
     if (!tokenX || !tokenY || !amountIn || parseFloat(amountIn) <= 0 || (!useAggregator && !poolId)) {
-      setError("Please enter a valid input amount and select a valid trading pair");
+      setError("Please enter a valid amount and select valid token pair");
       return;
     }
     if (tokenX === tokenY) {
@@ -557,7 +608,7 @@ function App() {
         coinType: "0x2::sui::SUI",
       });
       if (parseInt(suiBalance.totalBalance) < 100000000) {
-        setError("SUI balance is insufficient to cover transaction fees (at least 0.1 SUI required)");
+        setError("Insufficient SUI balance for transaction fee (at least 0.1 SUI required)");
         return;
       }
 
@@ -576,7 +627,7 @@ function App() {
         .map((coin) => coin.coinObjectId);
 
       if (coinObjectIds.length === 0) {
-        setError(`Insufficient ${inputTokenInfo.symbol} tokens found (at least ${amountIn} ${inputTokenInfo.symbol} required)`);
+        setError(`No sufficient ${inputTokenInfo.symbol} tokens found (at least ${amountIn} ${inputTokenInfo.symbol} required)`);
         return;
       }
 
@@ -586,7 +637,7 @@ function App() {
       });
 
       if (!suiCoins.data || suiCoins.data.length === 0) {
-        setError("No available SUI tokens found for gas fees");
+        setError("No SUI tokens found for gas payment");
         return;
       }
 
@@ -652,14 +703,17 @@ function App() {
     }
   };
 
+  // Toggle dropdown menu
   const toggleDropdown = (menu: string) => {
     setOpenDropdown(openDropdown === menu ? null : menu);
   };
 
+  // Toggle mobile menu
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // Copy text to clipboard
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text).then(() => {
       setToast({ message: "Address copied successfully!", type: "success" });
@@ -670,6 +724,7 @@ function App() {
     });
   };
 
+  // Calculate exchange rate
   const exchangeRate = prices[getTokenInfo(tokenX).symbol.toLowerCase()]?.price && prices[getTokenInfo(tokenY).symbol.toLowerCase()]?.price
     ? (prices[getTokenInfo(tokenX).symbol.toLowerCase()].price / prices[getTokenInfo(tokenY).symbol.toLowerCase()].price).toFixed(6)
     : "0.000000";
@@ -839,7 +894,7 @@ function App() {
                           <span>Balance: {balances[tokenX] || "0.0"}</span>
                           <div className="balance-buttons">
                             <button onClick={setHalfBalance} className="balance-button">50%</button>
-                            <button onClick={setMaxBalance} className="balance-button">MAX</button>
+                            <button onClick={setMaxBalance} className="balance-button">Max</button>
                           </div>
                         </div>
                       </div>
@@ -971,7 +1026,7 @@ function App() {
                         </div>
                         <div className="price-diff-content css-5thc8w">
                           <div className="price-diff-value css-1414k4v">
-                            <p className="chakra-text css-1dtrlpp">Within {priceDifference}%</p>
+                            <p className="chakra-text css-1dtrlpp">{priceDifference}% within</p>
                             <div
                               id="popover-trigger-price-diff-info"
                               aria-haspopup="dialog"
@@ -979,7 +1034,7 @@ function App() {
                               aria-controls="popover-content-price-diff-info"
                               className="css-6su6fj"
                             >
-                              <span className="price-source-tag coingecko">CoinGecko</span>
+                              <span className="price-source-tag cryptocompare">CryptoCompare</span>
                             </div>
                             <div className="chakra-popover__popper css-1cyw1a8" style={{ visibility: "hidden", position: "absolute", minWidth: "max-content", inset: "0px auto auto 0px" }}>
                               <section
