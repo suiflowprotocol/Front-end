@@ -377,10 +377,59 @@ body {
   stroke: var(--text-secondary);
 }
 
+.settings-row {
+  display: flex;
+  align-items: center; /* 垂直居中对齐 */
+  gap: 16px; /* 调整间距以适应布局 */
+}
+
 .aggregator-toggle {
   display: flex;
+  align-items: center; /* 垂直居中对齐 */
+  gap: 8px; /* 调整间距 */
+}
+
+.chakra-form__label {
+  font-size: 14px; /* 标签字体大小 */
+  color: var(--text-color); /* 标签颜色 */
+}
+
+.chakra-switch {
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
+  cursor: pointer;
+}
+
+.chakra-switch__input {
+  display: none; /* 隐藏原始输入 */
+}
+
+.chakra-switch__track {
+  width: 40px; /* 开关的宽度 */
+  height: 20px; /* 开关的高度 */
+  background: var(--border-color); /* 开关的背景颜色 */
+  border-radius: 10px; /* 圆角 */
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+.chakra-switch__thumb {
+  width: 16px; /* 滑块的宽度 */
+  height: 16px; /* 滑块的高度 */
+  background: white; /* 滑块的颜色 */
+  border-radius: 50%; /* 圆形滑块 */
+  position: absolute;
+  top: 2px; /* 滑块的顶部位置 */
+  left: 2px; /* 滑块的左侧位置 */
+  transition: transform 0.3s ease;
+}
+
+.chakra-switch__input:checked + .chakra-switch__track {
+  background: var(--primary-color); /* 选中时的背景颜色 */
+}
+
+.chakra-switch__input:checked + .chakra-switch__track .chakra-switch__thumb {
+  transform: translateX(20px); /* 选中时滑块移动 */
 }
 
 .aggregator-toggle input[type="checkbox"] {

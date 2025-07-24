@@ -846,8 +846,9 @@ function App() {
                   <div className="swap-header">
                     <h2 className="swap-title">Swap</h2>
                     <div className="settings-row">
-                      <div className="aggregator-toggle css-1ve64qd">
-                        <label className="chakra-switch css-ghot30">
+                      <div className="aggregator-toggle">
+                        <label className="chakra-form__label" htmlFor="aggregator-mode">Aggregator Mode</label>
+                        <label className="chakra-switch">
                           <input
                             type="checkbox"
                             id="aggregator-mode"
@@ -855,8 +856,8 @@ function App() {
                             onChange={() => setUseAggregator(!useAggregator)}
                             className="chakra-switch__input"
                           />
-                          <span className="chakra-switch__track css-1dfiea4">
-                            <span className="chakra-switch__thumb css-1ws90af"></span>
+                          <span className="chakra-switch__track">
+                            <span className="chakra-switch__thumb"></span>
                           </span>
                         </label>
                       </div>
