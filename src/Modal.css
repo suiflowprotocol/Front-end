@@ -1,0 +1,41 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); /* 半透明背景 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* 确保在最上层 */
+}
+
+.modal-content {
+  background: white; /* 弹窗背景 */
+  padding: 20px;
+  border-radius: 8px; /* 圆角 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+  text-align: center; /* 文本居中 */
+}
+
+.modal-content h2 {
+  margin: 0 0 10px; /* 标题的底部间距 */
+}
+
+.modal-content p {
+  margin: 0 0 20px; /* 内容的底部间距 */
+}
+
+.modal-content button {
+  padding: 10px 20px; /* 按钮内边距 */
+  background: var(--primary-color); /* 按钮背景颜色 */
+  color: white; /* 按钮文字颜色 */
+  border: none; /* 移除边框 */
+  border-radius: 5px; /* 圆角 */
+  cursor: pointer; /* 鼠标悬停时显示为手型 */
+}
+
+.modal-content button:hover {
+  background: var(--button-hover-bg); /* 悬停时的背景颜色 */
+}

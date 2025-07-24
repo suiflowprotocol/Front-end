@@ -8,6 +8,7 @@ import CoverPage from "./CoverPage";
 import "./App.css";
 import "./App2.css";
 import Confetti from "react-confetti"; // 导入放礼花组件
+import Modal from './Modal'; // 导入弹窗组件
 
 // Main application component for token swapping
 function App() {
@@ -47,6 +48,8 @@ function App() {
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [showConfetti, setShowConfetti] = useState(false);
   const switchRef = useRef(null); // 创建一个 ref 来获取开关的位置
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   useEffect(() => {
     if (useAggregator) {
@@ -734,14 +737,16 @@ function App() {
 
       tx.setGasBudget(100000000);
 
-      signAndExecute(
+      await signAndExecute(
         {
           transaction: tx as any,
           account,
         },
         {
           onSuccess: (result: any) => {
-            setSuccess(`Transaction successful: ${result.digest}`);
+            setModalMessage(`Transaction successful: ${result.digest}`);
+            setShowModal(true); // 显示弹窗
+            
             setError("");
             setAmountIn("");
             setMinAmountOut("0");
@@ -1004,22 +1009,7 @@ function App() {
                   </button>
                   {error && <div className="error">{error}</div>}
                   {success && <div className="success">{success}</div>}
-                  {amountIn && parseFloat(amountIn) > 0 && (poolId || useAggregator) && (
-                    <div className="info-panel">
-                      <p>
-                        <span>Minimum Received</span>
-                        <span>{minAmountOut} USDC</span>
-                      </p>
-                      <p>
-                        <span>Auto Router</span>
-                        <span>{tokenX} {'>'} {tokenY}</span>
-                      </p>
-                      <p>
-                        <span>Price Difference</span>
-                        <span>{priceDifference}% within</span>
-                      </p>
-                    </div>
-                  )}
+                 
                   <div className="price-reference-panel css-rrtj52">
                     <div className="price-reference-header css-f7m5r6">
                       <p className="chakra-text css-5z699w">Price Reference</p>
@@ -1137,6 +1127,9 @@ function App() {
         />
         <Route path="/pool" element={<Pool />} />
       </Routes>
+      {showModal && (
+        <Modal message={modalMessage} onClose={() => setShowModal(false)} />
+      )}
     </div>
   );
 }
