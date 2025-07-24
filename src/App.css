@@ -93,6 +93,13 @@ body {
   width: 100%;
 }
 
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* logo 和文字之间的间距 */
+  margin-right: 24px; /* 增加 logo 和导航菜单之间的空白分隔 */
+}
+
 .hamburger-menu {
   display: none; /* 默认隐藏 */
   background: none;
@@ -104,12 +111,6 @@ body {
 .hamburger-icon {
   stroke: var(--text-color);
   transition: transform 0.3s ease;
-}
-
-.logo-container {
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
 .logo-image {
@@ -137,11 +138,9 @@ body {
 .nav-menu {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 12px; /* 保持导航项之间的间距 */
   flex-wrap: nowrap; /* 确保不换行 */
-  margin: 0 auto; /* 将导航菜单居中 */
-  flex-grow: 1; /* 允许导航菜单扩展以填充可用空间 */
-  justify-content: center; /* 水平居中 */
+  margin: 0; /* 移除自动边距 */
 }
 
 .nav-item {
@@ -211,25 +210,24 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-left: auto; /* 将钱包按钮推到右侧 */
 }
 
 .wallet-button {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
-  background: var(--primary-color);
-  color: #ffffff;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 600;
+  padding: 4px 8px; /* 减小内边距 */
+  background: var(--card-bg); /* 设置为页面背景颜色 */
+  color: #ffffff; /* 文字颜色 */
+  border-radius: 20px; /* 圆角 */
+  font-size: 12px; /* 减小字体大小 */
+  font-weight: 600; /* 字体粗细 */
   transition: all 0.3s ease;
-  border: none;
+  border: none; /* 移除边框 */
+  min-width: 100px; /* 设置最小宽度以避免过小 */
 }
 
 .wallet-button:hover {
-  background: var(--button-hover-bg);
-  transform: translateY(-1px);
+  background: var(--button-hover-bg); /* 悬停时的背景颜色 */
+  transform: translateY(-1px); /* 悬停时的效果 */
 }
 
 .wallet-button img {
@@ -2307,4 +2305,21 @@ body {
   box-shadow: 0 4px 12px var(--shadow-color);
   margin-top: 12px;
   transition: all 0.3s ease;
+}
+
+button {
+  padding: 4px 8px; /* 减小内边距 */
+  background: var(--card-bg); /* 设置为页面背景颜色 */
+  color: #ffffff; /* 文字颜色 */
+  border-radius: 20px; /* 圆角 */
+  font-size: 12px; /* 减小字体大小 */
+  font-weight: 600; /* 字体粗细 */
+  transition: all 0.3s ease;
+  border: none; /* 移除边框 */
+  cursor: pointer; /* 鼠标悬停时显示为手型 */
+}
+
+button:hover {
+  background: var(--button-hover-bg); /* 悬停时的背景颜色 */
+  transform: translateY(-1px); /* 悬停时的效果 */
 }
