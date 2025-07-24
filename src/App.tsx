@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { ConnectButton, useCurrentAccount, useSuiClient, useSignAndExecuteTransaction } from "@mysten/dapp-kit";
+import { ConnectButton, useCurrentAccount, useSuiClient, useSignAndExecuteTransaction, lightTheme, WalletProvider, ThemeVars } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
 import { Link, Route, Routes } from "react-router-dom";
 import Pool from "./Pool";
@@ -9,6 +9,65 @@ import "./App.css";
 import "./App2.css";
 import Confetti from "react-confetti"; // 导入放礼花组件
 import Modal from './Modal'; // 导入弹窗组件
+
+// 定义自定义主题
+const customTheme: ThemeVars = {
+  blurs: {
+    modalOverlay: 'blur(0)',
+  },
+  backgroundColors: {
+    primaryButton: '#3b82f6', // 设置为与Swap按钮相同的蓝色
+    primaryButtonHover: '#4b9cfa', // 悬停时的颜色
+    outlineButtonHover: '#E4E4E7',
+    modalOverlay: 'rgba(24, 36, 53, 0.2)',
+    modalPrimary: 'white',
+    modalSecondary: '#F7F8F8',
+    iconButton: 'transparent',
+    iconButtonHover: '#F0F1F2',
+    dropdownMenu: '#FFFFFF',
+    dropdownMenuSeparator: '#F3F6F8',
+    walletItemSelected: 'white',
+    walletItemHover: '#3C424226',
+  },
+  borderColors: {
+    outlineButton: '#E4E4E7',
+  },
+  colors: {
+    primaryButton: '#FFFFFF', // 按钮文字颜色
+    outlineButton: '#373737',
+    iconButton: '#000000',
+    body: '#182435',
+    bodyMuted: '#767A81',
+    bodyDanger: '#FF794B',
+  },
+  radii: {
+    small: '4px',
+    medium: '8px',
+    large: '12px',
+    xlarge: '16px',
+  },
+  shadows: {
+    primaryButton: '0 4px 12px rgba(0, 0, 0, 0.1)', // 按钮阴影
+    walletItemSelected: '0 2px 8px rgba(0, 0, 0, 0.05)', // 选中钱包项的阴影
+  },
+  fontWeights: {
+    normal: '400',
+    medium: '500',
+    bold: '700',
+  },
+  fontSizes: {
+    small: '12px',
+    medium: '14px',
+    large: '16px',
+    xlarge: '18px',
+  },
+  typography: {
+    fontFamily: 'Arial, sans-serif',
+    fontStyle: 'normal',
+    lineHeight: '1.5',
+    letterSpacing: '0.02em',
+  },
+};
 
 // Main application component for token swapping
 function App() {
@@ -791,346 +850,369 @@ function App() {
     ? (prices[getTokenInfo(tokenX).symbol.toLowerCase()].price / prices[getTokenInfo(tokenY).symbol.toLowerCase()].price).toFixed(6)
     : "0.000000";
 
+  // 计算swap前后的资产总价值
+  const inputValue = parseFloat(amountIn) * (prices[getTokenInfo(tokenX).symbol.toLowerCase()]?.price || 0);
+  const outputValue = parseFloat(expectedOutput) * (prices[getTokenInfo(tokenY).symbol.toLowerCase()]?.price || 0);
+  const profitLoss = outputValue - inputValue;
+  const profitLossPercentage = inputValue > 0 ? ((profitLoss / inputValue) * 100).toFixed(2) : 0;
+  const profitLossColor = profitLoss >= 0 ? 'green' : 'red';
+
   return (
-    <div className="container">
-      {toast && (
-        <div className={`toast toast-${toast.type}`}>
-          <p>{toast.message}</p>
-        </div>
-      )}
-      {showConfetti && (
-        <Confetti
-          width={window.innerWidth}
-          height={window.innerHeight}
-          style={{ position: "absolute", top: 0, left: 0 }} // 确保礼花覆盖整个窗口
-        />
-      )}
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <div className="header">
-                <div className="header-top">
-                  <div className="logo-container">
-                    <img src="https://i.meee.com.tw/SdliTGK.png" alt="Logo" className="logo-image" />
-                    <span className="logo-text">Seal</span>
-                  </div>
-                  <div className={`nav-menu ${isMenuOpen ? "open" : ""}`}>
-                    <div className={`nav-item ${openDropdown === "trade" ? "open" : ""}`} onClick={() => toggleDropdown("trade")}>
-                      <span className="nav-text">Trade</span>
-                      <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
-                        <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
-                      </svg>
-                      <div className={`dropdown ${openDropdown === "trade" ? "open" : ""}`}>
-                        <Link to="/swap" className="dropdown-item">Swap</Link>
-                      </div>
+    <WalletProvider theme={customTheme}>
+      <div className="container">
+        {toast && (
+          <div className={`toast toast-${toast.type}`}>
+            <p>{toast.message}</p>
+          </div>
+        )}
+        {showConfetti && (
+          <Confetti
+            width={window.innerWidth}
+            height={window.innerHeight}
+            style={{ position: "absolute", top: 0, left: 0 }} // 确保礼花覆盖整个窗口
+          />
+        )}
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <div className="header">
+                  <div className="header-top">
+                    <div className="logo-container">
+                      <img src="https://i.meee.com.tw/SdliTGK.png" alt="Logo" className="logo-image" />
+                      <span className="logo-text">Seal</span>
                     </div>
-                    <div className={`nav-item ${openDropdown === "earn" ? "open" : ""}`} onClick={() => toggleDropdown("earn")}>
-                      <span className="nav-text">Earn</span>
-                      <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
-                        <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
-                      </svg>
-                      <div className={`dropdown ${openDropdown === "earn" ? "open" : ""}`}>
-                        <Link to="/pool" className="dropdown-item">Pool</Link>
-                      </div>
-                    </div>
-                    <div className={`nav-item ${openDropdown === "bridge" ? "open" : ""}`} onClick={() => toggleDropdown("bridge")}>
-                      <span className="nav-text">Bridge</span>
-                      <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
-                        <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
-                      </svg>
-                      <div className={`dropdown ${openDropdown === "bridge" ? "open" : ""}`}>
-                        <a href="https://bridge.sui.io/" target="_blank" rel="noopener noreferrer" className="dropdown-item">Sui Bridge</a>
-                        <a href="https://bridge.cetus.zone/sui" target="_blank" rel="noopener noreferrer" className="dropdown-item">Wormhole</a>
-                      </div>
-                    </div>
-                    <div className={`nav-item ${openDropdown === "more" ? "open" : ""}`} onClick={() => toggleDropdown("more")}>
-                      <span className="nav-text">More</span>
-                      <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
-                        <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
-                      </svg>
-                      <div className={`dropdown ${openDropdown === "more" ? "open" : ""}`}>
-                        <a href="#" className="dropdown-item">Docs</a>
-                        <a href="#" className="dropdown-item">Leaderboard</a>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="wallet-actions">
-                    <ConnectButton />
-                    <button className="hamburger-menu" onClick={toggleMenu}>
-                      <svg className="hamburger-icon" viewBox="0 0 24 24" width="24px" height="24px">
-                        <path d="M3 6h18M3 12h18M3 18h18" stroke="var(--text-color)" strokeWidth="2" strokeLinecap="round" />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div className="main-content">
-                <div className="swap-panel">
-                  <div className="swap-header">
-                    <h2 className="swap-title">Swap</h2>
-                    <div className="settings-row">
-                      <div className="aggregator-toggle" ref={switchRef}>
-                        <label className="chakra-form__label" htmlFor="aggregator-mode">Aggregator Mode</label>
-                        <label className="chakra-switch">
-                          <input
-                            type="checkbox"
-                            id="aggregator-mode"
-                            checked={useAggregator}
-                            onChange={() => setUseAggregator(!useAggregator)}
-                            className="chakra-switch__input"
-                          />
-                          <span className="chakra-switch__track">
-                            <span className="chakra-switch__thumb"></span>
-                          </span>
-                        </label>
-                      </div>
-                      <div className="settings-button-container">
-                        <button
-                          className="settings-button"
-                          aria-haspopup="dialog"
-                          onClick={() => setShowSlippageModal(!showSlippageModal)}
-                        >
-                          {slippage}% <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="settings-icon"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><circle cx="12" cy="12" r="4"></circle></svg>
-                        </button>
-                        {showSlippageModal && (
-                          <div className="slippage-modal">
-                            <div className="slippage-modal-content">
-                              <h3 className="slippage-modal-title">Slippage Tolerance</h3>
-                              <div className="slippage-options">
-                                {["0.3", "1", "10"].map((value) => (
-                                  <button
-                                    key={value}
-                                    className={`slippage-option ${slippage === value ? "active" : ""}`}
-                                    onClick={() => handleSlippageSelect(value)}
-                                  >
-                                    {value}%
-                                  </button>
-                                ))}
-                              </div>
-                              {slippage !== "0.3" && slippage !== "1" && slippage !== "10" && (
-                                <div className="custom-slippage">
-                                  <input
-                                    type="number"
-                                    step="0.1"
-                                    min="0"
-                                    max="100"
-                                    value={customSlippage}
-                                    onChange={(e) => setCustomSlippage(e.target.value)}
-                                    placeholder="0.0"
-                                    className="custom-slippage-input"
-                                  />
-                                  <button className="custom-slippage-submit" onClick={handleCustomSlippage}>
-                                    Save
-                                  </button>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="input-section">
-                    <div className="input-card">
-                      <div className="input-label">
-                        <span>From</span>
-                      </div>
-                      <div className="input-group">
-                        <input
-                          inputMode="decimal"
-                          pattern="[0-9]*\.?[0-9]*"
-                          type="text"
-                          value={amountIn}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            if (value === "" || (parseFloat(value) >= 0 && !isNaN(parseFloat(value)))) {
-                              setAmountIn(value);
-                            }
-                          }}
-                          placeholder="0.0"
-                          className="swap-input"
-                        />
-                        <div className="token-selector" onClick={() => setShowTokenModal("tokenX")}>
-                          <img src={getTokenInfo(tokenX).icon} alt={getTokenInfo(tokenX).symbol} className="token-icon" />
-                          <span>{getTokenInfo(tokenX).symbol}</span>
-                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="chevron-down"><path d="m6 9 6 6 6-6"></path></svg>
+                    <div className={`nav-menu ${isMenuOpen ? "open" : ""}`}>
+                      <div className={`nav-item ${openDropdown === "trade" ? "open" : ""}`} onClick={() => toggleDropdown("trade")}>
+                        <span className="nav-text">Trade</span>
+                        <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
+                          <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+                        </svg>
+                        <div className={`dropdown ${openDropdown === "trade" ? "open" : ""}`}>
+                          <Link to="/swap" className="dropdown-item">Swap</Link>
                         </div>
                       </div>
-                      <div className="input-footer">
-                        <span className="price-text">${(parseFloat(balances[tokenX] || "0") * (prices[getTokenInfo(tokenX).symbol.toLowerCase()]?.price || 0)).toFixed(2)}</span>
-                        <div className="balance-group">
-                          <span>Balance: {balances[tokenX] || "0.0"}</span>
-                          <div className="balance-buttons">
-                            <button onClick={setHalfBalance} className="balance-button">50%</button>
-                            <button onClick={setMaxBalance} className="balance-button">Max</button>
-                          </div>
+                      <div className={`nav-item ${openDropdown === "earn" ? "open" : ""}`} onClick={() => toggleDropdown("earn")}>
+                        <span className="nav-text">Earn</span>
+                        <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
+                          <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+                        </svg>
+                        <div className={`dropdown ${openDropdown === "earn" ? "open" : ""}`}>
+                          <Link to="/pool" className="dropdown-item">Pool</Link>
+                        </div>
+                      </div>
+                      <div className={`nav-item ${openDropdown === "bridge" ? "open" : ""}`} onClick={() => toggleDropdown("bridge")}>
+                        <span className="nav-text">Bridge</span>
+                        <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
+                          <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+                        </svg>
+                        <div className={`dropdown ${openDropdown === "bridge" ? "open" : ""}`}>
+                          <a href="https://bridge.sui.io/" target="_blank" rel="noopener noreferrer" className="dropdown-item">Sui Bridge</a>
+                          <a href="https://bridge.cetus.zone/sui" target="_blank" rel="noopener noreferrer" className="dropdown-item">Wormhole</a>
+                        </div>
+                      </div>
+                      <div className={`nav-item ${openDropdown === "more" ? "open" : ""}`} onClick={() => toggleDropdown("more")}>
+                        <span className="nav-text">More</span>
+                        <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
+                          <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+                        </svg>
+                        <div className={`dropdown ${openDropdown === "more" ? "open" : ""}`}>
+                          <a href="#" className="dropdown-item">Docs</a>
+                          <a href="#" className="dropdown-item">Leaderboard</a>
                         </div>
                       </div>
                     </div>
-                    <div className="swap-icon" onClick={handleSwapTokens}>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="swap-arrow"><path d="m3 16 4 4 4-4"></path><path d="M7 20V4"></path><path d="m21 8-4-4-4 4"></path><path d="M17 4v16"></path></svg>
-                    </div>
-                    <div className="input-card">
-                      <div className="input-label">
-                        <span>To</span>
-                      </div>
-                      <div className="input-group">
-                        <input
-                          inputMode="decimal"
-                          pattern="[0-9]*\.?[0-9]*"
-                          type="text"
-                          value={expectedOutput}
-                          disabled
-                          placeholder="0.0"
-                          className="swap-input"
-                        />
-                        <div className="token-selector" onClick={() => setShowTokenModal("tokenY")}>
-                          <img src={getTokenInfo(tokenY).icon} alt={getTokenInfo(tokenY).symbol} className="token-icon" />
-                          <span>{getTokenInfo(tokenY).symbol}</span>
-                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="chevron-down"><path d="m6 9 6 6 6-6"></path></svg>
-                        </div>
-                      </div>
-                      <div className="input-footer">
-                        <span className="price-text">${(parseFloat(balances[tokenY] || "0") * (prices[getTokenInfo(tokenY).symbol.toLowerCase()]?.price || 0)).toFixed(2)}</span>
-                        <div className="balance-group">
-                          <span>Balance: {balances[tokenY] || "0.0"}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <button
-                    className={`action-button css-1y5noho ${isLoadingOutput ? "loading" : ""}`}
-                    onClick={handleSwap}
-                    disabled={!account || !amountIn || parseFloat(amountIn) <= 0 || (!useAggregator && !poolId) || parseFloat(balances["0x2::sui::SUI"] || "0") < 0.1 || tokenX === tokenY || isLoadingOutput}
-                  >
-                    {account ? (amountIn && parseFloat(amountIn) > 0 ? ((useAggregator || poolId) ? (parseFloat(balances["0x2::sui::SUI"] || "0") >= 0.1 ? (tokenX !== tokenY ? (isLoadingOutput ? "Loading..." : "Swap Now") : "Same Token") : "Insufficient SUI Balance") : "Invalid Trading Pair") : "Enter Valid Amount") : "Connect Wallet"}
-                  </button>
-                  {error && <div className="error">{error}</div>}
-                  {success && <div className="success">{success}</div>}
-                 
-                  <div className="price-reference-panel css-rrtj52">
-                    <div className="price-reference-header css-f7m5r6">
-                      <p className="chakra-text css-5z699w">Price Reference</p>
-                      <button
-                        id="popover-trigger-price-ref"
-                        aria-haspopup="dialog"
-                        aria-expanded="false"
-                        aria-controls="popover-content-price-ref"
-                        className="css-1hohgv6"
-                      >
-                        <div className="css-1ke24j5">
-                          <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px" viewBox="0 0 24 24">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path>
-                          </svg>
-                        </div>
+                    <div className="wallet-actions">
+                      <ConnectButton />
+                      <button className="hamburger-menu" onClick={toggleMenu}>
+                        <svg className="hamburger-icon" viewBox="0 0 24 24" width="24px" height="24px">
+                          <path d="M3 6h18M3 12h18M3 18h18" stroke="var(--text-color)" strokeWidth="2" strokeLinecap="round" />
+                        </svg>
                       </button>
                     </div>
-                    <div className="price-reference-content css-47ju1k">
-                      {[{ token: tokenX, symbol: getTokenInfo(tokenX).symbol }, { token: tokenY, symbol: getTokenInfo(tokenY).symbol }].map(({ token, symbol }, index) => (
-                        <div key={index} className="token-price css-tyic7d">
-                          <div className="token-info css-1igwmid">
-                            <div className="token-details css-token-details">
-                              <div className="icon-wrapper css-kjafn5">
-                                <div className="icon css-tkdzxl">
-                                  <img className="chakra-image css-rmmdki" src={getTokenInfo(token).icon} alt={symbol} />
+                  </div>
+                </div>
+                <div className="main-content">
+                  <div className="swap-panel">
+                    <div className="swap-header">
+                      <h2 className="swap-title">Swap</h2>
+                      <div className="settings-row">
+                        <div className="aggregator-toggle" ref={switchRef}>
+                          <label className="chakra-form__label" htmlFor="aggregator-mode">Aggregator Mode</label>
+                          <label className="chakra-switch">
+                            <input
+                              type="checkbox"
+                              id="aggregator-mode"
+                              checked={useAggregator}
+                              onChange={() => setUseAggregator(!useAggregator)}
+                              className="chakra-switch__input"
+                            />
+                            <span className="chakra-switch__track">
+                              <span className="chakra-switch__thumb"></span>
+                            </span>
+                          </label>
+                        </div>
+                        <div className="settings-button-container">
+                          <button
+                            className="settings-button"
+                            aria-haspopup="dialog"
+                            onClick={() => setShowSlippageModal(!showSlippageModal)}
+                          >
+                            {slippage}% <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="settings-icon"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><circle cx="12" cy="12" r="4"></circle></svg>
+                          </button>
+                          {showSlippageModal && (
+                            <div className="slippage-modal">
+                              <div className="slippage-modal-content">
+                                <h3 className="slippage-modal-title">Slippage Tolerance</h3>
+                                <div className="slippage-options">
+                                  {["0.3", "1", "10"].map((value) => (
+                                    <button
+                                      key={value}
+                                      className={`slippage-option ${slippage === value ? "active" : ""}`}
+                                      onClick={() => handleSlippageSelect(value)}
+                                    >
+                                      {value}%
+                                    </button>
+                                  ))}
                                 </div>
+                                {slippage !== "0.3" && slippage !== "1" && slippage !== "10" && (
+                                  <div className="custom-slippage">
+                                    <input
+                                      type="number"
+                                      step="0.1"
+                                      min="0"
+                                      max="100"
+                                      value={customSlippage}
+                                      onChange={(e) => setCustomSlippage(e.target.value)}
+                                      placeholder="0.0"
+                                      className="custom-slippage-input"
+                                    />
+                                    <button className="custom-slippage-submit" onClick={handleCustomSlippage}>
+                                      Save
+                                    </button>
+                                  </div>
+                                )}
                               </div>
-                              <div className="token-name-details css-token-name-details">
-                                <div className="token-name-group css-token-name-group">
-                                  <p className="chakra-text css-1f7xwte">{symbol}</p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="input-section">
+                      <div className="input-card">
+                        <div className="input-label">
+                          <span>From</span>
+                        </div>
+                        <div className="input-group">
+                          <input
+                            inputMode="decimal"
+                            pattern="[0-9]*\.?[0-9]*"
+                            type="text"
+                            value={amountIn}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              if (value === "" || (parseFloat(value) >= 0 && !isNaN(parseFloat(value)))) {
+                                setAmountIn(value);
+                              }
+                            }}
+                            placeholder="0.0"
+                            className="swap-input"
+                          />
+                          <div className="token-selector" onClick={() => setShowTokenModal("tokenX")}>
+                            <img src={getTokenInfo(tokenX).icon} alt={getTokenInfo(tokenX).symbol} className="token-icon" />
+                            <span>{getTokenInfo(tokenX).symbol}</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="chevron-down"><path d="m6 9 6 6 6-6"></path></svg>
+                          </div>
+                        </div>
+                        <div className="input-footer">
+                          <span className="price-text">
+                            ${amountIn && parseFloat(amountIn) > 0 
+                              ? (parseFloat(amountIn) * (prices[getTokenInfo(tokenX).symbol.toLowerCase()]?.price || 0)).toFixed(2) 
+                              : "0.00"}
+                          </span>
+                          <div className="balance-group">
+                            <div className="balance-buttons">
+                              <button onClick={setHalfBalance} className="balance-button">50%</button>
+                              <button onClick={setMaxBalance} className="balance-button">Max</button>
+                            </div>
+                            <span>Balance: {balances[tokenX] || "0.0"}</span>
+                            
+                          </div>
+                        </div>
+                      </div>
+                      <div className="swap-icon" onClick={handleSwapTokens}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="swap-arrow"><path d="m3 16 4 4 4-4"></path><path d="M7 20V4"></path><path d="m21 8-4-4-4 4"></path><path d="M17 4v16"></path></svg>
+                      </div>
+                      <div className="input-card">
+                        <div className="input-label">
+                          <span>To</span>
+                        </div>
+                        <div className="input-group">
+                          <input
+                            inputMode="decimal"
+                            pattern="[0-9]*\.?[0-9]*"
+                            type="text"
+                            value={expectedOutput}
+                            disabled
+                            placeholder="0.0"
+                            className="swap-input"
+                          />
+                          <div className="token-selector" onClick={() => setShowTokenModal("tokenY")}>
+                            <img src={getTokenInfo(tokenY).icon} alt={getTokenInfo(tokenY).symbol} className="token-icon" />
+                            <span>{getTokenInfo(tokenY).symbol}</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="chevron-down"><path d="m6 9 6 6 6-6"></path></svg>
+                          </div>
+                        </div>
+                        <div className="input-footer">
+                          <span className="price-text">
+                            ${(
+                              parseFloat(expectedOutput) * (prices[getTokenInfo(tokenY).symbol.toLowerCase()]?.price || 0)
+                            ).toFixed(2)}
+                            {amountIn && parseFloat(amountIn) > 0 && outputValue > 0 && (
+                              <span style={{ color: profitLossColor }}>
+                                ({profitLoss >= 0 ? `+${profitLossPercentage}%` : `${profitLossPercentage}%`})
+                              </span>
+                            )}
+                          </span>
+                          <div className="balance-group">
+                            <span>Balance: {balances[tokenY] || "0.0"}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <button
+                      className={`action-button css-1y5noho ${isLoadingOutput ? "loading" : ""}`}
+                      onClick={handleSwap}
+                      disabled={!account || !amountIn || parseFloat(amountIn) <= 0 || (!useAggregator && !poolId) || parseFloat(balances["0x2::sui::SUI"] || "0") < 0.1 || tokenX === tokenY || isLoadingOutput}
+                    >
+                      {account ? (amountIn && parseFloat(amountIn) > 0 ? ((useAggregator || poolId) ? (parseFloat(balances["0x2::sui::SUI"] || "0") >= 0.1 ? (tokenX !== tokenY ? (isLoadingOutput ? "Loading..." : "Swap Now") : "Same Token") : "Insufficient SUI Balance") : "Invalid Trading Pair") : "Enter Valid Amount") : "Connect Wallet"}
+                    </button>
+                    {error && <div className="error">{error}</div>}
+                    {success && <div className="success">{success}</div>}
+                   
+                    <div className="price-reference-panel css-rrtj52">
+                      <div className="price-reference-header css-f7m5r6">
+                        <p className="chakra-text css-5z699w">Price Reference</p>
+                        <button
+                          id="popover-trigger-price-ref"
+                          aria-haspopup="dialog"
+                          aria-expanded="false"
+                          aria-controls="popover-content-price-ref"
+                          className="css-1hohgv6"
+                        >
+                          <div className="css-1ke24j5">
+                            <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px" viewBox="0 0 24 24">
+                              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path>
+                            </svg>
+                          </div>
+                        </button>
+                      </div>
+                      <div className="price-reference-content css-47ju1k">
+                        {[{ token: tokenX, symbol: getTokenInfo(tokenX).symbol }, { token: tokenY, symbol: getTokenInfo(tokenY).symbol }].map(({ token, symbol }, index) => (
+                          <div key={index} className="token-price css-tyic7d">
+                            <div className="token-info css-1igwmid">
+                              <div className="token-details css-token-details">
+                                <div className="icon-wrapper css-kjafn5">
+                                  <div className="icon css-tkdzxl">
+                                    <img className="chakra-image css-rmmdki" src={getTokenInfo(token).icon} alt={symbol} />
+                                  </div>
                                 </div>
-                                <div className="token-address css-t4u65q">
-                                  <div className="address-details css-1a87bas">
-                                    <p className="chakra-text css-43igym">{token.slice(0, 6)}...{token.slice(-4)}</p>
-                                    <div className="css-1ke24j5" onClick={() => copyToClipboard(token)}>
-                                      <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px" viewBox="0 0 24 24">
-                                        <path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2m2 4v10h10V7H7m2 2h6v2H9V9m0 4h6v2H9v-2z"></path>
-                                      </svg>
+                                <div className="token-name-details css-token-name-details">
+                                  <div className="token-name-group css-token-name-group">
+                                    <p className="chakra-text css-1f7xwte">{symbol}</p>
+                                  </div>
+                                  <div className="token-address css-t4u65q">
+                                    <div className="address-details css-1a87bas">
+                                      <p className="chakra-text css-43igym">{token.slice(0, 6)}...{token.slice(-4)}</p>
+                                      <div className="css-1ke24j5" onClick={() => copyToClipboard(token)}>
+                                        <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px" viewBox="0 0 24 24">
+                                          <path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2m2 4v10h10V7H7m2 2h6v2H9V9m0 4h6v2H9v-2z"></path>
+                                        </svg>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                          <div className="price-info-container css-price-info-container">
-                            <div className="price-info css-price-info">
-                              <div className="price-source css-price-source">
-                                <img
-                                  className="chakra-image css-price-source-img"
-                                  src="https://upload.wikimedia.org/wikipedia/commons/b/b0/CoinGecko_logo.png"
-                                  alt="CoinGecko"
-                                  style={{ width: "20px", height: "20px" }}
-                                />
-                                <p className="chakra-text css-v4hq1a">${(prices[symbol.toLowerCase()]?.price || 0).toFixed(3)}</p>
-                                <p className={`chakra-text ${prices[symbol.toLowerCase()]?.change_24h >= 0 ? "css-1m1g51m" : "css-1ec3nbv"}`}>
-                                  {(prices[symbol.toLowerCase()]?.change_24h || 0).toFixed(2)}%
-                                </p>
+                            <div className="price-info-container css-price-info-container">
+                              <div className="price-info css-price-info">
+                                <div className="price-source css-price-source">
+                                  <img
+                                    className="chakra-image css-price-source-img"
+                                    src="https://upload.wikimedia.org/wikipedia/commons/b/b0/CoinGecko_logo.png"
+                                    alt="CoinGecko"
+                                    style={{ width: "20px", height: "20px" }}
+                                  />
+                                  <p className="chakra-text css-v4hq1a">${(prices[symbol.toLowerCase()]?.price || 0).toFixed(3)}</p>
+                                  <p className={`chakra-text ${prices[symbol.toLowerCase()]?.change_24h >= 0 ? "css-1m1g51m" : "css-1ec3nbv"}`}>
+                                    {(prices[symbol.toLowerCase()]?.change_24h || 0).toFixed(2)}%
+                                  </p>
+                                </div>
                               </div>
-                            </div>
-                            <div className="price-chart css-1r938vg">
-                              <div className="recharts-responsive-container" style={{ width: "100%", height: "100%", minWidth: "0" }}>
-                                <div className="recharts-wrapper" style={{ position: "relative", cursor: "default", width: "100%", height: "100%", maxHeight: "20px", maxWidth: "180px" }}>
-                                  <svg className="recharts-surface" width="180" height="20" viewBox="0 0 180 20" style={{ width: "100%", height: "100%" }}>
-                                    <defs>
-                                      <clipPath id={`recharts${index + 1}-clip`}>
-                                        <rect x="15" y="4" height="12" width="150"></rect>
-                                      </clipPath>
-                                      <linearGradient id="priceLine" x1="0" y1="0" x2="1" y2="0">
-                                        <stop offset="0%" stopColor="rgba(117, 200, 255, 1)"></stop>
-                                        <stop offset="100%" stopColor="rgba(104, 255, 216, 1)"></stop>
-                                      </linearGradient>
-                                    </defs>
-                                    <g className="recharts-layer recharts-line">
-                                      <path
-                                        stroke="url(#priceLine)"
-                                        strokeWidth="2"
-                                        fill="none"
-                                        className="recharts-curve recharts-line-curve"
-                                        d={generatePath(symbol)}
-                                      />
-                                      <g className="recharts-layer"></g>
-                                    </g>
-                                  </svg>
+                              <div className="price-chart css-1r938vg">
+                                <div className="recharts-responsive-container" style={{ width: "100%", height: "100%", minWidth: "0" }}>
+                                  <div className="recharts-wrapper" style={{ position: "relative", cursor: "default", width: "100%", height: "100%", maxHeight: "20px", maxWidth: "180px" }}>
+                                    <svg className="recharts-surface" width="180" height="20" viewBox="0 0 180 20" style={{ width: "100%", height: "100%" }}>
+                                      <defs>
+                                        <clipPath id={`recharts${index + 1}-clip`}>
+                                          <rect x="15" y="4" height="12" width="150"></rect>
+                                        </clipPath>
+                                        <linearGradient id="priceLine" x1="0" y1="0" x2="1" y2="0">
+                                          <stop offset="0%" stopColor="rgba(117, 200, 255, 1)"></stop>
+                                          <stop offset="100%" stopColor="rgba(104, 255, 216, 1)"></stop>
+                                        </linearGradient>
+                                      </defs>
+                                      <g className="recharts-layer recharts-line">
+                                        <path
+                                          stroke="url(#priceLine)"
+                                          strokeWidth="2"
+                                          fill="none"
+                                          className="recharts-curve recharts-line-curve"
+                                          d={generatePath(symbol)}
+                                        />
+                                        <g className="recharts-layer"></g>
+                                      </g>
+                                    </svg>
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
+                    {showTokenModal && (
+                      <TokenModal
+                        showTokenModal={showTokenModal}
+                        setShowTokenModal={setShowTokenModal}
+                        tokens={tokens}
+                        importedTokens={importedTokens}
+                        activeList={activeList}
+                        setActiveList={setActiveList}
+                        importAddress={importAddress}
+                        setImportAddress={setImportAddress}
+                        importError={importError}
+                        setImportError={setImportError}
+                        searchQuery={searchQuery}
+                        setSearchQuery={setSearchQuery}
+                        selectToken={selectToken}
+                        balances={balances}
+                        importToken={importToken}
+                      />
+                    )}
                   </div>
-                  {showTokenModal && (
-                    <TokenModal
-                      showTokenModal={showTokenModal}
-                      setShowTokenModal={setShowTokenModal}
-                      tokens={tokens}
-                      importedTokens={importedTokens}
-                      activeList={activeList}
-                      setActiveList={setActiveList}
-                      importAddress={importAddress}
-                      setImportAddress={setImportAddress}
-                      importError={importError}
-                      setImportError={setImportError}
-                      searchQuery={searchQuery}
-                      setSearchQuery={setSearchQuery}
-                      selectToken={selectToken}
-                      balances={balances}
-                      importToken={importToken}
-                    />
-                  )}
                 </div>
-              </div>
-            </>
-          }
-        />
-        <Route path="/pool" element={<Pool />} />
-      </Routes>
-      {showModal && (
-        <Modal message={modalMessage} onClose={() => setShowModal(false)} />
-      )}
-    </div>
+              </>
+            }
+          />
+          <Route path="/pool" element={<Pool />} />
+        </Routes>
+        {showModal && (
+          <Modal message={modalMessage} onClose={() => setShowModal(false)} />
+        )}
+      </div>
+    </WalletProvider>
   );
 }
 
