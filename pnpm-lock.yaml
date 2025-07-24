@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@7kprotocol/sdk-ts':
+        specifier: ^3.3.0
+        version: 3.3.0(@mysten/sui@1.36.0(typescript@5.8.3))(@pythnetwork/pyth-sui-js@2.2.0(typescript@5.8.3))
       '@chakra-ui/icons':
         specifier: ^2.2.4
         version: 2.2.4(@chakra-ui/react@3.22.0(@emotion/react@11.14.0(@types/react@18.3.23)(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
@@ -38,6 +41,9 @@ importers:
       '@pythnetwork/price-service-client':
         specifier: ^1.9.0
         version: 1.9.0
+      '@pythnetwork/pyth-sui-js':
+        specifier: ^2.2.0
+        version: 2.2.0(typescript@5.8.3)
       '@radix-ui/colors':
         specifier: ^3.0.0
         version: 3.0.0
@@ -151,6 +157,12 @@ packages:
     peerDependencies:
       graphql: ^15.5.0 || ^16.0.0 || ^17.0.0
       typescript: ^5.0.0
+
+  '@7kprotocol/sdk-ts@3.3.0':
+    resolution: {integrity: sha512-Jnir8JCf6ONsPdZZYdkbi6csHieaTF/fOzMTbdLUx3anJZH3t14vj3Ru4S0MdWL1k4v/G/lWb0ZQ2M61LMaXvg==}
+    peerDependencies:
+      '@mysten/sui': ^1.33.0
+      '@pythnetwork/pyth-sui-js': ^2.1.0
 
   '@ampproject/remapping@2.3.0':
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
@@ -1214,6 +1226,9 @@ packages:
 
   '@pythnetwork/price-service-sdk@1.8.0':
     resolution: {integrity: sha512-tFZ1thj3Zja06DzPIX2dEWSi7kIfIyqreoywvw5NQ3Z1pl5OJHQGMEhxt6Li3UCGSp2ooYZS9wl8/8XfrfrNSA==}
+
+  '@pythnetwork/pyth-sui-js@2.2.0':
+    resolution: {integrity: sha512-BH9oLZchSPXOBK1cmvT4foFELaOcAJJ6lAYXarnVeuBNZxTULBKPYLHuljbz0mqxrKZIVVT6FqqML2A78SlTSg==}
 
   '@radix-ui/colors@3.0.0':
     resolution: {integrity: sha512-FUOsGBkHrYJwCSEtWRCIfQbZG7q1e6DgxCIOe1SUQzDe/7rXXeA47s8yCn6fuTNQAj1Zq4oTFi9Yjp3wzElcxg==}
@@ -4294,6 +4309,11 @@ snapshots:
       graphql: 16.11.0
       typescript: 5.8.3
 
+  '@7kprotocol/sdk-ts@3.3.0(@mysten/sui@1.36.0(typescript@5.8.3))(@pythnetwork/pyth-sui-js@2.2.0(typescript@5.8.3))':
+    dependencies:
+      '@mysten/sui': 1.36.0(typescript@5.8.3)
+      '@pythnetwork/pyth-sui-js': 2.2.0(typescript@5.8.3)
+
   '@ampproject/remapping@2.3.0':
     dependencies:
       '@jridgewell/gen-mapping': 0.3.12
@@ -5705,6 +5725,19 @@ snapshots:
   '@pythnetwork/price-service-sdk@1.8.0':
     dependencies:
       bn.js: 5.2.2
+
+  '@pythnetwork/pyth-sui-js@2.2.0(typescript@5.8.3)':
+    dependencies:
+      '@mysten/sui': 1.36.0(typescript@5.8.3)
+      '@pythnetwork/price-service-client': 1.9.0
+      buffer: 6.0.3
+    transitivePeerDependencies:
+      - '@gql.tada/svelte-support'
+      - '@gql.tada/vue-support'
+      - bufferutil
+      - debug
+      - typescript
+      - utf-8-validate
 
   '@radix-ui/colors@3.0.0': {}
 
