@@ -780,20 +780,28 @@ body {
 }
 
 .info-panel {
-  margin-top: 12px;
-  font-size: 13px;
-  background: var(--modal-bg);
-  border-radius: 12px;
-  padding: 16px;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 4px 12px var(--shadow-color);
+  margin-top: 12px; /* 增加顶部间距 */
+  padding: 8px; /* 减少内边距 */
+  background: var(--modal-bg); /* 背景颜色 */
+  border-radius: 12px; /* 圆角 */
+  box-shadow: 0 4px 12px var(--shadow-color); /* 阴影效果 */
 }
 
 .info-panel p {
   display: flex;
-  justify-content: space-between;
-  margin: 8px 0;
-  color: var(--text-secondary);
+  justify-content: space-between; /* 水平分布内容 */
+  margin: 4px 0; /* 减少上下间距 */
+  color: var(--text-secondary); /* 文字颜色 */
+  font-size: 14px; /* 调整字体大小 */
+}
+
+.price-diff-section {
+  display: flex;
+  justify-content: space-between; /* 水平分布内容 */
+  margin-top: 8px; /* 增加顶部间距 */
+  padding: 4px; /* 减少内边距 */
+  background: rgba(255, 255, 255, 0.05); /* 背景颜色 */
+  border-radius: 8px; /* 圆角 */
 }
 
 .token-modal-container {
@@ -1797,6 +1805,10 @@ body {
   .info-panel p {
     margin: 8px 0;
   }
+  .price-diff-section {
+    margin-top: 8px;
+    padding: 4px;
+  }
   .token-modal-content {
     max-width: 480px;
   }
@@ -2219,6 +2231,10 @@ body {
   .info-panel p {
     margin: 6px 0;
   }
+  .price-diff-section {
+    margin-top: 8px;
+    padding: 4px;
+  }
   .token-modal-content {
     padding: 12px;
   }
@@ -2307,14 +2323,36 @@ body {
   transition: all 0.3s ease;
 }
 
+.swap-info {
+  margin-top: 12px; /* 与 Swap 按钮的间距 */
+  padding: 12px; /* 内边距 */
+  background: var(--modal-bg); /* 背景颜色 */
+  border-radius: 12px; /* 圆角 */
+  box-shadow: 0 4px 12px var(--shadow-color); /* 阴影效果 */
+}
+
+.info-row {
+  display: flex;
+  align-items: center; /* 垂直居中对齐 */
+  justify-content: space-between; /* 水平分布内容 */
+  margin: 8px 0; /* 上下间距 */
+  color: var(--text-secondary); /* 文字颜色 */
+  font-size: 14px; /* 字体大小 */
+}
+
+.info-row img {
+  width: 24px; /* 代币图标大小 */
+  height: 24px; /* 代币图标大小 */
+  margin-right: 8px; /* 图标与文字之间的间距 */
+}
+
 button {
-  padding: 4px 8px; /* 减小内边距 */
-  background: var(--card-bg); /* 设置为页面背景颜色 */
-  color: #ffffff; /* 文字颜色 */
-  border-radius: 20px; /* 圆角 */
-  font-size: 12px; /* 减小字体大小 */
-  font-weight: 600; /* 字体粗细 */
-  transition: all 0.3s ease;
+  padding: 4px 8px; /* 按钮内边距 */
+  background: var(--primary-color); /* 按钮背景颜色 */
+  color: #ffffff; /* 按钮文字颜色 */
+  border-radius: 20px; /* 按钮圆角 */
+  font-size: 12px; /* 按钮字体大小 */
+  font-weight: 600; /* 按钮字体粗细 */
   border: none; /* 移除边框 */
   cursor: pointer; /* 鼠标悬停时显示为手型 */
 }

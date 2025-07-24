@@ -7,6 +7,7 @@ import TokenModal, { tokens } from "./TokenModal";
 import CoverPage from "./CoverPage";
 import "./App.css";
 import "./App2.css";
+import Confetti from "react-confetti"; // 导入放礼花组件
 
 // Main application component for token swapping
 function App() {
@@ -44,6 +45,18 @@ function App() {
   const [priceDifference, setPriceDifference] = useState("0.00");
   const [isLoadingOutput, setIsLoadingOutput] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const switchRef = useRef(null); // 创建一个 ref 来获取开关的位置
+
+  useEffect(() => {
+    if (useAggregator) {
+      setShowConfetti(true);
+      const timer = setTimeout(() => {
+        setShowConfetti(false);
+      }, 3000); // 3秒后停止放礼花
+      return () => clearTimeout(timer);
+    }
+  }, [useAggregator]);
 
   const PACKAGE_ID = "0xb90158d50ac951784409a6876ac860e24564ed5257e51944d3c693efb9fdbd78";
   const POOL_REGISTRY = "0xfc8c69858d070b639b3db15ff0f78a10370950434c5521c83eaa7e2285db8d2a";
@@ -723,7 +736,7 @@ function App() {
 
       signAndExecute(
         {
-          transaction: tx,
+          transaction: tx as any,
           account,
         },
         {
@@ -779,6 +792,13 @@ function App() {
         <div className={`toast toast-${toast.type}`}>
           <p>{toast.message}</p>
         </div>
+      )}
+      {showConfetti && (
+        <Confetti
+          width={window.innerWidth}
+          height={window.innerHeight}
+          style={{ position: "absolute", top: 0, left: 0 }} // 确保礼花覆盖整个窗口
+        />
       )}
       <Routes>
         <Route
@@ -846,7 +866,7 @@ function App() {
                   <div className="swap-header">
                     <h2 className="swap-title">Swap</h2>
                     <div className="settings-row">
-                      <div className="aggregator-toggle">
+                      <div className="aggregator-toggle" ref={switchRef}>
                         <label className="chakra-form__label" htmlFor="aggregator-mode">Aggregator Mode</label>
                         <label className="chakra-switch">
                           <input
@@ -985,116 +1005,19 @@ function App() {
                   {error && <div className="error">{error}</div>}
                   {success && <div className="success">{success}</div>}
                   {amountIn && parseFloat(amountIn) > 0 && (poolId || useAggregator) && (
-                    <div className="info-panel css-1rg57k7">
-                      <div className="info-section css-1hmocdy">
-                        <div className="exchange-rate css-1hsegr7">
-                          <div className="rate-container css-gmuwbf">
-                            <div className="rate-details css-1txlnq4">
-                              <div className="token-pair css-urzsqz">
-                                <div className="token-icon-container css-12z0wuy">
-                                  <div className="icon-wrapper css-kjafn5">
-                                    <div className="icon css-3l2vxh">
-                                      <img className="chakra-image css-rmmdki" src={getTokenInfo(tokenX).icon} alt={getTokenInfo(tokenX).symbol} />
-                                    </div>
-                                    <p className="chakra-text css-v4hq1a">{getTokenInfo(tokenX).symbol}</p>
-                                  </div>
-                                </div>
-                                <p className="chakra-text css-3c533j">1</p>
-                                <p className="chakra-text css-v4hq1a">≈</p>
-                              </div>
-                              <div className="rate-value css-759u60">
-                                <p className="chakra-text css-1us4ioa">{exchangeRate}</p>
-                                <div className="token-icon-container css-qbrse1">
-                                  <div className="icon-wrapper css-kjafn5">
-                                    <div className="icon css-3l2vxh">
-                                      <img className="chakra-image css-rmmdki" src={getTokenInfo(tokenY).icon} alt={getTokenInfo(tokenY).symbol} />
-                                    </div>
-                                    <p className="chakra-text css-wiq74l">{getTokenInfo(tokenY).symbol}</p>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="rate-arrow css-1qh2nrm">
-                              <div className="arrow-icon css-1ke24j5">
-                                <svg aria-hidden="true" fill="var(--text-secondary)" width="16px" height="16px" viewBox="0 0 24 24">
-                                  <path d="M12 17l-5-5h10l-5 5z"></path>
-                                </svg>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="info-row css-166fmvx">
-                          <div className="info-label css-1qjyqx0">
-                            <p className="chakra-text css-14htw7e">Minimum Received</p>
-                          </div>
-                          <div className="info-value css-1gkzamg">
-                            <p className="chakra-text css-9imny6">{minAmountOut} {getTokenInfo(tokenY).symbol}</p>
-                          </div>
-                        </div>
-                        <div className="info-row css-70zqv6">
-                          <p className="chakra-text css-rc64l8">Auto Router</p>
-                          <div className="router-info css-a5rwps">
-                            <div className="router-details css-zqc767">
-                              <div className="router-path css-2ndtyn">
-                                <p className="chakra-text css-1eiyrn3">{getTokenInfo(tokenX).symbol} {">"} {getTokenInfo(tokenY).symbol}</p>
-                                <div className="router-icon css-kjafn5">
-                                  <div className="icon css-4jxs7j">
-                                    <img className="chakra-image css-rmmdki" src="https://archive.cetus.zone/assets/image/sui/sui.png" alt="Cetus" />
-                                  </div>
-                                </div>
-                                <div className="router-status css-166r45o">
-                                  <svg aria-hidden="true" fill="var(--text-secondary)" width="16px" height="16px" viewBox="0 0 24 24">
-                                    <path d="M3 3v18h18V3H3zm16 16H5V5h14v14z"></path>
-                                  </svg>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="price-diff-section css-mh0esh">
-                        <div className="price-diff-header css-bzhmyh">
-                          <p className="chakra-text css-1havq56">Price Difference</p>
-                          <button
-                            id="popover-trigger-price-diff"
-                            aria-haspopup="dialog"
-                            aria-expanded="false"
-                            aria-controls="popover-content-price-diff"
-                            className="css-0"
-                          >
-                            <div className="css-1ke24j5">
-                              <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px" viewBox="0 0 24 24">
-                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path>
-                              </svg>
-                            </div>
-                          </button>
-                        </div>
-                        <div className="price-diff-content css-5thc8w">
-                          <div className="price-diff-value css-1414k4v">
-                            <p className="chakra-text css-1dtrlpp">{priceDifference}% within</p>
-                            <div
-                              id="popover-trigger-price-diff-info"
-                              aria-haspopup="dialog"
-                              aria-expanded="false"
-                              aria-controls="popover-content-price-diff-info"
-                              className="css-6su6fj"
-                            >
-                              <span className="price-source-tag cryptocompare">CryptoCompare</span>
-                            </div>
-                            <div className="chakra-popover__popper css-1cyw1a8" style={{ visibility: "hidden", position: "absolute", minWidth: "max-content", inset: "0px auto auto 0px" }}>
-                              <section
-                                id="popover-content-price-diff-info"
-                                tabIndex={-1}
-                                role="dialog"
-                                className="chakra-popover__content css-h7r0o8"
-                                style={{ transformOrigin: "var(--popper-transform-origin)", opacity: 0, visibility: "hidden", transform: "scale(0.95)" }}
-                              >
-                                <p className="chakra-text css-1dtrlpp">Price difference compared to market price</p>
-                              </section>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                    <div className="info-panel">
+                      <p>
+                        <span>Minimum Received</span>
+                        <span>{minAmountOut} USDC</span>
+                      </p>
+                      <p>
+                        <span>Auto Router</span>
+                        <span>{tokenX} {'>'} {tokenY}</span>
+                      </p>
+                      <p>
+                        <span>Price Difference</span>
+                        <span>{priceDifference}% within</span>
+                      </p>
                     </div>
                   )}
                   <div className="price-reference-panel css-rrtj52">
