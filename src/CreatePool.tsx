@@ -72,10 +72,10 @@ const tokens: Token[] = [
     decimals: 6,
   },
   {
-    symbol: "HEADAL",
-    address: "0x3a304c7feba2d819ea57c3542d68439ca2c386ba02159c740f7b406e592c62ea::HEADAL::HEADAL",
+    symbol: "HAEDAL",
+    address: "0x3a304c7feba2d819ea57c3542d68439ca2c386ba02159c740f7b406e592c62ea::HAEDAL::HAEDAL",
     icon: "https://s2.coinmarketcap.com/static/img/coins/200x200/36369.png",
-    description: "HEADAL Token",
+    description: "HAEDAL Token",
     decimals: 6,
   },
   {
@@ -86,10 +86,10 @@ const tokens: Token[] = [
     decimals: 6,
   },
   {
-    symbol: "haSUI",
-    address: "0xbde4ba4c2e274a60ce15c1cfff9e5c42e41654ac8b6d906a57efa4bd3c29f47d::hasui::HASUI",
+    symbol: "HASUI",
+    address: "0xbde4ba4c2e274a60ce15c1cfff9e5c42e41654ac8b6d906a57efa4bd3c29f47d::HASUI::HASUI",
     icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvd9yv6JWLikNWB-MxU2OyErJiqffAcLi8mw&s",
-    description: "haSUI Token",
+    description: "HASUI Token",
     decimals: 6,
   },
   {
@@ -100,7 +100,7 @@ const tokens: Token[] = [
     decimals: 6,
   },
   {
-    symbol: "OKX Wrapped BTC",
+    symbol: "XBTC",
     address: "0x876a4b7bce8aeaef60464c11f4026903e9afacab79b9b142686158aa86560b50::xbtc::XBTC",
     icon: "https://static.coinall.ltd/cdn/oksupport/common/20250512-095503.72e1f41d9b9a06.png",
     description: "XBTC",
@@ -221,7 +221,7 @@ const tokens: Token[] = [
   {
     symbol: "haWAL",
     address: "0x8b4d553839b219c3fd47608a0cc3d5fcc572cb25d41b7df3833208586a8d2470::hawal::HAWAL",
-    icon: "https://assets.HEADAL.xyz/logos/hawal.svg",
+    icon: "https://assets.HAEDAL.xyz/logos/hawal.svg",
     description: "haWAL",
     decimals: 6,
   },
@@ -267,9 +267,9 @@ function CreatePool({ newPoolToken1, setNewPoolToken1, newPoolToken2, setNewPool
     "0xd52c440f67dd960bc76f599a16065abd5fbc251b78f18d9dce3578ccc44462a9::cetus::CETUS": "300.0",
     "0xdeeb7a4662eec9f2f3def03fb937a663dddaa2e215b8078a284d026b7946c270::deep::DEEP": "100.0",
     "0x356a26eb9e012a68958082340d4c4116e7f55615cf27affcff209cf0ae544f59::wal::WAL": "200.0",
-    "0x3a304c7feba2d819ea57c3542d68439ca2c386ba02159c740f7b406e592c62ea::HEADAL::HEADAL": "150.0",
+    "0x3a304c7feba2d819ea57c3542d68439ca2c386ba02159c740f7b406e592c62ea::HAEDAL::HAEDAL": "150.0",
     "0x7016aae72cfc67f2fadf55769c0a7dd54291a583b63051a5ed71081cce836ac6::sca::SCA": "120.0",
-    "0xbde4ba4c2e274a60ce15c1cfff9e5c42e41654ac8b6d906a57efa4bd3c29f47d::hasui::HASUI": "180.0",
+    "0xbde4ba4c2e274a60ce15c1cfff9e5c42e41654ac8b6d906a57efa4bd3c29f47d::HASUI::HASUI": "180.0",
     "0xce7ff77a83ea0cb6fd39bd8748e2ec89a3f41e8efdc3f4eb123e0ca37b184db2::buck::BUCK": "400.0",
     "0x876a4b7bce8aeaef60464c11f4026903e9afacab79b9b142686158aa86560b50::xbtc::XBTC": "50.0",
     "0x375f70cf2ae4c00bf37117d0c85a2c71545e6ee05c4a5c7d282cd66a4504b068::usdt::USDT": "600.0",

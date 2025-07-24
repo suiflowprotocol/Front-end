@@ -51,10 +51,10 @@ export const tokens = [
     decimals: 6,
   },
   {
-    symbol: "HEADAL",
-    address: "0x3a304c7feba2d819ea57c3542d68439ca2c386ba02159c740f7b406e592c62ea::HEADAL::HEADAL",
+    symbol: "HAEDAL",
+    address: "0x3a304c7feba2d819ea57c3542d68439ca2c386ba02159c740f7b406e592c62ea::HAEDAL::HAEDAL",
     icon: "https://s2.coinmarketcap.com/static/img/coins/200x200/36369.png",
-    description: "HEADAL Token",
+    description: "HAEDAL Token",
     decimals: 6,
   },
   {
@@ -65,10 +65,10 @@ export const tokens = [
     decimals: 6,
   },
   {
-    symbol: "haSUI",
-    address: "0xbde4ba4c2e274a60ce15c1cfff9e5c42e41654ac8b6d906a57efa4bd3c29f47d::hasui::HASUI",
+    symbol: "HASUI",
+    address: "0xbde4ba4c2e274a60ce15c1cfff9e5c42e41654ac8b6d906a57efa4bd3c29f47d::HASUI::HASUI",
     icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvd9yv6JWLikNWB-MxU2OyErJiqffAcLi8mw&s",
-    description: "haSUI Token",
+    description: "HASUI Token",
     decimals: 6,
   },
   {
@@ -79,7 +79,7 @@ export const tokens = [
     decimals: 6,
   },
   {
-    symbol: "OKX Wrapped BTC",
+    symbol: "XBTC",
     address: "0x876a4b7bce8aeaef60464c11f4026903e9afacab79b9b142686158aa86560b50::xbtc::XBTC",
     icon: "https://static.coinall.ltd/cdn/oksupport/common/20250512-095503.72e1f41d9b9a06.png",
     description: "XBTC",
@@ -200,7 +200,7 @@ export const tokens = [
   {
     symbol: "haWAL",
     address: "0x8b4d553839b219c3fd47608a0cc3d5fcc572cb25d41b7df3833208586a8d2470::hawal::HAWAL",
-    icon: "https://assets.HEADAL.xyz/logos/hawal.svg",
+    icon: "https://assets.HAEDAL.xyz/logos/hawal.svg",
     description: "haWAL",
     decimals: 6,
   },

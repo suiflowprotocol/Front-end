@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ConnectButton, useCurrentAccount, useSuiClient, useSignAndExecuteTransaction } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
 import { Link, Route, Routes } from "react-router-dom";
@@ -50,6 +50,11 @@ function App() {
   const CETUS_AGGREGATOR = "0xsome_cetus_aggregator_id"; // Replace with actual Cetus aggregator package ID
   const CRYPTOCOMPARE_API = "https://min-api.cryptocompare.com/data";
 
+  // Cache for price and history data
+  const priceCache = useRef<{ [key: string]: { price: number; change_24h: number; timestamp: number } }>({});
+  const historyCache = useRef<{ [key: string]: { data: { x: number; y: number }[]; timestamp: number } }>({});
+  const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
   // Mapping of token symbols to CryptoCompare IDs
   const cryptoCompareIds: { [key: string]: string } = {
     SUI: "SUI",
@@ -70,7 +75,7 @@ function App() {
     NAVX: "NAVX",
     USDY: "USDY",
     FUD: "FUD",
-    HEADAL: "HEADAL",
+    HAEDAL: "HAEDAL",
     NS: "NS",
     CETUS: "CETUS",
     DEEP: "DEEP",
@@ -78,8 +83,8 @@ function App() {
     SCA: "SCA",
     HASUI: "HASUI",
     BUCK: "BUCK",
-    "OKX_WRAPPED_BTC": "BTC", // Assuming OKX Wrapped BTC maps to BTC
-    "TETHER_SUI_BRIDGE": "USDT" // Assuming Tether (Sui Bridge) maps to USDT
+    "OKX_WRAPPED_BTC": "BTC",
+    "TETHER_SUI_BRIDGE": "USDT"
   };
 
   // Update countdown timer for UTC+8
@@ -208,6 +213,22 @@ function App() {
     }
   };
 
+  // Retry logic for API calls
+  const fetchWithRetry = async (url: string, retries = 3, delay = 1000): Promise<any> => {
+    for (let i = 0; i < retries; i++) {
+      try {
+        const response = await fetch(url, { signal: AbortSignal.timeout(5000) });
+        if (!response.ok) {
+          throw new Error(`HTTP error: ${response.status}`);
+        }
+        return await response.json();
+      } catch (err) {
+        if (i === retries - 1) throw err;
+        await new Promise(resolve => setTimeout(resolve, delay * Math.pow(2, i)));
+      }
+    }
+  };
+
   // Fetch current price and 24h change for a token
   const fetchTokenPrice = async (symbol: string) => {
     const ccId = cryptoCompareIds[symbol.toUpperCase()];
@@ -215,35 +236,30 @@ function App() {
       console.warn(`No CryptoCompare ID found for ${symbol}`);
       return null;
     }
-    try {
-      // Fetch current price
-      const currentResponse = await fetch(
-        `${CRYPTOCOMPARE_API}/price?fsym=${ccId}&tsyms=USD`,
-        { signal: AbortSignal.timeout(5000) } // 5s timeout
-      );
-      if (!currentResponse.ok) {
-        throw new Error(`CryptoCompare API responded with status: ${currentResponse.status}`);
-      }
-      const currentData = await currentResponse.json();
-      const currentPrice = currentData.USD;
 
-      // Fetch price from 24 hours ago
-      const twentyFourHoursAgo = Math.floor((Date.now() - 24 * 60 * 60 * 1000) / 1000);
-      const historicalResponse = await fetch(
-        `${CRYPTOCOMPARE_API}/pricehistorical?fsym=${ccId}&tsyms=USD&ts=${twentyFourHoursAgo}`,
-        { signal: AbortSignal.timeout(5000) }
-      );
-      if (!historicalResponse.ok) {
-        throw new Error(`CryptoCompare historical price API responded with status: ${historicalResponse.status}`);
-      }
-      const historicalData = await historicalResponse.json();
+    // Check cache first
+    const cached = priceCache.current[symbol.toLowerCase()];
+    if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+      return cached;
+    }
+
+    try {
+      const now = Math.floor(Date.now() / 1000);
+      const twentyFourHoursAgo = now - 24 * 60 * 60;
+
+      // Fetch current and historical prices concurrently
+      const [currentData, historicalData] = await Promise.all([
+        fetchWithRetry(`${CRYPTOCOMPARE_API}/price?fsym=${ccId}&tsyms=USD`),
+        fetchWithRetry(`${CRYPTOCOMPARE_API}/pricehistorical?fsym=${ccId}&tsyms=USD&ts=${twentyFourHoursAgo}`)
+      ]);
+
+      const currentPrice = currentData.USD || 0;
       const pastPrice = historicalData[ccId]?.USD || 0;
       const change_24h = pastPrice > 0 ? ((currentPrice - pastPrice) / pastPrice * 100) : 0;
 
-      return {
-        price: currentPrice || 0,
-        change_24h: change_24h
-      };
+      const priceData = { price: currentPrice, change_24h, timestamp: Date.now() };
+      priceCache.current[symbol.toLowerCase()] = priceData;
+      return priceData;
     } catch (err) {
       console.error(`Failed to fetch price for ${symbol}:`, err);
       return null;
@@ -257,44 +273,57 @@ function App() {
       console.warn(`No CryptoCompare ID found for ${symbol} (price history)`);
       return [];
     }
+
+    // Check cache first
+    const cached = historyCache.current[symbol.toLowerCase()];
+    if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+      return cached.data;
+    }
+
     try {
-      const prices = [];
       const now = Math.floor(Date.now() / 1000);
+      const promises = [];
       for (let i = 0; i < 7; i++) {
         const timestamp = now - (i * 24 * 60 * 60);
-        const response = await fetch(
-          `${CRYPTOCOMPARE_API}/pricehistorical?fsym=${ccId}&tsyms=USD&ts=${timestamp}`,
-          { signal: AbortSignal.timeout(5000) }
+        promises.push(
+          fetchWithRetry(`${CRYPTOCOMPARE_API}/pricehistorical?fsym=${ccId}&tsyms=USD&ts=${timestamp}`)
+            .then(data => ({
+              x: timestamp * 1000,
+              y: data[ccId]?.USD || 0
+            }))
         );
-        if (!response.ok) {
-          throw new Error(`CryptoCompare historical price API responded with status: ${response.status}`);
-        }
-        const data = await response.json();
-        prices.push({
-          x: timestamp * 1000,
-          y: data[ccId]?.USD || 0
-        });
       }
-      return prices.reverse();
+
+      const prices = (await Promise.all(promises)).reverse();
+      historyCache.current[symbol.toLowerCase()] = { data: prices, timestamp: Date.now() };
+      return prices;
     } catch (err) {
       console.error(`Failed to fetch price history for ${symbol}:`, err);
       return [];
     }
   };
 
-  // Fetch prices for all tokens
+  // Fetch prices for all tokens concurrently
   useEffect(() => {
     const fetchPrices = async () => {
       try {
-        const newPrices: { [key: string]: { price: number; change_24h: number } } = {};
         const tokensToFetch = [...tokens, ...importedTokens].filter(
           (token) => token.address && !token.address.includes("...")
         );
 
-        for (const token of tokensToFetch) {
-          const priceData = await fetchTokenPrice(token.symbol);
-          newPrices[token.symbol.toLowerCase()] = priceData || { price: 0, change_24h: 0 };
-        }
+        const pricePromises = tokensToFetch.map(token => 
+          fetchTokenPrice(token.symbol).then(data => ({
+            symbol: token.symbol.toLowerCase(),
+            data
+          }))
+        );
+
+        const results = await Promise.all(pricePromises);
+        const newPrices: { [key: string]: { price: number; change_24h: number } } = {};
+
+        results.forEach(({ symbol, data }) => {
+          newPrices[symbol] = data || { price: 0, change_24h: 0 };
+        });
 
         setPrices(newPrices);
         if (Object.keys(newPrices).length === 0) {
@@ -313,16 +342,23 @@ function App() {
     return () => clearInterval(interval);
   }, [importedTokens]);
 
-  // Fetch price history for selected tokens
+  // Fetch price history for selected tokens concurrently
   useEffect(() => {
     const fetchTokenPriceHistory = async () => {
       const symbols = [getTokenInfo(tokenX).symbol, getTokenInfo(tokenY).symbol];
+      const historyPromises = symbols.map(symbol => 
+        fetchPriceHistory(symbol).then(data => ({
+          symbol: symbol.toLowerCase(),
+          data
+        }))
+      );
+
+      const results = await Promise.all(historyPromises);
       const newPriceHistory: { [key: string]: { x: number; y: number }[] } = {};
 
-      for (const symbol of symbols) {
-        const data = await fetchPriceHistory(symbol);
-        newPriceHistory[symbol.toLowerCase()] = data || [];
-      }
+      results.forEach(({ symbol, data }) => {
+        newPriceHistory[symbol] = data || [];
+      });
 
       setPriceHistory(newPriceHistory);
     };
@@ -330,18 +366,26 @@ function App() {
     fetchTokenPriceHistory();
   }, [tokenX, tokenY]);
 
-  // Generate SVG path for price chart
+  // Generate SVG path for price chart with optimization
   const generatePath = (symbol: string) => {
     const priceData = priceHistory[symbol.toLowerCase()] || [];
     if (!priceData || priceData.length < 2) return "M15,10L180,10";
-    const minPrice = Math.min(...priceData.map((p) => p.y));
-    const maxPrice = Math.max(...priceData.map((p) => p.y));
+    
+    // Downsample data for smoother rendering
+    const sampledData = priceData.length > 20 
+      ? priceData.filter((_, i) => i % Math.ceil(priceData.length / 20) === 0)
+      : priceData;
+
+    const minPrice = Math.min(...sampledData.map((p) => p.y));
+    const maxPrice = Math.max(...sampledData.map((p) => p.y));
     const priceRange = maxPrice - minPrice || 1;
-    const points = priceData.map((p, i) => {
-      const x = 15 + (i / (priceData.length - 1)) * 150;
+    
+    const points = sampledData.map((p, i) => {
+      const x = 15 + (i / (sampledData.length - 1)) * 150;
       const y = 16 - ((p.y - minPrice) / priceRange) * 12;
       return `${x},${y}`;
     });
+    
     return `M${points.join("L")}`;
   };
 

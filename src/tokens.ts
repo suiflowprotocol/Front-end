@@ -37,8 +37,8 @@ export const tokens: Token[] = [
     image: "https://momentum-statics.s3.us-west-1.amazonaws.com/suiUSDT.png",
   },
   {
-    symbol: "haSUI",
-    address: "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::hasui::HASUI",
+    symbol: "HASUI",
+    address: "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::HASUI::HASUI",
     decimals: 9,
     image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvd9yv6JWLikNWB-MxU2OyErJiqffAcLi8mw&s",
   },
@@ -55,7 +55,7 @@ export const tokens: Token[] = [
     image: "https://bridge-assets.sui.io/suiWBTC.png",
   },
   {
-    symbol: "OKX Wrapped BTC",
+    symbol: "XBTC",
     address: "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::xbtc::XBTC",
     decimals: 8,
     image: "https://static.coinall.ltd/cdn/oksupport/common/20250512-095503.72e1f41d9b9a06.png",
@@ -64,7 +64,7 @@ export const tokens: Token[] = [
     symbol: "haWAL",
     address: "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::hawal::HAWAL",
     decimals: 8,
-    image: "https://assets.HEADAL.xyz/logos/hawal.svg",
+    image: "https://assets.HAEDAL.xyz/logos/hawal.svg",
   },
   {
     symbol: "Wrapped Ether(Wormhole)",
