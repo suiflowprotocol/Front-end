@@ -71,6 +71,8 @@ body {
 }
 
 .header {
+  box-sizing: border-box;
+  margin: 0 auto;
   display: flex;
   flex-direction: row; /* 确保在同一行显示 */
   justify-content: space-between; /* 确保内容均匀分布 */
@@ -122,6 +124,12 @@ body {
   transform: scale(1.05);
 }
 
+/* 在 .logo-text 后添加 */
+.logo-text:hover {
+  transform: scale(1.05);
+}
+
+
 /* 修改后的 logo-text 样式，添加艺术字效果 */
 .logo-text {
   font-family: 'Orbitron', sans-serif; /* 使用艺术字体 Orbitron */
@@ -141,6 +149,7 @@ body {
   gap: 12px; /* 保持导航项之间的间距 */
   flex-wrap: nowrap; /* 确保不换行 */
   margin: 0; /* 移除自动边距 */
+  transition: max-height 0.3s ease, opacity 0.3s ease;
 }
 
 .nav-item {
@@ -222,7 +231,7 @@ body {
   font-weight: 600; /* 字体粗细 */
   transition: all 0.3s ease;
   border: none; /* 移除边框 */
-  min-width: 100px; /* 设置最小宽度以避免过小 */
+  min-width: 80px;
 }
 
 .wallet-button:hover {
@@ -245,12 +254,15 @@ body {
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.2); /* 设置为细的透明白灰色 */
+  border-radius: 8px; /* 设置圆角 */
+  cursor: pointer;
+  padding: 6px; /* 按钮内边距 */
+  transition: transform 0.3s ease;
 }
 
 .icon-button:hover {
-  background: var(--hover-bg);
-  transform: translateY(-1px);
+  background: rgba(59, 130, 246, 0.1); /* 悬停时的背景颜色 */
 }
 
 .icon-button-svg {
@@ -675,7 +687,7 @@ body {
   border: 1px solid var(--border-color);
   cursor: pointer;
   transition: transform 0.3s ease;
-  z-index: 1;
+  z-index: 2;
 }
 
 .swap-icon:hover {
@@ -2361,3 +2373,18 @@ button:hover {
   background: var(--button-hover-bg); /* 悬停时的背景颜色 */
   transform: translateY(-1px); /* 悬停时的效果 */
 }
+
+.popover {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.popover-body {
+  padding: 10px;
+}
+

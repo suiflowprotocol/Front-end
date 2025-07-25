@@ -7,17 +7,17 @@ import TokenModal, { tokens } from "./TokenModal";
 import CoverPage from "./CoverPage";
 import "./App.css";
 import "./App2.css";
-import Confetti from "react-confetti"; // 导入放礼花组件
-import Modal from './Modal'; // 导入弹窗组件
+import Confetti from "react-confetti";
+import Modal from './Modal';
 
-// 定义自定义主题
+// Define custom theme
 const customTheme: ThemeVars = {
   blurs: {
     modalOverlay: 'blur(0)',
   },
   backgroundColors: {
-    primaryButton: '#3b82f6', // 设置为与Swap按钮相同的蓝色
-    primaryButtonHover: '#4b9cfa', // 悬停时的颜色
+    primaryButton: '#3b82f6',
+    primaryButtonHover: '#4b9cfa',
     outlineButtonHover: '#E4E4E7',
     modalOverlay: 'rgba(24, 36, 53, 0.2)',
     modalPrimary: 'white',
@@ -33,7 +33,7 @@ const customTheme: ThemeVars = {
     outlineButton: '#E4E4E7',
   },
   colors: {
-    primaryButton: '#FFFFFF', // 按钮文字颜色
+    primaryButton: '#FFFFFF',
     outlineButton: '#373737',
     iconButton: '#000000',
     body: '#182435',
@@ -47,8 +47,8 @@ const customTheme: ThemeVars = {
     xlarge: '16px',
   },
   shadows: {
-    primaryButton: '0 4px 12px rgba(0, 0, 0, 0.1)', // 按钮阴影
-    walletItemSelected: '0 2px 8px rgba(0, 0, 0, 0.05)', // 选中钱包项的阴影
+    primaryButton: '0 4px 12px rgba(0, 0, 0, 0.1)',
+    walletItemSelected: '0 2px 8px rgba(0, 0, 0, 0.05)',
   },
   fontWeights: {
     normal: '400',
@@ -106,16 +106,18 @@ function App() {
   const [isLoadingOutput, setIsLoadingOutput] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [showConfetti, setShowConfetti] = useState(false);
-  const switchRef = useRef(null); // 创建一个 ref 来获取开关的位置
+  const switchRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const [showNotificationPopover, setShowNotificationPopover] = useState(false);
+  const [showRpcPopover, setShowRpcPopover] = useState(false);
 
   useEffect(() => {
     if (useAggregator) {
       setShowConfetti(true);
       const timer = setTimeout(() => {
         setShowConfetti(false);
-      }, 3000); // 3秒后停止放礼花
+      }, 3000);
       return () => clearTimeout(timer);
     }
   }, [useAggregator]);
@@ -125,12 +127,10 @@ function App() {
   const CETUS_AGGREGATOR = "0xsome_cetus_aggregator_id"; // Replace with actual Cetus aggregator package ID
   const CRYPTOCOMPARE_API = "https://min-api.cryptocompare.com/data";
 
-  // Cache for price and history data
   const priceCache = useRef<{ [key: string]: { price: number; change_24h: number; timestamp: number } }>({});
   const historyCache = useRef<{ [key: string]: { data: { x: number; y: number }[]; timestamp: number } }>({});
-  const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+  const CACHE_DURATION = 5 * 60 * 1000;
 
-  // Mapping of token symbols to CryptoCompare IDs
   const cryptoCompareIds: { [key: string]: string } = {
     SUI: "SUI",
     USDC: "USDC",
@@ -162,7 +162,6 @@ function App() {
     "TETHER_SUI_BRIDGE": "USDT"
   };
 
-  // Update countdown timer for UTC+8
   useEffect(() => {
     const updateCountdown = () => {
       const now = new Date();
@@ -193,7 +192,6 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
-  // Custom hook for debouncing input
   const useDebounce = (value: string, delay: number) => {
     const [debouncedValue, setDebouncedValue] = useState(value);
 
@@ -212,13 +210,11 @@ function App() {
 
   const debouncedAmountIn = useDebounce(amountIn, 300);
 
-  // Get token decimals based on address
   const getTokenDecimals = (tokenAddress: string) => {
     const token = [...tokens, ...importedTokens].find((t) => t.address === tokenAddress);
     return token?.decimals || 6;
   };
 
-  // Set input amount to half of balance
   const setHalfBalance = () => {
     const balance = parseFloat(balances[tokenX] || "0");
     if (balance > 0) {
@@ -226,7 +222,6 @@ function App() {
     }
   };
 
-  // Set input amount to max balance
   const setMaxBalance = () => {
     const balance = parseFloat(balances[tokenX] || "0");
     if (balance > 0) {
@@ -234,7 +229,6 @@ function App() {
     }
   };
 
-  // Handle slippage selection
   const handleSlippageSelect = (value: string) => {
     if (value === "custom") {
       setCustomSlippage("");
@@ -244,7 +238,6 @@ function App() {
     }
   };
 
-  // Handle custom slippage input
   const handleCustomSlippage = () => {
     const value = parseFloat(customSlippage);
     if (isNaN(value) || value < 0 || value > 100) {
@@ -256,7 +249,6 @@ function App() {
     setCustomSlippage("");
   };
 
-  // Import a new token by address
   const importToken = async () => {
     if (!importAddress) {
       setImportError("Please enter a valid token address");
@@ -288,7 +280,6 @@ function App() {
     }
   };
 
-  // Retry logic for API calls
   const fetchWithRetry = async (url: string, retries = 3, delay = 1000): Promise<any> => {
     for (let i = 0; i < retries; i++) {
       try {
@@ -304,7 +295,6 @@ function App() {
     }
   };
 
-  // Fetch current price and 24h change for a token
   const fetchTokenPrice = async (symbol: string) => {
     const ccId = cryptoCompareIds[symbol.toUpperCase()];
     if (!ccId) {
@@ -312,7 +302,6 @@ function App() {
       return null;
     }
 
-    // Check cache first
     const cached = priceCache.current[symbol.toLowerCase()];
     if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
       return cached;
@@ -322,7 +311,6 @@ function App() {
       const now = Math.floor(Date.now() / 1000);
       const twentyFourHoursAgo = now - 24 * 60 * 60;
 
-      // Fetch current and historical prices concurrently
       const [currentData, historicalData] = await Promise.all([
         fetchWithRetry(`${CRYPTOCOMPARE_API}/price?fsym=${ccId}&tsyms=USD`),
         fetchWithRetry(`${CRYPTOCOMPARE_API}/pricehistorical?fsym=${ccId}&tsyms=USD&ts=${twentyFourHoursAgo}`)
@@ -341,7 +329,6 @@ function App() {
     }
   };
 
-  // Fetch 7-day price history for a token
   const fetchPriceHistory = async (symbol: string) => {
     const ccId = cryptoCompareIds[symbol.toUpperCase()];
     if (!ccId) {
@@ -349,7 +336,6 @@ function App() {
       return [];
     }
 
-    // Check cache first
     const cached = historyCache.current[symbol.toLowerCase()];
     if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
       return cached.data;
@@ -378,7 +364,6 @@ function App() {
     }
   };
 
-  // Fetch prices for all tokens concurrently
   useEffect(() => {
     const fetchPrices = async () => {
       try {
@@ -417,7 +402,6 @@ function App() {
     return () => clearInterval(interval);
   }, [importedTokens]);
 
-  // Fetch price history for selected tokens concurrently
   useEffect(() => {
     const fetchTokenPriceHistory = async () => {
       const symbols = [getTokenInfo(tokenX).symbol, getTokenInfo(tokenY).symbol];
@@ -441,12 +425,10 @@ function App() {
     fetchTokenPriceHistory();
   }, [tokenX, tokenY]);
 
-  // Generate SVG path for price chart with optimization
   const generatePath = (symbol: string) => {
     const priceData = priceHistory[symbol.toLowerCase()] || [];
     if (!priceData || priceData.length < 2) return "M15,10L180,10";
     
-    // Downsample data for smoother rendering
     const sampledData = priceData.length > 20 
       ? priceData.filter((_, i) => i % Math.ceil(priceData.length / 20) === 0)
       : priceData;
@@ -464,7 +446,6 @@ function App() {
     return `M${points.join("L")}`;
   };
 
-  // Fetch pool ID for selected token pair
   useEffect(() => {
     const fetchPoolId = async () => {
       if (!tokenX || !tokenY) {
@@ -536,7 +517,6 @@ function App() {
     fetchPoolId();
   }, [tokenX, tokenY, client]);
 
-  // Fetch balances and calculate expected output
   useEffect(() => {
     const fetchBalancesAndOutput = async () => {
       if (!account) {
@@ -665,7 +645,6 @@ function App() {
     fetchBalancesAndOutput();
   }, [account, tokenX, tokenY, debouncedAmountIn, slippage, poolId, isReverseSwap, client, importedTokens, prices]);
 
-  // Swap token pair
   const handleSwapTokens = () => {
     setTokenX(tokenY);
     setTokenY(tokenX);
@@ -676,7 +655,6 @@ function App() {
     setPriceDifference("0.00");
   };
 
-  // Select a token for swapping
   const selectToken = (token: any, type: string) => {
     const newTokenAddress = token.address;
     if (type === "tokenX" && newTokenAddress === tokenY) {
@@ -701,12 +679,10 @@ function App() {
     setError("");
   };
 
-  // Get token information by address
   const getTokenInfo = (address: string) => {
     return [...tokens, ...importedTokens].find((token) => token.address === address) || tokens[0];
   };
 
-  // Execute swap transaction
   const handleSwap = async () => {
     if (!account) {
       setError("Please connect wallet");
@@ -804,8 +780,7 @@ function App() {
         {
           onSuccess: (result: any) => {
             setModalMessage(`Transaction successful: ${result.digest}`);
-            setShowModal(true); // 显示弹窗
-            
+            setShowModal(true);
             setError("");
             setAmountIn("");
             setMinAmountOut("0");
@@ -824,17 +799,14 @@ function App() {
     }
   };
 
-  // Toggle dropdown menu
   const toggleDropdown = (menu: string) => {
     setOpenDropdown(openDropdown === menu ? null : menu);
   };
 
-  // Toggle mobile menu
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Copy text to clipboard
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text).then(() => {
       setToast({ message: "Address copied successfully!", type: "success" });
@@ -845,12 +817,10 @@ function App() {
     });
   };
 
-  // Calculate exchange rate
   const exchangeRate = prices[getTokenInfo(tokenX).symbol.toLowerCase()]?.price && prices[getTokenInfo(tokenY).symbol.toLowerCase()]?.price
     ? (prices[getTokenInfo(tokenX).symbol.toLowerCase()].price / prices[getTokenInfo(tokenY).symbol.toLowerCase()].price).toFixed(6)
     : "0.000000";
 
-  // 计算swap前后的资产总价值
   const inputValue = parseFloat(amountIn) * (prices[getTokenInfo(tokenX).symbol.toLowerCase()]?.price || 0);
   const outputValue = parseFloat(expectedOutput) * (prices[getTokenInfo(tokenY).symbol.toLowerCase()]?.price || 0);
   const profitLoss = outputValue - inputValue;
@@ -869,7 +839,7 @@ function App() {
           <Confetti
             width={window.innerWidth}
             height={window.innerHeight}
-            style={{ position: "absolute", top: 0, left: 0 }} // 确保礼花覆盖整个窗口
+            style={{ position: "absolute", top: 0, left: 0 }}
           />
         )}
         <Routes>
@@ -925,6 +895,92 @@ function App() {
                     </div>
                     <div className="wallet-actions">
                       <ConnectButton />
+                      <button
+                        id="popover-trigger-notification"
+                        aria-haspopup="dialog"
+                        aria-expanded={showNotificationPopover}
+                        aria-controls="popover-content-notification"
+                        className="icon-button css-fi49l4"
+                        onClick={() => setShowNotificationPopover(!showNotificationPopover)}
+                      >
+                        <div className="css-1ke24j5">
+                          <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px" viewBox="0 0 24 24">
+                            <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-1.1-.9-2-2-2s-2 .9-2 2v.68C6.63 5.36 5 7.92 5 11v5l-2 2v1h18v-1l-2-2z"></path>
+                          </svg>
+                        </div>
+                      </button>
+                      {showNotificationPopover && (
+                        <div className="chakra-popover__body css-1q40f86">
+                          <div className="chakra-stack css-13uh600">
+                            <img src="/images/logo_paw_sel@2x.png" alt="Pawtato" className="chakra-image css-1tq2rxf" />
+                            <p className="chakra-text css-136jcmy">Visit Pawtato to manage notification settings for LP Range Alert</p>
+                            <button type="button" className="chakra-button css-fpjdn4">Subscribe</button>
+                          </div>
+                        </div>
+                      )}
+                      <button
+                        id="popover-trigger-rpc"
+                        aria-haspopup="dialog"
+                        aria-expanded={showRpcPopover}
+                        aria-controls="popover-content-rpc"
+                        className="icon-button css-163hjq3"
+                        onClick={() => setShowRpcPopover(!showRpcPopover)}
+                      >
+                        <div className="css-1ke24j5">
+                          <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px" viewBox="0 0 24 24">
+                            <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"></path>
+                          </svg>
+                        </div>
+                      </button>
+                      {showRpcPopover && (
+                        <div className="chakra-popover__body css-1q40f86">
+                          <div className="chakra-stack css-1opork5">
+                            <div className="chakra-stack css-1ysm3zc">
+                              <div className="css-1ke24j5">
+                                <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px" viewBox="0 0 24 24">
+                                  <path d="M20 6L9 17l-5-5"></path>
+                                </svg>
+                              </div>
+                              <p className="chakra-text css-vcvc47">RPC Node</p>
+                            </div>
+                            <div className="css-122co4m">
+                              {[
+                                { name: "Sui Official", latency: "249ms", selected: true },
+                                { name: "BlockVision", latency: "562ms" },
+                                { name: "BlockVision 2", latency: "909ms" },
+                                { name: "Suiet", latency: "553ms" },
+                                { name: "Blast", latency: "554ms" },
+                                { name: "Suiscan", latency: "3181ms" },
+                                { name: "Triton", latency: "436ms" },
+                                { name: "Custom RPC URL", latency: "" },
+                              ].map((node, index) => (
+                                <div key={index} className="chakra-stack css-k5o0vm">
+                                  <div className="chakra-stack css-1jjq5p5">
+                                    <div className="chakra-stack css-edyt6g">
+                                      <div className={node.selected ? "css-sopywd" : "css-empty-check"}>
+                                        {node.selected && (
+                                          <div className="css-1ke24j5">
+                                            <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px" viewBox="0 0 24 24">
+                                              <path d="M20 6L9 17l-5-5"></path>
+                                            </svg>
+                                          </div>
+                                        )}
+                                      </div>
+                                      <p className={`chakra-text ${node.selected ? "css-swgav2" : "css-sezabi"}`}>{node.name}</p>
+                                    </div>
+                                    {node.latency && (
+                                      <div className="chakra-stack css-cp3a5l">
+                                        <div className="css-18uefe2"></div>
+                                        <p className="chakra-text css-1ec3nbv">{node.latency}</p>
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      )}
                       <button className="hamburger-menu" onClick={toggleMenu}>
                         <svg className="hamburger-icon" viewBox="0 0 24 24" width="24px" height="24px">
                           <path d="M3 6h18M3 12h18M3 18h18" stroke="var(--text-color)" strokeWidth="2" strokeLinecap="round" />
@@ -1037,7 +1093,6 @@ function App() {
                               <button onClick={setMaxBalance} className="balance-button">Max</button>
                             </div>
                             <span>Balance: {balances[tokenX] || "0.0"}</span>
-                            
                           </div>
                         </div>
                       </div>
@@ -1090,7 +1145,6 @@ function App() {
                     </button>
                     {error && <div className="error">{error}</div>}
                     {success && <div className="success">{success}</div>}
-                   
                     <div className="price-reference-panel css-rrtj52">
                       <div className="price-reference-header css-f7m5r6">
                         <p className="chakra-text css-5z699w">Price Reference</p>
