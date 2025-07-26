@@ -3,13 +3,14 @@ import './SettingsPage.css';
 
 interface SettingsPageProps {
   onClose: () => void;
+  slippage: string;
+  setSlippage: (value: string) => void;
 }
 
-const SettingsPage: React.FC<SettingsPageProps> = ({ onClose }) => {
-  const [slippage, setSlippage] = useState("0.5");
+const SettingsPage: React.FC<SettingsPageProps> = ({ onClose, slippage, setSlippage }) => {
   const [customSlippage, setCustomSlippage] = useState("");
   const [transactionMode, setTransactionMode] = useState("Default");
-  const [mevProtection, setMevProtection] = useState(false);
+  const [mevProtection, setMevProtection] = useState(true);
 
   const handleSlippageSelect = (value: string) => {
     setSlippage(value);
@@ -24,6 +25,11 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onClose }) => {
     }
   };
 
+  const handleSave = () => {
+    setSlippage(slippage);
+    onClose();
+  };
+
   return (
     <div className="settings-modal">
       <div className="settings-content">
@@ -36,9 +42,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onClose }) => {
         
         <div className="slippage-section">
           <div className="section-header">
-            <svg viewBox="0 0 24 24">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14h-2v-2h2v2zm0-4h-2V6h2v6z" />
-            </svg>
+            <img src="https://img.icons8.com/ios/50/vertical-settings-mixer--v1.png" alt="Slippage Icon" className="section-icon" />
             <h3>Slippage Tolerance</h3>
           </div>
           <div className="slippage-options">
@@ -78,9 +82,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onClose }) => {
 
         <div className="transaction-mode-section">
           <div className="section-header">
-            <svg viewBox="0 0 24 24">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4 14h-8v-2h8v2zm0-4h-8V6h8v6z" />
-            </svg>
+            <img src="https://img.icons8.com/ios-filled/50/flash-on.png" alt="Transaction Mode Icon" className="section-icon" />
             <h3>Transaction Mode</h3>
           </div>
           <div className="transaction-mode-options">
@@ -94,7 +96,6 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onClose }) => {
               className={transactionMode === "Fast Mode" ? "active" : ""}
               onClick={() => setTransactionMode("Fast Mode")}
             >
-              
               Fast Mode
             </button>
           </div>
@@ -104,9 +105,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onClose }) => {
 
         <div className="mev-protection-section">
           <div className="section-header">
-            <svg viewBox="0 0 24 24">
-              <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" />
-            </svg>
+            <img src="https://img.icons8.com/ios-filled/50/security-checked.png" alt="MEV Protect Icon" className="section-icon" />
             <h3>MEV Protect</h3>
           </div>
           <div className="mev-protection-row">
@@ -129,7 +128,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onClose }) => {
           <button className="cancel-button" onClick={onClose}>
             Cancel
           </button>
-          <button className="save-button" onClick={() => alert("Settings saved")}>
+          <button className="save-button" onClick={handleSave}>
             Save
           </button>
         </div>

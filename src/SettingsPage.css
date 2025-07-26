@@ -70,11 +70,10 @@
   margin: 0;
 }
 
-.section-header svg {
+.section-icon {
   width: 16px;
   height: 16px;
-  fill: var(--primary-color);
-  stroke: var(--primary-color);
+  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
 }
 
 .section-header h3 {
@@ -105,13 +104,14 @@
 .slippage-options {
   display: flex;
   align-items: center;
-  gap: 12px; /* Increased gap for more uniform spacing */
+  gap: 12px;
   flex-wrap: nowrap;
+  width: 100%; /* Use full width of parent */
 }
 
 .slippage-presets {
+  flex: 1; /* Take up available space */
   display: flex;
-  gap: 8px; /* Adjusted for uniform spacing */
 }
 
 .button-group {
@@ -119,10 +119,11 @@
   border: 1px solid var(--border-color);
   border-radius: 6px;
   overflow: hidden;
+  flex: 1; /* Extend to fill available space */
 }
 
 .button-group button {
-  padding: 6px 16px; /* Increased padding for longer buttons */
+  padding: 6px 0; /* Remove horizontal padding to allow equal width */
   background: var(--input-bg);
   border: none;
   color: #ffffff;
@@ -131,7 +132,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   text-align: center;
-  min-width: 60px; /* Added min-width to ensure uniform button size */
+  flex: 1; /* Equal width for each button */
 }
 
 .button-group button:not(:last-child) {
@@ -151,8 +152,6 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  flex: 1;
-  margin-left: 12px; /* Added margin for increased spacing from buttons */
 }
 
 .custom-slippage input {
@@ -330,9 +329,10 @@
     font-size: 14px;
   }
 
-  .section-header svg {
+  .section-icon {
     width: 14px;
     height: 14px;
+    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
   }
 
   .section-header h3 {
@@ -341,25 +341,23 @@
 
   .button-group button {
     font-size: 11px;
-    padding: 4px 12px; /* Adjusted padding for longer buttons in mobile */
-    min-width: 50px; /* Adjusted min-width for mobile */
-  }
-
-  .custom-slippage {
-    margin-left: 8px; /* Adjusted margin for mobile */
+    padding: 4px 0;
+    flex: 1;
   }
 
   .custom-slippage input {
     font-size: 11px;
     padding: 4px;
+    width: 70px;
   }
 
   .slippage-options {
-    gap: 8px; /* Adjusted gap for mobile */
+    gap: 8px;
+    width: 100%;
   }
 
   .slippage-presets {
-    gap: 6px; /* Adjusted for mobile */
+    flex: 1;
   }
 
   .transaction-mode-options button {
@@ -388,7 +386,7 @@
 
   .cancel-button,
   .save-button {
-    font-size: 11px;
-    padding: 6px 10px;
+    font-size: 10px;
+    padding: 6px 8px;
   }
 }

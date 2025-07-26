@@ -263,12 +263,12 @@ function App() {
   const { mutate: signAndExecute } = useSignAndExecuteTransaction();
   const navigate = useNavigate(); // 添加 useNavigate
   const [showSettings, setShowSettings] = useState(false); // 添加状态来控制模态显示
+  const [slippage, setSlippage] = useState("0.5"); // 添加滑点状态
 
   const [tokenX, setTokenX] = useState("0x2::sui::SUI");
   const [tokenY, setTokenY] = useState("0xb677ae5448d34da319289018e7dd67c556b094a5451d7029bd52396cdd8f192f::usdc::USDC");
   const [amountIn, setAmountIn] = useState("");
   const [minAmountOut, setMinAmountOut] = useState("0");
-  const [slippage, setSlippage] = useState("0.5");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [poolId, setPoolId] = useState("");
@@ -1414,12 +1414,12 @@ function App() {
                         importToken={importToken}
                       />
                     )}
-                    {showSettings && <SettingsPage onClose={() => setShowSettings(false)} />}
+                    {showSettings && <SettingsPage onClose={() => setShowSettings(false)} slippage={slippage} setSlippage={setSlippage} />}
                     <SettingsModal
                       isOpen={showSettingsModal}
                       onClose={() => setShowSettingsModal(false)}
                       slippage={slippage}
-                      setSlippage={setSlippage}
+                      setSlippage={setSlippage} // 传递更新函数
                       customSlippage={customSlippage}
                       setCustomSlippage={setCustomSlippage}
                       transactionMode={transactionMode}
@@ -1432,9 +1432,16 @@ function App() {
               </>
             }
           />
-          <Route path="/settings" element={<SettingsPage onClose={function (): void {
-            throw new Error("Function not implemented.");
-          } } />} /> {/* 新的设置页面路由 */}
+          <Route 
+            path="/settings" 
+            element={
+              <SettingsPage 
+                onClose={() => { throw new Error("Function not implemented."); }} 
+                slippage={slippage} 
+                setSlippage={setSlippage} 
+              />
+            } 
+          />
           <Route path="/pool" element={<Pool />} />
         </Routes>
         {showModal && (
