@@ -16,100 +16,96 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onClose }) => {
     setCustomSlippage("");
   };
 
-  const handleCustomSlippage = () => {
-    const value = parseFloat(customSlippage);
-    if (isNaN(value) || value < 0 || value > 100) {
-      alert("请输入有效的滑点百分比（0-100）");
-      return;
+  const handleCustomSlippageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCustomSlippage(e.target.value);
+    const value = parseFloat(e.target.value);
+    if (!isNaN(value) && value >= 0 && value <= 100) {
+      setSlippage(value.toString());
     }
-    setSlippage(value.toString());
-    setCustomSlippage("");
   };
 
   return (
     <div className="settings-modal">
       <div className="settings-content">
-        <h2 className="settings-logo">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2v-6zm0 8h2v2h-2v-2z" />
-          </svg>
-          Settings
-        </h2>
+        <h2 className="settings-title">Settings</h2>
         <button className="close-button" onClick={onClose}>
           <svg viewBox="0 0 24 24">
             <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
           </svg>
         </button>
+        
         <div className="slippage-section">
           <div className="section-header">
             <svg viewBox="0 0 24 24">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2v-6zm0 8h2v2h-2v-2z" />
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14h-2v-2h2v2zm0-4h-2V6h2v6z" />
             </svg>
             <h3>Slippage Tolerance</h3>
           </div>
           <div className="slippage-options">
             <div className="slippage-presets">
-              <button
-                className={slippage === "0.1" ? "active" : ""}
-                onClick={() => handleSlippageSelect("0.1")}
-              >
-                0.1%
-              </button>
-              <button
-                className={slippage === "0.5" ? "active" : ""}
-                onClick={() => handleSlippageSelect("0.5")}
-              >
-                0.5%
-              </button>
-              <button
-                className={slippage === "1" ? "active" : ""}
-                onClick={() => handleSlippageSelect("1")}
-              >
-                1%
-              </button>
+              <div className="button-group">
+                <button 
+                  className={slippage === "0.1" ? "active" : ""} 
+                  onClick={() => handleSlippageSelect("0.1")}
+                >
+                  0.1%
+                </button>
+                <button 
+                  className={slippage === "0.5" ? "active" : ""} 
+                  onClick={() => handleSlippageSelect("0.5")}
+                >
+                  0.5%
+                </button>
+                <button 
+                  className={slippage === "1" ? "active" : ""} 
+                  onClick={() => handleSlippageSelect("1")}
+                >
+                  1%
+                </button>
+              </div>
             </div>
             <div className="custom-slippage">
               <input
                 placeholder="Custom"
                 value={customSlippage}
-                onChange={(e) => setCustomSlippage(e.target.value)}
+                onChange={handleCustomSlippageChange}
               />
-              <button onClick={handleCustomSlippage}>Save</button>
             </div>
           </div>
         </div>
+
+        <div className="separator"></div>
+
         <div className="transaction-mode-section">
           <div className="section-header">
             <svg viewBox="0 0 24 24">
-              <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12zM6 10h2v2H6v-2zm0 4h8v2H6v-2zm10 0h2v2h-2v-2zm-6-4h8v2h-8v-2z" />
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4 14h-8v-2h8v2zm0-4h-8V6h8v6z" />
             </svg>
             <h3>Transaction Mode</h3>
           </div>
           <div className="transaction-mode-options">
-            <button
+            <button 
               className={transactionMode === "Default" ? "active" : ""}
               onClick={() => setTransactionMode("Default")}
             >
               Default
             </button>
-            <button
+            <button 
               className={transactionMode === "Fast Mode" ? "active" : ""}
               onClick={() => setTransactionMode("Fast Mode")}
             >
-              <svg className="fast-icon" viewBox="0 0 24 24">
-                <path d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4V7zm-1-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
-              </svg>
+              
               Fast Mode
             </button>
           </div>
-          <div className="transaction-mode-note">
-            Standard gas based on real-time network conditions
-          </div>
         </div>
+
+        <div className="separator"></div>
+
         <div className="mev-protection-section">
           <div className="section-header">
             <svg viewBox="0 0 24 24">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-2-8h2v2h-2v-2zm0-4h2v2h-2v-2z" />
+              <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" />
             </svg>
             <h3>MEV Protect</h3>
           </div>
@@ -118,15 +114,17 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onClose }) => {
             <div className="mev-protection-switch">
               <input
                 type="checkbox"
+                id="mev-protection"
                 checked={mevProtection}
                 onChange={(e) => setMevProtection(e.target.checked)}
               />
-              <span className="checkbox-custom">
+              <label htmlFor="mev-protection">
                 <span className="thumb"></span>
-              </span>
+              </label>
             </div>
           </div>
         </div>
+
         <div className="button-row">
           <button className="cancel-button" onClick={onClose}>
             Cancel
