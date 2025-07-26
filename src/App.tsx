@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { ConnectButton, useCurrentAccount, useSuiClient, useSignAndExecuteTransaction, lightTheme, WalletProvider, ThemeVars } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import Pool from "./Pool";
 import TokenModal, { tokens } from "./TokenModal";
 import CoverPage from "./CoverPage";
@@ -9,6 +9,7 @@ import "./App.css";
 import "./App2.css";
 import Confetti from "react-confetti";
 import Modal from './Modal';
+import SettingsPage from './SettingsPage'; // 导入新的设置页面
 
 // Define custom theme
 const customTheme: ThemeVars = {
@@ -69,6 +70,178 @@ const customTheme: ThemeVars = {
   },
 };
 
+// Settings Modal Component
+const SettingsModal = ({ isOpen, onClose, slippage, setSlippage, customSlippage, setCustomSlippage, transactionMode, setTransactionMode, mevProtection, setMevProtection }: {
+  isOpen: boolean;
+  onClose: () => void;
+  slippage: string;
+  setSlippage: (value: string) => void;
+  customSlippage: string;
+  setCustomSlippage: (value: string) => void;
+  transactionMode: string;
+  setTransactionMode: (mode: string) => void;
+  mevProtection: boolean;
+  setMevProtection: (value: boolean) => void;
+}) => {
+  if (!isOpen) return null;
+
+  const handleSlippageSelect = (value: string) => {
+    setSlippage(value);
+    setCustomSlippage("");
+  };
+
+  const handleCustomSlippage = () => {
+    const value = parseFloat(customSlippage);
+    if (isNaN(value) || value < 0 || value > 100) {
+      alert("Please enter a valid slippage percentage (0-100)");
+      return;
+    }
+    setSlippage(value.toString());
+    setCustomSlippage("");
+  };
+
+  return (
+    <section
+      className="chakra-modal__content css-xnqtk4"
+      role="dialog"
+      tabIndex={-1}
+      aria-modal="true"
+      style={{ opacity: 1, transform: 'none' }}
+    >
+      <header className="chakra-modal__header css-14957o2">Settings</header>
+      <button
+        type="button"
+        aria-label="Close"
+        className="chakra-modal__close-btn css-14njbx"
+        onClick={onClose}
+      >
+        <svg viewBox="0 0 24 24" focusable="false" className="chakra-icon css-onkibi" aria-hidden="true">
+          <path
+            fill="currentColor"
+            d="M.439,21.44a1.5,1.5,0,0,0,2.122,2.121L11.823,14.3a.25.25,0,0,1,.354,0l9.262,9.263a1.5,1.5,0,1,0,2.122-2.121L14.3,12.177a.25.25,0,0,1,0-.354l9.263-9.262A1.5,1.5,0,0,0,21.439.44L12.177,9.7a.25.25,0,0,1-.354,0L2.561.44A1.5,1.5,0,0,0,.439,2.561L9.7,11.823a.25.25,0,0,1,0,.354Z"
+          ></path>
+        </svg>
+      </button>
+      <div className="chakra-modal__body css-86c2jf">
+        <div className="css-8atqhb">
+          <div className="css-0">
+            <div className="css-1coeexk">
+              <div className="css-1lvuolp">
+                <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                  <use xlinkHref="#icon-icon_verticalslider"></use>
+                </svg>
+              </div>
+              <p className="chakra-text css-naweef">Slippage Tolerance</p>
+            </div>
+            <div className="css-1xmosrt">
+              <div className="chakra-stack css-axc57z">
+                <div className="css-1f2l1um">
+                  <div className={`css-x9odoj ${slippage === "0.1" ? "active" : ""}`}>
+                    <p className="chakra-text css-wcx758" onClick={() => handleSlippageSelect("0.1")}>0.1%</p>
+                  </div>
+                  <div className={`css-1qok38h ${slippage === "0.5" ? "active" : ""}`}>
+                    <p className="chakra-text css-30r1rg" onClick={() => handleSlippageSelect("0.5")}>0.5%</p>
+                  </div>
+                  <div className={`css-x9odoj ${slippage === "1" ? "active" : ""}`}>
+                    <p className="chakra-text css-wcx758" onClick={() => handleSlippageSelect("1")}>1%</p>
+                  </div>
+                </div>
+                <div className="chakra-input__group css-l7gn1b" data-group="true">
+                  <p className="chakra-text css-2s2d1k">Custom</p>
+                  <input
+                    placeholder="0.0"
+                    className="chakra-input css-kqgvne"
+                    value={customSlippage}
+                    onChange={(e) => setCustomSlippage(e.target.value)}
+                  />
+                  <div className="chakra-input__right-element css-2f1rc5">
+                    <p className="chakra-text css-p3865w">%</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="chakra-stack css-1sea5oz">
+              <div className="chakra-stack css-1jjq5p5">
+                <div className="chakra-stack css-1igwmid">
+                  <div className="css-1ke24j5">
+                    <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                      <use xlinkHref="#icon-icon_mode"></use>
+                    </svg>
+                  </div>
+                  <p className="chakra-text css-ry2o2l">Transaction Mode</p>
+                </div>
+                <div className="css-jbrw85">
+                  <div data-active={transactionMode === "Default"} className="css-1xgmac1">
+                    <p
+                      className="chakra-text css-13grdye"
+                      data-active={transactionMode === "Default"}
+                      onClick={() => setTransactionMode("Default")}
+                    >
+                      Default
+                    </p>
+                  </div>
+                  <div data-active={transactionMode === "Fast Mode"} className="css-10kw1gl">
+                    <div className="css-166r45o">
+                      <svg aria-hidden="true" fill="#909CA4" width="16px" height="16px">
+                        <use xlinkHref="#icon-icon_flash"></use>
+                      </svg>
+                    </div>
+                    <p
+                      className="chakra-text css-10a6rwu"
+                      data-active={transactionMode === "Fast Mode"}
+                      onClick={() => setTransactionMode("Fast Mode")}
+                    >
+                      Fast Mode
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <p className="chakra-text css-95x0qv">Standard gas based on real-time network conditions</p>
+            </div>
+            <div className="chakra-stack css-1e9nw6s">
+              <div className="chakra-stack css-l84rf0">
+                <div className="css-1ke24j5">
+                  <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                    <use xlinkHref="#icon-icon_mev"></use>
+                  </svg>
+                </div>
+                <p className="chakra-text css-k30qlv">MEV Protect</p>
+              </div>
+              <div className="chakra-stack css-1jjq5p5">
+                <div className="chakra-stack css-1mlvmbj">
+                  <p className="chakra-text css-10k4bnn">Enable MEV Protection</p>
+                  <button className="chakra-stack css-1hohgv6" id="popover-trigger-:r6oh:" aria-haspopup="dialog" aria-expanded="false" aria-controls="popover-content-:r6oh:">
+                    <div className="css-1ke24j5">
+                      <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                        <use xlinkHref="#icon-icon_tips"></use>
+                      </svg>
+                    </div>
+                  </button>
+                </div>
+                <label data-checked={mevProtection ? "" : undefined} className="chakra-switch css-ghot30">
+                  <input
+                    className="chakra-switch__input"
+                    type="checkbox"
+                    checked={mevProtection}
+                    onChange={(e) => setMevProtection(e.target.checked)}
+                  />
+                  <span className="chakra-switch__track css-1dfiea4">
+                    <span className="chakra-switch__thumb css-1ws90af" data-checked={mevProtection ? "" : undefined}></span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div className="css-1cb33c5">
+            <button type="button" className="chakra-button css-frin98" onClick={onClose}>Cancel</button>
+            <button type="button" className="chakra-button css-10j9e9a" onClick={() => { handleCustomSlippage(); onClose(); }}>Save</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 // Main application component for token swapping
 function App() {
   const [showTokenModal, setShowTokenModal] = useState<string | null>(null);
@@ -78,14 +251,18 @@ function App() {
   const [importedTokens, setImportedTokens] = useState<any[]>([]);
   const [importAddress, setImportAddress] = useState("");
   const [importError, setImportError] = useState("");
-  const [showSlippageModal, setShowSlippageModal] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [customSlippage, setCustomSlippage] = useState("");
+  const [transactionMode, setTransactionMode] = useState("Default");
+  const [mevProtection, setMevProtection] = useState(false);
   const [expiration, setExpiration] = useState("1 Day");
   const [searchQuery, setSearchQuery] = useState("");
   const [useAggregator, setUseAggregator] = useState(false);
   const client = useSuiClient();
   const account = useCurrentAccount();
   const { mutate: signAndExecute } = useSignAndExecuteTransaction();
+  const navigate = useNavigate(); // 添加 useNavigate
+  const [showSettings, setShowSettings] = useState(false); // 添加状态来控制模态显示
 
   const [tokenX, setTokenX] = useState("0x2::sui::SUI");
   const [tokenY, setTokenY] = useState("0xb677ae5448d34da319289018e7dd67c556b094a5451d7029bd52396cdd8f192f::usdc::USDC");
@@ -227,26 +404,6 @@ function App() {
     if (balance > 0) {
       setAmountIn(balance.toFixed(getTokenDecimals(tokenX)));
     }
-  };
-
-  const handleSlippageSelect = (value: string) => {
-    if (value === "custom") {
-      setCustomSlippage("");
-    } else {
-      setSlippage(value);
-      setShowSlippageModal(false);
-    }
-  };
-
-  const handleCustomSlippage = () => {
-    const value = parseFloat(customSlippage);
-    if (isNaN(value) || value < 0 || value > 100) {
-      setError("Please enter a valid slippage percentage (0-100)");
-      return;
-    }
-    setSlippage(value.toString());
-    setShowSlippageModal(false);
-    setCustomSlippage("");
   };
 
   const importToken = async () => {
@@ -863,7 +1020,9 @@ function App() {
                         </svg>
                         <div className={`dropdown ${openDropdown === "trade" ? "open" : ""}`}>
                           <Link to="/swap" className="dropdown-item">
-                            <img src="https://i.meee.com.tw/SdliTGK.png" alt="Trade" className="dropdown-icon" />
+                            <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                              <use xlinkHref="#icon-a-icon_swap2"></use>
+                            </svg>
                             Swap
                           </Link>
                         </div>
@@ -877,7 +1036,9 @@ function App() {
                         </svg>
                         <div className={`dropdown ${openDropdown === "earn" ? "open" : ""}`}>
                           <Link to="/pool" className="dropdown-item">
-                            <img src="https://i.meee.com.tw/SdliTGK.png" alt="Earn" className="dropdown-icon" />
+                            <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                              <use xlinkHref="#icon-icon_liquiditypools"></use>
+                            </svg>
                             Pool
                           </Link>
                         </div>
@@ -891,11 +1052,15 @@ function App() {
                         </svg>
                         <div className={`dropdown ${openDropdown === "bridge" ? "open" : ""}`}>
                           <a href="https://bridge.sui.io/" target="_blank" rel="noopener noreferrer" className="dropdown-item">
-                            <img src="https://i.meee.com.tw/SdliTGK.png" alt="Sui Bridge" className="dropdown-icon" />
+                            <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                              <use xlinkHref="#icon-icon_sui"></use>
+                            </svg>
                             Sui Bridge
                           </a>
                           <a href="https://bridge.cetus.zone/sui" target="_blank" rel="noopener noreferrer" className="dropdown-item">
-                            <img src="https://i.meee.com.tw/SdliTGK.png" alt="Wormhole" className="dropdown-icon" />
+                            <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                              <use xlinkHref="#icon-icon_wormhole"></use>
+                            </svg>
                             Wormhole
                           </a>
                         </div>
@@ -909,11 +1074,15 @@ function App() {
                         </svg>
                         <div className={`dropdown ${openDropdown === "more" ? "open" : ""}`}>
                           <a href="#" className="dropdown-item">
-                            <img src="https://i.meee.com.tw/SdliTGK.png" alt="Docs" className="dropdown-icon" />
+                            <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                              <use xlinkHref="#icon-icon_docs"></use>
+                            </svg>
                             Docs
                           </a>
                           <a href="#" className="dropdown-item">
-                            <img src="https://i.meee.com.tw/SdliTGK.png" alt="Leaderboard" className="dropdown-icon" />
+                            <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                              <use xlinkHref="#icon-icon_stats"></use>
+                            </svg>
                             Leaderboard
                           </a>
                         </div>
@@ -954,7 +1123,7 @@ function App() {
                       >
                         <div className="css-1ke24j5">
                           <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px" viewBox="0 0 24 24">
-                            <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"></path>
+                            <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.30-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"></path>
                           </svg>
                         </div>
                       </button>
@@ -1038,46 +1207,10 @@ function App() {
                         <div className="settings-button-container">
                           <button
                             className="settings-button"
-                            aria-haspopup="dialog"
-                            onClick={() => setShowSlippageModal(!showSlippageModal)}
+                            onClick={() => setShowSettings(true)} // 显示模态窗口
                           >
                             {slippage}% <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="settings-icon"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><circle cx="12" cy="12" r="4"></circle></svg>
                           </button>
-                          {showSlippageModal && (
-                            <div className="slippage-modal">
-                              <div className="slippage-modal-content">
-                                <h3 className="slippage-modal-title">Slippage Tolerance</h3>
-                                <div className="slippage-options">
-                                  {["0.3", "1", "10"].map((value) => (
-                                    <button
-                                      key={value}
-                                      className={`slippage-option ${slippage === value ? "active" : ""}`}
-                                      onClick={() => handleSlippageSelect(value)}
-                                    >
-                                      {value}%
-                                    </button>
-                                  ))}
-                                </div>
-                                {slippage !== "0.3" && slippage !== "1" && slippage !== "10" && (
-                                  <div className="custom-slippage">
-                                    <input
-                                      type="number"
-                                      step="0.1"
-                                      min="0"
-                                      max="100"
-                                      value={customSlippage}
-                                      onChange={(e) => setCustomSlippage(e.target.value)}
-                                      placeholder="0.0"
-                                      className="custom-slippage-input"
-                                    />
-                                    <button className="custom-slippage-submit" onClick={handleCustomSlippage}>
-                                      Save
-                                    </button>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          )}
                         </div>
                       </div>
                     </div>
@@ -1281,11 +1414,27 @@ function App() {
                         importToken={importToken}
                       />
                     )}
+                    {showSettings && <SettingsPage onClose={() => setShowSettings(false)} />}
+                    <SettingsModal
+                      isOpen={showSettingsModal}
+                      onClose={() => setShowSettingsModal(false)}
+                      slippage={slippage}
+                      setSlippage={setSlippage}
+                      customSlippage={customSlippage}
+                      setCustomSlippage={setCustomSlippage}
+                      transactionMode={transactionMode}
+                      setTransactionMode={setTransactionMode}
+                      mevProtection={mevProtection}
+                      setMevProtection={setMevProtection}
+                    />
                   </div>
                 </div>
               </>
             }
           />
+          <Route path="/settings" element={<SettingsPage onClose={function (): void {
+            throw new Error("Function not implemented.");
+          } } />} /> {/* 新的设置页面路由 */}
           <Route path="/pool" element={<Pool />} />
         </Routes>
         {showModal && (

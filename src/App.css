@@ -476,18 +476,279 @@ body {
   font-size: 12px;
 }
 
-.slippage-modal {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background: var(--modal-bg);
-  border: 1px solid var(--border-color);
+/* Settings Modal 样式 */
+.chakra-modal__content.css-xnqtk4 {
+  background-color: var(--modal-bg);
   border-radius: 12px;
-  box-shadow: 0 4px 12px var(--shadow-color);
-  z-index: 10;
-  padding: 12px;
-  width: 180px;
+  box-shadow: 0 4px 20px var(--shadow-color);
+  max-width: 400px;
+  width: 100%;
+  margin: auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  opacity: 1;
+  transition: opacity 0.3s, transform 0.3s;
 }
+
+.chakra-modal__header.css-14957o2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-color);
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.chakra-modal__close-btn.css-14njbx {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: color 0.3s;
+}
+
+.chakra-modal__close-btn.css-14njbx:hover {
+  color: var(--text-color);
+}
+
+.chakra-modal__close-btn.css-14njbx svg {
+  width: 20px;
+  height: 20px;
+}
+
+
+
+.chakra-modal__body.css-86c2jf {
+  padding: 24px;
+  overflow-y: auto;
+  max-height: 60vh;
+}
+
+.css-8atqhb {
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.css-1coeexk {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.css-1lvuolp svg {
+  width: 20px;
+  height: 20px;
+}
+
+.chakra-text.css-naweef {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.css-1xmosrt {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.chakra-stack.css-axc57z {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.css-1f2l1um {
+  display: flex;
+  gap: 8px;
+}
+
+.css-x9odoj, .css-1qok38h {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background-color: var(--input-bg);
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s;
+}
+
+.css-x9odoj.active, .css-1qok38h.active {
+  background-color: var(--active-bg);
+  color: var(--text-color);
+}
+
+.css-x9odoj:hover, .css-1qok38h:hover {
+  background-color: var(--hover-bg);
+}
+
+.chakra-text.css-wcx758, .chakra-text.css-30r1rg {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.chakra-input__group.css-l7gn1b {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.chakra-text.css-2s2d1k {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.chakra-input.css-kqgvne {
+  background-color: var(--input-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 8px;
+  color: var(--text-color);
+  width: 80px;
+}
+
+.chakra-input__right-element.css-2f1rc5 {
+  display: flex;
+  align-items: center;
+}
+
+.chakra-text.css-p3865w {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.chakra-stack.css-1sea5oz, .chakra-stack.css-1jjq5p5, .chakra-stack.css-1igwmid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.css-1xgmac1, .css-10kw1gl {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background-color: var(--input-bg);
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s;
+}
+
+.css-1xgmac1[data-active="true"], .css-10kw1gl[data-active="true"] {
+  background-color: var(--active-bg);
+  color: var(--text-color);
+}
+
+.css-1xgmac1:hover, .css-10kw1gl:hover {
+  background-color: var(--hover-bg);
+}
+
+.chakra-text.css-13grdye, .chakra-text.css-10a6rwu {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.chakra-text.css-95x0qv {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.chakra-stack.css-1e9nw6s, .chakra-stack.css-l84rf0 {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chakra-text.css-k30qlv {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.chakra-stack.css-1mlvmbj {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chakra-text.css-10k4bnn {
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+.chakra-switch.css-ghot30 {
+  display: flex;
+  align-items: center;
+}
+
+.chakra-switch__track.css-1dfiea4 {
+  background-color: var(--border-color);
+  border-radius: 12px;
+  width: 40px;
+  height: 20px;
+  position: relative;
+}
+
+.chakra-switch__thumb.css-1ws90af {
+  background-color: var(--text-color);
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s;
+}
+
+.chakra-switch__thumb.css-1ws90af[data-checked] {
+  transform: translateX(20px);
+}
+
+.chakra-switch__track.css-1dfiea4[data-checked] {
+  background-color: var(--primary-color);
+}
+
+.css-1cb33c5 {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.chakra-button.css-frin98, .chakra-button.css-10j9e9a {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.chakra-button.css-frin98 {
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+.chakra-button.css-frin98:hover {
+  background-color: var(--hover-bg);
+}
+
+.chakra-button.css-10j9e9a {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+}
+
+.chakra-button.css-10j9e9a:hover {
+  background-color: var(--button-hover-bg);
+}
+
+
 
 .slippage-modal-content {
   display: flex;
@@ -2388,29 +2649,79 @@ button:hover {
   padding: 10px;
 }
 
+/* 修改下拉菜单的背景颜色 */
 .dropdown {
-    background-color: white; /* 背景颜色 */
-    border: 1px solid #e0e0e0; /* 边框 */
-    border-radius: 4px; /* 圆角 */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 阴影 */
-    padding: 10px; /* 内边距 */
+  background-color: var(--your-background-color); /* 替换为页面的背景颜色 */
+  border: 1px solid rgba(255, 255, 255, 0.5); /* 细的透明白灰色边框 */
+  border-radius: 8px; /* 圆角 */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 阴影效果 */
 }
 
+/* 修改展开状态的下拉菜单 */
+.dropdown.open {
+  background-color: var(--your-background-color); /* 替换为页面的背景颜色 */
+}
+
+/* 美化下拉菜单项 */
 .dropdown-item {
-    display: flex; /* 使用 flexbox 布局 */
-    align-items: center; /* 垂直居中对齐 */
-    padding: 8px 12px; /* 内边距 */
-    color: #333; /* 字体颜色 */
-    text-decoration: none; /* 去掉下划线 */
+  display: flex; /* 使用 flexbox 布局 */
+  align-items: center; /* 垂直居中对齐 */
+  padding: 10px 15px; /* 内边距 */
+  color: #ffffff !important; /* 强制设置字体颜色为白色 */
+  transition: background-color 0.3s; /* 过渡效果 */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* 每个选项之间的分隔线 */
+}
+
+.dropdown-item:last-child {
+  border-bottom: none; /* 最后一个选项不显示分隔线 */
 }
 
 .dropdown-item:hover {
-    background-color: #f5f5f5; /* 悬停时的背景颜色 */
+  background-color: rgba(0, 0, 0, 0.1); /* 悬停时的背景颜色 */
 }
 
-.dropdown-icon {
-    width: 20px; /* 图标宽度 */
-    height: 20px; /* 图标高度 */
-    margin-right: 8px; /* 图标与文本之间的间距 */
+/* 图标和文字的样式 */
+.dropdown-item img {
+  margin-right: 10px; /* 图标与文字之间的间距 */
+  width: 20px; /* 图标宽度 */
+  height: 20px; /* 图标高度 */
+}
+
+/* 提高文字可读性 */
+.dropdown-item {
+  font-size: 14px; /* 字体大小 */
+  font-weight: 500; /* 字体加粗 */
+  color: #222; /* 更深的字体颜色以提高可读性 */
+}
+
+/* src/App.css */
+.settings-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* 使页面高度为视口高度 */
+}
+
+/* src/App.css */
+.settings-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* 半透明背景 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* 确保在其他内容之上 */
+}
+
+.settings-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 400px; /* 设置模态窗口的宽度 */
 }
 
