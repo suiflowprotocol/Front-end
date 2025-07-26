@@ -1445,8 +1445,10 @@ function App() {
           <Route path="/pool" element={<Pool />} />
         </Routes>
         {showModal && (
-          <Modal message={modalMessage} onClose={() => setShowModal(false)} />
+          <Modal txHash={modalMessage} onClose={() => setShowModal(false)} />
         )}
+
+        
       </div>
     </WalletProvider>
   );
