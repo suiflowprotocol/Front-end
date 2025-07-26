@@ -38,6 +38,9 @@ importers:
       '@mysten/sui.js':
         specifier: ^0.54.1
         version: 0.54.1(typescript@5.8.3)
+      '@mysten/wallet-standard':
+        specifier: ^0.16.7
+        version: 0.16.7(typescript@5.8.3)
       '@pythnetwork/price-service-client':
         specifier: ^1.9.0
         version: 1.9.0
@@ -1205,6 +1208,9 @@ packages:
 
   '@mysten/wallet-standard@0.16.5':
     resolution: {integrity: sha512-dd6/P9J7LD+ibT6DFHhsdvZTu7dtZ/DYL4t6OAdKwwFBKPFOKI2W+hWQ+MqGZaYoBmY3IL3O48SLjiAc4dW3pg==}
+
+  '@mysten/wallet-standard@0.16.7':
+    resolution: {integrity: sha512-xWTQYmeIxQ00wppCZKnGRqsnFL0JovxMrqlsfCIwBoVzgYp7xPzlAPjv1cFc4hABDj+PEfd1fCwcnXN8xd8uiw==}
 
   '@mysten/window-wallet-core@0.0.2':
     resolution: {integrity: sha512-u57gHFlLYPDTK5bDeabRjkIdyLaiFVwL3bVbnBtu5WJpfFOv/KMOpIQt4820ICBG843jN35tzlulQ0nlbWCYeA==}
@@ -5722,6 +5728,15 @@ snapshots:
   '@mysten/wallet-standard@0.16.5(typescript@5.8.3)':
     dependencies:
       '@mysten/sui': 1.36.0(typescript@5.8.3)
+      '@wallet-standard/core': 1.1.1
+    transitivePeerDependencies:
+      - '@gql.tada/svelte-support'
+      - '@gql.tada/vue-support'
+      - typescript
+
+  '@mysten/wallet-standard@0.16.7(typescript@5.8.3)':
+    dependencies:
+      '@mysten/sui': 1.36.2(typescript@5.8.3)
       '@wallet-standard/core': 1.1.1
     transitivePeerDependencies:
       - '@gql.tada/svelte-support'

@@ -20,6 +20,7 @@
     "@mysten/dapp-kit": "^0.16.15",
     "@mysten/sui": "^1.36.2",
     "@mysten/sui.js": "^0.54.1",
+    "@mysten/wallet-standard": "^0.16.7",
     "@pythnetwork/price-service-client": "^1.9.0",
     "@pythnetwork/pyth-sui-js": "^2.2.0",
     "@radix-ui/colors": "^3.0.0",
