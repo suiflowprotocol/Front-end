@@ -2,12 +2,16 @@ import React from 'react';
 import './Modal.css';
 
 interface ModalProps {
-  txHash: string;
+  txHash?: string;
+  errorMessage?: string;
+  decreasedToken?: { address: string; symbol: string; icon: string; amount: string };
+  increasedToken?: { address: string; symbol: string; icon: string; amount: string };
   onClose: () => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ txHash, onClose }) => {
-  const explorerLink = `https://testnet.suivision.xyz/txblock/${txHash.split(': ').pop() || txHash}`;
+const Modal: React.FC<ModalProps> = ({ txHash, errorMessage, decreasedToken, increasedToken, onClose }) => {
+  const isSuccess = !!txHash;
+  const explorerLink = txHash ? `https://testnet.suivision.xyz/txblock/${txHash.split(': ').pop() || txHash}` : '';
 
   return (
     <div className="modal-overlay">
@@ -23,12 +27,32 @@ const Modal: React.FC<ModalProps> = ({ txHash, onClose }) => {
             alt="Sui Logo" 
             className="sui-logo" 
           />
-          <h3>Transaction Submitted</h3>
-          <p>
-            <a href={explorerLink} target="_blank" rel="noopener noreferrer" className="explorer-link">
-              View on Blockchain Explorer
-            </a>
-          </p>
+          <h3>{isSuccess ? 'Transaction Submitted' : 'Transaction Failed'}</h3>
+          {isSuccess ? (
+            <>
+              <p>
+                <a href={explorerLink} target="_blank" rel="noopener noreferrer" className="explorer-link">
+                  View on Blockchain Explorer
+                </a>
+              </p>
+              <div className="token-changes">
+                {decreasedToken && (
+                  <div className="token-change decreased">
+                    <img src={decreasedToken.icon} alt={decreasedToken.symbol} className="token-icon" />
+                    <span>{`- ${decreasedToken.amount} ${decreasedToken.symbol}`}</span>
+                  </div>
+                )}
+                {increasedToken && (
+                  <div className="token-change increased">
+                    <img src={increasedToken.icon} alt={increasedToken.symbol} className="token-icon" />
+                    <span>{`+ ${increasedToken.amount} ${increasedToken.symbol}`}</span>
+                  </div>
+                )}
+              </div>
+            </>
+          ) : (
+            <p className="error">{errorMessage || 'Transaction failed, please try again later'}</p>
+          )}
         </div>
         <div className="button-row">
           <button className="confirm-button" onClick={onClose}>

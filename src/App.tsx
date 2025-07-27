@@ -9,7 +9,7 @@ import "./App.css";
 import "./App2.css";
 import Confetti from "react-confetti";
 import Modal from './Modal';
-import SettingsPage from './SettingsPage'; // 导入新的设置页面
+import SettingsPage from './SettingsPage';
 
 // Define custom theme
 const customTheme: ThemeVars = {
@@ -261,10 +261,9 @@ function App() {
   const client = useSuiClient();
   const account = useCurrentAccount();
   const { mutate: signAndExecute } = useSignAndExecuteTransaction();
-  const navigate = useNavigate(); // 添加 useNavigate
-  const [showSettings, setShowSettings] = useState(false); // 添加状态来控制模态显示
-  const [slippage, setSlippage] = useState("0.5"); // 添加滑点状态
-
+  const navigate = useNavigate();
+  const [showSettings, setShowSettings] = useState(false);
+  const [slippage, setSlippage] = useState("0.5");
   const [tokenX, setTokenX] = useState("0x2::sui::SUI");
   const [tokenY, setTokenY] = useState("0xb677ae5448d34da319289018e7dd67c556b094a5451d7029bd52396cdd8f192f::usdc::USDC");
   const [amountIn, setAmountIn] = useState("");
@@ -285,7 +284,12 @@ function App() {
   const [showConfetti, setShowConfetti] = useState(false);
   const switchRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
-  const [modalMessage, setModalMessage] = useState("");
+  const [modalProps, setModalProps] = useState<{
+    txHash?: string;
+    decreasedToken?: { address: string; symbol: string; icon: string; amount: string };
+    increasedToken?: { address: string; symbol: string; icon: string; amount: string };
+    errorMessage?: string;
+  }>({});
   const [showNotificationPopover, setShowNotificationPopover] = useState(false);
   const [showRpcPopover, setShowRpcPopover] = useState(false);
 
@@ -936,7 +940,25 @@ function App() {
         },
         {
           onSuccess: (result: any) => {
-            setModalMessage(`Transaction successful: ${result.digest}`);
+            const inputToken = isReverseSwap ? tokenY : tokenX;
+            const outputToken = isReverseSwap ? tokenX : tokenY;
+            const inputTokenInfo = getTokenInfo(inputToken);
+            const outputTokenInfo = getTokenInfo(outputToken);
+            setModalProps({
+              txHash: result.digest,
+              decreasedToken: {
+                address: inputToken,
+                symbol: inputTokenInfo.symbol,
+                icon: inputTokenInfo.icon,
+                amount: amountIn,
+              },
+              increasedToken: {
+                address: outputToken,
+                symbol: outputTokenInfo.symbol,
+                icon: outputTokenInfo.icon,
+                amount: expectedOutput,
+              },
+            });
             setShowModal(true);
             setError("");
             setAmountIn("");
@@ -948,11 +970,19 @@ function App() {
           onError: (err: any) => {
             setError(`Transaction failed: ${err.message}`);
             setSuccess("");
+            setModalProps({
+              errorMessage: `Transaction failed: ${err.message}`,
+            });
+            setShowModal(true);
           },
         }
       );
     } catch (err) {
       setError(`Transaction preparation failed: ${err instanceof Error ? err.message : "Unknown error"}`);
+      setModalProps({
+        errorMessage: `Transaction preparation failed: ${err instanceof Error ? err.message : "Unknown error"}`,
+      });
+      setShowModal(true);
     }
   };
 
@@ -1019,7 +1049,7 @@ function App() {
                           <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
                         </svg>
                         <div className={`dropdown ${openDropdown === "trade" ? "open" : ""}`}>
-                          <Link to="/swap" className="dropdown-item">
+                          <Link to="/" className="dropdown-item">
                             <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
                               <use xlinkHref="#icon-a-icon_swap2"></use>
                             </svg>
@@ -1207,7 +1237,7 @@ function App() {
                         <div className="settings-button-container">
                           <button
                             className="settings-button"
-                            onClick={() => setShowSettings(true)} // 显示模态窗口
+                            onClick={() => setShowSettings(true)}
                           >
                             {slippage}% <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="settings-icon"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><circle cx="12" cy="12" r="4"></circle></svg>
                           </button>
@@ -1419,7 +1449,7 @@ function App() {
                       isOpen={showSettingsModal}
                       onClose={() => setShowSettingsModal(false)}
                       slippage={slippage}
-                      setSlippage={setSlippage} // 传递更新函数
+                      setSlippage={setSlippage}
                       customSlippage={customSlippage}
                       setCustomSlippage={setCustomSlippage}
                       transactionMode={transactionMode}
@@ -1436,7 +1466,7 @@ function App() {
             path="/settings" 
             element={
               <SettingsPage 
-                onClose={() => { throw new Error("Function not implemented."); }} 
+                onClose={() => navigate("/")} 
                 slippage={slippage} 
                 setSlippage={setSlippage} 
               />
@@ -1445,10 +1475,17 @@ function App() {
           <Route path="/pool" element={<Pool />} />
         </Routes>
         {showModal && (
-          <Modal txHash={modalMessage} onClose={() => setShowModal(false)} />
+          <Modal
+            txHash={modalProps.txHash}
+            decreasedToken={modalProps.decreasedToken}
+            increasedToken={modalProps.increasedToken}
+            errorMessage={modalProps.errorMessage}
+            onClose={() => {
+              setShowModal(false);
+              setModalProps({});
+            }}
+          />
         )}
-
-        
       </div>
     </WalletProvider>
   );

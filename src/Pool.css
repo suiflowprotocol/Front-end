@@ -1,0 +1,910 @@
+:root {
+  --card-bg: #FFFFFF;
+  --text-color: #182435;
+  --text-secondary: #767A81;
+  --border-color: #E4E4E7;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --modal-primary: #FFFFFF;
+  --modal-secondary: #F7F8F8;
+  --hover-bg: #F0F1F2;
+  --search-bg: #F3F6F8;
+  --success-color: #28A745;
+}
+
+.pool-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  background: var(--card-bg);
+  color: var(--text-color);
+  min-height: 100vh;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px var(--shadow-color);
+}
+
+.summary-container {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  padding: 24px;
+  margin: 0 48px;
+  align-items: stretch;
+}
+
+.summary-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-height: 100%;
+}
+
+.summary-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.summary-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-color);
+  letter-spacing: -0.4px;
+}
+
+.summary-metrics-card {
+  background: linear-gradient(135deg, #6B7280 0%, #4B5563 100%);
+  color: white;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  min-height: 258px;
+  flex-grow: 1;
+}
+
+.metric-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.metric-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+
+.metric-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+}
+
+.chart-container {
+  width: 100%;
+  height: 258px;
+}
+
+.chart-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chart-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 0;
+}
+
+.chart-volume {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-color);
+  margin: 0;
+}
+
+.period-selector {
+  display: flex;
+  gap: 8px;
+}
+
+.period-button {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.period-button.active {
+  background: var(--modal-secondary);
+  color: #182435;
+}
+
+.period-button:not(.active) {
+  background: var(--search-bg);
+  color: var(--text-secondary);
+}
+
+.period-button:hover {
+  background: var(--hover-bg);
+}
+
+.pool-header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  background: var(--card-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  margin: 0 48px;
+}
+
+.tab-group {
+  display: flex;
+  gap: 6px;
+  background: var(--search-bg);
+  border-radius: 8px;
+  padding: 4px;
+  border: 1px solid var(--border-color);
+  justify-content: center;
+}
+
+.tab-button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 100px;
+  text-align: center;
+}
+
+.tab-button.active {
+  background: var(--modal-secondary);
+  color: #182435;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tab-button:hover {
+  background: var(--hover-bg);
+  color: var(--text-color);
+}
+
+.button-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.action-button {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  min-width: 100px;
+  text-align: center;
+  touch-action: manipulation;
+}
+
+.action-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 12px var(--shadow-color);
+}
+
+.create-pool-button {
+  background: var(--modal-primary);
+  color: #182435;
+}
+
+.create-pool-button:hover {
+  background: var(--modal-secondary);
+}
+
+.add-liquidity-button {
+  background: transparent;
+  color: #182435;
+  border: 2px solid var(--modal-secondary);
+}
+
+.add-liquidity-button:hover {
+  background: rgba(247, 248, 248, 0.1);
+}
+
+.filter-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin: 0 48px;
+  flex-wrap: wrap;
+}
+
+.filter-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--modal-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-color);
+  transition: all 0.2s ease;
+}
+
+.filter-button:hover {
+  background: var(--hover-bg);
+}
+
+.watchlist-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.switch-group {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.switch-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.switch-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.chakra-switch {
+  display: inline-block;
+  position: relative;
+  width: 40px;
+  height: 20px;
+}
+
+.chakra-switch__input {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  position: absolute;
+}
+
+.chakra-switch__track {
+  background: var(--search-bg);
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  transition: all 0.2s ease;
+}
+
+.chakra-switch__thumb {
+  background: var(--modal-primary);
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.2s ease;
+}
+
+.chakra-switch__input:checked + .chakra-switch__track {
+  background: var(--success-color);
+}
+
+.chakra-switch__input:checked + .chakra-switch__track .chakra-switch__thumb {
+  transform: translateX(20px);
+}
+
+.refresh-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.refresh-button svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--text-secondary);
+}
+
+.refresh-button:hover svg {
+  fill: var(--text-color);
+}
+
+.pool-table-header {
+  display: flex;
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 12px 24px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  border: 1px solid var(--border-color);
+  margin: 0 48px;
+}
+
+.pool-table-header div {
+  flex: 1;
+  text-align: left;
+}
+
+.pool-table-header div:nth-child(1) {
+  flex: 1.5;
+}
+
+.pool-table-header div:nth-child(7) {
+  text-align: right;
+}
+
+.pool-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 48px;
+}
+
+.pool-item {
+  display: flex;
+  flex-direction: column;
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 16px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  margin: 0 48px;
+}
+
+.pool-item:hover {
+  background: var(--hover-bg);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 12px var(--shadow-color);
+}
+
+.pool-token-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.token-images {
+  display: flex;
+  align-items: center;
+}
+
+.token-images img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border-color);
+  transition: transform 0.2s ease;
+}
+
+.token-images img:hover {
+  transform: scale(1.1);
+}
+
+.token-images img:last-child {
+  margin-left: -8px;
+}
+
+.token-details {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.token-pair {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.token-pair p {
+  margin: 0;
+  color: var(--text-color);
+}
+
+.token-pair span {
+  color: var(--text-secondary);
+  font-size: 16px;
+}
+
+.fee-rate {
+  background: var(--input-bg);
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 11px;
+  color: var(--text-color);
+  display: inline-block;
+  border: 1px solid var(--border-color);
+}
+
+.pool-data {
+  font-size: 14px;
+  color: var(--text-color);
+  font-weight: 500;
+  margin-bottom: 8px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.data-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  display: none;
+}
+
+.apr-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.apr-text {
+  font-size: 14px;
+  color: var(--success-color);
+  font-weight: 600;
+}
+
+.reward-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.reward-container .data-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  display: none;
+}
+
+.reward-container img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  transition: transform 0.2s ease;
+}
+
+.reward-container img:hover {
+  transform: scale(1.1);
+}
+
+.reward-container img:not(:first-child) {
+  margin-left: -8px;
+}
+
+.pool-action {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.deposit-button {
+  padding: 10px;
+  background: var(--modal-primary);
+  color: #182435;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  width: 100%;
+  max-width: 200px;
+  text-align: center;
+  touch-action: manipulation;
+}
+
+.deposit-button:hover {
+  background: var(--modal-secondary);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.no-positions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+  background: var(--card-bg);
+  border-radius: 10px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  margin: 0 48px;
+}
+
+@media (min-width: 1024px) {
+  .summary-container {
+    flex-direction: row;
+  }
+
+  .summary-left {
+    flex: 1;
+  }
+
+  .summary-right {
+    flex: 1;
+  }
+
+  .pool-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .button-group {
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+  }
+
+  .pool-item {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .pool-token-info {
+    flex: 1.5;
+    margin-bottom: 0;
+  }
+
+  .pool-data {
+    flex: 1;
+    margin-bottom: 0;
+  }
+
+  .apr-container, .reward-container {
+    flex: 1;
+    margin-bottom: 0;
+  }
+
+  .pool-action {
+    flex: 1;
+    justify-content: flex-end;
+  }
+
+  .deposit-button {
+    width: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .pool-container {
+    padding: 16px;
+    border-radius: 10px;
+  }
+
+  .summary-container {
+    flex-direction: column;
+    padding: 16px;
+    margin: 0 24px;
+    align-items: stretch;
+  }
+
+  .summary-left {
+    min-height: auto;
+  }
+
+  .summary-metrics-card {
+    min-height: auto;
+  }
+
+  .summary-title {
+    font-size: 20px;
+    text-align: left;
+  }
+
+  .metric-item {
+    min-width: 150px;
+  }
+
+  .metric-label {
+    font-size: 12px;
+  }
+
+  .metric-value {
+    font-size: 16px;
+  }
+
+  .chart-container {
+    height: 200px;
+  }
+
+  .chart-title {
+    font-size: 14px;
+  }
+
+  .chart-volume {
+    font-size: 16px;
+  }
+
+  .period-button {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  .pool-title {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .action-button {
+    padding: 6px 10px;
+    font-size: 12px;
+    min-width: 90px;
+  }
+
+  .filter-row {
+    margin: 0 24px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pool-table-header {
+    display: none;
+  }
+
+  .pool-item {
+    padding: 12px;
+    gap: 12px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin: 0 24px;
+  }
+
+  .token-images img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .token-pair {
+    font-size: 14px;
+    white-space: nowrap;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .token-pair span {
+    font-size: 14px;
+  }
+
+  .fee-rate {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+
+  .pool-data, .apr-text {
+    font-size: 12px;
+  }
+
+  .data-label {
+    display: inline;
+  }
+
+  .reward-container .data-label {
+    display: inline;
+  }
+
+  .reward-container img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .deposit-button {
+    font-size: 12px;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pool-container {
+    padding: 12px;
+    gap: 16px;
+  }
+
+  .summary-container {
+    margin: 0 12px;
+  }
+
+  .summary-title {
+    font-size: 18px;
+  }
+
+  .metric-item {
+    min-width: 120px;
+  }
+
+  .metric-label {
+    font-size: 11px;
+  }
+
+  .metric-value {
+    font-size: 14px;
+  }
+
+  .chart-container {
+    height: 180px;
+  }
+
+  .chart-title {
+    font-size: 12px;
+  }
+
+  .chart-volume {
+    font-size: 14px;
+  }
+
+  .period-button {
+    padding: 4px 6px;
+    font-size: 11px;
+  }
+
+  .pool-title {
+    font-size: 18px;
+  }
+
+  .tab-group {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .tab-button {
+    padding: 6px;
+    font-size: 12px;
+    min-width: 0;
+  }
+
+  .action-button {
+    padding: 6px 8px;
+    font-size: 11px;
+    min-width: 80px;
+  }
+
+  .filter-row {
+    margin: 0 12px;
+  }
+
+  .pool-item {
+    padding: 10px;
+    margin: 0 12px;
+  }
+
+  .pool-table-header {
+    margin: 0 12px;
+  }
+
+  .pool-header {
+    margin: 0 12px;
+  }
+
+  .no-positions {
+    margin: 0 12px;
+  }
+
+  .token-images img {
+    width: 24px;
+    height: 24px;
+  }
+
+  .token-pair {
+    font-size: 13px;
+    white-space: nowrap;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .token-pair span {
+    font-size: 13px;
+  }
+
+  .fee-rate {
+    font-size: 9px;
+  }
+
+  .pool-data, .apr-text {
+    font-size: 11px;
+  }
+
+  .data-label {
+    font-size: 11px;
+  }
+
+  .reward-container .data-label {
+    font-size: 11px;
+  }
+
+  .reward-container img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .reward-container img:not(:first-child) {
+    margin-left: -8px;
+  }
+
+  .deposit-button {
+    font-size: 11px;
+    padding: 6px;
+    max-width: 150px;
+  }
+
+  .no-positions {
+    font-size: 12px;
+    height: 120px;
+  }
+}

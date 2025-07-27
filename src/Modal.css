@@ -20,7 +20,7 @@
   background: linear-gradient(135deg, #1e293b, #2a3447);
   border-radius: 16px;
   width: 420px;
-  height: 320px;
+  height: 360px; /* Increased height to fit token changes */
   padding: 20px;
   border: 1px solid rgba(55, 65, 81, 0.5);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 8px rgba(59, 130, 246, 0.1);
@@ -89,6 +89,10 @@
   text-align: center;
 }
 
+.message-section p.error {
+  color: #ff4b4b;
+}
+
 .explorer-link {
   color: #3b82f6;
   text-decoration: none;
@@ -98,6 +102,35 @@
 .explorer-link:hover {
   color: #4b9cfa;
   text-decoration: underline;
+}
+
+.token-changes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.token-change {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.token-change.decreased span {
+  color: #ff4b4b; /* Red for decreased amount */
+}
+
+.token-change.increased span {
+  color: #10b981; /* Green for increased amount */
+}
+
+.token-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
 }
 
 .button-row {
@@ -129,7 +162,7 @@
 @media (max-width: 480px) {
   .modal-content {
     width: 320px;
-    height: 280px;
+    height: 320px; /* Adjusted for smaller screens */
   }
 
   .sui-logo {
@@ -143,6 +176,15 @@
 
   .message-section p {
     font-size: 11px;
+  }
+
+  .token-change {
+    font-size: 11px;
+  }
+
+  .token-icon {
+    width: 18px;
+    height: 18px;
   }
 
   .confirm-button {

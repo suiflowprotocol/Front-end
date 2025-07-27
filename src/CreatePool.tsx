@@ -12,6 +12,7 @@ export interface Token {
 }
 
 interface CreatePoolProps {
+  isOpen: boolean; // 添加这一行
   newPoolToken1: string;
   setNewPoolToken1: (value: string) => void;
   newPoolToken2: string;

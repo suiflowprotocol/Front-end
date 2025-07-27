@@ -1,8 +1,69 @@
 import { useState, useEffect } from "react";
 import { SuiClient, getFullnodeUrl } from "@mysten/sui.js/client";
+import { ConnectButton, WalletProvider, ThemeVars } from "@mysten/dapp-kit";
 import CreatePool from "./CreatePool";
 import AddLiquidityModal from "./AddLiquidityModal";
 import { tokens, Token } from "./tokens";
+import { Link, useNavigate } from "react-router-dom";
+import "./Pool.css";
+
+const customTheme: ThemeVars = {
+  blurs: {
+    modalOverlay: 'blur(0)',
+  },
+  backgroundColors: {
+    primaryButton: '#FFFFFF',
+    primaryButtonHover: '#F7F8F8',
+    outlineButtonHover: '#E4E4E7',
+    modalOverlay: 'rgba(24, 36, 53, 0.2)',
+    modalPrimary: 'white',
+    modalSecondary: '#F7F8F8',
+    iconButton: 'transparent',
+    iconButtonHover: '#F0F1F2',
+    dropdownMenu: '#FFFFFF',
+    dropdownMenuSeparator: '#F3F6F8',
+    walletItemSelected: 'white',
+    walletItemHover: '#3C424226',
+  },
+  borderColors: {
+    outlineButton: '#E4E4E7',
+  },
+  colors: {
+    primaryButton: '#182435',
+    outlineButton: '#373737',
+    iconButton: '#000000',
+    body: '#182435',
+    bodyMuted: '#767A81',
+    bodyDanger: '#FF794B',
+  },
+  radii: {
+    small: '4px',
+    medium: '8px',
+    large: '12px',
+    xlarge: '16px',
+  },
+  shadows: {
+    primaryButton: '0 4px 12px rgba(0, 0, 0, 0.1)',
+    walletItemSelected: '0 2px 8px rgba(0, 0, 0, 0.05)',
+  },
+  fontWeights: {
+    normal: '400',
+    medium: '500',
+    bold: '700',
+  },
+  fontSizes: {
+    small: '12px',
+    medium: '14px',
+    large: '16px',
+    xlarge: '18px',
+  },
+  typography: {
+    fontFamily: 'Arial, sans-serif',
+    fontStyle: 'normal',
+    lineHeight: '1.5',
+    letterSpacing: '0.02em',
+  },
+};
 
 interface Pool {
   pair: string;
@@ -29,22 +90,34 @@ function Pool() {
   const [isAddLiquidityOpen, setIsAddLiquidityOpen] = useState(false);
   const [selectedPool, setSelectedPool] = useState<Pool | null>(null);
   const [countdown, setCountdown] = useState("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [showNotificationPopover, setShowNotificationPopover] = useState(false);
+  const [showRpcPopover, setShowRpcPopover] = useState(false);
+  const [chartPeriod, setChartPeriod] = useState<"D" | "W" | "M">("D");
+  const navigate = useNavigate();
 
-  // 查找代币地址并处理未找到的情况
+  const toggleDropdown = (menu: string | null) => {
+    setOpenDropdown(openDropdown === menu ? null : menu);
+  };
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   const getTokenAddress = (symbol: string): string => {
     const token = tokens.find(t => t.symbol === symbol);
     if (!token) {
       console.error(`Token ${symbol} not found in tokens list`);
-      return "0x0"; // 占位地址，需替换为实际地址
+      return "0x0";
     }
     return token.address;
   };
 
-  // Countdown timer logic for UTC+8 midnight
   useEffect(() => {
     const updateCountdown = () => {
       const now = new Date();
-      const utc8Offset = 8 * 60; // UTC+8 in minutes
+      const utc8Offset = 8 * 60;
       const utcTime = now.getTime() + now.getTimezoneOffset() * 60000;
       const utc8Time = new Date(utcTime + utc8Offset * 60000);
       const nextMidnight = new Date(
@@ -75,8 +148,8 @@ function Pool() {
       img1: "https://archive.cetus.zone/assets/image/sui/sui.png",
       img2: "https://momentum-statics.s3.us-west-1.amazonaws.com/token-usdc.jpg",
       feeRate: "0.25%",
-      tvl: "0",
-      volume: "0",
+      tvl: "$112,519,924.37",
+      volume: "$68,319,795,218.05",
       fees: "0",
       apr: "0",
       rewardImg: "https://i.meee.com.tw/SdliTGK.png",
@@ -569,14 +642,16 @@ function Pool() {
           options: { showContent: true },
         });
 
-        // 占位逻辑：根据链上数据更新 pools 的 tvl、volume 等字段
-        const fetchedPoolData: any[] = []; // 替换为实际数据
-        setPools((prevPools) =>
-          prevPools.map((pool) => {
-            const fetched = fetchedPoolData.find((data) => data.pair === pool.pair);
-            return fetched ? { ...pool, ...fetched } : pool;
-          })
-        );
+        // Placeholder for fetched pool data
+        const fetchedPoolData: any[] = []; // Update with actual data fetching logic
+        if (fetchedPoolData.length > 0) {
+          setPools((prevPools) =>
+            prevPools.map((pool) => {
+              const fetched = fetchedPoolData.find((data) => data.pair === pool.pair);
+              return fetched ? { ...pool, ...fetched } : pool;
+            })
+          );
+        }
       } catch (error) {
         console.error("Error fetching pool data:", error);
       }
@@ -586,665 +661,471 @@ function Pool() {
   }, []);
 
   return (
-    <div className="pool-container">
-      <style>{`
-        .pool-container {
-          display: flex;
-          flex-direction: column;
-          gap: 24px;
-          padding: 24px;
-          background: var(--card-bg);
-          color: var(--text-color);
-          min-height: 100vh;
-          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-          max-width: 1440px;
-          margin: 0 auto;
-          width: 100%;
-          box-sizing: border-box;
-          border-radius: 16px;
-          box-shadow: 0 4px 24px var(--shadow-color);
-        }
-        .reward-countdown-container {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          width: 100%;
-          padding: 12px;
-          background: linear-gradient(135deg, #3b82f6, #10b981);
-          border-radius: 10px;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-          transition: transform 0.3s ease;
-        }
-        .reward-countdown-container:hover {
-          transform: translateY(-2px);
-        }
-        .reward-countdown {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          font-size: 14px;
-          font-weight: 600;
-          color: #ffffff;
-          padding: 10px 16px;
-          border-radius: 8px;
-          background: rgba(255, 255, 255, 0.1);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          flex-wrap: wrap;
-          justify-content: center;
-        }
-        .reward-countdown img {
-          width: 24px;
-          height: 24px;
-          border-radius: 50%;
-          border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        .reward-countdown span {
-          color: #ffffff;
-        }
-        .reward-countdown .countdown-time {
-          color: #ffd700;
-          font-weight: 700;
-        }
-        .pool-header {
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
-          padding: 16px;
-          background: var(--modal-bg);
-          border-radius: 12px;
-          border: 1px solid var(--border-color);
-        }
-        .pool-title {
-          font-size: 24px;
-          font-weight: 700;
-          margin: 0;
-          color: var(--text-color);
-          letter-spacing: -0.4px;
-        }
-        .tab-group {
-          display: flex;
-          gap: 6px;
-          background: var(--search-bg);
-          border-radius: 8px;
-          padding: 4px;
-          border: 1px solid var(--border-color);
-          justify-content: center;
-        }
-        .tab-button {
-          padding: 8px 16px;
-          border-radius: 6px;
-          background: none;
-          border: none;
-          color: var(--text-secondary);
-          font-size: 14px;
-          font-weight: 600;
-          cursor: pointer;
-          transition: all 0.2s ease;
-          min-width: 100px;
-          text-align: center;
-        }
-        .tab Facile: 0
-        .tab-button.active {
-          background: var(--primary-color);
-          color: #ffffff;
-          box-shadow: 0 2px 6px rgba(59, 130, 246, 0.2);
-        }
-        .tab-button:hover {
-          background: var(--hover-bg);
-          color: var(--text-color);
-        }
-        .button-group {
-          display: flex;
-          gap: 8px;
-          flex-wrap: wrap;
-          justify-content: center;
-        }
-        .action-button {
-          padding: 10px 14px;
-          border-radius: 8px;
-          border: none;
-          cursor: pointer;
-          font-size: 13px;
-          font-weight: 600;
-          transition: all 0.2s ease;
-          min-width: 120px;
-          text-align: center;
-          touch-action: manipulation;
-        }
-        .action-button:hover {
-          transform: translateY(-1px);
-          box-shadow: 0 3px 12px var(--shadow-color);
-        }
-        .create-pool-button {
-          background: var(--primary-color);
-          color: #ffffff;
-        }
-        .create-pool-button:hover {
-          background: var(--button-hover-bg);
-        }
-        .add-liquidity-button {
-          background: transparent;
-          color: var(--primary-color);
-          border: 2px solid var(--primary-color);
-        }
-        .add-liquidity-button:hover {
-          background: rgba(59, 130, 246, 0.1);
-        }
-        .pool-table-header {
-          display: flex;
-          background: var(--modal-bg);
-          border-radius: 10px;
-          padding: 12px 16px;
-          font-size: 12px;
-          font-weight: 600;
-          color: var(--text-secondary);
-          text-transform: uppercase;
-          border: 1px solid var(--border-color);
-        }
-        .pool-table-header div {
-          flex: 1;
-          text-align: left;
-        }
-        .pool-table-header div:nth-child(1) {
-          flex: 1.5;
-        }
-        .pool-table-header div:nth-child(7) {
-          text-align: right;
-        }
-        .pool-list {
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-        }
-        .pool-item {
-          display: flex;
-          flex-direction: column;
-          background: var(--modal-bg);
-          border-radius: 10px;
-          padding: 16px;
-          transition: all 0.2s ease;
-          cursor: pointer;
-          border: 1px solid var(--border-color);
-        }
-        .pool-item:hover {
-          background: var(--hover-bg);
-          transform: translateY(-1px);
-          box-shadow: 0 3px 12px var(--shadow-color);
-        }
-        .pool-token-info {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          margin-bottom: 12px;
-        }
-        .token-images {
-          display: flex;
-          align-items: center;
-        }
-        .token-images img {
-          width: 32px;
-          height: 32px;
-          border-radius: 50%;
-          object-fit: cover;
-          border: 1px solid var(--border-color);
-          transition: transform 0.2s ease;
-        }
-        .token-images img:hover {
-          transform: scale(1.1);
-        }
-        .token-images img:last-child {
-          margin-left: -8px;
-        }
-        .token-details {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          gap: 6px;
-          flex-wrap: wrap;
-        }
-        .token-pair {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          font-size: 16px;
-          font-weight: 600;
-          white-space: nowrap;
-          max-width: 150px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-        .token-pair p {
-          margin: 0;
-          color: var(--text-color);
-        }
-        .token-pair span {
-          color: var(--text-secondary);
-          font-size: 16px;
-        }
-        .fee-rate {
-          background: var(--input-bg);
-          padding: 4px 10px;
-          border-radius: 16px;
-          font-size: 11px;
-          color: var(--text-color);
-          display: inline-block;
-          border: 1px solid var(--border-color);
-        }
-        .pool-data {
-          font-size: 14px;
-          color: var(--text-color);
-          font-weight: 500;
-          margin-bottom: 8px;
-          display: flex;
-          gap: 6px;
-          align-items: center;
-        }
-        .data-label {
-          font-size: 12px;
-          font-weight: 600;
-          color: var(--text-secondary);
-          text-transform: uppercase;
-          display: none;
-        }
-        .apr-container {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          margin-bottom: 8px;
-        }
-        .apr-text {
-          font-size: 14px;
-          color: var(--success-color);
-          font-weight: 600;
-        }
-        .reward-container {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          margin-bottom: 8px;
-        }
-        .reward-container .data-label {
-          font-size: 12px;
-          font-weight: 600;
-          color: var(--text-secondary);
-          text-transform: uppercase;
-          display: none;
-        }
-        .reward-container img {
-          width: 24px;
-          height: 24px;
-          border-radius: 50%;
-          border: 1px solid var(--border-color);
-          transition: transform 0.2s ease;
-        }
-        .reward-container img:hover {
-          transform: scale(1.1);
-        }
-        .reward-container img:not(:first-child) {
-          margin-left: -8px;
-        }
-        .pool-action {
-          display: flex;
-          justify-content: center;
-          gap: 10px;
-        }
-        .deposit-button {
-          padding: 10px;
-          background: var(--primary-color);
-          color: #ffffff;
-          border-radius: 8px;
-          border: none;
-          cursor: pointer;
-          font-size: 13px;
-          font-weight: 600;
-          transition: all 0.2s ease;
-          width: 100%;
-          max-width: 200px;
-          text-align: center;
-          touch-action: manipulation;
-        }
-        .deposit-button:hover {
-          background: var(--button-hover-bg);
-          transform: translateY(-1px);
-          box-shadow: 0 2px 6px rgba(59, 130, 246, 0.2);
-        }
-        .no-positions {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 150px;
-          background: var(--modal-bg);
-          border-radius: 10px;
-          font-size: 14px;
-          color: var(--text-secondary);
-          border: 1px solid var(--border-color);
-        }
-        @media (min-width: 1024px) {
-          .pool-header {
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-          }
-          .button-group {
-            flex-wrap: nowrap;
-            justify-content: flex-end;
-          }
-          .pool-item {
-            flex-direction: row;
-            align-items: center;
-            gap: 12px;
-          }
-          .pool-token-info {
-            flex: 1.5;
-            margin-bottom: 0;
-          }
-          .pool-data {
-            flex: 1;
-            margin-bottom: 0;
-          }
-          .apr-container, .reward-container {
-            flex: 1;
-            margin-bottom: 0;
-          }
-          .pool-action {
-            flex: 1;
-            justify-content: flex-end;
-          }
-          .deposit-button {
-            width: auto;
-          }
-        }
-        @media (max-width: 768px) {
-          .pool-container {
-            padding: 16px;
-            border-radius: 10px;
-          }
-          .pool-title {
-            font-size: 20px;
-            text-align: center;
-          }
-          .reward-countdown {
-            font-size: 12px;
-            padding: 8px;
-            text-align: center;
-          }
-          .reward-countdown img {
-            width: 20px;
-            height: 20px;
-          }
-          .reward-countdown-container {
-            padding: 8px;
-          }
-          .action-button {
-            padding: 8px 10px;
-            font-size: 12px;
-            min-width: 100px;
-          }
-          .pool-table-header {
-            display: none;
-          }
-          .pool-item {
-            padding: 12px;
-            gap: 12px;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 8px;
-          }
-          .token-images img {
-            width: 28px;
-            height: 28px;
-          }
-          .token-pair {
-            font-size: 14px;
-            white-space: nowrap;
-            max-width: 120px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
-          .token-pair span {
-            font-size: 14px;
-          }
-          .fee-rate {
-            font-size: 10px;
-            padding: 3px 8px;
-          }
-          .pool-data, .apr-text {
-            font-size: 12px;
-          }
-          .data-label {
-            display: inline;
-          }
-          .reward-container .data-label {
-            display: inline;
-          }
-          .reward-container img {
-            width: 20px;
-            height: 20px;
-          }
-          .deposit-button {
-            font-size: 12px;
-            padding: 8px;
-          }
-        }
-        @media (max-width: 480px) {
-          .pool-container {
-            padding: 12px;
-            gap: 16px;
-          }
-          .pool-title {
-            font-size: 18px;
-          }
-          .tab-group {
-            flex-direction: column;
-            gap: 4px;
-          }
-          .tab-button {
-            padding: 6px;
-            font-size: 12px;
-            min-width: 0;
-          }
-          .action-button {
-            padding: 6px 8px;
-            font-size: 11px;
-            min-width: 90px;
-          }
-          .reward-countdown {
-            font-size: 11px;
-            padding: 6px;
-            gap: 6px;
-          }
-          .reward-countdown img {
-            width: 18px;
-            height: 18px;
-          }
-          .pool-item {
-            padding: 10px;
-          }
-          .token-images img {
-            width: 24px;
-            height: 24px;
-          }
-          .token-pair {
-            font-size: 13px;
-            white-space: nowrap;
-            max-width: 100px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
-          .token-pair span {
-            font-size: 13px;
-          }
-          .fee-rate {
-            font-size: 9px;
-          }
-          .pool-data, .apr-text {
-            font-size: 11px;
-          }
-          .data-label {
-            font-size: 11px;
-          }
-          .reward-container .data-label {
-            font-size: 11px;
-          }
-          .reward-container img {
-            width: 18px;
-            height: 18px;
-          }
-          .reward-container img:not(:first-child) {
-            margin-left: -8px;
-          }
-          .deposit-button {
-            font-size: 11px;
-            padding: 6px;
-            max-width: 150px;
-          }
-          .no-positions {
-            font-size: 12px;
-            height: 120px;
-          }
-        }
-      `}</style>
-      <div className="reward-countdown-container">
-        <div className="reward-countdown">
-          <img
-            src="https://i.meee.com.tw/SdliTGK.png"
-            alt="$Seal"
-          />
-          <span>🎁 Provide liquidity to pools to earn extra $Seal token rewards!</span>
-          <span className="countdown-time">{countdown}</span>
-        </div>
-      </div>
-      <div className="pool-header">
-        <h1 className="pool-title">Liquidity Pools</h1>
-        <div className="tab-group">
-          <button
-            className={`tab-button ${activeTab === "pools" ? "active" : ""}`}
-            onClick={() => setActiveTab("pools")}
-          >
-            Pools
-          </button>
-          <button
-            className={`tab-button ${activeTab === "positions" ? "active" : ""}`}
-            onClick={() => setActiveTab("positions")}
-          >
-            My Positions
-          </button>
-        </div>
-        <div className="button-group">
-          <button
-            onClick={handleCreatePool}
-            className="action-button create-pool-button"
-          >
-            Create New Pool
-          </button>
-          <button
-            onClick={() => handleAddLiquidity(pools[0], true)}
-            className="action-button add-liquidity-button"
-          >
-            Add Liquidity
-          </button>
-        </div>
-      </div>
-      {activeTab === "pools" && (
-        <div className="pool-list">
-          <div className="pool-table-header">
-            <div>Pool</div>
-            <div>Liquidity</div>
-            <div>Volume (24H)</div>
-            <div>Fee (24H)</div>
-            <div>Reward</div>
-            <div>APR</div>
-            <div>Action</div>
-          </div>
-          {pools.map((pool, index) => (
-            <div
-              key={index}
-              className="pool-item"
-              role="presentation"
-            >
-              <div className="pool-token-info">
-                <div className="token-images">
-                  <img
-                    alt={pool.token1Symbol}
-                    loading="lazy"
-                    src={pool.img1}
-                    decoding="async"
-                  />
-                  <img
-                    alt={pool.token2Symbol}
-                    loading="lazy"
-                    src={pool.img2}
-                    decoding="async"
-                  />
+    <WalletProvider theme={customTheme}>
+      <div className="container">
+        <div className="header">
+          <div className="header-top">
+            <div className="logo-container">
+              <img src="https://i.meee.com.tw/SdliTGK.png" alt="Logo" className="logo-image" />
+              <span className="logo-text">Seal</span>
+            </div>
+            <div className={`nav-menu ${isMenuOpen ? "open" : ""}`}>
+              <div
+                className={["nav-item", openDropdown === "trade" ? "open" : ""].join(" ")}
+                onMouseEnter={() => toggleDropdown("trade")}
+                onMouseLeave={() => toggleDropdown(null)}
+              >
+                <span className="nav-text">Trade</span>
+                <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
+                  <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+                </svg>
+                <div className={["dropdown", openDropdown === "trade" ? "open" : ""].join(" ")}>
+                  <Link to="/" className="dropdown-item">
+                    <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                      <use xlinkHref="#icon-a-icon_swap2"></use>
+                    </svg>
+                    Swap
+                  </Link>
                 </div>
-                <div className="token-details">
-                  <div className="token-pair">
-                    <p>{pool.token1Symbol}</p>
-                    <span>-</span>
-                    <p>{pool.token2Symbol}</p>
+              </div>
+              <div
+                className={["nav-item", openDropdown === "earn" ? "open" : ""].join(" ")}
+                onMouseEnter={() => toggleDropdown("earn")}
+                onMouseLeave={() => toggleDropdown(null)}
+              >
+                <span className="nav-text">Earn</span>
+                <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
+                  <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+                </svg>
+                <div className={["dropdown", openDropdown === "earn" ? "open" : ""].join(" ")}>
+                  <Link to="/pool" className="dropdown-item">
+                    <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                      <use xlinkHref="#icon-icon_liquiditypools"></use>
+                    </svg>
+                    Pool
+                  </Link>
+                </div>
+              </div>
+              <div
+                className={["nav-item", openDropdown === "bridge" ? "open" : ""].join(" ")}
+                onMouseEnter={() => toggleDropdown("bridge")}
+                onMouseLeave={() => toggleDropdown(null)}
+              >
+                <span className="nav-text">Bridge</span>
+                <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
+                  <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+                </svg>
+                <div className={["dropdown", openDropdown === "bridge" ? "open" : ""].join(" ")}>
+                  <a href="https://bridge.sui.io/" target="_blank" rel="noopener noreferrer" className="dropdown-item">
+                    <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                      <use xlinkHref="#icon-icon_sui"></use>
+                    </svg>
+                    Sui Bridge
+                  </a>
+                  <a href="https://bridge.cetus.zone/sui" target="_blank" rel="noopener noreferrer" className="dropdown-item">
+                    <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                      <use xlinkHref="#icon-icon_wormhole"></use>
+                    </svg>
+                    Wormhole
+                  </a>
+                </div>
+              </div>
+              <div
+                className={["nav-item", openDropdown === "more" ? "open" : ""].join(" ")}
+                onMouseEnter={() => toggleDropdown("more")}
+                onMouseLeave={() => toggleDropdown(null)}
+              >
+                <span className="nav-text">More</span>
+                <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
+                  <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+                </svg>
+                <div className={["dropdown", openDropdown === "more" ? "open" : ""].join(" ")}>
+                  <a href="#" className="dropdown-item">
+                    <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                      <use xlinkHref="#icon-icon_docs"></use>
+                    </svg>
+                    Docs
+                  </a>
+                  <a href="#" className="dropdown-item">
+                    <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                      <use xlinkHref="#icon-icon_stats"></use>
+                    </svg>
+                    Leaderboard
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="wallet-actions">
+              <ConnectButton />
+              <button
+                id="popover-trigger-notification"
+                aria-haspopup="dialog"
+                aria-expanded={showNotificationPopover}
+                aria-controls="popover-content-notification"
+                className="icon-button css-fi49l4"
+                onClick={() => setShowNotificationPopover(!showNotificationPopover)}
+              >
+                <div className="css-1ke24j5">
+                  <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px" viewBox="0 0 24 24">
+                    <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-1.1-.9-2-2-2s-2 .9-2 2v.68C6.63 5.36 5 7.92 5 11v5l-2 2v1h18v-1l-2-2z"></path>
+                  </svg>
+                </div>
+              </button>
+              {showNotificationPopover && (
+                <div className="chakra-popover__body css-1q40f86">
+                  <div className="chakra-stack css-13uh600">
+                    <img src="/images/logo_paw_sel@2x.png" alt="Pawtato" className="chakra-image css-1tq2rxf" />
+                    <p className="chakra-text css-136jcmy">Visit Pawtato to manage notification settings for LP Range Alert</p>
+                    <button type="button" className="chakra-button css-fpjdn4">Subscribe</button>
                   </div>
-                  <span className="fee-rate">{pool.feeRate}</span>
+                </div>
+              )}
+              <button
+                id="popover-trigger-rpc"
+                aria-haspopup="dialog"
+                aria-expanded={showRpcPopover}
+                aria-controls="popover-content-rpc"
+                className="icon-button css-163hjq3"
+                onClick={() => setShowRpcPopover(!showRpcPopover)}
+              >
+                <div className="css-1ke24j5">
+                  <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px" viewBox="0 0 24 24">
+                    <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.30-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"></path>
+                  </svg>
+                </div>
+              </button>
+              {showRpcPopover && (
+                <div className="chakra-popover__body css-1q40f86">
+                  <div className="chakra-stack css-1opork5">
+                    <div className="chakra-stack css-1ysm3zc">
+                      <div className="css-1ke24j5">
+                        <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px" viewBox="0 0 24 24">
+                          <path d="M20 6L9 17l-5-5"></path>
+                        </svg>
+                      </div>
+                      <p className="chakra-text css-vcvc47">RPC Node</p>
+                    </div>
+                    <div className="css-122co4m">
+                      {[
+                        { name: "Sui Official", latency: "249ms", selected: true },
+                        { name: "BlockVision", latency: "562ms" },
+                        { name: "BlockVision 2", latency: "909ms" },
+                        { name: "Suiet", latency: "553ms" },
+                        { name: "Blast", latency: "554ms" },
+                        { name: "Suiscan", latency: "3181ms" },
+                        { name: "Triton", latency: "436ms" },
+                        { name: "Custom RPC URL", latency: "" },
+                      ].map((node, index) => (
+                        <div key={index} className="chakra-stack css-k5o0vm">
+                          <div className="chakra-stack css-1jjq5p5">
+                            <div className="chakra-stack css-edyt6g">
+                              <div className={node.selected ? "css-sopywd" : "css-empty-check"}>
+                                {node.selected && (
+                                  <div className="css-1ke24j5">
+                                    <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px" viewBox="0 0 24 24">
+                                      <path d="M20 6L9 17l-5-5"></path>
+                                    </svg>
+                                  </div>
+                                )}
+                              </div>
+                              <p className={`chakra-text ${node.selected ? "css-swgav2" : "css-sezabi"}`}>{node.name}</p>
+                            </div>
+                            {node.latency && (
+                              <div className="chakra-stack css-cp3a5l">
+                                <div className="css-18uefe2"></div>
+                                <p className="chakra-text css-1ec3nbv">{node.latency}</p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+              <button className="hamburger-menu" onClick={toggleMenu}>
+                <svg className="hamburger-icon" viewBox="0 0 24 24" width="24px" height="24px">
+                  <path d="M3 6h18M3 12h18M3 18h18" stroke="var(--text-color)" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="pool-container">
+          <div className="summary-container">
+            <div className="summary-left">
+              <h1 className="summary-title">Liquidity Pools</h1>
+              <div className="summary-metrics-card">
+                <div className="metric-item">
+                  <p className="metric-label">Total Value Locked</p>
+                  <p className="metric-value">$112,519,924.37</p>
+                </div>
+                <div className="metric-item">
+                  <p className="metric-label">Cumulative Volume</p>
+                  <p className="metric-value">$68,319,795,218.05</p>
                 </div>
               </div>
-              <div className="pool-data"><span className="data-label">Liquidity:</span> {pool.tvl}</div>
-              <div className="pool-data"><span className="data-label">Volume (24H):</span> {pool.volume}</div>
-              <div className="pool-data"><span className="data-label">Fee (24H):</span> {pool.fees}</div>
-              <div className="reward-container">
-                <span className="data-label">Reward:</span>
-                <img
-                  alt="reward"
-                  src={pool.rewardImg}
-                  decoding="async"
-                />
-                <img
-                  alt={pool.token1Symbol}
-                  src={pool.img1}
-                  decoding="async"
-                />
-                <img
-                  alt={pool.token2Symbol}
-                  src={pool.img2}
-                  decoding="async"
-                />
+            </div>
+            <div className="summary-right">
+              <div className="chart-header">
+                <p className="chart-title">Trading Volume (24H)</p>
+                <p className="chart-volume">$220,275,383.68</p>
+                <div className="period-selector">
+                  <button
+                    className={`period-button ${chartPeriod === "D" ? "active" : ""}`}
+                    onClick={() => setChartPeriod("D")}
+                  >
+                    D
+                  </button>
+                  <button
+                    className={`period-button ${chartPeriod === "W" ? "active" : ""}`}
+                    onClick={() => setChartPeriod("W")}
+                  >
+                    W
+                  </button>
+                  <button
+                    className={`period-button ${chartPeriod === "M" ? "active" : ""}`}
+                    onClick={() => setChartPeriod("M")}
+                  >
+                    M
+                  </button>
+                </div>
               </div>
-              <div className="apr-container">
-                <p className="apr-text"><span className="data-label">APR:</span> {pool.apr}</p>
+              <div className="chart-container">
+                <svg width="100%" height="258" viewBox="0 0 733 258">
+                  <defs>
+                    <clipPath id="chart-clip">
+                      <rect x="5" y="5" width="723" height="218"></rect>
+                    </clipPath>
+                  </defs>
+                  <g className="recharts-cartesian-axis recharts-xAxis">
+                    <g>
+                      {['27', '29', '01', '03', '05', '07', '09', '11', '13', '15', '17', '19', '21', '23', '25', '27'].map((label, index) => (
+                        <g key={index} transform={`translate(${16.661 + index * 46.645},231)`}>
+                          <text x="0" y="0" dy="16" textAnchor="middle" fill="#909CA4" fontSize="12" fontFamily="Inter">{label}</text>
+                        </g>
+                      ))}
+                    </g>
+                  </g>
+                  <g clipPath="url(#chart-clip)">
+                    <g>
+                      <rect x="10.83" y="152.71" width="11" height="70.29" fill="#F7F8F8" />
+                      <rect x="34.15" y="182.52" width="11" height="40.48" fill="#F7F8F8" />
+                      <rect x="57.48" y="174.29" width="11" height="48.71" fill="#F7F8F8" />
+                      <rect x="80.80" y="157.22" width="11" height="65.78" fill="#F7F8F8" />
+                      <rect x="104.12" y="170.40" width="11" height="52.60" fill="#F7F8F8" />
+                      <rect x="127.44" y="148.29" width="11" height="74.71" fill="#F7F8F8" />
+                      <rect x="150.77" y="139.43" width="11" height="83.57" fill="#F7F8F8" />
+                      <rect x="174.09" y="146.01" width="11" height="76.99" fill="#F7F8F8" />
+                      <rect x="197.41" y="182.24" width="11" height="40.76" fill="#F7F8F8" />
+                      <rect x="220.73" y="167.43" width="11" height="55.57" fill="#F7F8F8" />
+                      <rect x="244.06" y="154.11" width="11" height="68.89" fill="#F7F8F8" />
+                      <rect x="267.38" y="146.95" width="11" height="76.05" fill="#F7F8F8" />
+                      <rect x="290.70" y="151.32" width="11" height="71.68" fill="#F7F8F8" />
+                      <rect x="314.02" y="96.07" width="11" height="126.93" fill="#F7F8F8" />
+                      <rect x="337.35" y="80.80" width="11" height="142.20" fill="#F7F8F8" />
+                      <rect x="360.67" y="130.78" width="11" height="92.22" fill="#F7F8F8" />
+                      <rect x="383.99" y="140.73" width="11" height="82.27" fill="#F7F8F8" />
+                      <rect x="407.31" y="27.38" width="11" height="195.62" fill="#F7F8F8" />
+                      <rect x="430.64" y="15.38" width="11" height="207.62" fill="#F7F8F8" />
+                      <rect x="453.96" y="81.78" width="11" height="141.22" fill="#F7F8F8" />
+                      <rect x="477.28" y="73.91" width="11" height="149.09" fill="#F7F8F8" />
+                      <rect x="500.60" y="42.21" width="11" height="180.79" fill="#F7F8F8" />
+                      <rect x="523.93" y="140.45" width="11" height="82.55" fill="#F7F8F8" />
+                      <rect x="547.25" y="119.63" width="11" height="103.37" fill="#F7F8F8" />
+                      <rect x="570.57" y="85.64" width="11" height="137.36" fill="#F7F8F8" />
+                      <rect x="593.90" y="28.69" width="11" height="194.31" fill="#F7F8F8" />
+                      <rect x="617.22" y="54.97" width="11" height="168.03" fill="#F7F8F8" />
+                      <rect x="640.54" y="60.76" width="11" height="162.24" fill="#F7F8F8" />
+                      <rect x="663.86" y="42.10" width="11" height="180.90" fill="#F7F8F8" />
+                      <rect x="687.19" y="86.14" width="11" height="136.86" fill="#F7F8F8" />
+                      <rect x="710.51" y="195.86" width="11" height="27.14" fill="#F7F8F8" />
+                    </g>
+                  </g>
+                </svg>
               </div>
-              <div className="pool-action">
+            </div>
+          </div>
+          <div className="pool-header">
+            <div className="tab-group">
+              <button
+                className={`tab-button ${activeTab === "pools" ? "active" : ""}`}
+                onClick={() => setActiveTab("pools")}
+              >
+                Pools
+              </button>
+              <button
+                className={`tab-button ${activeTab === "positions" ? "active" : ""}`}
+                onClick={() => setActiveTab("positions")}
+              >
+                Positions
+              </button>
+            </div>
+            <div className="button-group">
+              <button
+                type="button"
+                className="action-button create-pool-button"
+                onClick={handleCreatePool}
+              >
+                Create New Pool
+              </button>
+              <button
+                type="button"
+                className="action-button add-liquidity-button"
+                onClick={() => handleAddLiquidity(pools[0], true)}
+              >
+                Add Liquidity
+              </button>
+            </div>
+          </div>
+          <div className="filter-row">
+            <div className="filter-container">
+              <div style={{ width: '100%' }}>
                 <button
-                  className="deposit-button"
-                  onClick={() => handleAddLiquidity(pool)}
+                  id="popover-trigger-filter"
+                  aria-haspopup="dialog"
+                  aria-expanded="false"
+                  aria-controls="popover-content-filter"
+                  className="filter-button"
                 >
-                  Deposit
+                  <div className="filter-button-content">
+                    <div className="filter-icon">
+                      <svg aria-hidden="true" fill="var(--text-color)" width="20px" height="20px">
+                        <use xlinkHref="#icon-icon_search"></use>
+                      </svg>
+                    </div>
+                    <p className="filter-text">Filter by token</p>
+                  </div>
                 </button>
               </div>
             </div>
-          ))}
+            <div className="watchlist-container">
+              <p className="watchlist-text">Watchlist</p>
+            </div>
+            <div className="switch-group">
+              <div className="switch-container">
+                <p className="switch-label">Incentivized Only</p>
+                <label className="chakra-switch">
+                  <input
+                    className="chakra-switch__input"
+                    type="checkbox"
+                    value=""
+                  />
+                  <span className="chakra-switch__track">
+                    <span className="chakra-switch__thumb"></span>
+                  </span>
+                </label>
+              </div>
+              <div className="switch-container">
+                <p className="switch-label">All pools</p>
+                <label className="chakra-switch">
+                  <input
+                    className="chakra-switch__input"
+                    type="checkbox"
+                    value=""
+                  />
+                  <span className="chakra-switch__track">
+                    <span className="chakra-switch__thumb"></span>
+                  </span>
+                </label>
+              </div>
+              <div className="refresh-button-container">
+                <button className="refresh-button">
+                  <svg aria-hidden="true" fill="var(--text-color)" width="20px" height="20px">
+                    <use xlinkHref="#icon-icon_refresh"></use>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="pool-table-header">
+            <div>Pool</div>
+            <div>TVL</div>
+            <div>Volume (24H)</div>
+            <div>Fees (24H)</div>
+            <div>APR</div>
+            <div>Reward</div>
+            <div></div>
+          </div>
+          <div className="pool-list">
+            {pools.length === 0 ? (
+              <div className="no-positions">No positions found</div>
+            ) : (
+              pools.map((pool, index) => (
+                <div
+                  key={index}
+                  className="pool-item"
+                  onClick={() => navigate(`/pool/${pool.pair}`)}
+                >
+                  <div className="pool-token-info">
+                    <div className="token-images">
+                      <img src={pool.img1} alt={pool.token1Symbol} />
+                      <img src={pool.img2} alt={pool.token2Symbol} />
+                    </div>
+                    <div className="token-details">
+                      <div className="token-pair">
+                        <p>{pool.pair}</p>
+                        <span>({pool.feeRate})</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="pool-data">
+                    <span className="data-label">TVL</span>
+                    {pool.tvl}
+                  </div>
+                  <div className="pool-data">
+                    <span className="data-label">Volume (24H)</span>
+                    {pool.volume}
+                  </div>
+                  <div className="pool-data">
+                    <span className="data-label">Fees (24H)</span>
+                    {pool.fees}
+                  </div>
+                  <div className="apr-container">
+                    <span className="data-label">APR</span>
+                    <span className="apr-text">{pool.apr}</span>
+                  </div>
+                  <div className="reward-container">
+                    <span className="data-label">Reward</span>
+                    <img src={pool.rewardImg} alt="Reward" />
+                  </div>
+                  <div className="pool-action">
+                    <button
+                      className="deposit-button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAddLiquidity(pool);
+                      }}
+                    >
+                      Deposit
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+          {isCreatePoolOpen && (
+            <CreatePool
+              isOpen={isCreatePoolOpen}
+              onClose={handleCloseCreatePool}
+              token1={newPoolToken1}
+              token2={newPoolToken2}
+              feeRate={feeRate}
+              setToken1={setNewPoolToken1}
+              setToken2={setNewPoolToken2}
+              setFeeRate={setFeeRate}
+            />
+          )}
+          {isAddLiquidityOpen && selectedPool && (
+            <AddLiquidityModal
+              isOpen={isAddLiquidityOpen}
+              onClose={handleCloseAddLiquidityModal}
+              pool={selectedPool}
+            />
+          )}
         </div>
-      )}
-      {activeTab === "positions" && (
-        <div className="no-positions">
-          <p>No position data available</p>
-        </div>
-      )}
-      {isCreatePoolOpen && (
-        <CreatePool
-          newPoolToken1={newPoolToken1}
-          setNewPoolToken1={setNewPoolToken1}
-          newPoolToken2={newPoolToken2}
-          setNewPoolToken2={setNewPoolToken2}
-          feeRate={feeRate}
-          setFeeRate={setFeeRate}
-          onClose={handleCloseCreatePool}
-        />
-      )}
-      {isAddLiquidityOpen && selectedPool && (
-        <AddLiquidityModal
-          pool={selectedPool}
-          onClose={handleCloseAddLiquidityModal}
-        />
-      )}
-    </div>
+      </div>
+    </WalletProvider>
   );
 }
 
