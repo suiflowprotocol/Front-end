@@ -17,6 +17,7 @@ interface Pool {
 }
 
 interface AddLiquidityModalProps {
+  isOpen: boolean;
   pool: Pool;
   onClose: () => void;
 }

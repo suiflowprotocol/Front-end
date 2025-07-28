@@ -1,5 +1,5 @@
 :root {
-  --card-bg: #FFFFFF;
+  --card-bg: #F7F8F8; /* Changed from #FFFFFF to match the bar chart's background */
   --text-color: #182435;
   --text-secondary: #767A81;
   --border-color: #E4E4E7;
@@ -38,7 +38,7 @@
 }
 
 .summary-left {
-  flex: 1;
+  flex: 0.8; /* Retained to make the card narrower */
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -46,7 +46,7 @@
 }
 
 .summary-right {
-  flex: 1;
+  flex: 1.2; /* Retained to make the chart wider */
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -61,7 +61,7 @@
 }
 
 .summary-metrics-card {
-  background: linear-gradient(135deg, #6B7280 0%, #4B5563 100%);
+  background: var(--card-bg); /* 将背景颜色设置为与页面背景颜色相同 */
   color: white;
   border-radius: 12px;
   padding: 24px;
@@ -99,8 +99,15 @@
 
 .chart-header {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  justify-content: space-between; /* 使内容在两端对齐 */
+  align-items: center; /* 垂直居中对齐 */
+  margin-bottom: 12px;
+}
+
+.chart-volume-container {
+  display: flex;
+  align-items: center; /* 垂直居中对齐 */
+  gap: 16px; /* 添加间距 */
 }
 
 .chart-title {
@@ -133,8 +140,8 @@
 }
 
 .period-button.active {
-  background: var(--modal-secondary);
-  color: #182435;
+  background: #ADD8E6; /* 浅蓝色 */
+  color: #182435; /* 保持文本颜色 */
 }
 
 .period-button:not(.active) {
@@ -591,11 +598,11 @@
   }
 
   .summary-left {
-    flex: 1;
+    flex: 0.8;
   }
 
   .summary-right {
-    flex: 1;
+    flex: 1.2;
   }
 
   .pool-header {
@@ -907,4 +914,8 @@
     font-size: 12px;
     height: 120px;
   }
+}
+
+.chart-container rect {
+  fill: #007BFF; /* 蓝色 */
 }

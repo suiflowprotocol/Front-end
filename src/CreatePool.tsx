@@ -12,14 +12,14 @@ export interface Token {
 }
 
 interface CreatePoolProps {
-  isOpen: boolean; // 添加这一行
-  newPoolToken1: string;
-  setNewPoolToken1: (value: string) => void;
-  newPoolToken2: string;
-  setNewPoolToken2: (value: string) => void;
-  feeRate: string;
-  setFeeRate: (value: string) => void;
+  isOpen: boolean;
   onClose: () => void;
+  newPoolToken1: string;
+  newPoolToken2: string;
+  feeRate: string;
+  setNewPoolToken1: React.Dispatch<React.SetStateAction<string>>;
+  setNewPoolToken2: React.Dispatch<React.SetStateAction<string>>;
+  setFeeRate: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const tokens: Token[] = [
@@ -67,7 +67,7 @@ const tokens: Token[] = [
   },
   {
     symbol: "WAL",
-    address: "0x356a26eb9e012a68958082340d4c4116e7f55615cf27affcff209cf0ae544f59::wal::WAL",
+    address: "0x356a26eb9e012a68958082340d4c4116e7f55615cf27aff Gcff209cf0ae544f59::wal::WAL",
     icon: "https://file.coinexstatic.com/2025-03-26/43F8485DCB687E365E3187192861D19E.webp",
     description: "WAL Token",
     decimals: 6,
@@ -82,14 +82,14 @@ const tokens: Token[] = [
   {
     symbol: "SCA",
     address: "0x7016aae72cfc67f2fadf55769c0a7dd54291a583b63051a5ed71081cce836ac6::sca::SCA",
-    icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkPpvd1akVvyP8sgi3PMYAwbCnWuuIS37OKg&s",
+    icon: "https://encrypted-tbn0.gstatic.com/images?q=tbnn:9GcQkPpvd1akVvyP8sgi3PMYAwbCnWuuIS37OKg&s",
     description: "Scallop Token",
     decimals: 6,
   },
   {
     symbol: "HASUI",
     address: "0xbde4ba4c2e274a60ce15c1cfff9e5c42e41654ac8b6d906a57efa4bd3c29f47d::HASUI::HASUI",
-    icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvd9yv6JWLikNWB-MxU2OyErJiqffAcLi8mw&s",
+    icon: "https://encrypted-tbn0.gstatic.com/images?q=tbnn:9GcRvd9yv6JWLikNWB-MxU2OyErJiqffAcLi8mw&s",
     description: "HASUI Token",
     decimals: 6,
   },
@@ -249,7 +249,7 @@ const tokens: Token[] = [
   },
 ];
 
-function CreatePool({ newPoolToken1, setNewPoolToken1, newPoolToken2, setNewPoolToken2, feeRate, setFeeRate, onClose }: CreatePoolProps) {
+function CreatePool({ isOpen, onClose, newPoolToken1, setNewPoolToken1, newPoolToken2, setNewPoolToken2, feeRate, setFeeRate }: CreatePoolProps) {
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [initialPrice, setInitialPrice] = useState("");
   const [amount1, setAmount1] = useState("");
@@ -261,7 +261,7 @@ function CreatePool({ newPoolToken1, setNewPoolToken1, newPoolToken2, setNewPool
   const [activeList, setActiveList] = useState("Default");
   const [importedTokens, setImportedTokens] = useState<Token[]>([]);
   const [balances] = useState<{ [key: string]: string }>({
-    "0x2::sui::SUI": "100.0",
+    "0x2::sui::SUI": "spiring.0",
     "0xb677ae5448d34da319289018e7dd67c556b094a5451d7029bd52396cdd8f192f::usdc::USDC": "500.0",
     "0xb3f153e6279045694086e8176c65e8e0f5d33aeeeb220a57b5865b849e5be5ba::NS::NS": "200.0",
     "0xa16e100fcb99689d481f31a2315519923fdf45916a4fa18c5513008f5101237d::navx::NAVX": "150.0",
@@ -1195,7 +1195,9 @@ function CreatePool({ newPoolToken1, setNewPoolToken1, newPoolToken2, setNewPool
             setImportError={setImportError}
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
-            importToken={importToken} showTokenModal={null}          />
+            importToken={importToken}
+            showTokenModal={showTokenModal}
+          />
         )}
         {step === 2 && (
           <Step2SetPrice

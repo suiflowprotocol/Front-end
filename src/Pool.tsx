@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { SuiClient, getFullnodeUrl } from "@mysten/sui.js/client";
 import { ConnectButton, WalletProvider, ThemeVars } from "@mysten/dapp-kit";
 import CreatePool from "./CreatePool";
@@ -7,6 +7,7 @@ import { tokens, Token } from "./tokens";
 import { Link, useNavigate } from "react-router-dom";
 import "./Pool.css";
 
+// Define the ThemeVars interface
 const customTheme: ThemeVars = {
   blurs: {
     modalOverlay: 'blur(0)',
@@ -65,6 +66,7 @@ const customTheme: ThemeVars = {
   },
 };
 
+// Define the Pool interface
 interface Pool {
   pair: string;
   token1: string;
@@ -79,6 +81,25 @@ interface Pool {
   fees: string;
   apr: string;
   rewardImg: string;
+}
+
+// Define props for CreatePool component
+interface CreatePoolProps {
+  isOpen: boolean;
+  onClose: () => void;
+  newPoolToken1: string;
+  newPoolToken2: string;
+  feeRate: string;
+  setNewPoolToken1: Dispatch<SetStateAction<string>>;
+  setNewPoolToken2: Dispatch<SetStateAction<string>>;
+  setFeeRate: Dispatch<SetStateAction<string>>;
+}
+
+// Define props for AddLiquidityModal component
+interface AddLiquidityModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  pool: Pool;
 }
 
 function Pool() {
@@ -148,8 +169,8 @@ function Pool() {
       img1: "https://archive.cetus.zone/assets/image/sui/sui.png",
       img2: "https://momentum-statics.s3.us-west-1.amazonaws.com/token-usdc.jpg",
       feeRate: "0.25%",
-      tvl: "$112,519,924.37",
-      volume: "$68,319,795,218.05",
+      tvl: "$114,541,220.45",
+      volume: "$68,622,910,890.96",
       fees: "0",
       apr: "0",
       rewardImg: "https://i.meee.com.tw/SdliTGK.png",
@@ -858,37 +879,39 @@ function Pool() {
               <div className="summary-metrics-card">
                 <div className="metric-item">
                   <p className="metric-label">Total Value Locked</p>
-                  <p className="metric-value">$112,519,924.37</p>
+                  <p className="metric-value">$114,541,220.45</p>
                 </div>
                 <div className="metric-item">
                   <p className="metric-label">Cumulative Volume</p>
-                  <p className="metric-value">$68,319,795,218.05</p>
+                  <p className="metric-value">$68,622,910,890.96</p>
                 </div>
               </div>
             </div>
             <div className="summary-right">
               <div className="chart-header">
                 <p className="chart-title">Trading Volume (24H)</p>
-                <p className="chart-volume">$220,275,383.68</p>
-                <div className="period-selector">
-                  <button
-                    className={`period-button ${chartPeriod === "D" ? "active" : ""}`}
-                    onClick={() => setChartPeriod("D")}
-                  >
-                    D
-                  </button>
-                  <button
-                    className={`period-button ${chartPeriod === "W" ? "active" : ""}`}
-                    onClick={() => setChartPeriod("W")}
-                  >
-                    W
-                  </button>
-                  <button
-                    className={`period-button ${chartPeriod === "M" ? "active" : ""}`}
-                    onClick={() => setChartPeriod("M")}
-                  >
-                    M
-                  </button>
+                <div className="chart-volume-container">
+                  <p className="chart-volume">$273,688,627.57</p>
+                  <div className="period-selector">
+                    <button
+                      className={`period-button ${chartPeriod === "D" ? "active" : ""}`}
+                      onClick={() => setChartPeriod("D")}
+                    >
+                      D
+                    </button>
+                    <button
+                      className={`period-button ${chartPeriod === "W" ? "active" : ""}`}
+                      onClick={() => setChartPeriod("W")}
+                    >
+                      W
+                    </button>
+                    <button
+                      className={`period-button ${chartPeriod === "M" ? "active" : ""}`}
+                      onClick={() => setChartPeriod("M")}
+                    >
+                      M
+                    </button>
+                  </div>
                 </div>
               </div>
               <div className="chart-container">
@@ -900,8 +923,8 @@ function Pool() {
                   </defs>
                   <g className="recharts-cartesian-axis recharts-xAxis">
                     <g>
-                      {['27', '29', '01', '03', '05', '07', '09', '11', '13', '15', '17', '19', '21', '23', '25', '27'].map((label, index) => (
-                        <g key={index} transform={`translate(${16.661 + index * 46.645},231)`}>
+                      {['05', '26', '16', '07', '28', '18', '09', '30', '20', '10', '03', '24', '14', '05', '26', '16', '07', '28'].map((label, index) => (
+                        <g key={index} transform={`translate(${16.661 + index * 40.722},231)`}>
                           <text x="0" y="0" dy="16" textAnchor="middle" fill="#909CA4" fontSize="12" fontFamily="Inter">{label}</text>
                         </g>
                       ))}
@@ -909,37 +932,37 @@ function Pool() {
                   </g>
                   <g clipPath="url(#chart-clip)">
                     <g>
-                      <rect x="10.83" y="152.71" width="11" height="70.29" fill="#F7F8F8" />
-                      <rect x="34.15" y="182.52" width="11" height="40.48" fill="#F7F8F8" />
-                      <rect x="57.48" y="174.29" width="11" height="48.71" fill="#F7F8F8" />
-                      <rect x="80.80" y="157.22" width="11" height="65.78" fill="#F7F8F8" />
-                      <rect x="104.12" y="170.40" width="11" height="52.60" fill="#F7F8F8" />
-                      <rect x="127.44" y="148.29" width="11" height="74.71" fill="#F7F8F8" />
-                      <rect x="150.77" y="139.43" width="11" height="83.57" fill="#F7F8F8" />
-                      <rect x="174.09" y="146.01" width="11" height="76.99" fill="#F7F8F8" />
-                      <rect x="197.41" y="182.24" width="11" height="40.76" fill="#F7F8F8" />
-                      <rect x="220.73" y="167.43" width="11" height="55.57" fill="#F7F8F8" />
-                      <rect x="244.06" y="154.11" width="11" height="68.89" fill="#F7F8F8" />
-                      <rect x="267.38" y="146.95" width="11" height="76.05" fill="#F7F8F8" />
-                      <rect x="290.70" y="151.32" width="11" height="71.68" fill="#F7F8F8" />
-                      <rect x="314.02" y="96.07" width="11" height="126.93" fill="#F7F8F8" />
-                      <rect x="337.35" y="80.80" width="11" height="142.20" fill="#F7F8F8" />
-                      <rect x="360.67" y="130.78" width="11" height="92.22" fill="#F7F8F8" />
-                      <rect x="383.99" y="140.73" width="11" height="82.27" fill="#F7F8F8" />
-                      <rect x="407.31" y="27.38" width="11" height="195.62" fill="#F7F8F8" />
-                      <rect x="430.64" y="15.38" width="11" height="207.62" fill="#F7F8F8" />
-                      <rect x="453.96" y="81.78" width="11" height="141.22" fill="#F7F8F8" />
-                      <rect x="477.28" y="73.91" width="11" height="149.09" fill="#F7F8F8" />
-                      <rect x="500.60" y="42.21" width="11" height="180.79" fill="#F7F8F8" />
-                      <rect x="523.93" y="140.45" width="11" height="82.55" fill="#F7F8F8" />
-                      <rect x="547.25" y="119.63" width="11" height="103.37" fill="#F7F8F8" />
-                      <rect x="570.57" y="85.64" width="11" height="137.36" fill="#F7F8F8" />
-                      <rect x="593.90" y="28.69" width="11" height="194.31" fill="#F7F8F8" />
-                      <rect x="617.22" y="54.97" width="11" height="168.03" fill="#F7F8F8" />
-                      <rect x="640.54" y="60.76" width="11" height="162.24" fill="#F7F8F8" />
-                      <rect x="663.86" y="42.10" width="11" height="180.90" fill="#F7F8F8" />
-                      <rect x="687.19" y="86.14" width="11" height="136.86" fill="#F7F8F8" />
-                      <rect x="710.51" y="195.86" width="11" height="27.14" fill="#F7F8F8" />
+                      <rect x="10.83" y="152.71" width="11" height="70.29" fill="#007BFF" />
+                      <rect x="34.15" y="182.52" width="11" height="40.48" fill="#007BFF" />
+                      <rect x="57.48" y="174.29" width="11" height="48.71" fill="#007BFF" />
+                      <rect x="80.80" y="157.22" width="11" height="65.78" fill="#007BFF" />
+                      <rect x="104.12" y="170.40" width="11" height="52.60" fill="#007BFF" />
+                      <rect x="127.44" y="148.29" width="11" height="74.71" fill="#007BFF" />
+                      <rect x="150.77" y="139.43" width="11" height="83.57" fill="#007BFF" />
+                      <rect x="174.09" y="146.01" width="11" height="76.99" fill="#007BFF" />
+                      <rect x="197.41" y="168.24" width="11" height="40.76" fill="#007BFF" />
+                      <rect x="220.73" y="167.43" width="11" height="55.57" fill="#007BFF" />
+                      <rect x="244.06" y="154.11" width="11" height="68.89" fill="#007BFF" />
+                      <rect x="267.38" y="146.95" width="11" height="76.05" fill="#007BFF" />
+                      <rect x="290.70" y="151.32" width="11" height="71.68" fill="#007BFF" />
+                      <rect x="314.02" y="96.07" width="11" height="126.93" fill="#007BFF" />
+                      <rect x="337.35" y="80.80" width="11" height="142.20" fill="#007BFF" />
+                      <rect x="360.67" y="130.78" width="11" height="92.22" fill="#007BFF" />
+                      <rect x="383.99" y="140.73" width="11" height="82.27" fill="#007BFF" />
+                      <rect x="407.31" y="27.38" width="11" height="195.62" fill="#007BFF" />
+                      <rect x="430.64" y="15.38" width="11" height="207.62" fill="#007BFF" />
+                      <rect x="453.96" y="81.78" width="11" height="141.22" fill="#007BFF" />
+                      <rect x="477.28" y="73.91" width="11" height="149.09" fill="#007BFF" />
+                      <rect x="500.60" y="42.21" width="11" height="180.79" fill="#007BFF" />
+                      <rect x="523.93" y="140.45" width="11" height="82.55" fill="#007BFF" />
+                      <rect x="547.25" y="119.63" width="11" height="103.37" fill="#007BFF" />
+                      <rect x="570.57" y="85.64" width="11" height="137.36" fill="#007BFF" />
+                      <rect x="593.90" y="28.69" width="11" height="194.31" fill="#007BFF" />
+                      <rect x="617.22" y="54.97" width="11" height="168.03" fill="#007BFF" />
+                      <rect x="640.54" y="60.76" width="11" height="162.24" fill="#007BFF" />
+                      <rect x="663.86" y="42.10" width="11" height="180.90" fill="#007BFF" />
+                      <rect x="687.19" y="86.14" width="11" height="136.86" fill="#007BFF" />
+                      <rect x="710.51" y="195.86" width="11" height="27.14" fill="#007BFF" />
                     </g>
                   </g>
                 </svg>
@@ -967,7 +990,7 @@ function Pool() {
                 className="action-button create-pool-button"
                 onClick={handleCreatePool}
               >
-                Create New Pool
+                Create a new pool
               </button>
               <button
                 type="button"
@@ -980,53 +1003,38 @@ function Pool() {
           </div>
           <div className="filter-row">
             <div className="filter-container">
-              <div style={{ width: '100%' }}>
-                <button
-                  id="popover-trigger-filter"
-                  aria-haspopup="dialog"
-                  aria-expanded="false"
-                  aria-controls="popover-content-filter"
-                  className="filter-button"
-                >
-                  <div className="filter-button-content">
-                    <div className="filter-icon">
-                      <svg aria-hidden="true" fill="var(--text-color)" width="20px" height="20px">
-                        <use xlinkHref="#icon-icon_search"></use>
-                      </svg>
-                    </div>
-                    <p className="filter-text">Filter by token</p>
-                  </div>
-                </button>
-              </div>
+              <input
+                type="text"
+                className="search-input"
+                placeholder="Filter by token"
+              />
             </div>
             <div className="watchlist-container">
-              <p className="watchlist-text">Watchlist</p>
+              <label className="switch-container">
+                <input
+                  type="checkbox"
+                  className="chakra-switch__input"
+                />
+                <span className="switch-label">Watchlist</span>
+              </label>
             </div>
             <div className="switch-group">
               <div className="switch-container">
-                <p className="switch-label">Incentivized Only</p>
                 <label className="chakra-switch">
                   <input
                     className="chakra-switch__input"
                     type="checkbox"
-                    value=""
                   />
-                  <span className="chakra-switch__track">
-                    <span className="chakra-switch__thumb"></span>
-                  </span>
+                  <span className="switch-label">Incentivized Only</span>
                 </label>
               </div>
               <div className="switch-container">
-                <p className="switch-label">All pools</p>
                 <label className="chakra-switch">
                   <input
                     className="chakra-switch__input"
                     type="checkbox"
-                    value=""
                   />
-                  <span className="chakra-switch__track">
-                    <span className="chakra-switch__thumb"></span>
-                  </span>
+                  <span className="switch-label">All pools</span>
                 </label>
               </div>
               <div className="refresh-button-container">
@@ -1108,11 +1116,11 @@ function Pool() {
             <CreatePool
               isOpen={isCreatePoolOpen}
               onClose={handleCloseCreatePool}
-              token1={newPoolToken1}
-              token2={newPoolToken2}
+              newPoolToken1={newPoolToken1}
+              newPoolToken2={newPoolToken2}
               feeRate={feeRate}
-              setToken1={setNewPoolToken1}
-              setToken2={setNewPoolToken2}
+              setNewPoolToken1={setNewPoolToken1}
+              setNewPoolToken2={setNewPoolToken2}
               setFeeRate={setFeeRate}
             />
           )}
