@@ -61,7 +61,7 @@
 }
 
 .summary-metrics-card {
-  background: var(--card-bg); /* 将背景颜色设置为与页面背景颜色相同 */
+  background: var(#F7F8F8); /* 将背景颜色设置为与页面背景颜色相同 */
   color: white;
   border-radius: 12px;
   padding: 24px;
@@ -158,9 +158,9 @@
   flex-direction: column;
   gap: 16px;
   padding: 16px;
-  background: var(--card-bg);
+  background: var(#F7F8F8);
   border-radius: 12px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(#F7F8F8);
   margin: 0 48px;
 }
 
@@ -590,6 +590,11 @@
   color: var(--text-secondary);
   border: 1px solid var(--border-color);
   margin: 0 48px;
+}
+
+.pools-container, .positions-container {
+  border: none; /* 隐藏边框 */
+  box-shadow: none; /* 隐藏阴影 */
 }
 
 @media (min-width: 1024px) {

@@ -1,4 +1,4 @@
-import { useState, useEffect, Dispatch, SetStateAction } from "react";
+import { useState, useEffect } from "react";
 import { SuiClient, getFullnodeUrl } from "@mysten/sui.js/client";
 import { ConnectButton, WalletProvider, ThemeVars } from "@mysten/dapp-kit";
 import CreatePool from "./CreatePool";
@@ -7,7 +7,6 @@ import { tokens, Token } from "./tokens";
 import { Link, useNavigate } from "react-router-dom";
 import "./Pool.css";
 
-// Define the ThemeVars interface
 const customTheme: ThemeVars = {
   blurs: {
     modalOverlay: 'blur(0)',
@@ -66,7 +65,6 @@ const customTheme: ThemeVars = {
   },
 };
 
-// Define the Pool interface
 interface Pool {
   pair: string;
   token1: string;
@@ -81,25 +79,6 @@ interface Pool {
   fees: string;
   apr: string;
   rewardImg: string;
-}
-
-// Define props for CreatePool component
-interface CreatePoolProps {
-  isOpen: boolean;
-  onClose: () => void;
-  newPoolToken1: string;
-  newPoolToken2: string;
-  feeRate: string;
-  setNewPoolToken1: Dispatch<SetStateAction<string>>;
-  setNewPoolToken2: Dispatch<SetStateAction<string>>;
-  setFeeRate: Dispatch<SetStateAction<string>>;
-}
-
-// Define props for AddLiquidityModal component
-interface AddLiquidityModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  pool: Pool;
 }
 
 function Pool() {
@@ -940,7 +919,7 @@ function Pool() {
                       <rect x="127.44" y="148.29" width="11" height="74.71" fill="#007BFF" />
                       <rect x="150.77" y="139.43" width="11" height="83.57" fill="#007BFF" />
                       <rect x="174.09" y="146.01" width="11" height="76.99" fill="#007BFF" />
-                      <rect x="197.41" y="168.24" width="11" height="40.76" fill="#007BFF" />
+                      <rect x="197.41" y="182.24" width="11" height="40.76" fill="#007BFF" />
                       <rect x="220.73" y="167.43" width="11" height="55.57" fill="#007BFF" />
                       <rect x="244.06" y="154.11" width="11" height="68.89" fill="#007BFF" />
                       <rect x="267.38" y="146.95" width="11" height="76.05" fill="#007BFF" />
@@ -984,17 +963,45 @@ function Pool() {
                 Positions
               </button>
             </div>
-            <div className="button-group">
+            <div className="button-group" style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', border: 'none', boxShadow: 'none' }}>
               <button
                 type="button"
                 className="action-button create-pool-button"
+                style={{
+                  maxWidth: '200px',
+                  height: '40px',
+                  padding: '10px 16px',
+                  background: 'linear-gradient(90deg, #007BFF 0%, #00B7FF 100%)',
+                  color: '#FFFFFF',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  transition: 'background 0.3s, transform 0.2s, box-shadow 0.2s',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
+                }}
                 onClick={handleCreatePool}
               >
-                Create a new pool
+                Create New Pool
               </button>
               <button
                 type="button"
                 className="action-button add-liquidity-button"
+                style={{
+                  maxWidth: '200px',
+                  height: '40px',
+                  padding: '10px 16px',
+                  background: 'transparent',
+                  color: '#007BFF',
+                  border: '2px solid #007BFF',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  transition: 'background 0.3s, transform 0.2s, box-shadow 0.2s',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
+                }}
                 onClick={() => handleAddLiquidity(pools[0], true)}
               >
                 Add Liquidity
@@ -1002,11 +1009,17 @@ function Pool() {
             </div>
           </div>
           <div className="filter-row">
-            <div className="filter-container">
+            <div className="filter-container" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', position: 'relative', background: 'var(--search-bg)', borderRadius: '8px', padding: '8px 12px', border: '1px solid var(--border-color)' }}>
+              <span style={{ order: -1, flexShrink: 0, display: 'flex', alignItems: 'center', marginRight: '8px' }}>
+                <svg className="search-icon" viewBox="0 0 24 24" width="20px" height="20px">
+                  <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.45 14 5 11.55 5 9.5S7.45 5 9.5 5s4.5 2.45 4.5 4.5-2.45 4.5-4.5 4.5z" fill="var(--text-secondary)" />
+                </svg>
+              </span>
               <input
                 type="text"
                 className="search-input"
-                placeholder="Filter by token"
+                placeholder="Filter by Token"
+                style={{ flex: '1', border: 'none', background: 'none', outline: 'none', fontSize: '14px', color: 'var(--text-color)', order: '0', padding: '0' }}
               />
             </div>
             <div className="watchlist-container">
@@ -1116,11 +1129,11 @@ function Pool() {
             <CreatePool
               isOpen={isCreatePoolOpen}
               onClose={handleCloseCreatePool}
-              newPoolToken1={newPoolToken1}
-              newPoolToken2={newPoolToken2}
+              token1={newPoolToken1}
+              token2={newPoolToken2}
               feeRate={feeRate}
-              setNewPoolToken1={setNewPoolToken1}
-              setNewPoolToken2={setNewPoolToken2}
+              setToken1={setNewPoolToken1}
+              setToken2={setNewPoolToken2}
               setFeeRate={setFeeRate}
             />
           )}
