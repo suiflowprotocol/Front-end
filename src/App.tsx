@@ -3,13 +3,14 @@ import { ConnectButton, useCurrentAccount, useSuiClient, useSignAndExecuteTransa
 import { Transaction } from "@mysten/sui/transactions";
 import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import Pool from "./Pool";
+import XSeal from "./xSeal";
 import TokenModal, { tokens } from "./TokenModal";
 import CoverPage from "./CoverPage";
 import "./App.css";
 import "./App2.css";
 import Confetti from "react-confetti";
 import Modal from './Modal';
-import SettingsPage from './SettingsPage';
+import SettingsPage from './SettingsPage'; // 导入新的设置页面
 
 // Define custom theme
 const customTheme: ThemeVars = {
@@ -261,9 +262,10 @@ function App() {
   const client = useSuiClient();
   const account = useCurrentAccount();
   const { mutate: signAndExecute } = useSignAndExecuteTransaction();
-  const navigate = useNavigate();
-  const [showSettings, setShowSettings] = useState(false);
-  const [slippage, setSlippage] = useState("0.5");
+  const navigate = useNavigate(); // 添加 useNavigate
+  const [showSettings, setShowSettings] = useState(false); // 添加状态来控制模态显示
+  const [slippage, setSlippage] = useState("0.5"); // 添加滑点状态
+
   const [tokenX, setTokenX] = useState("0x2::sui::SUI");
   const [tokenY, setTokenY] = useState("0xb677ae5448d34da319289018e7dd67c556b094a5451d7029bd52396cdd8f192f::usdc::USDC");
   const [amountIn, setAmountIn] = useState("");
@@ -284,12 +286,7 @@ function App() {
   const [showConfetti, setShowConfetti] = useState(false);
   const switchRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
-  const [modalProps, setModalProps] = useState<{
-    txHash?: string;
-    decreasedToken?: { address: string; symbol: string; icon: string; amount: string };
-    increasedToken?: { address: string; symbol: string; icon: string; amount: string };
-    errorMessage?: string;
-  }>({});
+  const [modalMessage, setModalMessage] = useState("");
   const [showNotificationPopover, setShowNotificationPopover] = useState(false);
   const [showRpcPopover, setShowRpcPopover] = useState(false);
 
@@ -939,50 +936,15 @@ function App() {
           account,
         },
         {
-          onSuccess: (result: any) => {
-            const inputToken = isReverseSwap ? tokenY : tokenX;
-            const outputToken = isReverseSwap ? tokenX : tokenY;
-            const inputTokenInfo = getTokenInfo(inputToken);
-            const outputTokenInfo = getTokenInfo(outputToken);
-            setModalProps({
-              txHash: result.digest,
-              decreasedToken: {
-                address: inputToken,
-                symbol: inputTokenInfo.symbol,
-                icon: inputTokenInfo.icon,
-                amount: amountIn,
-              },
-              increasedToken: {
-                address: outputToken,
-                symbol: outputTokenInfo.symbol,
-                icon: outputTokenInfo.icon,
-                amount: expectedOutput,
-              },
-            });
-            setShowModal(true);
-            setError("");
-            setAmountIn("");
-            setMinAmountOut("0");
-            setExpectedOutput("0.0");
-            setPriceImpact("0.00");
-            setPriceDifference("0.00");
-          },
+          
           onError: (err: any) => {
             setError(`Transaction failed: ${err.message}`);
             setSuccess("");
-            setModalProps({
-              errorMessage: `Transaction failed: ${err.message}`,
-            });
-            setShowModal(true);
           },
         }
       );
     } catch (err) {
       setError(`Transaction preparation failed: ${err instanceof Error ? err.message : "Unknown error"}`);
-      setModalProps({
-        errorMessage: `Transaction preparation failed: ${err instanceof Error ? err.message : "Unknown error"}`,
-      });
-      setShowModal(true);
     }
   };
 
@@ -1073,6 +1035,9 @@ function App() {
                           </Link>
                         </div>
                       </div>
+                      <Link to="/xseal" className="nav-item">
+                <span className="nav-text">xSeal</span>
+              </Link>
                       <div className={`nav-item ${openDropdown === "bridge" ? "open" : ""}`} 
                            onMouseEnter={() => toggleDropdown("bridge")} 
                            onMouseLeave={() => toggleDropdown(null)}>
@@ -1237,7 +1202,7 @@ function App() {
                         <div className="settings-button-container">
                           <button
                             className="settings-button"
-                            onClick={() => setShowSettings(true)}
+                            onClick={() => setShowSettings(true)} // 显示模态窗口
                           >
                             {slippage}% <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="settings-icon"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><circle cx="12" cy="12" r="4"></circle></svg>
                           </button>
@@ -1449,7 +1414,7 @@ function App() {
                       isOpen={showSettingsModal}
                       onClose={() => setShowSettingsModal(false)}
                       slippage={slippage}
-                      setSlippage={setSlippage}
+                      setSlippage={setSlippage} // 传递更新函数
                       customSlippage={customSlippage}
                       setCustomSlippage={setCustomSlippage}
                       transactionMode={transactionMode}
@@ -1466,26 +1431,20 @@ function App() {
             path="/settings" 
             element={
               <SettingsPage 
-                onClose={() => navigate("/")} 
+                onClose={() => { throw new Error("Function not implemented."); }} 
                 slippage={slippage} 
                 setSlippage={setSlippage} 
               />
             } 
           />
           <Route path="/pool" element={<Pool />} />
+          <Route path="/xseal" element={<XSeal />} />
         </Routes>
         {showModal && (
-          <Modal
-            txHash={modalProps.txHash}
-            decreasedToken={modalProps.decreasedToken}
-            increasedToken={modalProps.increasedToken}
-            errorMessage={modalProps.errorMessage}
-            onClose={() => {
-              setShowModal(false);
-              setModalProps({});
-            }}
-          />
+          <Modal txHash={modalMessage} onClose={() => setShowModal(false)} />
         )}
+
+        
       </div>
     </WalletProvider>
   );

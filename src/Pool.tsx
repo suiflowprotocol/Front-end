@@ -706,6 +706,9 @@ function Pool() {
                   </Link>
                 </div>
               </div>
+              <Link to="/xseal" className="nav-item">
+                <span className="nav-text">xSeal</span>
+              </Link>
               <div
                 className={["nav-item", openDropdown === "bridge" ? "open" : ""].join(" ")}
                 onMouseEnter={() => toggleDropdown("bridge")}
@@ -1023,7 +1026,7 @@ function Pool() {
               />
             </div>
             <div className="watchlist-container">
-              <label className="switch-container">
+              <label className="watchlist-container">
                 <input
                   type="checkbox"
                   className="chakra-switch__input"
@@ -1129,11 +1132,11 @@ function Pool() {
             <CreatePool
               isOpen={isCreatePoolOpen}
               onClose={handleCloseCreatePool}
-              token1={newPoolToken1}
-              token2={newPoolToken2}
+              newPoolToken1={newPoolToken1}
+              newPoolToken2={newPoolToken2}
               feeRate={feeRate}
-              setToken1={setNewPoolToken1}
-              setToken2={setNewPoolToken2}
+              setNewPoolToken1={setNewPoolToken1}
+              setNewPoolToken2={setNewPoolToken2}
               setFeeRate={setFeeRate}
             />
           )}

@@ -1,0 +1,378 @@
+.xseal-scope {
+  background: linear-gradient(145deg, #2a3447 0%, #1e2636 100%);
+  min-height: 100vh;
+  font-family: Arial, studia, sans-serif;
+}
+
+.xseal-scope .xseal-content {
+  max-width: 1400px; /* 增加最大宽度以利用宽屏 */
+  margin: 0 auto;
+  padding: 16px; /* 减少 padding */
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* 压缩垂直间距 */
+}
+
+.xseal-scope .xseal-poster {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: linear-gradient(145deg, #2a3447 0%, #1e2636 100%);
+}
+
+.xseal-scope .poster-title {
+  font-size: 20px; /* 减小字体以压缩高度 */
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.xseal-scope .learn-more-btn {
+  background: #3b82f6;
+  color: #ffffff;
+  padding: 8px 16px; /* 减小按钮尺寸 */
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+
+.xseal-scope .learn-more-btn:hover {
+  background: #4b9cfa;
+}
+
+.xseal-scope .metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 横向排列三个指标 */
+  gap: 12px;
+  background: linear-gradient(145deg, #2a3447 0%, #1e2636 100%);
+  padding: 12px;
+}
+
+.xseal-scope .metric-card {
+  background: linear-gradient(145deg, #2a3447 0%, #1e2636 100%);
+  padding: 12px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.xseal-scope .metric-icon {
+  width: 20px; /* 缩小图标 */
+  height: 20px;
+  margin-bottom: 6px;
+}
+
+.xseal-scope .metric-title {
+  font-size: 14px; /* 减小字体 */
+  color: #94a3b8;
+  margin-bottom: 6px;
+}
+
+.xseal-scope .metric-value {
+  font-size: 18px; /* 减小字体 */
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.xseal-scope .main-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 左右两列充分利用宽度 */
+  gap: 12px;
+  background: linear-gradient(145deg, #2a3447 0%, #1e2636 100%);
+  padding: 12px;
+}
+
+.xseal-scope .left-section {
+  background: linear-gradient(145deg, #2a3447 0%, #1e2636 100%);
+  padding: 12px;
+}
+
+.xseal-scope .left-title {
+  font-size: 16px; /* 减小字体 */
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.xseal-scope .countdown-label {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-bottom: 6px;
+}
+
+.xseal-scope .countdown-text {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffd700;
+  margin-bottom: 12px;
+}
+
+.xseal-scope .rewards-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 横向排列奖励指标 */
+  gap: 8px;
+}
+
+.xseal-scope .metric-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.xseal-scope .metric-label {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-bottom: 4px;
+}
+
+.xseal-scope .metric-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.xseal-scope .right-section {
+  background: linear-gradient(145deg, #2a3447 0%, #1e2636 100%);
+  padding: 12px;
+}
+
+.xseal-scope .options-toggle {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 横向排列三个选项 */
+  background: linear-gradient(145deg, #2a3447 0%, #1e2636 100%);
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+.xseal-scope .toggle-option {
+  padding: 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.3s;
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.xseal-scope .toggle-option.active {
+  background: #3b82f6;
+  color: #ffffff;
+  border-radius: 6px;
+}
+
+.xseal-scope .input-section {
+  margin-bottom: 12px;
+}
+
+.xseal-scope .input-card {
+  background: linear-gradient(145deg, #2a3447 0%, #1e2636 100%);
+  margin-bottom: 12px;
+}
+
+.xseal-scope .input-label {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-bottom: 6px;
+}
+
+.xseal-scope .input-group {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(145deg, #2a3447 0%, #1e2636 100%);
+  padding: 6px;
+}
+
+.xseal-scope .amount-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 24px; /* 减小输入框字体 */
+  color: #ffffff;
+  background: transparent;
+  padding: 6px;
+}
+
+.xseal-scope .token-display {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.xseal-scope .token-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.xseal-scope .token-symbol {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.xseal-scope .input-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.xseal-scope .balance-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.xseal-scope .balance-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.xseal-scope .balance-btn {
+  background: linear-gradient(145deg, #2a3447 0%, #1e2636 100%);
+  padding: 4px 8px;
+  font-size: 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+  color: #ffffff;
+}
+
+.xseal-scope .balance-btn:hover {
+  background: #374151;
+}
+
+.xseal-scope .vesting-section {
+  margin-bottom: 12px;
+}
+
+.xseal-scope .vesting-title {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-bottom: 6px;
+}
+
+.xseal-scope .vesting-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.xseal-scope .vesting-duration {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.xseal-scope .duration-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.xseal-scope .duration-option {
+  background: linear-gradient(145deg, #2a3447 0%, #1e2636 100%);
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.xseal-scope .duration-option.active {
+  background: #3b82f6;
+  color: #ffffff;
+}
+
+.xseal-scope .duration-text {
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.xseal-scope .slider-container {
+  position: relative;
+}
+
+.xseal-scope .vesting-slider {
+  width: 100%;
+  -webkit-appearance: none;
+  height: 4px;
+  background: linear-gradient(145deg, #2a3447 0%, #1e2636 100%);
+  border-radius: 2px;
+  outline: none;
+}
+
+.xseal-scope .vesting-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 10px;
+  height: 10px;
+  background: #3b82f6;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.xseal-scope .action-btn {
+  width: 100%;
+  background: #3b82f6;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.xseal-scope .action-btn:disabled {
+  background: #4b5563;
+  cursor: not-allowed;
+}
+
+.xseal-scope .action-btn:hover:not(:disabled) {
+  background: #4b9cfa;
+}
+
+.xseal-scope .error-message {
+  color: #f87171;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 8px;
+}
+
+.xseal-scope .success-message {
+  color: #6ee7b7;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 8px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .xseal-scope .xseal-content {
+    padding: 12px;
+  }
+
+  .xseal-scope .xseal-poster {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .xseal-scope .metrics-grid {
+    grid-template-columns: 1fr; /* 移动端单列 */
+  }
+
+  .xseal-scope .main-content {
+    grid-template-columns: 1fr; /* 移动端单列 */
+  }
+
+  .xseal-scope .rewards-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .xseal-scope .options-toggle {
+    grid-template-columns: 1fr;
+  }
+}
