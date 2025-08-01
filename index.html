@@ -272,7 +272,7 @@
     .input-group {
       display: flex;
       align-items: center;
-      background: #2a3435;
+      background: var(--input-bg); /* 使用深色输入背景，与页面主题一致 */
       border-radius: 12px;
       padding: 12px;
       border: 1px solid #3a4445;
@@ -286,6 +286,10 @@
     .input-group input:disabled {
       color: #6b7280;
     }
+    .input-group:hover {
+  background: var(--hover-bg); /* 悬停时背景色略微变亮 */
+  border-color: var(--primary-color); /* 悬停时边框高亮 */
+}
     .input-group input:focus {
       outline: none;
     }
