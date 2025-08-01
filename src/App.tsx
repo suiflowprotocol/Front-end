@@ -13,116 +13,13 @@ import Confetti from "react-confetti";
 import Modal from './Modal';
 import SettingsPage from './SettingsPage'; // 导入新的设置页面
 
-export function CustomConnectButton() {
-  const { mutate: disconnect } = useDisconnectWallet();
-  const currentAccount = useCurrentAccount();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showDisconnect, setShowDisconnect] = useState(false);
-
-  // Consistent button style matching .icon-button from app.css
-  const baseStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 'auto', // Adjusted to match icon-button flexibility
-    height: '32px', // Matches icon-button height
-    background: '#1e293b', // Matches --modal-bg from CSS
-    border: '1px solid rgba(255, 255, 255, 0.2)', // Matches icon-button border
-    borderRadius: '8px', // Matches icon-button border-radius
-    cursor: 'pointer',
-    padding: '6px 12px', // Adjusted padding for consistency
-    transition: 'all 0.3s ease', // Matches icon-button transition
-    color: '#fff', // Matches text color
-    fontSize: '14px', // Slightly smaller for better fit
-  };
-
-  // Content for disconnected state
-  const disconnectedContent = (
-    <>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        style={{ marginRight: '8px' }}
-      >
-        <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path>
-        <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path>
-        <path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path>
-      </svg>
-      <span>Connect</span>
-    </>
-  );
-
-  // Content for connected state
-  const connectedContent = (
-    <span>
-      {currentAccount ? `${currentAccount.address.slice(0, 6)}...${currentAccount.address.slice(-4)}` : ''}
-    </span>
-  );
-
-  // Handle button click
-  const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault(); // Prevent any default behavior
-    if (currentAccount) {
-      setShowDisconnect(!showDisconnect); // Toggle disconnect option only
-    } else {
-      setIsModalOpen(true); // Open modal only if not connected
-    }
-  };
-
-  // Handle disconnect action
-  const handleDisconnect = () => {
-    disconnect();
-    setShowDisconnect(false);
-  };
-
-  return (
-    <div style={{ position: 'relative' }}>
-      <ConnectModal
-        open={isModalOpen}
-        trigger={
-          <button
-            onClick={handleButtonClick}
-            style={baseStyle}
-            aria-label={currentAccount ? "Wallet Connected" : "Connect Wallet"}
-          >
-            {currentAccount ? connectedContent : disconnectedContent}
-          </button>
-        }
-
-
-        onOpenChange={(open) => setIsModalOpen(open)}
-        walletFilter={(wallet: any) => !!wallet}
-      />
-      {showDisconnect && currentAccount && (
-        <div
-          style={{
-            position: 'absolute',
-            top: '100%',
-            right: 0,
-            backgroundColor: '#fff',
-            color: '#000',
-            padding: '10px',
-            borderRadius: '8px',
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-            zIndex: 1000,
-            cursor: 'pointer',
-          }}
-          onClick={handleDisconnect}
-        >
-          Disconnect
-        </div>
-      )}
-    </div>
-  );
-}
-
+// 钱包名称到 Logo URL 的映射
+const walletLogos = {
+  'Slush': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYHwA15AKYWXvoSL-94ysbnJrmUX_oU1fJyw&s',
+  'Suiet': 'https://framerusercontent.com/modules/6HmgaTsk3ODDySrS62PZ/a3c2R3qfkYJDxcZxkoVv/assets/eDZRos3xvCrlWxmLFr72sFtiyQ.png',
+  'Martian': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhb6QLKfuQY_N8ZvpiKcdZlCnQKILXw7NArw&s',
+  'Sui Wallet': 'https://assets.crypto.ro/logos/sui-sui-logo.png',
+};
 // Define custom theme
 const customTheme: ThemeVars = {
   blurs: {
@@ -181,6 +78,131 @@ const customTheme: ThemeVars = {
     letterSpacing: '0.02em',
   },
 };
+
+export function CustomConnectButton() {
+  const { mutate: disconnect } = useDisconnectWallet();
+  const currentAccount = useCurrentAccount();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showDisconnect, setShowDisconnect] = useState(false);
+
+  // 按钮基础样式，与 .icon-button 高度一致
+  const baseStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '120px', // 固定宽度，确保连接前后长度一致
+    height: '36px', // 与 .icon-button 高度一致
+    background: '#1e293b',
+    border: '1px solid rgba(255, 255, 255, 0.2)',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    padding: '6px',
+    transition: 'all 0.3s ease',
+    color: '#fff',
+    fontSize: '14px',
+  };
+
+  // 截短钱包地址函数，显示更短地址
+  const truncateAddress = (address: string) => {
+    if (!address) return '';
+    return `0x${address.slice(2, 5)}...${address.slice(-3)}`;
+  };
+
+  // 未连接状态的内容
+  const disconnectedContent = (
+    <>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        style={{ marginRight: '8px' }}
+      >
+        <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path>
+        <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path>
+        <path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path>
+      </svg>
+      <span>Connect</span>
+    </>
+  );
+
+  // 已连接状态的内容，统一显示指定 Logo
+  const connectedContent = (
+    <>
+      {currentAccount && (
+        <img
+          src="https://assets.crypto.ro/logos/sui-sui-logo.png"
+          alt="Wallet Logo"
+          style={{ width: '20px', height: '20px', marginRight: '8px' }}
+        />
+      )}
+      <span>{truncateAddress(currentAccount?.address || '')}</span>
+    </>
+  );
+
+  // 处理按钮点击
+  const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (currentAccount) {
+      setShowDisconnect(!showDisconnect);
+    } else {
+      setIsModalOpen(true);
+    }
+  };
+
+  // 处理断开连接
+  const handleDisconnect = () => {
+    disconnect();
+    setShowDisconnect(false);
+  };
+
+  // 钱包过滤器，包含 Mysten DApp Kit 默认钱包和 Martian Sui Wallet
+  const allowedWallets = ['Slush', 'Suiet', 'Martian', 'Sui Wallet', 'Martian Sui Wallet'];
+  const walletFilter = (wallet: any) => allowedWallets.includes(wallet.name);
+
+  return (
+    <div style={{ position: 'relative' }}>
+      <ConnectModal
+        open={isModalOpen}
+        trigger={
+          <button
+            onClick={handleButtonClick}
+            style={baseStyle}
+            aria-label={currentAccount ? 'Wallet Connected' : 'Connect Wallet'}
+          >
+            {currentAccount ? connectedContent : disconnectedContent}
+          </button>
+        }
+        onOpenChange={(open) => setIsModalOpen(open)}
+        walletFilter={walletFilter}
+      />
+      {showDisconnect && currentAccount && (
+        <button
+          style={{
+            position: 'absolute',
+            top: '100%',
+            right: 0,
+            backgroundColor: '#f0f0f0',
+            color: '#333',
+            padding: '5px 10px',
+            borderRadius: '5px',
+            border: 'none',
+            cursor: 'pointer',
+            zIndex: 1000,
+          }}
+          onClick={handleDisconnect}
+        >
+          Disconnect
+        </button>
+      )}
+    </div>
+  );
+}
 
 // Settings Modal Component
 const SettingsModal = ({ isOpen, onClose, slippage, setSlippage, customSlippage, setCustomSlippage, transactionMode, setTransactionMode, mevProtection, setMevProtection }: {
