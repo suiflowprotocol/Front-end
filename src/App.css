@@ -6,6 +6,33 @@
 @import '@fontsource/poppins/700.css';
 @import '@fontsource/poppins/800.css';
 
+
+
+/* custom-styles.css */
+/* app.css */
+.custom-connect-button {
+  background-color: #8e9fb0;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 5px; /* Space between buttons */
+}
+
+.custom-connect-button.connected {
+  background-color: #28a745;
+  color: #fff;
+  border-radius: 8px;
+  padding: 12px 24px;
+}
+
+.custom-connect-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
 :root {
   --text-color: #ffffff;
   --text-secondary: #94a3b8;

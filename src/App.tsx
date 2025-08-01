@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { ConnectButton, useCurrentAccount, useSuiClient, useSignAndExecuteTransaction, lightTheme, WalletProvider, ThemeVars } from "@mysten/dapp-kit";
+import { ConnectButton, useCurrentAccount, useSuiClient, useSignAndExecuteTransaction, lightTheme, WalletProvider, ThemeVars,useConnectWallet,useWallets,useDisconnectWallet,ConnectModal} from "@mysten/dapp-kit";
+import '@mysten/dapp-kit/dist/index.css'; // 导入样式表
 import { Transaction } from "@mysten/sui/transactions";
 import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import Pool from "./Pool";
@@ -11,6 +12,116 @@ import "./App2.css";
 import Confetti from "react-confetti";
 import Modal from './Modal';
 import SettingsPage from './SettingsPage'; // 导入新的设置页面
+
+export function CustomConnectButton() {
+  const { mutate: disconnect } = useDisconnectWallet();
+  const currentAccount = useCurrentAccount();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showDisconnect, setShowDisconnect] = useState(false);
+
+  // Consistent button style matching .icon-button from app.css
+  const baseStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 'auto', // Adjusted to match icon-button flexibility
+    height: '32px', // Matches icon-button height
+    background: '#1e293b', // Matches --modal-bg from CSS
+    border: '1px solid rgba(255, 255, 255, 0.2)', // Matches icon-button border
+    borderRadius: '8px', // Matches icon-button border-radius
+    cursor: 'pointer',
+    padding: '6px 12px', // Adjusted padding for consistency
+    transition: 'all 0.3s ease', // Matches icon-button transition
+    color: '#fff', // Matches text color
+    fontSize: '14px', // Slightly smaller for better fit
+  };
+
+  // Content for disconnected state
+  const disconnectedContent = (
+    <>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        style={{ marginRight: '8px' }}
+      >
+        <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path>
+        <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path>
+        <path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path>
+      </svg>
+      <span>Connect</span>
+    </>
+  );
+
+  // Content for connected state
+  const connectedContent = (
+    <span>
+      {currentAccount ? `${currentAccount.address.slice(0, 6)}...${currentAccount.address.slice(-4)}` : ''}
+    </span>
+  );
+
+  // Handle button click
+  const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault(); // Prevent any default behavior
+    if (currentAccount) {
+      setShowDisconnect(!showDisconnect); // Toggle disconnect option only
+    } else {
+      setIsModalOpen(true); // Open modal only if not connected
+    }
+  };
+
+  // Handle disconnect action
+  const handleDisconnect = () => {
+    disconnect();
+    setShowDisconnect(false);
+  };
+
+  return (
+    <div style={{ position: 'relative' }}>
+      <ConnectModal
+        open={isModalOpen}
+        trigger={
+          <button
+            onClick={handleButtonClick}
+            style={baseStyle}
+            aria-label={currentAccount ? "Wallet Connected" : "Connect Wallet"}
+          >
+            {currentAccount ? connectedContent : disconnectedContent}
+          </button>
+        }
+
+
+        onOpenChange={(open) => setIsModalOpen(open)}
+        walletFilter={(wallet: any) => !!wallet}
+      />
+      {showDisconnect && currentAccount && (
+        <div
+          style={{
+            position: 'absolute',
+            top: '100%',
+            right: 0,
+            backgroundColor: '#fff',
+            color: '#000',
+            padding: '10px',
+            borderRadius: '8px',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+            zIndex: 1000,
+            cursor: 'pointer',
+          }}
+          onClick={handleDisconnect}
+        >
+          Disconnect
+        </div>
+      )}
+    </div>
+  );
+}
 
 // Define custom theme
 const customTheme: ThemeVars = {
@@ -1084,7 +1195,7 @@ function App() {
                       </div>
                     </div>
                     <div className="wallet-actions">
-                      <ConnectButton />
+                      <CustomConnectButton />
                       <button
                         id="popover-trigger-notification"
                         aria-haspopup="dialog"
