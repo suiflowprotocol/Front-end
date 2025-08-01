@@ -89,7 +89,7 @@ const tokens: Token[] = [
   {
     symbol: "HASUI",
     address: "0xbde4ba4c2e274a60ce15c1cfff9e5c42e41654ac8b6d906a57efa4bd3c29f47d::HASUI::HASUI",
-    icon: "https://encrypted-tbn0.gstatic.com/images?q=tbnn:9GcRvd9yv6JWLikNWB-MxU2OyErJiqffAcLi8mw&s",
+    icon: "https://www.haedal.xyz/images/stsui.png",
     description: "HASUI Token",
     decimals: 6,
   },

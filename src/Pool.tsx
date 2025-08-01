@@ -148,8 +148,8 @@ function Pool() {
       img1: "https://archive.cetus.zone/assets/image/sui/sui.png",
       img2: "https://momentum-statics.s3.us-west-1.amazonaws.com/token-usdc.jpg",
       feeRate: "0.25%",
-      tvl: "$114,541,220.45",
-      volume: "$68,622,910,890.96",
+      tvl: "0",
+      volume: "0",
       fees: "0",
       apr: "0",
       rewardImg: "https://i.meee.com.tw/SdliTGK.png",
@@ -205,7 +205,7 @@ function Pool() {
       token2: getTokenAddress("SUI"),
       token1Symbol: "HASUI",
       token2Symbol: "SUI",
-      img1: "https://encrypted-tbn0.gstatic.com/images?q=tbnn:9GcRvd9yv6JWLikNWB-MxU2OyErJiqffAcLi8mw&s",
+      img1: "https://www.haedal.xyz/images/stsui.png",
       img2: "https://archive.cetus.zone/assets/image/sui/sui.png",
       feeRate: "0.01%",
       tvl: "0",
@@ -430,7 +430,7 @@ function Pool() {
       token2: getTokenAddress("SUI"),
       token1Symbol: "SCA",
       token2Symbol: "SUI",
-      img1: "https://encrypted-tbn0.gstatic.com/images?q=tbnn:9GcQkPpvd1akVvyP8sgi3PMYAwbCnWuuIS37OKg&s",
+      img1: "https://assets.gemwallet.com/blockchains/sui/assets/0x6cd813061a3adf3602b76545f076205f0c8e7ec1d3b1eab9a1da7992c18c0524::sca::SCA/logo.png",
       img2: "https://archive.cetus.zone/assets/image/sui/sui.png",
       feeRate: "0.25%",
       tvl: "0",
@@ -470,7 +470,7 @@ function Pool() {
       rewardImg: "https://i.meee.com.tw/SdliTGK.png",
     },
     {
-      pair: "stSUI-SUI",
+      pair: "st %.2f-SUI",
       token1: getTokenAddress("AlphaFi Staked SUI"),
       token2: getTokenAddress("SUI"),
       token1Symbol: "stSUI",
@@ -1011,51 +1011,223 @@ function Pool() {
               </button>
             </div>
           </div>
-          <div className="filter-row">
-            <div className="filter-container" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', position: 'relative', background: 'var(--search-bg)', borderRadius: '8px', padding: '8px 12px', border: '1px solid var(--border-color)' }}>
-              <span style={{ order: -1, flexShrink: 0, display: 'flex', alignItems: 'center', marginRight: '8px' }}>
-                <svg className="search-icon" viewBox="0 0 24 24" width="20px" height="20px">
-                  <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.45 14 5 11.55 5 9.5S7.45 5 9.5 5s4.5 2.45 4.5 4.5-2.45 4.5-4.5 4.5z" fill="var(--text-secondary)" />
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            gap: '16px',
+            margin: '0 48px',
+            flexWrap: 'nowrap',
+            padding: '12px 0'
+          }}>
+            <div style={{
+              flex: '1',
+              display: 'flex',
+              alignItems: 'center',
+              maxWidth: '300px'
+            }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                width: '100%',
+                background: 'var(--card-bg)',
+                border: '1px solid #E4E4E7',
+                borderRadius: '8px',
+                padding: '8px 12px',
+                gap: '8px'
+              }}>
+                <svg aria-hidden="true" fill="#767A81" width="20px" height="20px" style={{ flexShrink: 0 }}>
+                  <use xlinkHref="#icon-icon_search"></use>
                 </svg>
-              </span>
-              <input
-                type="text"
-                className="search-input"
-                placeholder="Filter by Token"
-                style={{ flex: '1', border: 'none', background: 'none', outline: 'none', fontSize: '14px', color: 'var(--text-color)', order: '0', padding: '0' }}
-              />
+                <input
+                  type="text"
+                  placeholder="Filter by token"
+                  style={{
+                    flex: '1',
+                    border: 'none',
+                    outline: 'none',
+                    fontSize: '13px',
+                    fontWeight: '400',
+                    color: '#182435',
+                    background: 'transparent'
+                  }}
+                />
+              </div>
             </div>
-            <div className="watchlist-container">
-              <label className="watchlist-container">
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '16px'
+            }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                background: 'var(--card-bg)',
+                border: '1px solid #E4E4E7',
+                borderRadius: '8px',
+                padding: '8px 12px'
+              }}>
                 <input
                   type="checkbox"
-                  className="chakra-switch__input"
+                  id="watchlist"
+                  style={{
+                    width: '16px',
+                    height: '16px',
+                    cursor: 'pointer'
+                  }}
                 />
-                <span className="switch-label">Watchlist</span>
-              </label>
-            </div>
-            <div className="switch-group">
-              <div className="switch-container">
-                <label className="chakra-switch">
-                  <input
-                    className="chakra-switch__input"
-                    type="checkbox"
-                  />
-                  <span className="switch-label">Incentivized Only</span>
+                <label
+                  htmlFor="watchlist"
+                  style={{
+                    fontSize: '13px',
+                    fontWeight: '600',
+                    color: '#182435'
+                  }}
+                >
+                  Watchlist
                 </label>
               </div>
-              <div className="switch-container">
-                <label className="chakra-switch">
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                background: 'var(--card-bg)',
+                border: '1px solid #E4E4E7',
+                borderRadius: '8px',
+                padding: '8px 12px'
+              }}>
+                <label
+                  style={{
+                    fontSize: '13px',
+                    fontWeight: '600',
+                    color: '#182435'
+                  }}
+                >
+                  Incentivized Only
+                </label>
+                <label style={{
+                  display: 'inline-block',
+                  position: 'relative',
+                  width: '40px',
+                  height: '20px'
+                }}>
                   <input
-                    className="chakra-switch__input"
                     type="checkbox"
+                    style={{
+                      border: '0',
+                      clip: 'rect(0, 0, 0, 0)',
+                      height: '1px',
+                      width: '1px',
+                      margin: '-1px',
+                      padding: '0',
+                      overflow: 'hidden',
+                      whiteSpace: 'nowrap',
+                      position: 'absolute'
+                    }}
                   />
-                  <span className="switch-label">All pools</span>
+                  <span style={{
+                    background: '#F3F6F8',
+                    borderRadius: '10px',
+                    width: '100%',
+                    height: '100%',
+                    transition: 'all 0.2s ease',
+                    display: 'block'
+                  }}>
+                    <span style={{
+                      background: '#FFFFFF',
+                      borderRadius: '50%',
+                      width: '16px',
+                      height: '16px',
+                      position: 'absolute',
+                      top: '2px',
+                      left: '2px',
+                      transition: 'transform 0.2s ease'
+                    }}></span>
+                  </span>
                 </label>
               </div>
-              <div className="refresh-button-container">
-                <button className="refresh-button">
-                  <svg aria-hidden="true" fill="var(--text-color)" width="20px" height="20px">
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                background: 'var(--card-bg)',
+                border: '1px solid #E4E4E7',
+                borderRadius: '8px',
+                padding: '8px 12px'
+              }}>
+                <label
+                  style={{
+                    fontSize: '13px',
+                    fontWeight: '600',
+                    color: '#182435'
+                  }}
+                >
+                  All pools
+                </label>
+                <label style={{
+                  display: 'inline-block',
+                  position: 'relative',
+                  width: '40px',
+                  height: '20px'
+                }}>
+                  <input
+                    type="checkbox"
+                    style={{
+                      border: '0',
+                      clip: 'rect(0, 0, 0, 0)',
+                      height: '1px',
+                      width: '1px',
+                      margin: '-1px',
+                      padding: '0',
+                      overflow: 'hidden',
+                      whiteSpace: 'nowrap',
+                      position: 'absolute'
+                    }}
+                  />
+                  <span style={{
+                    background: '#F3F6F8',
+                    borderRadius: '10px',
+                    width: '100%',
+                    height: '100%',
+                    transition: 'all 0.2s ease',
+                    display: 'block'
+                  }}>
+                    <span style={{
+                      background: '#FFFFFF',
+                      borderRadius: '50%',
+                      width: '16px',
+                      height: '16px',
+                      position: 'absolute',
+                      top: '2px',
+                      left: '2px',
+                      transition: 'transform 0.2s ease'
+                    }}></span>
+                  </span>
+                </label>
+              </div>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                background: 'var(--card-bg)',
+                border: '1px solid #E4E4E7',
+                borderRadius: '8px',
+                padding: '8px 12px'
+              }}>
+                <button style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '36px',
+                  height: '36px',
+                  background: 'var(--card-bg)',
+                  border: '1px solid #E4E4E7',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
+                }}>
+                  <svg aria-hidden="true" fill="#767A81" width="20px" height="20px">
                     <use xlinkHref="#icon-icon_refresh"></use>
                   </svg>
                 </button>
@@ -1095,23 +1267,27 @@ function Pool() {
                   </div>
                   <div className="pool-data">
                     <span className="data-label">TVL</span>
-                    {pool.tvl}
+                    ${pool.tvl}
                   </div>
                   <div className="pool-data">
                     <span className="data-label">Volume (24H)</span>
-                    {pool.volume}
+                    ${pool.volume}
                   </div>
                   <div className="pool-data">
                     <span className="data-label">Fees (24H)</span>
-                    {pool.fees}
+                    ${pool.fees}
                   </div>
                   <div className="apr-container">
                     <span className="data-label">APR</span>
-                    <span className="apr-text">{pool.apr}</span>
+                    <span className="apr-text">{pool.apr}%</span>
                   </div>
                   <div className="reward-container">
                     <span className="data-label">Reward</span>
-                    <img src={pool.rewardImg} alt="Reward" />
+                    <div className="reward-images">
+                      <img src={pool.rewardImg} alt="Reward" />
+                      <img src={pool.img1} alt={pool.token1Symbol} />
+                      <img src={pool.img2} alt={pool.token2Symbol} />
+                    </div>
                   </div>
                   <div className="pool-action">
                     <button

@@ -1,5 +1,5 @@
 :root {
-  --card-bg: #F7F8F8; /* Changed from #FFFFFF to match the bar chart's background */
+  --card-bg: #F7F8F8;
   --text-color: #182435;
   --text-secondary: #767A81;
   --border-color: #E4E4E7;
@@ -38,7 +38,7 @@
 }
 
 .summary-left {
-  flex: 0.8; /* Retained to make the card narrower */
+  flex: 0.8;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -46,7 +46,7 @@
 }
 
 .summary-right {
-  flex: 1.2; /* Retained to make the chart wider */
+  flex: 1.2;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -61,8 +61,8 @@
 }
 
 .summary-metrics-card {
-  background: var(#F7F8F8); /* 将背景颜色设置为与页面背景颜色相同 */
-  color: white;
+  background: var(--card-bg);
+  color: var(--text-color);
   border-radius: 12px;
   padding: 24px;
   display: flex;
@@ -82,14 +82,14 @@
 .metric-label {
   font-size: 14px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--text-secondary);
   margin: 0;
 }
 
 .metric-value {
   font-size: 20px;
   font-weight: 700;
-  color: white;
+  color: var(--text-color);
 }
 
 .chart-container {
@@ -99,15 +99,15 @@
 
 .chart-header {
   display: flex;
-  justify-content: space-between; /* 使内容在两端对齐 */
-  align-items: center; /* 垂直居中对齐 */
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 12px;
 }
 
 .chart-volume-container {
   display: flex;
-  align-items: center; /* 垂直居中对齐 */
-  gap: 16px; /* 添加间距 */
+  align-items: center;
+  gap: 16px;
 }
 
 .chart-title {
@@ -140,8 +140,8 @@
 }
 
 .period-button.active {
-  background: #ADD8E6; /* 浅蓝色 */
-  color: #182435; /* 保持文本颜色 */
+  background: #ADD8E6;
+  color: #182435;
 }
 
 .period-button:not(.active) {
@@ -158,9 +158,9 @@
   flex-direction: column;
   gap: 16px;
   padding: 16px;
-  background: var(#F7F8F8);
+  background: var(--card-bg);
   border-radius: 12px;
-  border: 1px solid var(#F7F8F8);
+  border: 1px solid var(--card-bg);
   margin: 0 48px;
 }
 
@@ -263,7 +263,7 @@
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
-  background: var(--modal-primary);
+  background: var(--card-bg);
   border: 1px solid var(--border-color);
   border-radius: 8px;
   cursor: pointer;
@@ -284,6 +284,10 @@
   font-size: 13px;
   font-weight: 600;
   color: var(--text-color);
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 8px 12px;
 }
 
 .switch-group {
@@ -296,6 +300,10 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 8px 12px;
 }
 
 .switch-label {
@@ -351,12 +359,13 @@
 }
 
 .refresh-button {
-  background: none;
-  border: none;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
   cursor: pointer;
   padding: 8px;
   display: flex;
   align-items: center;
+  border-radius: 8px;
 }
 
 .refresh-button svg {
@@ -370,61 +379,53 @@
 }
 
 .pool-table-header {
-  display: flex;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  gap: 16px;
+  padding: 16px 24px;
   background: var(--card-bg);
-  border-radius: 10px;
-  padding: 12px 24px;
-  font-size: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--text-secondary);
-  text-transform: uppercase;
-  border: 1px solid var(--border-color);
   margin: 0 48px;
-}
-
-.pool-table-header div {
-  flex: 1;
-  text-align: left;
-}
-
-.pool-table-header div:nth-child(1) {
-  flex: 1.5;
-}
-
-.pool-table-header div:nth-child(7) {
-  text-align: right;
+  align-items: center;
+  width: calc(100% - 96px);
+  box-sizing: border-box;
 }
 
 .pool-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 0 48px;
+  gap: 8px;
+  margin: 0 48px;
 }
 
 .pool-item {
-  display: flex;
-  flex-direction: column;
-  background: var(--card-bg);
-  border-radius: 10px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  gap: 16px;
   padding: 16px;
-  transition: all 0.2s ease;
-  cursor: pointer;
+  background: var(--card-bg);
   border: 1px solid var(--border-color);
-  margin: 0 48px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 .pool-item:hover {
   background: var(--hover-bg);
-  transform: translateY(-1px);
-  box-shadow: 0 3px 12px var(--shadow-color);
+  box-shadow: 0 2px 8px var(--shadow-color);
 }
 
 .pool-token-info {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 12px;
 }
 
 .token-images {
@@ -433,16 +434,13 @@
 }
 
 .token-images img {
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  object-fit: cover;
-  border: 1px solid var(--border-color);
-  transition: transform 0.2s ease;
 }
 
-.token-images img:hover {
-  transform: scale(1.1);
+.token-images img:first-child {
+  z-index: 1;
 }
 
 .token-images img:last-child {
@@ -451,150 +449,125 @@
 
 .token-details {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
+  flex-direction: column;
 }
 
 .token-pair {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 16px;
-  font-weight: 600;
-  white-space: nowrap;
-  max-width: 150px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  gap: 8px;
 }
 
 .token-pair p {
+  font-size: 14px;
+  font-weight: 600;
   margin: 0;
   color: var(--text-color);
 }
 
 .token-pair span {
+  font-size: 12px;
+  font-weight: 400;
   color: var(--text-secondary);
-  font-size: 16px;
-}
-
-.fee-rate {
-  background: var(--input-bg);
-  padding: 4px 10px;
-  border-radius: 16px;
-  font-size: 11px;
-  color: var(--text-color);
-  display: inline-block;
-  border: 1px solid var(--border-color);
 }
 
 .pool-data {
-  font-size: 14px;
-  color: var(--text-color);
-  font-weight: 500;
-  margin-bottom: 8px;
   display: flex;
-  gap: 6px;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-color);
 }
 
-.data-label {
+.pool-data .data-label {
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 400;
   color: var(--text-secondary);
-  text-transform: uppercase;
-  display: none;
+  margin-bottom: 4px;
 }
 
 .apr-container {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 8px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.apr-container .data-label {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
 }
 
 .apr-text {
-  font-size: 14px;
   color: var(--success-color);
-  font-weight: 600;
 }
 
 .reward-container {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 8px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
 }
 
 .reward-container .data-label {
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 400;
   color: var(--text-secondary);
-  text-transform: uppercase;
-  display: none;
+  margin-bottom: 4px;
+}
+
+.reward-images {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .reward-container img {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  border: 1px solid var(--border-color);
-  transition: transform 0.2s ease;
-}
-
-.reward-container img:hover {
-  transform: scale(1.1);
-}
-
-.reward-container img:not(:first-child) {
-  margin-left: -8px;
 }
 
 .pool-action {
   display: flex;
-  justify-content: center;
-  gap: 10px;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .deposit-button {
-  padding: 10px;
-  background: var(--modal-primary);
-  color: #182435;
+  padding: 8px 16px;
   border-radius: 8px;
+  background: #007BFF;
+  color: #FFFFFF;
   border: none;
-  cursor: pointer;
   font-size: 13px;
   font-weight: 600;
+  cursor: pointer;
   transition: all 0.2s ease;
-  width: 100%;
-  max-width: 200px;
-  text-align: center;
-  touch-action: manipulation;
 }
 
 .deposit-button:hover {
-  background: var(--modal-secondary);
+  background: #0056b3;
   transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .no-positions {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 150px;
-  background: var(--card-bg);
-  border-radius: 10px;
-  font-size: 14px;
+  text-align: center;
+  padding: 24px;
+  font-size: 16px;
   color: var(--text-secondary);
-  border: 1px solid var(--border-color);
-  margin: 0 48px;
 }
 
 .pools-container, .positions-container {
-  border: none; /* 隐藏边框 */
-  box-shadow: none; /* 隐藏阴影 */
+  border: none;
+  box-shadow: none;
 }
 
 @media (min-width: 1024px) {
@@ -625,6 +598,7 @@
     flex-direction: row;
     align-items: center;
     gap: 12px;
+    padding: 16px 24px;
   }
 
   .pool-token-info {
@@ -635,16 +609,19 @@
   .pool-data {
     flex: 1;
     margin-bottom: 0;
+    text-align: left;
   }
 
   .apr-container, .reward-container {
     flex: 1;
     margin-bottom: 0;
+    text-align: left;
   }
 
   .pool-action {
     flex: 1;
     justify-content: flex-end;
+    text-align: right;
   }
 
   .deposit-button {
@@ -729,12 +706,35 @@
   }
 
   .pool-item {
-    padding: 12px;
+    display: flex;
+    flex-direction: column;
     gap: 12px;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 8px;
-    margin: 0 24px;
+    padding: 12px;
+    margin: 0 16px;
+  }
+
+  .pool-data,
+  .apr-container,
+  .reward-container {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .pool-data .data-label,
+  .apr-container .data-label,
+  .reward-container .data-label {
+    margin-bottom: 0;
+    font-size: 13px;
+  }
+
+  .reward-container img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .pool-action {
+    justify-content: center;
   }
 
   .token-images img {
@@ -754,20 +754,11 @@
     font-size: 14px;
   }
 
-  .fee-rate {
-    font-size: 10px;
-    padding: 3px 8px;
-  }
-
   .pool-data, .apr-text {
     font-size: 12px;
   }
 
   .data-label {
-    display: inline;
-  }
-
-  .reward-container .data-label {
     display: inline;
   }
 
@@ -779,6 +770,10 @@
   .deposit-button {
     font-size: 12px;
     padding: 8px;
+  }
+
+  .no-positions {
+    margin: 0 24px;
   }
 }
 
@@ -852,7 +847,7 @@
 
   .pool-item {
     padding: 10px;
-    margin: 0 12px;
+    margin: 0;
   }
 
   .pool-table-header {
@@ -884,10 +879,6 @@
     font-size: 13px;
   }
 
-  .fee-rate {
-    font-size: 9px;
-  }
-
   .pool-data, .apr-text {
     font-size: 11px;
   }
@@ -896,31 +887,22 @@
     font-size: 11px;
   }
 
-  .reward-container .data-label {
-    font-size: 11px;
-  }
-
   .reward-container img {
     width: 18px;
     height: 18px;
   }
 
-  .reward-container img:not(:first-child) {
-    margin-left: -8px;
-  }
-
   .deposit-button {
     font-size: 11px;
     padding: 6px;
-    max-width: 150px;
   }
 
   .no-positions {
     font-size: 12px;
-    height: 120px;
+    padding: 16px;
   }
 }
 
 .chart-container rect {
-  fill: #007BFF; /* 蓝色 */
+  fill: #007BFF;
 }
