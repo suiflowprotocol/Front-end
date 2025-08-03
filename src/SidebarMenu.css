@@ -1,0 +1,147 @@
+:root {
+  --input-bg1: #1e293b; /* Defined to match dark input background from Pool's CustomConnectButton */
+}
+
+.sidebar-menu {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 100%; /* Full page width */
+  max-width: none;
+  height: 100%;
+  background: var(--input-bg1); /* Dark theme consistency */
+  box-shadow: 2px 0 5px var(--shadow-color);
+  border-radius: 0 12px 12px 0; /* Subtle rounding on right side */
+  transition: left 0.3s ease-in-out;
+  z-index: 1000;
+}
+
+.sidebar-menu.open {
+  left: 0;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px; /* Increased padding for a cleaner look */
+  background: linear-gradient(90deg, #1e293b, #2d3748); /* Subtle gradient for header */
+  border-bottom: 1px solid var(--border-color);
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo-image1 {
+  width: 48px; /* Increased logo size */
+  height: 48px;
+  margin-right: 12px; /* Adjusted margin for spacing */
+}
+
+.logo-text1 {
+  font-size: 24px; /* Increased text size */
+  font-weight: 800; /* Bolder text */
+  color: var(--text-color);
+}
+
+.close-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 12px; /* Increased padding for better click area */
+  transition: transform 0.2s ease, background-color 0.2s ease; /* Added hover transition */
+}
+
+.close-button:hover {
+  background-color: var(--hover-bg); /* Hover effect */
+  transform: scale(1.1); /* Slight scale on hover */
+}
+
+.close-button svg {
+  width: 24px;
+  height: 24px;
+  fill: var(--text-color);
+}
+
+.sidebar-content {
+  padding: 24px; /* Increased padding for better spacing */
+}
+
+.menu-item {
+  margin-bottom: 20px; /* Increased spacing between menu items */
+}
+
+.menu-item a {
+  display: flex;
+  align-items: center;
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 16px;
+  padding: 14px; /* Slightly increased padding */
+  border-radius: 10px; /* Softer corners */
+  transition: background-color 0.2s ease, transform 0.2s ease; /* Smooth transitions */
+}
+
+.menu-item a:hover {
+  background-color: var(--hover-bg);
+  transform: translateX(5px); /* Subtle shift on hover */
+}
+
+.menu-item svg {
+  margin-right: 12px;
+}
+
+.social-buttons {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  right: 24px;
+}
+
+.social-buttons .chakra-stack {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.social-buttons .css-eorw49 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.social-buttons .css-b42dtz, .social-buttons .css-6w0v09 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px; /* Consistent padding for rectangular shape */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Semi-transparent white border for better contrast */
+  border-radius: 4px; /* Slightly rounded corners for rectangular shape */
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.social-buttons .css-b42dtz:hover, .social-buttons .css-6w0v09:hover {
+  background-color: var(--hover-bg);
+  transform: scale(1.1);
+}
+
+.social-buttons .css-0 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.social-buttons .css-b42dtz img, .social-buttons .css-6w0v09 img {
+  width: 20px; /* Consistent size for all buttons */
+  height: 20px;
+  filter: grayscale(100%); /* Convert icons to grayscale */
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .sidebar-menu {
+    display: none; /* Hide sidebar on larger screens if not needed */
+  }
+}

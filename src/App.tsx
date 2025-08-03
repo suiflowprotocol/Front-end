@@ -1,17 +1,18 @@
 import { useState, useEffect, useRef } from "react";
-import { ConnectButton, useCurrentAccount, useSuiClient, useSignAndExecuteTransaction, lightTheme, WalletProvider, ThemeVars,useConnectWallet,useWallets,useDisconnectWallet,ConnectModal} from "@mysten/dapp-kit";
-import '@mysten/dapp-kit/dist/index.css'; // 导入样式表
+import { ConnectButton, useCurrentAccount, useSuiClient, useSignAndExecuteTransaction, lightTheme, WalletProvider, ThemeVars, useConnectWallet, useWallets, useDisconnectWallet, ConnectModal } from "@mysten/dapp-kit";
+import '@mysten/dapp-kit/dist/index.css';
 import { Transaction } from "@mysten/sui/transactions";
 import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import Pool from "./Pool";
 import XSeal from "./xSeal";
 import TokenModal, { tokens } from "./TokenModal";
 import CoverPage from "./CoverPage";
+import Sidebar from "./SidebarMenu"; // 导入新侧边栏组件
 import "./App.css";
 import "./App2.css";
 import Confetti from "react-confetti";
 import Modal from './Modal';
-import SettingsPage from './SettingsPage'; // 导入新的设置页面
+import SettingsPage from './SettingsPage';
 
 // 钱包名称到 Logo URL 的映射
 const walletLogos = {
@@ -20,6 +21,7 @@ const walletLogos = {
   'Martian': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhb6QLKfuQY_N8ZvpiKcdZlCnQKILXw7NArw&s',
   'Sui Wallet': 'https://assets.crypto.ro/logos/sui-sui-logo.png',
 };
+
 // Define custom theme
 const customTheme: ThemeVars = {
   blurs: {
@@ -85,13 +87,12 @@ export function CustomConnectButton() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showDisconnect, setShowDisconnect] = useState(false);
 
-  // 按钮基础样式，与 .icon-button 高度一致
   const baseStyle = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '120px', // 固定宽度，确保连接前后长度一致
-    height: '36px', // 与 .icon-button 高度一致
+    width: '120px',
+    height: '36px',
     background: '#1e293b',
     border: '1px solid rgba(255, 255, 255, 0.2)',
     borderRadius: '8px',
@@ -102,13 +103,11 @@ export function CustomConnectButton() {
     fontSize: '14px',
   };
 
-  // 截短钱包地址函数，显示更短地址
   const truncateAddress = (address: string) => {
     if (!address) return '';
     return `0x${address.slice(2, 5)}...${address.slice(-3)}`;
   };
 
-  // 未连接状态的内容
   const disconnectedContent = (
     <>
       <svg
@@ -131,7 +130,6 @@ export function CustomConnectButton() {
     </>
   );
 
-  // 已连接状态的内容，统一显示指定 Logo
   const connectedContent = (
     <>
       {currentAccount && (
@@ -145,7 +143,6 @@ export function CustomConnectButton() {
     </>
   );
 
-  // 处理按钮点击
   const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (currentAccount) {
@@ -155,13 +152,11 @@ export function CustomConnectButton() {
     }
   };
 
-  // 处理断开连接
   const handleDisconnect = () => {
     disconnect();
     setShowDisconnect(false);
   };
 
-  // 钱包过滤器，包含 Mysten DApp Kit 默认钱包和 Martian Sui Wallet
   const allowedWallets = ['Slush', 'Suiet', 'Martian', 'Sui Wallet', 'Martian Sui Wallet'];
   const walletFilter = (wallet: any) => allowedWallets.includes(wallet.name);
 
@@ -376,11 +371,11 @@ const SettingsModal = ({ isOpen, onClose, slippage, setSlippage, customSlippage,
   );
 };
 
-// Main application component for token swapping
 function App() {
   const [showTokenModal, setShowTokenModal] = useState<string | null>(null);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [activeList, setActiveList] = useState("Default");
   const [importedTokens, setImportedTokens] = useState<any[]>([]);
   const [importAddress, setImportAddress] = useState("");
@@ -395,10 +390,9 @@ function App() {
   const client = useSuiClient();
   const account = useCurrentAccount();
   const { mutate: signAndExecute } = useSignAndExecuteTransaction();
-  const navigate = useNavigate(); // 添加 useNavigate
-  const [showSettings, setShowSettings] = useState(false); // 添加状态来控制模态显示
-  const [slippage, setSlippage] = useState("0.5"); // 添加滑点状态
-
+  const navigate = useNavigate();
+  const [showSettings, setShowSettings] = useState(false);
+  const [slippage, setSlippage] = useState("0.5");
   const [tokenX, setTokenX] = useState("0x2::sui::SUI");
   const [tokenY, setTokenY] = useState("0xb677ae5448d34da319289018e7dd67c556b094a5451d7029bd52396cdd8f192f::usdc::USDC");
   const [amountIn, setAmountIn] = useState("");
@@ -433,9 +427,19 @@ function App() {
     }
   }, [useAggregator]);
 
+  // 检测屏幕大小以判断是否为移动设备
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const PACKAGE_ID = "0xb90158d50ac951784409a6876ac860e24564ed5257e51944d3c693efb9fdbd78";
   const POOL_REGISTRY = "0xfc8c69858d070b639b3db15ff0f78a10370950434c5521c83eaa7e2285db8d2a";
-  const CETUS_AGGREGATOR = "0xsome_cetus_aggregator_id"; // Replace with actual Cetus aggregator package ID
+  const CETUS_AGGREGATOR = "0xsome_cetus_aggregator_id";
   const CRYPTOCOMPARE_API = "https://min-api.cryptocompare.com/data";
 
   const priceCache = useRef<{ [key: string]: { price: number; change_24h: number; timestamp: number } }>({});
@@ -1069,7 +1073,6 @@ function App() {
           account,
         },
         {
-          
           onError: (err: any) => {
             setError(`Transaction failed: ${err.message}`);
             setSuccess("");
@@ -1135,87 +1138,96 @@ function App() {
                       <img src="https://i.meee.com.tw/SdliTGK.png" alt="Logo" className="logo-image" />
                       <span className="logo-text">Seal</span>
                     </div>
-                    <div className={`nav-menu ${isMenuOpen ? "open" : ""}`}>
-                      <div className={`nav-item ${openDropdown === "trade" ? "open" : ""}`} 
-                           onMouseEnter={() => toggleDropdown("trade")} 
-                           onMouseLeave={() => toggleDropdown(null)}>
-                        <span className="nav-text">Trade</span>
-                        <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
-                          <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
-                        </svg>
-                        <div className={`dropdown ${openDropdown === "trade" ? "open" : ""}`}>
-                          <Link to="/" className="dropdown-item">
-                            <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
-                              <use xlinkHref="#icon-a-icon_swap2"></use>
-                            </svg>
-                            Swap
-                          </Link>
+                    {/* 根据设备类型渲染导航菜单或汉堡菜单 */}
+                    {!isMobile ? (
+                      <div className={`nav-menu ${isMenuOpen ? "open" : ""}`}>
+                        <div className={`nav-item ${openDropdown === "trade" ? "open" : ""}`} 
+                             onMouseEnter={() => toggleDropdown("trade")} 
+                             onMouseLeave={() => toggleDropdown(null)}>
+                          <span className="nav-text">Trade</span>
+                          <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
+                            <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+                          </svg>
+                          <div className={`dropdown ${openDropdown === "trade" ? "open" : ""}`}>
+                            <Link to="/" className="dropdown-item">
+                              <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                                <use xlinkHref="#icon-a-icon_swap2"></use>
+                              </svg>
+                              Swap
+                            </Link>
+                          </div>
+                        </div>
+                        <div className={`nav-item ${openDropdown === "earn" ? "open" : ""}`} 
+                             onMouseEnter={() => toggleDropdown("earn")} 
+                             onMouseLeave={() => toggleDropdown(null)}>
+                          <span className="nav-text">Earn</span>
+                          <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
+                            <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+                          </svg>
+                          <div className={`dropdown ${openDropdown === "earn" ? "open" : ""}`}>
+                            <Link to="/pool" className="dropdown-item">
+                              <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                                <use xlinkHref="#icon-icon_liquiditypools"></use>
+                              </svg>
+                              Pool
+                            </Link>
+                          </div>
+                        </div>
+                        <Link to="/xseal" className="nav-item">
+                          <span className="nav-text">xSEAL</span>
+                        </Link>
+                        <div className={`nav-item ${openDropdown === "bridge" ? "open" : ""}`} 
+                             onMouseEnter={() => toggleDropdown("bridge")} 
+                             onMouseLeave={() => toggleDropdown(null)}>
+                          <span className="nav-text">Bridge</span>
+                          <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
+                            <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+                          </svg>
+                          <div className={`dropdown ${openDropdown === "bridge" ? "open" : ""}`}>
+                            <a href="https://bridge.sui.io/" target="_blank" rel="noopener noreferrer" className="dropdown-item">
+                              <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                                <use xlinkHref="#icon-icon_sui"></use>
+                              </svg>
+                              Sui Bridge
+                            </a>
+                            <a href="https://bridge.cetus.zone/sui" target="_blank" rel="noopener noreferrer" className="dropdown-item">
+                              <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                                <use xlinkHref="#icon-icon_wormhole"></use>
+                              </svg>
+                              Wormhole
+                            </a>
+                          </div>
+                        </div>
+                        <div className={`nav-item ${openDropdown === "more" ? "open" : ""}`} 
+                             onMouseEnter={() => toggleDropdown("more")} 
+                             onMouseLeave={() => toggleDropdown(null)}>
+                          <span className="nav-text">More</span>
+                          <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
+                            <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+                          </svg>
+                          <div className={`dropdown ${openDropdown === "more" ? "open" : ""}`}>
+                            <a href="#" className="dropdown-item">
+                              <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                                <use xlinkHref="#icon-icon_docs"></use>
+                              </svg>
+                              Docs
+                            </a>
+                            <a href="#" className="dropdown-item">
+                              <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                                <use xlinkHref="#icon-icon_stats"></use>
+                              </svg>
+                              Leaderboard
+                            </a>
+                          </div>
                         </div>
                       </div>
-                      <div className={`nav-item ${openDropdown === "earn" ? "open" : ""}`} 
-                           onMouseEnter={() => toggleDropdown("earn")} 
-                           onMouseLeave={() => toggleDropdown(null)}>
-                        <span className="nav-text">Earn</span>
-                        <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
-                          <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+                    ) : (
+                      <button className="hamburger-menu" onClick={toggleMenu}>
+                        <svg className="hamburger-icon" viewBox="0 0 24 24" width="24px" height="24px">
+                          <path d="M3 6h18M3 12h18M3 18h18" stroke="var(--text-color)" strokeWidth="2" strokeLinecap="round" />
                         </svg>
-                        <div className={`dropdown ${openDropdown === "earn" ? "open" : ""}`}>
-                          <Link to="/pool" className="dropdown-item">
-                            <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
-                              <use xlinkHref="#icon-icon_liquiditypools"></use>
-                            </svg>
-                            Pool
-                          </Link>
-                        </div>
-                      </div>
-                      <Link to="/xseal" className="nav-item">
-                <span className="nav-text">xSeal</span>
-              </Link>
-                      <div className={`nav-item ${openDropdown === "bridge" ? "open" : ""}`} 
-                           onMouseEnter={() => toggleDropdown("bridge")} 
-                           onMouseLeave={() => toggleDropdown(null)}>
-                        <span className="nav-text">Bridge</span>
-                        <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
-                          <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
-                        </svg>
-                        <div className={`dropdown ${openDropdown === "bridge" ? "open" : ""}`}>
-                          <a href="https://bridge.sui.io/" target="_blank" rel="noopener noreferrer" className="dropdown-item">
-                            <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
-                              <use xlinkHref="#icon-icon_sui"></use>
-                            </svg>
-                            Sui Bridge
-                          </a>
-                          <a href="https://bridge.cetus.zone/sui" target="_blank" rel="noopener noreferrer" className="dropdown-item">
-                            <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
-                              <use xlinkHref="#icon-icon_wormhole"></use>
-                            </svg>
-                            Wormhole
-                          </a>
-                        </div>
-                      </div>
-                      <div className={`nav-item ${openDropdown === "more" ? "open" : ""}`} 
-                           onMouseEnter={() => toggleDropdown("more")} 
-                           onMouseLeave={() => toggleDropdown(null)}>
-                        <span className="nav-text">More</span>
-                        <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
-                          <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
-                        </svg>
-                        <div className={`dropdown ${openDropdown === "more" ? "open" : ""}`}>
-                          <a href="#" className="dropdown-item">
-                            <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
-                              <use xlinkHref="#icon-icon_docs"></use>
-                            </svg>
-                            Docs
-                          </a>
-                          <a href="#" className="dropdown-item">
-                            <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
-                              <use xlinkHref="#icon-icon_stats"></use>
-                            </svg>
-                            Leaderboard
-                          </a>
-                        </div>
-                      </div>
-                    </div>
+                      </button>
+                    )}
                     <div className="wallet-actions">
                       <CustomConnectButton />
                       <button
@@ -1304,14 +1316,13 @@ function App() {
                           </div>
                         </div>
                       )}
-                      <button className="hamburger-menu" onClick={toggleMenu}>
-                        <svg className="hamburger-icon" viewBox="0 0 24 24" width="24px" height="24px">
-                          <path d="M3 6h18M3 12h18M3 18h18" stroke="var(--text-color)" strokeWidth="2" strokeLinecap="round" />
-                        </svg>
-                      </button>
                     </div>
                   </div>
                 </div>
+                {/* 移动设备时显示侧边栏 */}
+                {isMobile && (
+                  <Sidebar isOpen={isMenuOpen} onClose={toggleMenu} />
+                )}
                 <div className="main-content">
                   <div className="swap-panel">
                     <div className="swap-header">
@@ -1335,7 +1346,7 @@ function App() {
                         <div className="settings-button-container">
                           <button
                             className="settings-button"
-                            onClick={() => setShowSettings(true)} // 显示模态窗口
+                            onClick={() => setShowSettings(true)}
                           >
                             {slippage}% <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="settings-icon"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><circle cx="12" cy="12" r="4"></circle></svg>
                           </button>
@@ -1491,10 +1502,33 @@ function App() {
                                   </p>
                                 </div>
                               </div>
-                              <div className="price-chart css-1r938vg">
+                              
                                 <div className="recharts-responsive-container" style={{ width: "100%", height: "100%", minWidth: "0" }}>
                                   <div className="recharts-wrapper" style={{ position: "relative", cursor: "default", width: "100%", height: "100%", maxHeight: "20px", maxWidth: "180px" }}>
-                                    <svg className="recharts-surface" width="180" height="20" viewBox="0 0 180 20" style={{ width: "100%", height: "100%" }}>
+                                   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div className="price-chart css-1r938vg"> <svg className="recharts-surface" width="180" height="20" viewBox="0 0 180 20" style={{ width: "100%", height: "100%" }}>
                                       <defs>
                                         <clipPath id={`recharts${index + 1}-clip`}>
                                           <rect x="15" y="4" height="12" width="150"></rect>
@@ -1584,3 +1618,15 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
+
+
+
+
+
+
+

@@ -491,7 +491,7 @@ const XSeal = () => {
               </div>
             </div>
             <Link to="/xseal" className="nav-item">
-              <span className="nav-text">xSeal</span>
+              <span className="nav-text">xSEAL</span>
             </Link>
             <div className={`nav-item ${openDropdown === "bridge" ? "open" : ""}`} 
                  onMouseEnter={() => toggleDropdown("bridge")} 

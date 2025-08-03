@@ -1,0 +1,507 @@
+:root {
+  --card-bg: #F7F8F8;
+  --text-color: #182435;
+  --text-secondary: #767A81;
+  --border-color: #E4E4E7;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --modal-primary: #FFFFFF;
+  --modal-secondary: #F7F8F8;
+  --hover-bg: #F0F1F2;
+  --search-bg: #F3F6F8;
+  --success-color: #28A745;
+}
+
+.pos-container2 {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  background: var(--card-bg);
+  color: var(--text-color);
+  min-height: 100vh;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px var(--shadow-color);
+}
+
+.pos-summary-container2 {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  padding: 24px;
+  margin: 0 48px;
+  align-items: stretch;
+}
+
+.pos-summary-left2 {
+  flex: 0.8;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-height: 100%;
+}
+
+.pos-summary-right2 {
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pos-summary-title2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-color);
+  letter-spacing: -0.4px;
+}
+
+.pos-summary-metrics-card2 {
+  background: var(--card-bg);
+  color: var(--text-color);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  min-height: 258px;
+  flex-grow: 1;
+}
+
+.pos-metric-item2 {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pos-metric-label2 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.pos-metric-value2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.pos-chart-header2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.pos-chart-title2 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 0;
+}
+
+.pos-chart-container2 {
+  width: 100%;
+  height: 258px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pos-header2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: var(--card-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  margin: 0 48px;
+}
+
+.pos-tab-group2 {
+  display: flex;
+  gap: 6px;
+  background: var(--search-bg);
+  border-radius: 8px;
+  padding: 4px;
+  border: 1px solid var(--border-color);
+  justify-content: center;
+}
+
+.pos-tab-button2 {
+  padding: 8px 16px;
+  border-radius: 6px;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 100px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pos-tab-button2.active {
+  background: var(--modal-secondary);
+  color: var(--text-color);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.pos-tab-button2:hover {
+  background: var(--hover-bg);
+  color: var(--text-color);
+}
+
+.pos-tab-button2 .pos-chakra-image2 {
+  width: 20px;
+  height: 20px;
+}
+
+.pos-tab-button2 .pos-chakra-text2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.pos-tab-button2 .pos-position-count2 {
+  background-color: var(--border-color);
+  color: var(--text-color);
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.pos-button-group2 {
+  display: flex;
+  gap: 8px;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+}
+
+.pos-action-button2 {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  min-width: 100px;
+  text-align: center;
+}
+
+.pos-action-button2:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 12px var(--shadow-color);
+}
+
+.pos-create-pool-button2 {
+  background: var(--modal-primary);
+  color: var(--text-color);
+}
+
+.pos-create-pool-button2:hover {
+  background: var(--modal-secondary);
+}
+
+.pos-add-liquidity-button2 {
+  background: transparent;
+  color: var(--text-color);
+  border: 2px solid var(--modal-secondary);
+}
+
+.pos-add-liquidity-button2:hover {
+  background: rgba(247, 248, 248, 0.1);
+}
+
+.pos-filter-row2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin: 0 48px;
+  flex-wrap: wrap;
+}
+
+.pos-filter-container2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pos-filter-button2, .pos-refresh-button2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-color);
+  transition: all 0.2s ease;
+}
+
+.pos-filter-button2:hover, .pos-refresh-button2:hover {
+  background: var(--hover-bg);
+}
+
+.pos-filter-button2 svg, .pos-refresh-button2 svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--text-secondary);
+}
+
+.pos-filter-button2:hover svg, .pos-refresh-button2:hover svg {
+  fill: var(--text-color);
+}
+
+.pos-chakra-stack2.pos-1igwmid2 {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pos-chakra-button2.pos-2h2e642 {
+  padding: 8px 16px;
+  background: var(--search-bg);
+  color: var(--text-secondary);
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: not-allowed;
+}
+
+.pos-chakra-button2.pos-2h2e642:not(:disabled):hover {
+  background: var(--hover-bg);
+}
+
+.pos-chakra-stack2.pos-dbr0lh2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  background: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.pos-chakra-image2.pos-f5j44i2 {
+  width: 120px;
+  height: 120px;
+  opacity: 0.8;
+}
+
+.pos-chakra-text2.pos-dwkbww2 {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+@media (min-width: 1024px) {
+  .pos-summary-container2 {
+    flex-direction: row;
+  }
+
+  .pos-summary-left2 {
+    flex: 0.8;
+  }
+
+  .pos-summary-right2 {
+    flex: 1.2;
+  }
+
+  .pos-header2 {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .pos-button-group2 {
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 768px) {
+  .pos-container2 {
+    padding: 16px;
+    border-radius: 10px;
+  }
+
+  .pos-summary-container2 {
+    flex-direction: column;
+    padding: 16px;
+    margin: 0 24px;
+    align-items: stretch;
+  }
+
+  .pos-summary-left2 {
+    min-height: auto;
+  }
+
+  .pos-summary-metrics-card2 {
+    min-height: auto;
+  }
+
+  .pos-summary-title2 {
+    font-size: 20px;
+    text-align: left;
+  }
+
+  .pos-metric-item2 {
+    min-width: 150px;
+  }
+
+  .pos-metric-label2 {
+    font-size: 12px;
+  }
+
+  .pos-metric-value2 {
+    font-size: 16px;
+  }
+
+  .pos-chart-container2 {
+    height: 200px;
+  }
+
+  .pos-chart-title2 {
+    font-size: 14px;
+  }
+
+  .pos-header2 {
+    margin: 0 24px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pos-tab-group2 {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .pos-tab-button2 {
+    padding: 6px;
+    font-size: 12px;
+    min-width: 0;
+  }
+
+  .pos-button-group2 {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pos-action-button2 {
+    padding: 6px 10px;
+    font-size: 12px;
+    min-width: 90px;
+  }
+
+  .pos-filter-row2 {
+    margin: 0 24px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pos-chakra-stack2.pos-dbr0lh2 {
+    margin: 0 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pos-container2 {
+    padding: 12px 0;
+    gap: 16px;
+    border-radius: 0;
+    margin: 0;
+    width: 100vw;
+    box-sizing: border-box;
+  }
+
+  .pos-summary-container2 {
+    margin: 0 12px;
+  }
+
+  .pos-summary-title2 {
+    font-size: 18px;
+  }
+
+  .pos-metric-item2 {
+    min-width: 120px;
+  }
+
+  .pos-metric-label2 {
+    font-size: 11px;
+  }
+
+  .pos-metric-value2 {
+    font-size: 14px;
+  }
+
+  .pos-chart-container2 {
+    height: 180px;
+  }
+
+  .pos-chart-title2 {
+    font-size: 12px;
+  }
+
+  .pos-header2 {
+    margin: 0 12px;
+  }
+
+  .pos-tab-group2 {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .pos-tab-button2 {
+    padding: 6px;
+    font-size: 11px;
+    min-width: 0;
+  }
+
+  .pos-action-button2 {
+    padding: 6px 8px;
+    font-size: 11px;
+    min-width: 80px;
+  }
+
+  .pos-filter-row2 {
+    margin: 0 12px;
+  }
+
+  .pos-chakra-stack2.pos-dbr0lh2 {
+    margin: 0 12px;
+    padding: 16px;
+    font-size: 12px;
+  }
+
+  .pos-chakra-image2.pos-f5j44i2 {
+    width: 100px;
+    height: 100px;
+  }
+
+  .pos-chakra-text2.pos-dwkbww2 {
+    font-size: 12px;
+  }
+}
