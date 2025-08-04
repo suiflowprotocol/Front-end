@@ -10,7 +10,7 @@ import CoverPage from "./CoverPage";
 import Sidebar from "./SidebarMenu"; // 导入新侧边栏组件
 import "./App.css";
 import "./App2.css";
-import Confetti from "react-confetti";
+
 import Modal from './Modal';
 import SettingsPage from './SettingsPage';
 import Ico from './Ico'; // 导入 Ico 组件
@@ -387,7 +387,7 @@ function App() {
   const [mevProtection, setMevProtection] = useState(false);
   const [expiration, setExpiration] = useState("1 Day");
   const [searchQuery, setSearchQuery] = useState("");
-  const [useAggregator, setUseAggregator] = useState(false);
+  const [useAggregator, setUseAggregator] = useState(true);
   const client = useSuiClient();
   const account = useCurrentAccount();
   const { mutate: signAndExecute } = useSignAndExecuteTransaction();
@@ -411,22 +411,14 @@ function App() {
   const [priceDifference, setPriceDifference] = useState("0.00");
   const [isLoadingOutput, setIsLoadingOutput] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
-  const [showConfetti, setShowConfetti] = useState(false);
+ 
   const switchRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [showNotificationPopover, setShowNotificationPopover] = useState(false);
   const [showRpcPopover, setShowRpcPopover] = useState(false);
 
-  useEffect(() => {
-    if (useAggregator) {
-      setShowConfetti(true);
-      const timer = setTimeout(() => {
-        setShowConfetti(false);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [useAggregator]);
+  
 
   // 检测屏幕大小以判断是否为移动设备
   useEffect(() => {
@@ -1121,13 +1113,7 @@ function App() {
             <p>{toast.message}</p>
           </div>
         )}
-        {showConfetti && (
-          <Confetti
-            width={window.innerWidth}
-            height={window.innerHeight}
-            style={{ position: "absolute", top: 0, left: 0 }}
-          />
-        )}
+        
         <Routes>
           <Route
             path="/"
@@ -1333,7 +1319,7 @@ function App() {
                       <h2 className="swap-title">Swap</h2>
                       <div className="settings-row">
                         <div className="aggregator-toggle" ref={switchRef}>
-                          <label className="chakra-form__label" htmlFor="aggregator-mode">Get $SEAL tokens</label>
+                          <label className="chakra-form__label" htmlFor="aggregator-mode">Mine $SEAL tokens</label>
                           <label className="chakra-switch">
                             <input
                               type="checkbox"

@@ -1252,7 +1252,7 @@ function CreatePool({ isOpen, onClose, newPoolToken1, setNewPoolToken1, newPoolT
               <div className="token-modal-body">
                 <div className="search-group">
                   <img
-                    src="/assets/images/search.svg"
+                    src="https://bafybeiawrwpry44l2oxgqhoh2l3hj6yxj3zctheebrlyrc75p7kln33q2e.ipfs.w3s.link/search%20(4).svg"
                     alt="Search"
                     className="search-icon"
                   />
