@@ -634,7 +634,7 @@
 @media (max-width: 768px) {
   .pool-container {
     padding: 16px;
-    bordermsgstr: radius: 10px;
+    border-radius: 10px;
   }
 
   .summary-container {

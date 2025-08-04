@@ -3,10 +3,11 @@ import { SuiClient, getFullnodeUrl } from "@mysten/sui.js/client";
 import { ConnectButton, useCurrentAccount, useSuiClient, useSignAndExecuteTransaction, lightTheme, WalletProvider, ThemeVars, useConnectWallet, useWallets, useDisconnectWallet, ConnectModal } from "@mysten/dapp-kit";
 import CreatePool from "./CreatePool";
 import AddLiquidityModal from "./AddLiquidityModal";
-import Position from "./Position"; // New import
-import PoolList from "./PoolList"; // Updated import
+import Position from "./Position";
+import PoolList from "./PoolList";
 import { tokens, Token } from "./tokens";
 import { Link, useNavigate } from "react-router-dom";
+import Sidebar from "./SidebarMenu"; // New import for Sidebar
 import "./Pool.css";
 
 const walletLogos = {
@@ -280,7 +281,18 @@ function Pool() {
   const [showNotificationPopover, setShowNotificationPopover] = useState(false);
   const [showRpcPopover, setShowRpcPopover] = useState(false);
   const [chartPeriod, setChartPeriod] = useState<"D" | "W" | "M">("D");
+  const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
+
+  // Detect screen size to determine if mobile
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const toggleDropdown = (menu: string | null) => {
     setOpenDropdown(openDropdown === menu ? null : menu);
@@ -356,95 +368,103 @@ function Pool() {
               <img src="https://i.meee.com.tw/SdliTGK.png" alt="Logo" className="logo-image" />
               <span className="logo-text">Seal</span>
             </div>
-            <div className={`nav-menu ${isMenuOpen ? "open" : ""}`}>
-              <div
-                className={["nav-item", openDropdown === "trade" ? "open" : ""].join(" ")}
-                onMouseEnter={() => toggleDropdown("trade")}
-                onMouseLeave={() => toggleDropdown(null)}
-              >
-                <span className="nav-text">Trade</span>
-                <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
-                  <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
-                </svg>
-                <div className={["dropdown", openDropdown === "trade" ? "open" : ""].join(" ")}>
-                  <Link to="/" className="dropdown-item">
-                    <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
-                      <use xlinkHref="#icon-a-icon_swap2"></use>
-                    </svg>
-                    Swap
-                  </Link>
+            {!isMobile ? (
+              <div className="nav-menu">
+                <div
+                  className={["nav-item", openDropdown === "trade" ? "open" : ""].join(" ")}
+                  onMouseEnter={() => toggleDropdown("trade")}
+                  onMouseLeave={() => toggleDropdown(null)}
+                >
+                  <span className="nav-text">Trade</span>
+                  <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
+                    <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+                  </svg>
+                  <div className={["dropdown", openDropdown === "trade" ? "open" : ""].join(" ")}>
+                    <Link to="/" className="dropdown-item">
+                      <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                        <use xlinkHref="#icon-a-icon_swap2"></use>
+                      </svg>
+                      Swap
+                    </Link>
+                  </div>
+                </div>
+                <div
+                  className={["nav-item", openDropdown === "earn" ? "open" : ""].join(" ")}
+                  onMouseEnter={() => toggleDropdown("earn")}
+                  onMouseLeave={() => toggleDropdown(null)}
+                >
+                  <span className="nav-text">Earn</span>
+                  <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
+                    <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+                  </svg>
+                  <div className={["dropdown", openDropdown === "earn" ? "open" : ""].join(" ")}>
+                    <Link to="/pool" className="dropdown-item">
+                      <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                        <use xlinkHref="#icon-icon_liquiditypools"></use>
+                      </svg>
+                      Pool
+                    </Link>
+                  </div>
+                </div>
+                <Link to="/xseal" className="nav-item">
+                  <span className="nav-text">xSEAL</span>
+                </Link>
+                <div
+                  className={["nav-item", openDropdown === "bridge" ? "open" : ""].join(" ")}
+                  onMouseEnter={() => toggleDropdown("bridge")}
+                  onMouseLeave={() => toggleDropdown(null)}
+                >
+                  <span className="nav-text">Bridge</span>
+                  <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
+                    <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+                  </svg>
+                  <div className={["dropdown", openDropdown === "bridge" ? "open" : ""].join(" ")}>
+                    <a href="https://bridge.sui.io/" target="_blank" rel="noopener noreferrer" className="dropdown-item">
+                      <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                        <use xlinkHref="#icon-icon_sui"></use>
+                      </svg>
+                      Sui Bridge
+                    </a>
+                    <a href="https://bridge.cetus.zone/sui" target="_blank" rel="noopener noreferrer" className="dropdown-item">
+                      <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                        <use xlinkHref="#icon-icon_wormhole"></use>
+                      </svg>
+                      Wormhole
+                    </a>
+                  </div>
+                </div>
+                <div
+                  className={["nav-item", openDropdown === "more" ? "open" : ""].join(" ")}
+                  onMouseEnter={() => toggleDropdown("more")}
+                  onMouseLeave={() => toggleDropdown(null)}
+                >
+                  <span className="nav-text">More</span>
+                  <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
+                    <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+                  </svg>
+                  <div className={["dropdown", openDropdown === "more" ? "open" : ""].join(" ")}>
+                    <a href="#" className="dropdown-item">
+                      <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                        <use xlinkHref="#icon-icon_docs"></use>
+                      </svg>
+                      Docs
+                    </a>
+                    <a href="#" className="dropdown-item">
+                      <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                        <use xlinkHref="#icon-icon_stats"></use>
+                      </svg>
+                      Leaderboard
+                    </a>
+                  </div>
                 </div>
               </div>
-              <div
-                className={["nav-item", openDropdown === "earn" ? "open" : ""].join(" ")}
-                onMouseEnter={() => toggleDropdown("earn")}
-                onMouseLeave={() => toggleDropdown(null)}
-              >
-                <span className="nav-text">Earn</span>
-                <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
-                  <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+            ) : (
+              <button className="hamburger-menu" onClick={toggleMenu}>
+                <svg className="hamburger-icon" viewBox="0 0 24 24" width="24px" height="24px">
+                  <path d="M3 6h18M3 12h18M3 18h18" stroke="var(--text-color)" strokeWidth="2" strokeLinecap="round" />
                 </svg>
-                <div className={["dropdown", openDropdown === "earn" ? "open" : ""].join(" ")}>
-                  <Link to="/pool" className="dropdown-item">
-                    <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
-                      <use xlinkHref="#icon-icon_liquiditypools"></use>
-                    </svg>
-                    Pool
-                  </Link>
-                </div>
-              </div>
-              <Link to="/xseal" className="nav-item">
-                <span className="nav-text">xSEAL</span>
-              </Link>
-              <div
-                className={["nav-item", openDropdown === "bridge" ? "open" : ""].join(" ")}
-                onMouseEnter={() => toggleDropdown("bridge")}
-                onMouseLeave={() => toggleDropdown(null)}
-              >
-                <span className="nav-text">Bridge</span>
-                <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
-                  <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
-                </svg>
-                <div className={["dropdown", openDropdown === "bridge" ? "open" : ""].join(" ")}>
-                  <a href="https://bridge.sui.io/" target="_blank" rel="noopener noreferrer" className="dropdown-item">
-                    <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
-                      <use xlinkHref="#icon-icon_sui"></use>
-                    </svg>
-                    Sui Bridge
-                  </a>
-                  <a href="https://bridge.cetus.zone/sui" target="_blank" rel="noopener noreferrer" className="dropdown-item">
-                    <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
-                      <use xlinkHref="#icon-icon_wormhole"></use>
-                    </svg>
-                    Wormhole
-                  </a>
-                </div>
-              </div>
-              <div
-                className={["nav-item", openDropdown === "more" ? "open" : ""].join(" ")}
-                onMouseEnter={() => toggleDropdown("more")}
-                onMouseLeave={() => toggleDropdown(null)}
-              >
-                <span className="nav-text">More</span>
-                <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
-                  <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
-                </svg>
-                <div className={["dropdown", openDropdown === "more" ? "open" : ""].join(" ")}>
-                  <a href="#" className="dropdown-item">
-                    <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
-                      <use xlinkHref="#icon-icon_docs"></use>
-                    </svg>
-                    Docs
-                  </a>
-                  <a href="#" className="dropdown-item">
-                    <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
-                      <use xlinkHref="#icon-icon_stats"></use>
-                    </svg>
-                    Leaderboard
-                  </a>
-                </div>
-              </div>
-            </div>
+              </button>
+            )}
             <div className="wallet-actions">
               <CustomConnectButton />
               <button
@@ -533,14 +553,12 @@ function Pool() {
                   </div>
                 </div>
               )}
-              <button className="hamburger-menu" onClick={toggleMenu}>
-                <svg className="hamburger-icon" viewBox="0 0 24 24" width="24px" height="24px">
-                  <path d="M3 6h18M3 12h18M3 18h18" stroke="var(--text-color)" strokeWidth="2" strokeLinecap="round" />
-                </svg>
-              </button>
             </div>
           </div>
         </div>
+        {isMobile && (
+          <Sidebar isOpen={isMenuOpen} onClose={toggleMenu} />
+        )}
         <div className="pool-container">
           <div className="summary-container">
             <div className="summary-left">

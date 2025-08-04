@@ -7,15 +7,28 @@ interface SidebarMenuProps {
 }
 
 function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
+  const toggleDropdown = (menu: string | null, event: React.MouseEvent) => {
+    event.stopPropagation();
+    const currentDropdown = document.querySelector(`.dropdown3.${menu}.open3`);
+    if (currentDropdown) {
+      currentDropdown.classList.remove("open3");
+    } else {
+      document.querySelectorAll(".dropdown3.open3").forEach((dropdown) => dropdown.classList.remove("open3"));
+      if (menu) {
+        document.querySelector(`.dropdown3.${menu}`)?.classList.add("open3");
+      }
+    }
+  };
+
   return (
-    <div className={`sidebar-menu ${isOpen ? "open" : ""}`}>
-      <div className="sidebar-header">
-        <div className="logo-container">
-          <img src="https://i.meee.com.tw/SdliTGK.png" alt="Logo" className="logo-image1" />
-          <span className="logo-text1">Seal</span>
+    <div className={`sidebar-menu3 ${isOpen ? "open3" : ""}`}>
+      <div className="sidebar-header3">
+        <div className="logo-container3">
+          <img src="https://i.meee.com.tw/SdliTGK.png" alt="Logo" className="logo-image" />
+          <span className="logo-text">SEAL</span>
         </div>
-        <button className="close-button" onClick={onClose}>
-          <svg viewBox="0 0 24 24" width="24px" height="24px">
+        <button className="close-button3" onClick={onClose}>
+          <svg viewBox="0 0 24 24" width="16px" height="16px">
             <path
               fill="var(--text-color)"
               d="M.439,21.44a1.5,1.5,0,0,0,2.122,2.121L11.823,14.3a.25.25,0,0,1,.354,0l9.262,9.263a1.5,1.5,0,1,0,2.122-2.121L14.3,12.177a.25.25,0,0,1,0-.354l9.263-9.262A1.5,1.5,0,0,0,21.439.44L12.177,9.7a.25.25,0,0,1-.354,0L2.561.44A1.5,1.5,0,0,0,.439,2.561L9.7,11.823a.25.25,0,0,1,0,.354Z"
@@ -23,68 +36,144 @@ function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
           </svg>
         </button>
       </div>
-      <div className="sidebar-content">
-        <div className="menu-item">
-          <Link to="/" onClick={onClose}>
-            <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px">
-              <use xlinkHref="#icon-a-icon_swap2"></use>
+      <div className="sidebar-content3">
+        <div className="menu-item3" onClick={(e) => toggleDropdown("trade", e)}>
+          <div className="menu-item-header3">
+            <p className="chakra-text css-1sibxxu3">Trade</p>
+            <svg className="dropdown-arrow" aria-hidden="true" fill="transparent" stroke="var(--text-secondary)" strokeWidth="2" width="12px" height="12px" viewBox="0 0 24 24">
+              <path d="M6 9l6 6 6-6" />
             </svg>
-            <span>Swap</span>
-          </Link>
+          </div>
+          <div className="dropdown3 trade">
+            <Link to="/" onClick={onClose} className="dropdown-item3">
+              <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px" viewBox="0 0 24 24">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+              Swap
+            </Link>
+          </div>
         </div>
-        <div className="menu-item">
-          <Link to="/pool" onClick={onClose}>
-            <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px">
-              <use xlinkHref="#icon-icon_liquiditypools"></use>
+        <div className="menu-item3" onClick={(e) => toggleDropdown("earn", e)}>
+          <div className="menu-item-header3">
+            <p className="chakra-text css-1sibxxu3">Earn</p>
+            <svg className="dropdown-arrow" aria-hidden="true" fill="transparent" stroke="var(--text-secondary)" strokeWidth="2" width="12px" height="12px" viewBox="0 0 24 24">
+              <path d="M6 9l6 6 6-6" />
             </svg>
-            <span>Pool</span>
-          </Link>
+          </div>
+          <div className="dropdown3 earn">
+            <Link to="/pool" onClick={onClose} className="dropdown-item3">
+              <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px" viewBox="0 0 24 24">
+                <path d="M12 4a8 8 0 0 0-8 8h3a5 5 0 0 1 5-5v3l4-4-4-4v3zm0 16a8 8 0 0 0 8-8h-3a5 5 0 0 1-5 5v-3l-4 4 4 4v-3z" />
+              </svg>
+              Pools
+            </Link>
+          </div>
         </div>
-        <div className="menu-item">
-          <Link to="/xseal" onClick={onClose}>
-            <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px">
-              <use xlinkHref="#icon-xseal"></use>
+        <div className="menu-item3" onClick={(e) => toggleDropdown("bridge", e)}>
+          <div className="menu-item-header3">
+            <p className="chakra-text css-1sibxxu3">Bridge</p>
+            <svg className="dropdown-arrow" aria-hidden="true" fill="transparent" stroke="var(--text-secondary)" strokeWidth="2" width="12px" height="12px" viewBox="0 0 24 24">
+              <path d="M6 9l6 6 6-6" />
             </svg>
-            <span>xSeal</span>
-          </Link>
+          </div>
+          <div className="dropdown3 bridge">
+            <a href="https://bridge.sui.io/" target="_blank" rel="noopener noreferrer" className="dropdown-item3">
+              <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px" viewBox="0 0 24 24">
+                <path d="M3 12h18M9 18l-6-6 6-6m6 12l6-6-6-6" />
+              </svg>
+              Sui Bridge
+            </a>
+            <a href="https://bridge.cetus.zone/sui" target="_blank" rel="noopener noreferrer" className="dropdown-item3">
+              <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px" viewBox="0 0 24 24">
+                <path d="M12 2a10 10 0 0 0-7 3l3 3a6 6 0 0 1 8.5 8.5l3 3a10 10 0 0 0-7-17z" />
+              </svg>
+              Wormhole
+            </a>
+          </div>
         </div>
-        <div className="menu-item">
-          <Link to="/settings" onClick={onClose}>
-            <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px">
-              <use xlinkHref="#icon-icon_settings"></use>
+        <div className="menu-item3" onClick={(e) => toggleDropdown("more", e)}>
+          <div className="menu-item-header3">
+            <p className="chakra-text css-1sibxxu3">More</p>
+            <svg className="dropdown-arrow" aria-hidden="true" fill="transparent" stroke="var(--text-secondary)" strokeWidth="2" width="12px" height="12px" viewBox="0 0 24 24">
+              <path d="M6 9l6 6 6-6" />
             </svg>
-            <span>Settings</span>
-          </Link>
+          </div>
+          <div className="dropdown3 more">
+            <a href="#" className="dropdown-item3">
+              <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px" viewBox="0 0 24 24">
+                <path d="M4 4h16v2H4zm0 7h16v2H4zm0 7h16v2H4z" />
+              </svg>
+              Docs
+            </a>
+            <a href="#" className="dropdown-item3">
+              <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px" viewBox="0 0 24 24">
+                <path d="M5 15h4v6H5zm6-4h4v10h-4zm6-6h4v16h-4z" />
+              </svg>
+              Leaderboard
+            </a>
+          </div>
         </div>
       </div>
-      <div className="social-buttons">
-        <div className="chakra-stack css-n3uhkm">
-          <div className="css-eorw49">
-            <div className="css-0">
-              <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="css-b42dtz">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/X_logo_2023_original.svg" alt="X" width="20px" height="20px" />
-              </a>
+      <div className="sidebar-footer3">
+        <div className="chakra-stack3 css-q2safe3">
+          <div className="chakra-stack3 css-chgbhg3">
+            <div className="footer-text-container3">
+              <p className="chakra-text3 css-vcvc473">RPC Node</p>
+            </div>
+            <div className="spacer3"></div>
+            <div className="footer-text-right3">
+              <p className="chakra-text3 css-ry2o2l3">Sui Official</p>
+            </div>
+            <div className="css-w6and63">
+              <svg aria-hidden="true" fill="var(--text-secondary)" width="12px" height="12px">
+                <use xlinkHref="#icon-icon_arrow"></use>
+              </svg>
             </div>
           </div>
-          <div className="css-eorw49">
-            <div className="css-0">
-              <a href="https://discord.com" target="_blank" rel="noopener noreferrer" className="css-b42dtz">
-                <img src="https://www.svgrepo.com/show/353655/discord-icon.svg" alt="Discord" width="20px" height="20px" />
-              </a>
+          <div className="chakra-stack3 css-chgbhg3">
+            <div className="footer-text-container3">
+              <p className="chakra-text3 css-vcvc473">Preferred Explorer</p>
+            </div>
+            <div className="spacer3"></div>
+            <div className="footer-text-right3">
+              <p className="chakra-text3 css-ry2o2l3">SuiVision</p>
+            </div>
+            <div className="css-w6and63">
+              <svg aria-hidden="true" fill="var(--text-secondary)" width="12px" height="12px">
+                <use xlinkHref="#icon-icon_arrow"></use>
+              </svg>
             </div>
           </div>
-          <div className="css-eorw49">
-            <div className="css-0">
-              <a href="https://telegram.org" target="_blank" rel="noopener noreferrer" className="css-6w0v09">
-                <img src="https://images.seeklogo.com/logo-png/49/2/telegram-logo-png_seeklogo-490015.png" alt="Telegram" width="30px" height="30px" />
-              </a>
+        </div>
+        <div className="social-buttons3">
+          <div className="chakra-stack3 css-n3uhkm3">
+            <div className="css-eorw493">
+              <div className="css-03">
+                <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="css-b42dtz3">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/X_logo_2023_original.svg" alt="X" width="20px" height="20px" />
+                </a>
+              </div>
             </div>
-          </div>
-          <div className="css-eorw49">
-            <div className="css-0">
-              <a href="https://medium.com" target="_blank" rel="noopener noreferrer" className="css-b42dtz">
-                <img src="https://www.svgrepo.com/show/354057/medium-icon.svg" alt="Medium" width="20px" height="20px" />
-              </a>
+            <div className="css-eorw493">
+              <div className="css-03">
+                <a href="https://discord.com" target="_blank" rel="noopener noreferrer" className="css-b42dtz3">
+                  <img src="https://www.svgrepo.com/show/353655/discord-icon.svg" alt="Discord" width="20px" height="20px" />
+                </a>
+              </div>
+            </div>
+            <div className="css-eorw493">
+              <div className="css-03">
+                <a href="https://telegram.org" target="_blank" rel="noopener noreferrer" className="css-6w0v093">
+                  <img src="https://images.seeklogo.com/logo-png/49/2/telegram-logo-png_seeklogo-490015.png" alt="Telegram" width="20px" height="20px" />
+                </a>
+              </div>
+            </div>
+            <div className="css-eorw493">
+              <div className="css-03">
+                <a href="https://medium.com" target="_blank" rel="noopener noreferrer" className="css-b42dtz3">
+                  <img src="https://www.svgrepo.com/show/354057/medium-icon.svg" alt="Medium" width="20px" height="20px" />
+                </a>
+              </div>
             </div>
           </div>
         </div>
