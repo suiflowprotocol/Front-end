@@ -74,7 +74,7 @@ const Ico: React.FC = () => {
   const [showNotificationPopover, setShowNotificationPopover] = useState(false);
   const [showRpcPopover, setShowRpcPopover] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const exchangeRate = 3000; // 1 SUI = 5,000 SEAL
+  const exchangeRate = 5000; // Updated to match displayed rate: 1 SUI = 5,000 SEAL
 
   // Fetch user SUI balance
   useEffect(() => {
@@ -135,7 +135,7 @@ const Ico: React.FC = () => {
 
   return (
     <WalletProvider theme={customTheme}>
-      <div className="container-ico">
+      <div className="container-ico min-h-screen bg-gray-50">
         <div className="header">
           <div className="header-top">
             <div className="logo-container">
@@ -334,27 +334,15 @@ const Ico: React.FC = () => {
           </div>
         </div>
         {isMobile && <Sidebar isOpen={isMenuOpen} onClose={toggleMenu} />}
-        <div className="main-content-ico">
-          <div className="ico-hero">
-            <div className="ico-hero-content">
-              <h1 className="ico-hero-title">SEAL Token ICO</h1>
-              <div className="ico-info-card">
-                <p><strong>Total Supply:</strong> 1,000,000,000 SEAL</p>
-                <p><strong>About SEAL:</strong> SEAL is the equity token of the SEAL DEX Protocol. By staking SEAL in the xSEAL module, holders are entitled to 100% of the accumulated transaction fee dividends from the DEX platform, withdrawable at any time.</p>
-                <p><strong>ICO Progress:</strong> Ongoing...</p>
-                <p><strong>Use of Funds:</strong> Funds raised will be used to create a liquidity pool for SEAL tokens on the SEAL DEX.</p>
-                <p><strong>Exchange Rate:</strong> 1 SUI = 5,000 SEAL</p>
-                <a href="#whitepaper" className="ico-learn-more">Learn More</a>
-              </div>
-            </div>
+        <div className="main-content-ico flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+          <div className="ico-hero max-w-4xl w-full">
+            
           </div>
-          <div className="swap-panel ico-panel-ico">
-            <div className="input-section">
-              <div className="input-card">
-                <div className="input-label">
-                  <span>From</span>
-                </div>
-                <div className="input-group">
+          <div className="swap-panel ico-panel-ico mt-12 w-full max-w-md bg-white shadow-xl rounded-2xl p-6 border border-gray-100">
+            <div className="input-section space-y-4">
+              <div className="input-card bg-gray-50 p-4 rounded-xl">
+                <div className="input-label text-sm font-medium text-gray-600 mb-2">From</div>
+                <div className="input-group flex items-center bg-white border border-gray-200 rounded-lg">
                   <input
                     inputMode="decimal"
                     pattern="[0-9]*\.?[0-9]*"
@@ -362,30 +350,26 @@ const Ico: React.FC = () => {
                     value={suiAmount}
                     onChange={handleSuiChange}
                     placeholder="0.0"
-                    className="swap-input"
+                    className="swap-input flex-1 p-3 text-lg text-gray-900 focus:outline-none"
                   />
-                  <div className="token-selector">
-                    <img src="https://assets.crypto.ro/logos/sui-sui-logo.png" alt="SUI" className="token-icon" />
-                    <span>SUI</span>
+                  <div className="token-selector flex items-center space-x-2 pr-3">
+                    <img src="https://assets.crypto.ro/logos/sui-sui-logo.png" alt="SUI" className="token-icon w-6 h-6" />
+                    <span className="text-gray-700 font-medium">SUI</span>
                   </div>
                 </div>
-                <div className="input-footer">
-                  <span className="price-text">
-                    ${suiAmount && parseFloat(suiAmount) > 0 ? (parseFloat(suiAmount) * 1).toFixed(2) : "0.00"}
-                  </span>
+                <div className="input-footer flex justify-between mt-2 text-sm text-gray-600">
+                  <span className="price-text">${suiAmount && parseFloat(suiAmount) > 0 ? (parseFloat(suiAmount) * 1).toFixed(2) : "0.00"}</span>
                   <div className="balance-group">
                     <span>Balance: {suiBalance}</span>
                   </div>
                 </div>
               </div>
-              <div className="swap-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="swap-arrow"><path d="m3 16 4 4 4-4"></path><path d="M7 20V4"></path><path d="m21 8-4-4-4 4"></path><path d="M17 4v16"></path></svg>
+              <div className="swap-icon flex justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="swap-arrow text-gray-500"><path d="m3 16 4 4 4-4"></path><path d="M7 20V4"></path><path d="m21 8-4-4-4 4"></path><path d="M17 4v16"></path></svg>
               </div>
-              <div className="input-card">
-                <div className="input-label">
-                  <span>To</span>
-                </div>
-                <div className="input-group">
+              <div className="input-card bg-gray-50 p-4 rounded-xl">
+                <div className="input-label text-sm font-medium text-gray-600 mb-2">To</div>
+                <div className="input-group flex items-center bg-white border border-gray-200 rounded-lg">
                   <input
                     inputMode="decimal"
                     pattern="[0-9]*\.?[0-9]*"
@@ -393,24 +377,22 @@ const Ico: React.FC = () => {
                     value={sealAmount}
                     disabled
                     placeholder="0.0"
-                    className="swap-input"
+                    className="swap-input flex-1 p-3 text-lg text-gray-900 focus:outline-none"
                   />
-                  <div className="token-selector">
-                    <img src="https://i.meee.com.tw/SdliTGK.png" alt="SEAL" className="token-icon" />
-                    <span>SEAL</span>
+                  <div className="token-selector flex items-center space-x-2 pr-3">
+                    <img src="https://i.meee.com.tw/SdliTGK.png" alt="SEAL" className="token-icon w-6 h-6" />
+                    <span className="text-gray-700 font-medium">SEAL</span>
                   </div>
                 </div>
-                <div className="input-footer">
-                  <span className="price-text">
-                    ${sealAmount && parseFloat(sealAmount) > 0 ? (parseFloat(sealAmount) * 0).toFixed(2) : "0.00"}
-                  </span>
+                <div className="input-footer flex justify-between mt-2 text-sm text-gray-600">
+                  <span className="price-text">${sealAmount && parseFloat(sealAmount) > 0 ? (parseFloat(sealAmount) * 0).toFixed(2) : "0.00"}</span>
                   <div className="balance-group">
                     <span>Balance: 0.0</span>
                   </div>
                 </div>
               </div>
             </div>
-            <button className="action-button" onClick={handleExchange}>
+            <button className="action-button w-full bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition duration-300 mt-6" onClick={handleExchange}>
               Exchange
             </button>
           </div>

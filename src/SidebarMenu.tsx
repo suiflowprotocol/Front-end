@@ -69,6 +69,16 @@ function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
             </Link>
           </div>
         </div>
+        <div className="menu-item3">
+          <Link to="/xseal" onClick={onClose} className="menu-item-header3" style={{ textDecoration: 'none' }}>
+            <p className="chakra-text css-1sibxxu3">xSEAL</p>
+          </Link>
+        </div>
+        <div className="menu-item3">
+          <Link to="/ico" onClick={onClose} className="menu-item-header3" style={{ textDecoration: 'none' }}>
+            <p className="chakra-text css-1sibxxu3">Ico</p>
+          </Link>
+        </div>
         <div className="menu-item3" onClick={(e) => toggleDropdown("bridge", e)}>
           <div className="menu-item-header3">
             <p className="chakra-text css-1sibxxu3">Bridge</p>
