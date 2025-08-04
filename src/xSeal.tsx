@@ -1,28 +1,29 @@
 import { useState, useEffect } from "react";
-import { ConnectButton, useCurrentAccount, useSuiClient, useSignAndExecuteTransaction, lightTheme, WalletProvider, ThemeVars,useConnectWallet,useWallets,useDisconnectWallet,ConnectModal} from "@mysten/dapp-kit";
+import { ConnectButton, useCurrentAccount, useSuiClient, useSignAndExecuteTransaction, ThemeVars, useDisconnectWallet, ConnectModal } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
 import { Link } from "react-router-dom";
 import Confetti from "react-confetti";
 import "./App.css";
 import "./App2.css";
 import "./xSeal.css";
+import Sidebar from "./SidebarMenu";
 
-
-// 钱包名称到 Logo URL 的映射
+// Wallet name to logo URL mapping
 const walletLogos = {
   'Slush': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYHwA15AKYWXvoSL-94ysbnJrmUX_oU1fJyw&s',
   'Suiet': 'https://framerusercontent.com/modules/6HmgaTsk3ODDySrS62PZ/a3c2R3qfkYJDxcZxkoVv/assets/eDZRos3xvCrlWxmLFr72sFtiyQ.png',
   'Martian': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhb6QLKfuQY_N8ZvpiKcdZlCnQKILXw7NArw&s',
   'Sui Wallet': 'https://assets.crypto.ro/logos/sui-sui-logo.png',
 };
-// Define custom theme
+
+// Define custom theme to match Pool.tsx
 const customTheme: ThemeVars = {
   blurs: {
     modalOverlay: 'blur(0)',
   },
   backgroundColors: {
-    primaryButton: '#3b82f6',
-    primaryButtonHover: '#4b9cfa',
+    primaryButton: '#FFFFFF',
+    primaryButtonHover: '#F7F8F8',
     outlineButtonHover: '#E4E4E7',
     modalOverlay: 'rgba(24, 36, 53, 0.2)',
     modalPrimary: 'white',
@@ -38,7 +39,7 @@ const customTheme: ThemeVars = {
     outlineButton: '#E4E4E7',
   },
   colors: {
-    primaryButton: '#FFFFFF',
+    primaryButton: '#182435',
     outlineButton: '#373737',
     iconButton: '#000000',
     body: '#182435',
@@ -80,30 +81,30 @@ export function CustomConnectButton() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showDisconnect, setShowDisconnect] = useState(false);
 
-  // 按钮基础样式，与 .icon-button 高度一致
+  // Button base style to match Pool.tsx
   const baseStyle = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '120px', // 固定宽度，确保连接前后长度一致
-    height: '36px', // 与 .icon-button 高度一致
+    width: '120px',
+    height: '36px',
     background: '#1e293b',
-    border: '1px solid rgba(255, 255, 255, 0.2)',
+    border: '1px solid #808080',
     borderRadius: '8px',
     cursor: 'pointer',
     padding: '6px',
     transition: 'all 0.3s ease',
-    color: '#fff',
+    color: '#FFFFFF',
     fontSize: '14px',
   };
 
-  // 截短钱包地址函数，显示更短地址
+  // Truncate wallet address for display
   const truncateAddress = (address: string) => {
     if (!address) return '';
     return `0x${address.slice(2, 5)}...${address.slice(-3)}`;
   };
 
-  // 未连接状态的内容
+  // Disconnected state content
   const disconnectedContent = (
     <>
       <svg
@@ -126,7 +127,7 @@ export function CustomConnectButton() {
     </>
   );
 
-  // 已连接状态的内容，统一显示指定 Logo
+  // Connected state content
   const connectedContent = (
     <>
       {currentAccount && (
@@ -140,7 +141,7 @@ export function CustomConnectButton() {
     </>
   );
 
-  // 处理按钮点击
+  // Handle button click
   const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (currentAccount) {
@@ -150,13 +151,13 @@ export function CustomConnectButton() {
     }
   };
 
-  // 处理断开连接
+  // Handle disconnect
   const handleDisconnect = () => {
     disconnect();
     setShowDisconnect(false);
   };
 
-  // 钱包过滤器，包含 Mysten DApp Kit 默认钱包和 Martian Sui Wallet
+  // Wallet filter
   const allowedWallets = ['Slush', 'Suiet', 'Martian', 'Sui Wallet', 'Martian Sui Wallet'];
   const walletFilter = (wallet: any) => allowedWallets.includes(wallet.name);
 
@@ -199,7 +200,6 @@ export function CustomConnectButton() {
   );
 }
 
-
 // Constants for xSeal
 const PACKAGE_ID = "0xb90158d50ac951784409a6876ac860e24564ed5257e51944d3c693efb9fdbd78";
 const SEAL_TOKEN = "0x2::seal::SEAL";
@@ -207,7 +207,7 @@ const XSEAL_TOKEN = "0x2::xseal::XSEAL";
 
 const XSeal = () => {
   const [amount, setAmount] = useState("");
-  const [activeTab, setActiveTab] = useState("stake"); // 控制右侧选项（质押、解除质押、领取奖励）
+  const [activeTab, setActiveTab] = useState("stake");
   const [vestingDuration, setVestingDuration] = useState(180);
   const [balances, setBalances] = useState<{ [key: string]: string }>({});
   const [error, setError] = useState("");
@@ -221,16 +221,29 @@ const XSeal = () => {
   const client = useSuiClient();
   const account = useCurrentAccount();
   const { mutate: signAndExecute } = useSignAndExecuteTransaction();
+  const [isMobile, setIsMobile] = useState(false);
 
+  // Toggle dropdown menu
   const toggleDropdown = (menu: string | null) => {
     setOpenDropdown(openDropdown === menu ? null : menu);
   };
 
+  // Toggle mobile menu
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // 倒计时逻辑：每周一晚上 7 点 (UTC+8)
+  // Check for mobile view
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Countdown logic: Every Monday at 7 PM (UTC+8)
   useEffect(() => {
     const updateCountdown = () => {
       const now = new Date();
@@ -263,7 +276,7 @@ const XSeal = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // 获取余额
+  // Fetch balances
   useEffect(() => {
     const fetchBalances = async () => {
       if (!account) {
@@ -295,7 +308,7 @@ const XSeal = () => {
     fetchBalances();
   }, [account, client]);
 
-  // 处理质押或解除质押
+  // Handle stake or unstake
   const handleConvert = async () => {
     if (!account) {
       setError("Please connect wallet");
@@ -348,9 +361,7 @@ const XSeal = () => {
       const [coinToConvert] = tx.splitCoins(mergedCoin, [amountValue]);
 
       tx.moveCall({
-        target: `${PACKAGE_ID}::xseal::${
-          isConvertingToXSeal ? "convert_to_xseal" : "redeem_seal"
-        }`,
+        target: `${PACKAGE_ID}::xseal::${isConvertingToXSeal ? "convert_to_xseal" : "redeem_seal"}`,
         typeArguments: [inputToken, outputToken],
         arguments: [
           tx.object(isConvertingToXSeal ? SEAL_TOKEN : XSEAL_TOKEN),
@@ -369,9 +380,7 @@ const XSeal = () => {
         },
         {
           onSuccess: () => {
-            setSuccess(
-              `Successfully ${isConvertingToXSeal ? "staked SEAL" : "unstaked SEAL"}`
-            );
+            setSuccess(`Successfully ${isConvertingToXSeal ? "staked SEAL" : "unstaked SEAL"}`);
             setShowConfetti(true);
             setTimeout(() => setShowConfetti(false), 3000);
             setError("");
@@ -388,14 +397,13 @@ const XSeal = () => {
     }
   };
 
-  // 处理领取奖励（示例逻辑，需根据实际合约实现）
+  // Handle claim rewards
   const handleClaimRewards = async () => {
     if (!account) {
       setError("Please connect wallet");
       return;
     }
     try {
-      // 假设有一个 claim_rewards 函数，需替换为实际的 moveCall
       const tx = new Transaction();
       tx.moveCall({
         target: `${PACKAGE_ID}::xseal::claim_rewards`,
@@ -428,6 +436,7 @@ const XSeal = () => {
     }
   };
 
+  // Set half balance
   const setHalfBalance = () => {
     const balance = parseFloat(balances[activeTab === "stake" ? SEAL_TOKEN : XSEAL_TOKEN] || "0");
     if (balance > 0) {
@@ -435,6 +444,7 @@ const XSeal = () => {
     }
   };
 
+  // Set max balance
   const setMaxBalance = () => {
     const balance = parseFloat(balances[activeTab === "stake" ? SEAL_TOKEN : XSEAL_TOKEN] || "0");
     if (balance > 0) {
@@ -443,12 +453,12 @@ const XSeal = () => {
   };
 
   return (
-    <div className="xseal-scope container">
+    <div className="container">
       {showConfetti && (
         <Confetti
           width={window.innerWidth}
           height={window.innerHeight}
-          style={{ position: "absolute", top: 0, left: 0 }}
+          style={{ position: "fixed", top: 0, left: 0, zIndex: 9999 }}
         />
       )}
       <div className="header">
@@ -457,87 +467,106 @@ const XSeal = () => {
             <img src="https://i.meee.com.tw/SdliTGK.png" alt="Logo" className="logo-image" />
             <span className="logo-text">Seal</span>
           </div>
-          <div className={`nav-menu ${isMenuOpen ? "open" : ""}`}>
-            <div className={`nav-item ${openDropdown === "trade" ? "open" : ""}`} 
-                 onMouseEnter={() => toggleDropdown("trade")} 
-                 onMouseLeave={() => toggleDropdown(null)}>
-              <span className="nav-text">Trade</span>
-              <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
-                <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
-              </svg>
-              <div className={`dropdown ${openDropdown === "trade" ? "open" : ""}`}>
-                <Link to="/" className="dropdown-item">
-                  <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
-                    <use xlinkHref="#icon-a-icon_swap2"></use>
-                  </svg>
-                  Swap
-                </Link>
+          {!isMobile ? (
+            <div className="nav-menu">
+              <div
+                className={["nav-item", openDropdown === "trade" ? "open" : ""].join(" ")}
+                onMouseEnter={() => toggleDropdown("trade")}
+                onMouseLeave={() => toggleDropdown(null)}
+              >
+                <span className="nav-text">Trade</span>
+                <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
+                  <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+                </svg>
+                <div className={["dropdown", openDropdown === "trade" ? "open" : ""].join(" ")}>
+                  <Link to="/" className="dropdown-item">
+                    <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                      <use xlinkHref="#icon-a-icon_swap2"></use>
+                    </svg>
+                    Swap
+                  </Link>
+                </div>
+              </div>
+              <div
+                className={["nav-item", openDropdown === "earn" ? "open" : ""].join(" ")}
+                onMouseEnter={() => toggleDropdown("earn")}
+                onMouseLeave={() => toggleDropdown(null)}
+              >
+                <span className="nav-text">Earn</span>
+                <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
+                  <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+                </svg>
+                <div className={["dropdown", openDropdown === "earn" ? "open" : ""].join(" ")}>
+                  <Link to="/pool" className="dropdown-item">
+                    <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                      <use xlinkHref="#icon-icon_liquiditypools"></use>
+                    </svg>
+                    Pool
+                  </Link>
+                </div>
+              </div>
+              <Link to="/xseal" className="nav-item">
+                <span className="nav-text">xSEAL</span>
+              </Link>
+              <Link to="/ico" className="nav-item">
+                <span className="nav-text">Ico</span>
+              </Link>
+              <div
+                className={["nav-item", openDropdown === "bridge" ? "open" : ""].join(" ")}
+                onMouseEnter={() => toggleDropdown("bridge")}
+                onMouseLeave={() => toggleDropdown(null)}
+              >
+                <span className="nav-text">Bridge</span>
+                <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
+                  <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+                </svg>
+                <div className={["dropdown", openDropdown === "bridge" ? "open" : ""].join(" ")}>
+                  <a href="https://bridge.sui.io/" target="_blank" rel="noopener noreferrer" className="dropdown-item">
+                    <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                      <use xlinkHref="#icon-icon_sui"></use>
+                    </svg>
+                    Sui Bridge
+                  </a>
+                  <a href="https://bridge.cetus.zone/sui" target="_blank" rel="noopener noreferrer" className="dropdown-item">
+                    <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                      <use xlinkHref="#icon-icon_wormhole"></use>
+                    </svg>
+                    Wormhole
+                  </a>
+                </div>
+              </div>
+              <div
+                className={["nav-item", openDropdown === "more" ? "open" : ""].join(" ")}
+                onMouseEnter={() => toggleDropdown("more")}
+                onMouseLeave={() => toggleDropdown(null)}
+              >
+                <span className="nav-text">More</span>
+                <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
+                  <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+                </svg>
+                <div className={["dropdown", openDropdown === "more" ? "open" : ""].join(" ")}>
+                  <a href="#" className="dropdown-item">
+                    <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                      <use xlinkHref="#icon-icon_docs"></use>
+                    </svg>
+                    Docs
+                  </a>
+                  <a href="#" className="dropdown-item">
+                    <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                      <use xlinkHref="#icon-icon_stats"></use>
+                    </svg>
+                    Leaderboard
+                  </a>
+                </div>
               </div>
             </div>
-            <div className={`nav-item ${openDropdown === "earn" ? "open" : ""}`} 
-                 onMouseEnter={() => toggleDropdown("earn")} 
-                 onMouseLeave={() => toggleDropdown(null)}>
-              <span className="nav-text">Earn</span>
-              <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
-                <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+          ) : (
+            <button className="hamburger-menu" onClick={toggleMenu}>
+              <svg className="hamburger-icon" viewBox="0 0 24 24" width="24px" height="24px">
+                <path d="M3 6h18M3 12h18M3 18h18" stroke="var(--text-color)" strokeWidth="2" strokeLinecap="round" />
               </svg>
-              <div className={`dropdown ${openDropdown === "earn" ? "open" : ""}`}>
-                <Link to="/pool" className="dropdown-item">
-                  <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
-                    <use xlinkHref="#icon-icon_liquiditypools"></use>
-                  </svg>
-                  Pool
-                </Link>
-              </div>
-            </div>
-            <Link to="/xseal" className="nav-item">
-              <span className="nav-text">xSEAL</span>
-            </Link>
-            <div className={`nav-item ${openDropdown === "bridge" ? "open" : ""}`} 
-                 onMouseEnter={() => toggleDropdown("bridge")} 
-                 onMouseLeave={() => toggleDropdown(null)}>
-              <span className="nav-text">Bridge</span>
-              <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
-                <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
-              </svg>
-              <div className={`dropdown ${openDropdown === "bridge" ? "open" : ""}`}>
-                <a href="https://bridge.sui.io/" target="_blank" rel="noopener noreferrer" className="dropdown-item">
-                  <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
-                    <use xlinkHref="#icon-icon_sui"></use>
-                  </svg>
-                  Sui Bridge
-                </a>
-                <a href="https://bridge.cetus.zone/sui" target="_blank" rel="noopener noreferrer" className="dropdown-item">
-                  <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
-                    <use xlinkHref="#icon-icon_wormhole"></use>
-                  </svg>
-                  Wormhole
-                </a>
-              </div>
-            </div>
-            <div className={`nav-item ${openDropdown === "more" ? "open" : ""}`} 
-                 onMouseEnter={() => toggleDropdown("more")} 
-                 onMouseLeave={() => toggleDropdown(null)}>
-              <span className="nav-text">More</span>
-              <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
-                <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
-              </svg>
-              <div className={`dropdown ${openDropdown === "more" ? "open" : ""}`}>
-                <a href="#" className="dropdown-item">
-                  <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
-                    <use xlinkHref="#icon-icon_docs"></use>
-                  </svg>
-                  Docs
-                </a>
-                <a href="#" className="dropdown-item">
-                  <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
-                    <use xlinkHref="#icon-icon_stats"></use>
-                  </svg>
-                  Leaderboard
-                </a>
-              </div>
-            </div>
-          </div>
+            </button>
+          )}
           <div className="wallet-actions">
             <CustomConnectButton />
             <button
@@ -626,52 +655,35 @@ const XSeal = () => {
                 </div>
               </div>
             )}
-            <button className="hamburger-menu" onClick={toggleMenu}>
-              <svg className="hamburger-icon" viewBox="0 0 24 24" width="24px" height="24px">
-                <path d="M3 6h18M3 12h18M3 18h18" stroke="var(--text-color)" strokeWidth="2" strokeLinecap="round" />
-              </svg>
-            </button>
           </div>
         </div>
       </div>
-      <div className="xseal-content">
-        <div className="xseal-poster">
-          <p className="poster-title">Stake $Seal to get Rewards</p>
-          <a href="https://example.com/learn-more" target="_blank" rel="noopener noreferrer" className="learn-more-btn">
-            Learn more
-          </a>
-        </div>
-        <div className="metrics-grid">
-          <div className="metric-card">
-            <svg className="metric-icon" viewBox="0 0 24 24" fill="var(--text-color)">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
-            </svg>
-            <p className="metric-title">My total deSeal</p>
-            <p className="metric-value">0</p>
+      {isMobile && (
+        <Sidebar isOpen={isMenuOpen} onClose={toggleMenu} />
+      )}
+      <div className="xseal-container">
+        <div className="summary-container">
+          <div className="summary-left">
+            <h1 className="summary-title">Stake $SEAL to Earn Rewards</h1>
+            <div className="summary-metrics-card">
+              <div className="metric-item">
+                <p className="metric-label">My Locked SEAL</p>
+                <p className="metric-value">{balances[SEAL_TOKEN] || "0.0000"}</p>
+              </div>
+              <div className="metric-item">
+                <p className="metric-label">My veSEAL</p>
+                <p className="metric-value">{balances[XSEAL_TOKEN] || "0.0000"}</p>
+              </div>
+              <div className="metric-item">
+                <p className="metric-label">Reward Distribution Share</p>
+                <p className="metric-value">0%</p>
+              </div>
+            </div>
           </div>
-          <div className="metric-card">
-            <svg className="metric-icon" viewBox="0 0 24 24" fill="var(--text-color)">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
-            </svg>
-            <p className="metric-title">Total deSeal</p>
-            <p className="metric-value">0</p>
-          </div>
-          <div className="metric-card">
-            <svg className="metric-icon" viewBox="0 0 24 24" fill="var(--text-color)">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
-            </svg>
-            <p className="metric-title">Reward Distribution Share</p>
-            <p className="metric-value">0%</p>
-          </div>
-        </div>
-        <div className="main-content">
-          <div className="left-section">
-            <p className="left-title">Stake $Seal to get reward</p>
-            <p className="countdown-label">Reward distribution in:</p>
-            <p className="countdown-text">{countdown}</p>
+          <div className="summary-right">
             <div className="rewards-metrics">
               <div className="metric-item">
-                <p className="metric-label">est.APR</p>
+                <p className="metric-label">Estimated APR</p>
                 <p className="metric-value">≈15.50%</p>
               </div>
               <div className="metric-item">
@@ -683,173 +695,175 @@ const XSeal = () => {
                 <p className="metric-value">$0</p>
               </div>
             </div>
-          </div>
-          <div className="right-section">
-            <div className="options-toggle">
-              <div
-                className={`toggle-option ${activeTab === "stake" ? "active" : ""}`}
-                onClick={() => setActiveTab("stake")}
-              >
-                质押 $Seal
-              </div>
-              <div
-                className={`toggle-option ${activeTab === "unstake" ? "active" : ""}`}
-                onClick={() => setActiveTab("unstake")}
-              >
-                解除 $Seal 质押
-              </div>
-              <div
-                className={`toggle-option ${activeTab === "claim" ? "active" : ""}`}
-                onClick={() => setActiveTab("claim")}
-              >
-                领取奖励
-              </div>
-            </div>
-            {activeTab === "stake" && (
-              <div className="input-section">
-                <div className="input-card">
-                  <p className="input-label">Stake Amount</p>
-                  <div className="input-group">
-                    <input
-                      placeholder="0.0"
-                      type="text"
-                      value={amount}
-                      inputMode="numeric"
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        if (value === "" || (parseFloat(value) >= 0 && !isNaN(parseFloat(value)))) {
-                          setAmount(value);
-                        }
-                      }}
-                      className="amount-input"
-                    />
-                    <div className="token-display">
-                      <img
-                        className="token-icon"
-                        src="https://7rgiihm5sisgewirofazpjddkpvmlwphumcg5lulriu6okgf5krq.arweave.net/_EyEHZ2SJGJZEXFBl6RjTwoCq2HpnmgkbqzhKC5GM4jY"
-                        alt="SEAL"
-                      />
-                      <p className="token-symbol">SEAL</p>
-                    </div>
-                  </div>
-                  <div className="input-footer">
-                    <div className="balance-info">
-                      <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
-                        <use xlinkHref="#icon-icon_wallet" />
-                      </svg>
-                      <p className="balance-text">{balances[SEAL_TOKEN] || "0.0"}</p>
-                    </div>
-                    <div className="balance-buttons">
-                      <button type="button" className="balance-btn" onClick={setHalfBalance}>HALF</button>
-                      <button type="button" className="balance-btn" onClick={setMaxBalance}>MAX</button>
-                    </div>
-                  </div>
-                </div>
-                <div className="vesting-section">
-                  <p className="vesting-title">Vesting duration</p>
-                  <div className="vesting-options">
-                    <p className="vesting-duration">{vestingDuration} Days</p>
-                    <div className="duration-buttons">
-                      {[15, 30, 90, 180].map((duration) => (
-                        <div
-                          key={duration}
-                          className={`duration-option ${vestingDuration === duration ? "active" : ""}`}
-                          onClick={() => setVestingDuration(duration)}
-                        >
-                          <p className="duration-text">{duration}D</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="slider-container">
-                    <input
-                      type="range"
-                      min="15"
-                      max="180"
-                      value={vestingDuration}
-                      onChange={(e) => setVestingDuration(parseInt(e.target.value))}
-                      className="vesting-slider"
-                    />
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  className="action-btn"
-                  disabled={!account || !amount || parseFloat(amount) <= 0}
-                  onClick={handleConvert}
-                >
-                  {account ? (amount && parseFloat(amount) > 0 ? "Stake" : "Enter an amount") : "Connect Wallet"}
-                </button>
-              </div>
-            )}
-            {activeTab === "unstake" && (
-              <div className="input-section">
-                <div className="input-card">
-                  <p className="input-label">Unstake Amount</p>
-                  <div className="input-group">
-                    <input
-                      placeholder="0.0"
-                      type="text"
-                      value={amount}
-                      inputMode="numeric"
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        if (value === "" || (parseFloat(value) >= 0 && !isNaN(parseFloat(value)))) {
-                          setAmount(value);
-                        }
-                      }}
-                      className="amount-input"
-                    />
-                    <div className="token-display">
-                      <img
-                        className="token-icon"
-                        src="https://uxcdefo3r2uemooidt2kk2stykakvwd2m6nasg5lhbfaxemm4i3a.arweave.net/pcQyFduOqEY5yBz0pWpTwoCq2HpnmgkbqzhKC5GM4jY"
-                        alt="XSEAL"
-                      />
-                      <p className="token-symbol">XSEAL</p>
-                    </div>
-                  </div>
-                  <div className="input-footer">
-                    <div className="balance-info">
-                      <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
-                        <use xlinkHref="#icon-icon_wallet" />
-                      </svg>
-                      <p className="balance-text">{balances[XSEAL_TOKEN] || "0.0"}</p>
-                    </div>
-                    <div className="balance-buttons">
-                      <button type="button" className="balance-btn" onClick={setHalfBalance}>HALF</button>
-                      <button type="button" className="balance-btn" onClick={setMaxBalance}>MAX</button>
-                    </div>
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  className="action-btn"
-                  disabled={!account || !amount || parseFloat(amount) <= 0}
-                  onClick={handleConvert}
-                >
-                  {account ? (amount && parseFloat(amount) > 0 ? "Unstake" : "Enter an amount") : "Connect Wallet"}
-                </button>
-              </div>
-            )}
-            {activeTab === "claim" && (
-              <div className="input-section">
-                <p className="input-label">Claim Rewards</p>
-                <p className="metric-value">$0</p>
-                <button
-                  type="button"
-                  className="action-btn"
-                  disabled={!account}
-                  onClick={handleClaimRewards}
-                >
-                  {account ? "Claim Rewards" : "Connect Wallet"}
-                </button>
-              </div>
-            )}
+            <p className="countdown-label">Next Reward Distribution:</p>
+            <p className="countdown-text">{countdown}</p>
           </div>
         </div>
-        {error && <div className="error-message">{error}</div>}
-        {success && <div className="success-message">{success}</div>}
+        <div className="xseal-content">
+          <div className="options-toggle">
+            <button
+              className={`tab-button ${activeTab === "stake" ? "active" : ""}`}
+              onClick={() => setActiveTab("stake")}
+            >
+              Stake $SEAL
+            </button>
+            <button
+              className={`tab-button ${activeTab === "unstake" ? "active" : ""}`}
+              onClick={() => setActiveTab("unstake")}
+            >
+              Unstake $SEAL
+            </button>
+            <button
+              className={`tab-button ${activeTab === "claim" ? "active" : ""}`}
+              onClick={() => setActiveTab("claim")}
+            >
+              Claim Rewards
+            </button>
+          </div>
+          {activeTab === "stake" && (
+            <div className="input-section">
+              <div className="input-card">
+                <p className="input-label">Stake Amount</p>
+                <div className="input-group">
+                  <input
+                    placeholder="0.0"
+                    type="text"
+                    value={amount}
+                    inputMode="numeric"
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value === "" || (parseFloat(value) >= 0 && !isNaN(parseFloat(value)))) {
+                        setAmount(value);
+                      }
+                    }}
+                    className="amount-input"
+                  />
+                  <div className="token-display">
+                    <img
+                      className="token-icon"
+                      src="https://7rgiihm5sisgewirofazpjddkpvmlwphumcg5lulriu6okgf5krq.arweave.net/_EyEHZ2SJGJZEXFBl6RjTwoCq2HpnmgkbqzhKC5GM4jY"
+                      alt="SEAL"
+                    />
+                    <p className="token-symbol">SEAL</p>
+                  </div>
+                </div>
+                <div className="input-footer">
+                  <div className="balance-info">
+                    <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                      <use xlinkHref="#icon-icon_wallet" />
+                    </svg>
+                    <p className="balance-text">Balance: {balances[SEAL_TOKEN] || "0.0"} SEAL</p>
+                  </div>
+                  <div className="balance-buttons">
+                    <button type="button" className="balance-btn" onClick={setHalfBalance}>HALF</button>
+                    <button type="button" className="balance-btn" onClick={setMaxBalance}>MAX</button>
+                  </div>
+                </div>
+              </div>
+              <div className="vesting-section">
+                <p className="vesting-title">Vesting Duration</p>
+                <div className="vesting-options">
+                  <p className="vesting-duration">{vestingDuration} Days</p>
+                  <div className="duration-buttons">
+                    {[15, 30, 90, 180].map((duration) => (
+                      <button
+                        key={duration}
+                        className={`duration-option ${vestingDuration === duration ? "active" : ""}`}
+                        onClick={() => setVestingDuration(duration)}
+                      >
+                        {duration}D
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="slider-container">
+                  <input
+                    type="range"
+                    min="15"
+                    max="180"
+                    value={vestingDuration}
+                    onChange={(e) => setVestingDuration(parseInt(e.target.value))}
+                    className="vesting-slider"
+                  />
+                </div>
+              </div>
+              <button
+                type="button"
+                className="action-button"
+                disabled={!account || !amount || parseFloat(amount) <= 0}
+                onClick={handleConvert}
+              >
+                {account ? (amount && parseFloat(amount) > 0 ? "Stake Now" : "Enter an Amount") : "Connect Wallet"}
+              </button>
+            </div>
+          )}
+          {activeTab === "unstake" && (
+            <div className="input-section">
+              <div className="input-card">
+                <p className="input-label">Unstake Amount</p>
+                <div className="input-group">
+                  <input
+                    placeholder="0.0"
+                    type="text"
+                    value={amount}
+                    inputMode="numeric"
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value === "" || (parseFloat(value) >= 0 && !isNaN(parseFloat(value)))) {
+                        setAmount(value);
+                      }
+                    }}
+                    className="amount-input"
+                  />
+                  <div className="token-display">
+                    <img
+                      className="token-icon"
+                      src="https://uxcdefo3r2uemooidt2kk2stykakvwd2m6nasg5lhbfaxemm4i3a.arweave.net/pcQyFduOqEY5yBz0pWpTwoCq2HpnmgkbqzhKC5GM4jY"
+                      alt="XSEAL"
+                    />
+                    <p className="token-symbol">XSEAL</p>
+                  </div>
+                </div>
+                <div className="input-footer">
+                  <div className="balance-info">
+                    <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                      <use xlinkHref="#icon-icon_wallet" />
+                    </svg>
+                    <p className="balance-text">Balance: {balances[XSEAL_TOKEN] || "0.0"} XSEAL</p>
+                  </div>
+                  <div className="balance-buttons">
+                    <button type="button" className="balance-btn" onClick={setHalfBalance}>HALF</button>
+                    <button type="button" className="balance-btn" onClick={setMaxBalance}>MAX</button>
+                  </div>
+                </div>
+              </div>
+              <button
+                type="button"
+                className="action-button"
+                disabled={!account || !amount || parseFloat(amount) <= 0}
+                onClick={handleConvert}
+              >
+                {account ? (amount && parseFloat(amount) > 0 ? "Unstake Now" : "Enter an Amount") : "Connect Wallet"}
+              </button>
+            </div>
+          )}
+          {activeTab === "claim" && (
+            <div className="input-section">
+              <p className="input-label">Claim Rewards</p>
+              <p className="metric-value">$0</p>
+              <button
+                type="button"
+                className="action-button"
+                disabled={!account}
+                onClick={handleClaimRewards}
+              >
+                {account ? "Claim Rewards" : "Connect Wallet"}
+              </button>
+            </div>
+          )}
+          {error && <div className="error-message">{error}</div>}
+          {success && <div className="success-message">{success}</div>}
+        </div>
       </div>
     </div>
   );

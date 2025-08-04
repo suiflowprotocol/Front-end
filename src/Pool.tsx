@@ -411,6 +411,9 @@ function Pool() {
                 <Link to="/xseal" className="nav-item">
                   <span className="nav-text">xSEAL</span>
                 </Link>
+                <Link to="/ico" className="nav-item">
+                          <span className="nav-text">Ico</span>
+                </Link>
                 <div
                   className={["nav-item", openDropdown === "bridge" ? "open" : ""].join(" ")}
                   onMouseEnter={() => toggleDropdown("bridge")}

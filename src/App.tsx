@@ -13,6 +13,7 @@ import "./App2.css";
 import Confetti from "react-confetti";
 import Modal from './Modal';
 import SettingsPage from './SettingsPage';
+import Ico from './Ico'; // 导入 Ico 组件
 
 // 钱包名称到 Logo URL 的映射
 const walletLogos = {
@@ -1176,6 +1177,9 @@ function App() {
                         <Link to="/xseal" className="nav-item">
                           <span className="nav-text">xSEAL</span>
                         </Link>
+                        <Link to="/ico" className="nav-item">
+                          <span className="nav-text">Ico</span>
+                        </Link>
                         <div className={`nav-item ${openDropdown === "bridge" ? "open" : ""}`} 
                              onMouseEnter={() => toggleDropdown("bridge")} 
                              onMouseLeave={() => toggleDropdown(null)}>
@@ -1329,7 +1333,7 @@ function App() {
                       <h2 className="swap-title">Swap</h2>
                       <div className="settings-row">
                         <div className="aggregator-toggle" ref={switchRef}>
-                          <label className="chakra-form__label" htmlFor="aggregator-mode">Aggregator Mode</label>
+                          <label className="chakra-form__label" htmlFor="aggregator-mode">Get $SEAL tokens</label>
                           <label className="chakra-switch">
                             <input
                               type="checkbox"
@@ -1606,6 +1610,7 @@ function App() {
           />
           <Route path="/pool" element={<Pool />} />
           <Route path="/xseal" element={<XSeal />} />
+          <Route path="/ico" element={<Ico />} />
         </Routes>
         {showModal && (
           <Modal txHash={modalMessage} onClose={() => setShowModal(false)} />
