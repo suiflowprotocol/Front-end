@@ -7,8 +7,11 @@ import Position from "./Position";
 import PoolList from "./PoolList";
 import { tokens, Token } from "./tokens";
 import { Link, useNavigate } from "react-router-dom";
-import Sidebar from "./SidebarMenu"; // New import for Sidebar
+import Sidebar from "./SidebarMenu";
 import "./Pool.css";
+import "./App.css";
+import "./App2.css";
+import "./SidebarMenu.css";
 
 const walletLogos = {
   'Slush': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYHwA15AKYWXvoSL-94ysbnJrmUX_oU1fJyw&s',
@@ -284,7 +287,6 @@ function Pool() {
   const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
 
-  // Detect screen size to determine if mobile
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
