@@ -56,7 +56,7 @@ const customTheme: ThemeVars = {
     xlarge: '18px',
   },
   typography: {
-    fontFamily: 'Arial, sans-serif',
+    fontFamily: '"Inter", Arial, sans-serif', // Updated to a modern font stack
     fontStyle: 'normal',
     lineHeight: '1.5',
     letterSpacing: '0.02em',
@@ -334,11 +334,26 @@ const Ico: React.FC = () => {
           </div>
         </div>
         {isMobile && <Sidebar isOpen={isMenuOpen} onClose={toggleMenu} />}
-        <div className="main-content-ico flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-          <div className="ico-hero max-w-4xl w-full">
-            
+        <div className="main-content-ico flex flex-row items-start justify-between py-12 px-4 sm:px-6 lg:px-8">
+          <div className="ico-info-content w-full max-w-md bg-white shadow-xl rounded-2xl p-6 border border-gray-100">
+            <h2 className="text-2xl font-bold mb-6 text-gray-900">SEAL TOKEN ICO</h2>
+            <div className="space-y-6">
+              <div className="flex items-center">
+                <img src="https://www.svgrepo.com/show/431413/alert.svg" alt="Alert" className="alert-icon mr-3" />
+                <p className="text-gray-700 text-base">SEAL TOKEN is the equity token of SEAL DEX, staked in the xSEAL module, allowing you to share 100% of the transaction fees collected from user trades.</p>
+              </div>
+              <div className="flex items-center">
+                <img src="https://www.svgrepo.com/show/431413/alert.svg" alt="Alert" className="alert-icon mr-3" />
+                <p className="text-gray-700 text-base">During the ICO, users have the right to purchase SEAL tokens at a discounted price. The total issuance of SEAL tokens in the ICO is 600 million, accounting for 60% of the total supply.</p>
+              </div>
+              <div className="flex items-center">
+                <img src="https://www.svgrepo.com/show/431413/alert.svg" alt="Alert" className="alert-icon mr-3" />
+                <p className="text-gray-700 text-base">Funds raised through the ICO, along with VC investments, will be used to build SEAL's liquidity pool (established on SEAL DEX).</p>
+              </div>
+            </div>
           </div>
-          <div className="swap-panel ico-panel-ico mt-12 w-full max-w-md bg-white shadow-xl rounded-2xl p-6 border border-gray-100">
+          <div className="ico-hero max-w-4xl w-full"></div>
+          <div className="swap-panel ico-panel-ico w-full max-w-md bg-white shadow-xl rounded-2xl p-6 border border-gray-100">
             <div className="input-section space-y-4">
               <div className="input-card bg-gray-50 p-4 rounded-xl">
                 <div className="input-label text-sm font-medium text-gray-600 mb-2">From</div>

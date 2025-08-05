@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+                           import { useState, useEffect, useRef } from "react";
 import { ConnectButton, useCurrentAccount, useSuiClient, useSignAndExecuteTransaction, lightTheme, WalletProvider, ThemeVars, useConnectWallet, useWallets, useDisconnectWallet, ConnectModal } from "@mysten/dapp-kit";
 import '@mysten/dapp-kit/dist/index.css';
 import { Transaction } from "@mysten/sui/transactions";
@@ -839,6 +839,15 @@ function App() {
         }
         setBalances(newBalances);
 
+        if (debouncedAmountIn === "" || parseFloat(debouncedAmountIn) === 0) {
+          setExpectedOutput("0.0");
+          setMinAmountOut("0");
+          setPriceImpact("0.00");
+          setPriceDifference("0.00");
+          setIsLoadingOutput(false);
+          return;
+        }
+
         if (useAggregator) {
           const amountInValue = parseFloat(debouncedAmountIn) * 10 ** getTokenDecimals(isReverseSwap ? tokenY : tokenX);
           const outputDecimals = getTokenDecimals(isReverseSwap ? tokenX : tokenY);
@@ -1319,7 +1328,7 @@ function App() {
                       <h2 className="swap-title">Swap</h2>
                       <div className="settings-row">
                         <div className="aggregator-toggle" ref={switchRef}>
-                          <label className="chakra-form__label" htmlFor="aggregator-mode">Mine $SEAL tokens</label>
+                          <label className="chakra-form__label" htmlFor="aggregator-mode">Mine $SEAL TOKEN</label>
                           <label className="chakra-switch">
                             <input
                               type="checkbox"
