@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import "./SidebarMenu.css";
+import { useState } from "react";
 
 interface SidebarMenuProps {
   isOpen: boolean;
@@ -7,8 +8,11 @@ interface SidebarMenuProps {
 }
 
 function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
+  const [activeMenu, setActiveMenu] = useState<string | null>("trade"); // Default to "trade"
+
   const toggleDropdown = (menu: string | null, event: React.MouseEvent) => {
     event.stopPropagation();
+    setActiveMenu(menu); // Set the clicked menu as active
     const currentDropdown = document.querySelector(`.dropdown3.${menu}.open3`);
     if (currentDropdown) {
       currentDropdown.classList.remove("open3");
@@ -38,7 +42,7 @@ function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
       </div>
       <div className="sidebar-content3">
         <div className="menu-item3" onClick={(e) => toggleDropdown("trade", e)}>
-          <div className="menu-item-header3">
+          <div className={`menu-item-header3 ${activeMenu === "trade" ? "active" : ""}`}>
             <p className="chakra-text css-1sibxxu3">Trade</p>
             <svg className="dropdown-arrow" aria-hidden="true" fill="transparent" stroke="var(--text-secondary)" strokeWidth="2" width="12px" height="12px" viewBox="0 0 24 24">
               <path d="M6 9l6 6 6-6" />
@@ -47,14 +51,14 @@ function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
           <div className="dropdown3 trade">
             <Link to="/" onClick={onClose} className="dropdown-item3">
               <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px" viewBox="0 0 24 24">
-                <path d="M5 12h14M12 5l7 7-7 7" />
+                <path d="M7 7h10v2H7zm10 4H7v2h10zm-3 4l4-4-4-4v3H7v2h7v3z" />
               </svg>
               Swap
             </Link>
           </div>
         </div>
         <div className="menu-item3" onClick={(e) => toggleDropdown("earn", e)}>
-          <div className="menu-item-header3">
+          <div className={`menu-item-header3 ${activeMenu === "earn" ? "active" : ""}`}>
             <p className="chakra-text css-1sibxxu3">Earn</p>
             <svg className="dropdown-arrow" aria-hidden="true" fill="transparent" stroke="var(--text-secondary)" strokeWidth="2" width="12px" height="12px" viewBox="0 0 24 24">
               <path d="M6 9l6 6 6-6" />
@@ -63,24 +67,24 @@ function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
           <div className="dropdown3 earn">
             <Link to="/pool" onClick={onClose} className="dropdown-item3">
               <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px" viewBox="0 0 24 24">
-                <path d="M12 4a8 8 0 0 0-8 8h3a5 5 0 0 1 5-5v3l4-4-4-4v3zm0 16a8 8 0 0 0 8-8h-3a5 5 0 0 1-5 5v-3l-4 4 4 4v-3z" />
+                <path d="M4 8h16v2H4zm0 4h16v2H4zm0 4h16v2H4z" />
               </svg>
               Pools
             </Link>
           </div>
         </div>
-        <div className="menu-item3">
-          <Link to="/xseal" onClick={onClose} className="menu-item-header3" style={{ textDecoration: 'none' }}>
+        <div className="menu-item3" onClick={(e) => toggleDropdown("xseal", e)}>
+          <Link to="/xseal" onClick={onClose} className={`menu-item-header3 ${activeMenu === "xseal" ? "active" : ""}`} style={{ textDecoration: 'none' }}>
             <p className="chakra-text css-1sibxxu3">xSEAL</p>
           </Link>
         </div>
-        <div className="menu-item3">
-          <Link to="/ico" onClick={onClose} className="menu-item-header3" style={{ textDecoration: 'none' }}>
+        <div className="menu-item3" onClick={(e) => toggleDropdown("ico", e)}>
+          <Link to="/ico" onClick={onClose} className={`menu-item-header3 ${activeMenu === "ico" ? "active" : ""}`} style={{ textDecoration: 'none' }}>
             <p className="chakra-text css-1sibxxu3">Ico</p>
           </Link>
         </div>
         <div className="menu-item3" onClick={(e) => toggleDropdown("bridge", e)}>
-          <div className="menu-item-header3">
+          <div className={`menu-item-header3 ${activeMenu === "bridge" ? "active" : ""}`}>
             <p className="chakra-text css-1sibxxu3">Bridge</p>
             <svg className="dropdown-arrow" aria-hidden="true" fill="transparent" stroke="var(--text-secondary)" strokeWidth="2" width="12px" height="12px" viewBox="0 0 24 24">
               <path d="M6 9l6 6 6-6" />
@@ -89,20 +93,20 @@ function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
           <div className="dropdown3 bridge">
             <a href="https://bridge.sui.io/" target="_blank" rel="noopener noreferrer" className="dropdown-item3">
               <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px" viewBox="0 0 24 24">
-                <path d="M3 12h18M9 18l-6-6 6-6m6 12l6-6-6-6" />
+                <path d="M3 12h6v2H3v-2zm18 0h-6v2h6v-2zm-9-6v12m-2-12h4v12h-4z" />
               </svg>
               Sui Bridge
             </a>
             <a href="https://bridge.cetus.zone/sui" target="_blank" rel="noopener noreferrer" className="dropdown-item3">
               <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px" viewBox="0 0 24 24">
-                <path d="M12 2a10 10 0 0 0-7 3l3 3a6 6 0 0 1 8.5 8.5l3 3a10 10 0 0 0-7-17z" />
+                <path d="M12 2a10 10 0 0 0-10 10h4a6 6 0 0 1 12 0h4a10 10 0 0 0-10-10z" />
               </svg>
               Wormhole
             </a>
           </div>
         </div>
         <div className="menu-item3" onClick={(e) => toggleDropdown("more", e)}>
-          <div className="menu-item-header3">
+          <div className={`menu-item-header3 ${activeMenu === "more" ? "active" : ""}`}>
             <p className="chakra-text css-1sibxxu3">More</p>
             <svg className="dropdown-arrow" aria-hidden="true" fill="transparent" stroke="var(--text-secondary)" strokeWidth="2" width="12px" height="12px" viewBox="0 0 24 24">
               <path d="M6 9l6 6 6-6" />
