@@ -13,6 +13,8 @@ import "./App2.css";
 import Modal from './Modal';
 import SettingsPage from './SettingsPage';
 import Ico from './Ico';
+import SwapPreview from './SwapPreview';
+import WaitingConfirmation from './WaitingConfirmation';
 
 // Wallet logos
 const walletLogos = {
@@ -410,6 +412,9 @@ function App() {
   const [isLoadingOutput, setIsLoadingOutput] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [showPreview, setShowPreview] = useState(false);
+  const [showWaitingConfirmation, setShowWaitingConfirmation] = useState(false);
+
   type ModalProps = {
     txHash?: string;
     decreasedToken?: {
@@ -989,6 +994,30 @@ function App() {
     return [...tokens, ...importedTokens].find((token) => token.address === address) || tokens[0];
   };
 
+  const handleShowPreview = () => {
+    if (!account) {
+      setError("Please connect wallet");
+      return;
+    }
+    if (!amountIn || parseFloat(amountIn) <= 0) {
+      setError("Please enter a valid amount");
+      return;
+    }
+    if (tokenX === tokenY) {
+      setError("Cannot select the same token for trading");
+      return;
+    }
+    if (!poolId) {
+      setError("No matching trading pool found");
+      return;
+    }
+    if (parseFloat(balances["0x2::sui::SUI"] || "0") < 0.1) {
+      setError("Insufficient SUI balance for transaction fee (at least 0.1 SUI required)");
+      return;
+    }
+    setShowPreview(true);
+  };
+
   const handleSwap = async () => {
     if (!account) {
       setError("Please connect wallet");
@@ -1073,6 +1102,7 @@ function App() {
         },
         {
           onSuccess: (result) => {
+            setShowWaitingConfirmation(false);
             setModalProps({
               txHash: result.digest,
               decreasedToken: {
@@ -1094,6 +1124,7 @@ function App() {
             setRefreshTrigger(prev => prev + 1);
           },
           onError: (err: any) => {
+            setShowWaitingConfirmation(false);
             setModalProps({
               errorMessage: `Transaction failed: ${err.message}`,
               onClose: () => setModalProps(null),
@@ -1102,6 +1133,7 @@ function App() {
         }
       );
     } catch (err) {
+      setShowWaitingConfirmation(false);
       setModalProps({
         errorMessage: `Transaction preparation failed: ${err instanceof Error ? err.message : "Unknown error"}`,
         onClose: () => setModalProps(null),
@@ -1456,13 +1488,39 @@ function App() {
                     </div>
                     <button
                       className={`action-button css-1y5noho ${isLoadingOutput ? "loading" : ""}`}
-                      onClick={handleSwap}
+                      onClick={handleShowPreview}
                       disabled={!account || !amountIn || parseFloat(amountIn) <= 0 || !poolId || parseFloat(balances["0x2::sui::SUI"] || "0") < 0.1 || tokenX === tokenY || isLoadingOutput}
                     >
                       {account ? (amountIn && parseFloat(amountIn) > 0 ? (poolId ? (parseFloat(balances["0x2::sui::SUI"] || "0") >= 0.1 ? (tokenX !== tokenY ? (isLoadingOutput ? "Loading..." : "Swap Now") : "Same Token") : "Insufficient SUI Balance") : "Invalid Trading Pair") : "Enter Valid Amount") : "Connect Wallet"}
                     </button>
                     {error && <div className="error">{error}</div>}
                     {modalProps && <Modal {...modalProps} />}
+                    {showPreview && (
+                      <SwapPreview
+                        amountIn={amountIn}
+                        amountOut={expectedOutput}
+                        tokenX={{ symbol: getTokenInfo(tokenX).symbol, icon: getTokenInfo(tokenX).icon }}
+                        tokenY={{ symbol: getTokenInfo(tokenY).symbol, icon: getTokenInfo(tokenY).icon }}
+                        slippage={slippage}
+                        priceDifference={priceDifference}
+                        minAmountOut={minAmountOut}
+                        onConfirm={() => {
+                          setShowPreview(false);
+                          setShowWaitingConfirmation(true);
+                          handleSwap();
+                        }}
+                        onClose={() => setShowPreview(false)}
+                      />
+                    )}
+                    {showWaitingConfirmation && (
+                      <WaitingConfirmation
+                        amountIn={amountIn}
+                        amountOut={expectedOutput}
+                        tokenXSymbol={getTokenInfo(tokenX).symbol}
+                        tokenYSymbol={getTokenInfo(tokenY).symbol}
+                        onClose={() => setShowWaitingConfirmation(false)}
+                      />
+                    )}
                     <div className="price-reference-panel css-rrtj52">
                       <div className="price-reference-header css-f7m5r6">
                         <p className="chakra-text css-5z699w">Price Reference</p>

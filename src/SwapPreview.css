@@ -1,283 +1,219 @@
-.chakra-modal__content.css-xnqtk4 {
-  background: white;
-  border-radius: 12px;
+/* Modal container for centering */
+.chakra-modal__container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+  z-index: 1000;
+}
+
+/* Modal content styling */
+.chakra-modal__content.css-xnqtk411 {
+  background: linear-gradient(145deg, #ffffff, #f8fafc);
+  border-radius: 16px;
   padding: 24px;
-  width: 400px;
-  max-width: 90%;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 480px;
+  height: 520px; /* Increased height to prevent overflow */
+  max-width: 95%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease;
 }
 
-.chakra-modal__header.css-10h09dx {
+/* Header styling */
+.chakra-modal__header.css-10h09dx11 {
   padding-bottom: 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-.chakra-heading.css-1cowq8v {
+.chakra-heading.css-1cowq8v11 {
   font-size: 24px;
   font-weight: 700;
-  color: #182435;
+  color: #1a1a1a;
+  letter-spacing: -0.5px;
 }
 
-.chakra-modal__close-btn.css-14njbx {
+/* Close button styling */
+.chakra-modal__close-btn.css-14njbx11 {
   position: absolute;
   top: 16px;
   right: 16px;
   background: none;
   border: none;
   cursor: pointer;
-}
-
-.chakra-modal__body.css-hgczei {
-  padding: 0;
-}
-
-.chakra-stack.css-1veteyv {
-  gap: 16px;
-}
-
-.chakra-stack.css-1xgnfuh {
-  background: #F7F8F8;
+  color: #666;
+  transition: all 0.3s ease;
+  padding: 8px;
   border-radius: 8px;
-  padding: 16px;
 }
 
-.chakra-stack.css-9wtx3r {
-  gap: 8px;
+.chakra-modal__close-btn.css-14njbx11:hover {
+  color: #1a1a1a;
+  background: rgba(0, 0, 0, 0.05);
 }
 
-.chakra-stack.css-h5j056 {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.chakra-stack.css-1jjq5p5 {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.chakra-stack.css-19lo8rc {
-  display: flex;
-  flex-direction: column;
-}
-
-.chakra-stack.css-2aixpv {
-  display: flex;
-}
-
-.chakra-text.css-1dis6eq {
-  font-size: 24px;
-  font-weight: 700;
-  color: #182435;
-}
-
-.chakra-text.css-18eiei2 {
-  font-size: 16px;
-  color: #767A81;
-}
-
-.chakra-stack.css-1g49xc {
-  display: flex;
-  align-items: center;
-}
-
-.css-kjafn5 {
-  display: flex;
-  align-items: center;
-}
-
-.css-1s8ou6k {
-  width: 32px;
-  height: 32px;
-}
-
-.chakra-image.css-rmmdki {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-}
-
-.chakra-divider.css-1w0qemm {
-  border-color: #E4E4E7;
-  margin: 16px 0;
-}
-
-.css-14hn8e {
-  display: flex;
-  justify-content: center;
-}
-
-.css-1smttaj {
-  background: #E4E4E7;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.chakra-stack.css-g4ufl5 {
-  gap: 8px;
-}
-
-.css-gmuwbf {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.css-1txlnq4 {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.css-urzsqz {
-  display: flex;
-  align-items: center;
-}
-
-.css-12z0wuy {
-  display: flex;
-  align-items: center;
-}
-
-.css-3l2vxh {
-  width: 24px;
-  height: 24px;
-}
-
-.chakra-stack.css-1igwmid {
-  display: flex;
-  flex-direction: column;
-}
-
-.chakra-text.css-v4hq1a {
-  font-size: 16px;
-  color: #182435;
-}
-
-.chakra-text.css-3c533j {
-  font-size: 16px;
-  color: #767A81;
-}
-
-.css-759u60 {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.chakra-text.css-1us4ioa {
-  font-size: 16px;
-  font-weight: 700;
-  color: #182435;
-}
-
-.chakra-text.css-wiq74l {
-  font-size: 16px;
-  color: #767A81;
-}
-
-.css-qbrse1 {
-  display: flex;
-  align-items: center;
-}
-
-.css-1qh2nrm {
-  display: flex;
-  justify-content: center;
-}
-
-.css-1ke24j5 {
-  display: flex;
-  align-items: center;
-}
-
-.chakra-stack.css-mzuswq {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 0;
-}
-
-.chakra-stack.css-1qjyqx0 {
-  display: flex;
-}
-
-.chakra-text.css-1k06fd2 {
-  font-size: 14px;
-  color: #767A81;
-}
-
-.chakra-stack.css-1gkzamg {
-  display: flex;
-}
-
-.chakra-text.css-dfqnbt {
-  font-size: 14px;
-  color: #182435;
-}
-
-.chakra-stack.css-mh0esh {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 0;
-}
-
-.chakra-stack.css-bzhmyh {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.chakra-text.css-1havq56 {
-  font-size: 14px;
-  color: #767A81;
-}
-
-.css-0 {
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.chakra-skeleton.css-5thc8w {
-  display: flex;
-}
-
-.chakra-stack.css-1414k4v {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.chakra-text.css-1dtrlpp {
-  font-size: 14px;
-  color: #182435;
-}
-
-.css-6su6fj {
-  display: flex;
-  align-items: center;
-}
-
-.chakra-image.css-f81823 {
+.chakra-modal__close-btn.css-14njbx11 svg {
   width: 20px;
   height: 20px;
 }
 
-.chakra-button.css-1tn2n5q {
-  background: #3b82f6;
-  color: white;
-  border-radius: 8px;
-  padding: 12px;
-  width: 100%;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
+/* Body styling */
+.chakra-modal__body.css-hgczei11 {
+  padding: 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
 }
 
-.chakra-button.css-1tn2n5q:hover {
-  background: #4b9cfa;
+.chakra-stack.css-1veteyv11 {
+  gap: 20px;
+  flex-grow: 1;
+  padding: 16px 0;
+}
+
+.chakra-stack.css-1xgnfuh11 {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Token section */
+.token-section11 {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.token-row11 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.token-label11 {
+  font-size: 16px;
+  font-weight: 500;
+  color: #666;
+  min-width: 60px;
+}
+
+.token-info11 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-grow: 1;
+  justify-content: flex-end;
+}
+
+.chakra-image.css-rmmdki11 {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.chakra-text.css-18eiei211 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.chakra-text.css-1dis6eq11 {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* Exchange rate section */
+.exchange-rate-section11 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.exchange-rate11 {
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+}
+
+.swap-rate-button11 {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.swap-rate-button11:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Info section */
+.info-section11 {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.info-row11 {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #666;
+}
+
+.chakra-text.css-1k06fd211 {
+  color: #666;
+  font-weight: 500;
+}
+
+.chakra-text.css-dfqnbt11 {
+  color: #1a1a1a;
+  font-weight: 500;
+}
+
+/* Confirm button styling */
+.chakra-button.css-1tn2n5q11 {
+  background: linear-gradient(90deg, #3b82f6, #2563eb);
+  color: white;
+  border-radius: 12px;
+  padding: 14px;
+  width: 100%;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  margin-top: auto;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.chakra-button.css-1tn2n5q11:hover {
+  background: linear-gradient(90deg, #2563eb, #1d4ed8);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.chakra-button.css-1tn2n5q11:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
 }

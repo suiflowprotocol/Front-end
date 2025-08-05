@@ -1,82 +1,119 @@
-.chakra-modal__content.css-xnqtk4 {
-  background: white;
+/* Modal container for centering */
+.chakra-modal__container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+  z-index: 1000;
+}
+
+/* Modal content styling aligned with main page */
+.chakra-modal__content.css-xnqtk412 {
+  background: var(--modal-bg);
   border-radius: 12px;
   padding: 24px;
   width: 400px;
   max-width: 90%;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 12px var(--shadow-color);
+  display: flex;
+  flex-direction: column;
 }
 
-.chakra-modal__header.css-10h09dx {
+/* Header styling */
+.chakra-modal__header.css-10h09dx12 {
   padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
 }
 
-.chakra-heading.css-1cowq8v {
+.chakra-heading.css-1cowq8v12 {
   font-size: 24px;
-  font-weight: 700;
-  color: #182435;
+  font-weight: 600;
+  color: var(--text-color);
 }
 
-.chakra-modal__close-btn.css-14njbx {
+/* Close button styling */
+.chakra-modal__close-btn.css-14njbx12 {
   position: absolute;
   top: 16px;
   right: 16px;
   background: none;
   border: none;
   cursor: pointer;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
 }
 
-.chakra-modal__body.css-athbri {
+.chakra-modal__close-btn.css-14njbx12:hover {
+  color: var(--text-color);
+}
+
+.chakra-modal__close-btn.css-14njbx12 svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Body styling */
+.chakra-modal__body.css-athbri12 {
   padding: 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.chakra-stack.css-6caj98 {
+.chakra-stack.css-1xgnfuh12 {
+  background: transparent;
   gap: 16px;
   align-items: center;
+  padding: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
 }
 
-.chakra-stack.css-1clehp3 {
+/* Spinner and text container */
+.chakra-stack.css-1clehp312 {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
 }
 
-.chakra-spinner.css-mehe3e {
+/* Loading spinner styling */
+.chakra-spinner.css-mehe3e12 {
   display: inline-block;
   width: 40px;
   height: 40px;
-  border: 4px solid #E4E4E7;
-  border-top: 4px solid #3b82f6;
+  border: 4px solid var(--border-color);
+  border-top: 4px solid var(--primary-color);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
 
-.css-8b45rq {
+.css-8b45rq12 {
   display: none;
 }
 
-.chakra-text.css-136jcmy {
+.chakra-text.css-136jcmy12 {
   font-size: 16px;
   font-weight: 700;
-  color: #182435;
+  color: var(--text-color);
   text-align: center;
 }
 
-.chakra-text.css-1prvpli {
+.chakra-text.css-1prvpli12 {
   font-size: 14px;
-  color: #767A81;
+  color: var(--text-secondary);
   text-align: center;
 }
 
-.chakra-stack.css-1d8q79t {
-  display: flex;
-}
-
-.chakra-stack.css-zdv8u1 {
-  width: 100%;
-}
-
+/* Spinner animation */
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
