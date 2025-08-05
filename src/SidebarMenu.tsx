@@ -174,7 +174,7 @@ function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
             <div className="css-eorw493">
               <div className="css-03">
                 <a href="https://telegram.org" target="_blank" rel="noopener noreferrer" className="css-6w0v093">
-                  <img src="https://images.seeklogo.com/logo-png/49/2/telegram-logo-png_seeklogo-490015.png" alt="Telegram" width="20px" height="20px" />
+                  <img src="https://www.svgrepo.com/show/343522/telegram-communication-chat-interaction-network-connection.svg" alt="Telegram" width="20px" height="20px" />
                 </a>
               </div>
             </div>
