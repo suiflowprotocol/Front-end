@@ -1,0 +1,83 @@
+.chakra-modal__content.css-xnqtk4 {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.chakra-modal__header.css-10h09dx {
+  padding-bottom: 16px;
+}
+
+.chakra-heading.css-1cowq8v {
+  font-size: 24px;
+  font-weight: 700;
+  color: #182435;
+}
+
+.chakra-modal__close-btn.css-14njbx {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.chakra-modal__body.css-athbri {
+  padding: 0;
+}
+
+.chakra-stack.css-6caj98 {
+  gap: 16px;
+  align-items: center;
+}
+
+.chakra-stack.css-1clehp3 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.chakra-spinner.css-mehe3e {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 4px solid #E4E4E7;
+  border-top: 4px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.css-8b45rq {
+  display: none;
+}
+
+.chakra-text.css-136jcmy {
+  font-size: 16px;
+  font-weight: 700;
+  color: #182435;
+  text-align: center;
+}
+
+.chakra-text.css-1prvpli {
+  font-size: 14px;
+  color: #767A81;
+  text-align: center;
+}
+
+.chakra-stack.css-1d8q79t {
+  display: flex;
+}
+
+.chakra-stack.css-zdv8u1 {
+  width: 100%;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

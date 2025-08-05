@@ -1,0 +1,283 @@
+.chakra-modal__content.css-xnqtk4 {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.chakra-modal__header.css-10h09dx {
+  padding-bottom: 16px;
+}
+
+.chakra-heading.css-1cowq8v {
+  font-size: 24px;
+  font-weight: 700;
+  color: #182435;
+}
+
+.chakra-modal__close-btn.css-14njbx {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.chakra-modal__body.css-hgczei {
+  padding: 0;
+}
+
+.chakra-stack.css-1veteyv {
+  gap: 16px;
+}
+
+.chakra-stack.css-1xgnfuh {
+  background: #F7F8F8;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.chakra-stack.css-9wtx3r {
+  gap: 8px;
+}
+
+.chakra-stack.css-h5j056 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chakra-stack.css-1jjq5p5 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chakra-stack.css-19lo8rc {
+  display: flex;
+  flex-direction: column;
+}
+
+.chakra-stack.css-2aixpv {
+  display: flex;
+}
+
+.chakra-text.css-1dis6eq {
+  font-size: 24px;
+  font-weight: 700;
+  color: #182435;
+}
+
+.chakra-text.css-18eiei2 {
+  font-size: 16px;
+  color: #767A81;
+}
+
+.chakra-stack.css-1g49xc {
+  display: flex;
+  align-items: center;
+}
+
+.css-kjafn5 {
+  display: flex;
+  align-items: center;
+}
+
+.css-1s8ou6k {
+  width: 32px;
+  height: 32px;
+}
+
+.chakra-image.css-rmmdki {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.chakra-divider.css-1w0qemm {
+  border-color: #E4E4E7;
+  margin: 16px 0;
+}
+
+.css-14hn8e {
+  display: flex;
+  justify-content: center;
+}
+
+.css-1smttaj {
+  background: #E4E4E7;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chakra-stack.css-g4ufl5 {
+  gap: 8px;
+}
+
+.css-gmuwbf {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.css-1txlnq4 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.css-urzsqz {
+  display: flex;
+  align-items: center;
+}
+
+.css-12z0wuy {
+  display: flex;
+  align-items: center;
+}
+
+.css-3l2vxh {
+  width: 24px;
+  height: 24px;
+}
+
+.chakra-stack.css-1igwmid {
+  display: flex;
+  flex-direction: column;
+}
+
+.chakra-text.css-v4hq1a {
+  font-size: 16px;
+  color: #182435;
+}
+
+.chakra-text.css-3c533j {
+  font-size: 16px;
+  color: #767A81;
+}
+
+.css-759u60 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chakra-text.css-1us4ioa {
+  font-size: 16px;
+  font-weight: 700;
+  color: #182435;
+}
+
+.chakra-text.css-wiq74l {
+  font-size: 16px;
+  color: #767A81;
+}
+
+.css-qbrse1 {
+  display: flex;
+  align-items: center;
+}
+
+.css-1qh2nrm {
+  display: flex;
+  justify-content: center;
+}
+
+.css-1ke24j5 {
+  display: flex;
+  align-items: center;
+}
+
+.chakra-stack.css-mzuswq {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.chakra-stack.css-1qjyqx0 {
+  display: flex;
+}
+
+.chakra-text.css-1k06fd2 {
+  font-size: 14px;
+  color: #767A81;
+}
+
+.chakra-stack.css-1gkzamg {
+  display: flex;
+}
+
+.chakra-text.css-dfqnbt {
+  font-size: 14px;
+  color: #182435;
+}
+
+.chakra-stack.css-mh0esh {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.chakra-stack.css-bzhmyh {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chakra-text.css-1havq56 {
+  font-size: 14px;
+  color: #767A81;
+}
+
+.css-0 {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.chakra-skeleton.css-5thc8w {
+  display: flex;
+}
+
+.chakra-stack.css-1414k4v {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chakra-text.css-1dtrlpp {
+  font-size: 14px;
+  color: #182435;
+}
+
+.css-6su6fj {
+  display: flex;
+  align-items: center;
+}
+
+.chakra-image.css-f81823 {
+  width: 20px;
+  height: 20px;
+}
+
+.chakra-button.css-1tn2n5q {
+  background: #3b82f6;
+  color: white;
+  border-radius: 8px;
+  padding: 12px;
+  width: 100%;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.chakra-button.css-1tn2n5q:hover {
+  background: #4b9cfa;
+}

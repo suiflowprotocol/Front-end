@@ -10,7 +10,6 @@ import CoverPage from "./CoverPage";
 import Sidebar from "./SidebarMenu";
 import "./App.css";
 import "./App2.css";
-
 import Modal from './Modal';
 import SettingsPage from './SettingsPage';
 import Ico from './Ico';
@@ -313,7 +312,7 @@ const SettingsModal = ({ isOpen, onClose, slippage, setSlippage, customSlippage,
                   <div data-active={transactionMode === "Fast Mode"} className="css-10kw1gl">
                     <div className="css-166r45o">
                       <svg aria-hidden="true" fill="#909CA4" width="16px" height="16px">
-                        <use xlinkHref  ="#icon-icon_flash"></use>
+                        <use xlinkHref="#icon-icon_flash"></use>
                       </svg>
                     </div>
                     <p
@@ -399,7 +398,6 @@ function App() {
   const [amountIn, setAmountIn] = useState("");
   const [minAmountOut, setMinAmountOut] = useState("0");
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
   const [poolId, setPoolId] = useState("");
   const [isReverseSwap, setIsReverseSwap] = useState(false);
   const [balances, setBalances] = useState<{ [key: string]: string }>({});
@@ -411,11 +409,28 @@ function App() {
   const [priceDifference, setPriceDifference] = useState("0.00");
   const [isLoadingOutput, setIsLoadingOutput] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
-  const [refreshTrigger, setRefreshTrigger] = useState(0); // New state for triggering data refresh
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+  type ModalProps = {
+    txHash?: string;
+    decreasedToken?: {
+      address: string;
+      symbol: string;
+      icon: string;
+      amount: string;
+    };
+    increasedToken?: {
+      address: string;
+      symbol: string;
+      icon: string;
+      amount: string;
+    };
+    errorMessage?: string;
+    onClose: () => void;
+  };
+
+  const [modalProps, setModalProps] = useState<ModalProps | null>(null);
 
   const switchRef = useRef(null);
-  const [showModal, setShowModal] = useState(false);
-  const [modalMessage, setModalMessage] = useState("");
   const [showNotificationPopover, setShowNotificationPopover] = useState(false);
   const [showRpcPopover, setShowRpcPopover] = useState(false);
 
@@ -435,7 +450,7 @@ function App() {
 
   const priceCache = useRef<{ [key: string]: { price: number; change_24h: number; timestamp: number } }>({});
   const historyCache = useRef<{ [key: string]: { data: { x: number; y: number }[]; timestamp: number } }>({});
-  const CACHE_DURATION = 2 * 60 * 1000; // Reduced to 2 minutes for more frequent updates
+  const CACHE_DURATION = 2 * 60 * 1000;
 
   const cryptoCompareIds: { [key: string]: string } = {
     SUI: "SUI",
@@ -684,7 +699,7 @@ function App() {
     };
 
     fetchPrices();
-    const interval = setInterval(fetchPrices, 30000); // Increased to every 30 seconds
+    const interval = setInterval(fetchPrices, 30000);
     return () => clearInterval(interval);
   }, [importedTokens, refreshTrigger]);
 
@@ -880,8 +895,8 @@ function App() {
             return;
           }
 
-          const inputDecimals = getTokenDecimals(isReverseSwap ? tokenY : tokenX);
-          const outputDecimals = getTokenDecimals(isReverseSwap ? tokenX : tokenY);
+          const inputDecimals = getTokenDecimals(tokenX);
+          const outputDecimals = getTokenDecimals(tokenY);
           const amountInValue = parseFloat(debouncedAmountIn) * 10 ** inputDecimals;
 
           let amountOut;
@@ -932,7 +947,6 @@ function App() {
     fetchBalancesAndOutput();
   }, [account, tokenX, tokenY, debouncedAmountIn, slippage, poolId, isReverseSwap, client, importedTokens, prices, refreshTrigger]);
 
-  // Trigger data refresh on wallet change
   useEffect(() => {
     setRefreshTrigger(prev => prev + 1);
   }, [account?.address]);
@@ -999,10 +1013,12 @@ function App() {
         return;
       }
 
-      const inputToken = isReverseSwap ? tokenY : tokenX;
-      const inputTokenInfo = getTokenInfo(inputToken);
+      const inputToken = tokenX;
+      const outputToken = tokenY;
       const inputDecimals = getTokenDecimals(inputToken);
+      const outputDecimals = getTokenDecimals(outputToken);
       const amountInValue = Math.floor(parseFloat(amountIn) * 10 ** inputDecimals);
+      const minAmountOutValue = Math.floor(parseFloat(minAmountOut) * 10 ** outputDecimals);
 
       const coins = await client.getCoins({
         owner: account.address,
@@ -1014,7 +1030,7 @@ function App() {
         .map((coin) => coin.coinObjectId);
 
       if (coinObjectIds.length === 0) {
-        setError(`No sufficient ${inputTokenInfo.symbol} tokens found (at least ${amountIn} ${inputTokenInfo.symbol} required)`);
+        setError(`No sufficient ${getTokenInfo(inputToken).symbol} tokens found (at least ${amountIn} ${getTokenInfo(inputToken).symbol} required)`);
         return;
       }
 
@@ -1037,8 +1053,6 @@ function App() {
       }
 
       const [coinToSwap] = tx.splitCoins(mergedCoin, [amountInValue]);
-      const outputDecimals = getTokenDecimals(isReverseSwap ? tokenX : tokenY);
-      const minAmountOutValue = Math.floor(parseFloat(minAmountOut) * 10 ** outputDecimals);
 
       tx.moveCall({
         target: `${PACKAGE_ID}::amm::${isReverseSwap ? "swap_reverse" : "swap"}`,
@@ -1058,20 +1072,40 @@ function App() {
           account,
         },
         {
-          onSuccess: () => {
-            setSuccess("Swap successful");
+          onSuccess: (result) => {
+            setModalProps({
+              txHash: result.digest,
+              decreasedToken: {
+                address: tokenX,
+                symbol: getTokenInfo(tokenX).symbol,
+                icon: getTokenInfo(tokenX).icon,
+                amount: amountIn,
+              },
+              increasedToken: {
+                address: tokenY,
+                symbol: getTokenInfo(tokenY).symbol,
+                icon: getTokenInfo(tokenY).icon,
+                amount: expectedOutput,
+              },
+              onClose: () => setModalProps(null),
+            });
             setError("");
             setAmountIn("");
-            setRefreshTrigger(prev => prev + 1); // Trigger data refresh after successful swap
+            setRefreshTrigger(prev => prev + 1);
           },
           onError: (err: any) => {
-            setError(`Transaction failed: ${err.message}`);
-            setSuccess("");
+            setModalProps({
+              errorMessage: `Transaction failed: ${err.message}`,
+              onClose: () => setModalProps(null),
+            });
           },
         }
       );
     } catch (err) {
-      setError(`Transaction preparation failed: ${err instanceof Error ? err.message : "Unknown error"}`);
+      setModalProps({
+        errorMessage: `Transaction preparation failed: ${err instanceof Error ? err.message : "Unknown error"}`,
+        onClose: () => setModalProps(null),
+      });
     }
   };
 
@@ -1428,7 +1462,7 @@ function App() {
                       {account ? (amountIn && parseFloat(amountIn) > 0 ? (poolId ? (parseFloat(balances["0x2::sui::SUI"] || "0") >= 0.1 ? (tokenX !== tokenY ? (isLoadingOutput ? "Loading..." : "Swap Now") : "Same Token") : "Insufficient SUI Balance") : "Invalid Trading Pair") : "Enter Valid Amount") : "Connect Wallet"}
                     </button>
                     {error && <div className="error">{error}</div>}
-                    {success && <div className="success">{success}</div>}
+                    {modalProps && <Modal {...modalProps} />}
                     <div className="price-reference-panel css-rrtj52">
                       <div className="price-reference-header css-f7m5r6">
                         <p className="chakra-text css-5z699w">Price Reference</p>
@@ -1543,7 +1577,7 @@ function App() {
                       isOpen={showSettingsModal}
                       onClose={() => setShowSettingsModal(false)}
                       slippage={slippage}
-                      setSlippage={setSlippage} // 传递更新函数
+                      setSlippage={setSlippage}
                       customSlippage={customSlippage}
                       setCustomSlippage={setCustomSlippage}
                       transactionMode={transactionMode}
@@ -1570,26 +1604,9 @@ function App() {
           <Route path="/xseal" element={<XSeal />} />
           <Route path="/ico" element={<Ico />} />
         </Routes>
-        {showModal && (
-          <Modal txHash={modalMessage} onClose={() => setShowModal(false)} />
-        )}
-
-        
       </div>
     </WalletProvider>
   );
 }
 
 export default App;
-
-
-
-
-
-
-
-
-
-
-
-
