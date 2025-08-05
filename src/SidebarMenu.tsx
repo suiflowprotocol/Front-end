@@ -93,7 +93,7 @@ function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
           <div className="dropdown3 bridge">
             <a href="https://bridge.sui.io/" target="_blank" rel="noopener noreferrer" className="dropdown-item3">
               <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px" viewBox="0 0 24 24">
-                <path d="M3 12h6v2H3v-2zm18 0h-6v2h6v-2zm-9-6v12m-2-12h4v12h-4z" />
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z" />
               </svg>
               Sui Bridge
             </a>
@@ -114,7 +114,7 @@ function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
           </div>
           <div className="dropdown3 more">
             <a href="#" className="dropdown-item3">
-              <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px" viewBox="0 0 24 24">
+              <svg aria-hidden="true" fill="var(--text-secondary" width="20px" height="20px" viewBox="0 0 24 24">
                 <path d="M4 4h16v2H4zm0 7h16v2H4zm0 7h16v2H4z" />
               </svg>
               Docs

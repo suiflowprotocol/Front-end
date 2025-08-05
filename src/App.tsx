@@ -1,4 +1,4 @@
-                           import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ConnectButton, useCurrentAccount, useSuiClient, useSignAndExecuteTransaction, lightTheme, WalletProvider, ThemeVars, useConnectWallet, useWallets, useDisconnectWallet, ConnectModal } from "@mysten/dapp-kit";
 import '@mysten/dapp-kit/dist/index.css';
 import { Transaction } from "@mysten/sui/transactions";
@@ -7,15 +7,15 @@ import Pool from "./Pool";
 import XSeal from "./xSeal";
 import TokenModal, { tokens } from "./TokenModal";
 import CoverPage from "./CoverPage";
-import Sidebar from "./SidebarMenu"; // 导入新侧边栏组件
+import Sidebar from "./SidebarMenu";
 import "./App.css";
 import "./App2.css";
 
 import Modal from './Modal';
 import SettingsPage from './SettingsPage';
-import Ico from './Ico'; // 导入 Ico 组件
+import Ico from './Ico';
 
-// 钱包名称到 Logo URL 的映射
+// Wallet logos
 const walletLogos = {
   'Slush': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYHwA15AKYWXvoSL-94ysbnJrmUX_oU1fJyw&s',
   'Suiet': 'https://framerusercontent.com/modules/6HmgaTsk3ODDySrS62PZ/a3c2R3qfkYJDxcZxkoVv/assets/eDZRos3xvCrlWxmLFr72sFtiyQ.png',
@@ -23,7 +23,7 @@ const walletLogos = {
   'Sui Wallet': 'https://assets.crypto.ro/logos/sui-sui-logo.png',
 };
 
-// Define custom theme
+// Custom theme
 const customTheme: ThemeVars = {
   blurs: {
     modalOverlay: 'blur(0)',
@@ -313,7 +313,7 @@ const SettingsModal = ({ isOpen, onClose, slippage, setSlippage, customSlippage,
                   <div data-active={transactionMode === "Fast Mode"} className="css-10kw1gl">
                     <div className="css-166r45o">
                       <svg aria-hidden="true" fill="#909CA4" width="16px" height="16px">
-                        <use xlinkHref="#icon-icon_flash"></use>
+                        <use xlinkHref  ="#icon-icon_flash"></use>
                       </svg>
                     </div>
                     <p
@@ -411,16 +411,15 @@ function App() {
   const [priceDifference, setPriceDifference] = useState("0.00");
   const [isLoadingOutput, setIsLoadingOutput] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
- 
+  const [refreshTrigger, setRefreshTrigger] = useState(0); // New state for triggering data refresh
+
   const switchRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [showNotificationPopover, setShowNotificationPopover] = useState(false);
   const [showRpcPopover, setShowRpcPopover] = useState(false);
 
-  
-
-  // 检测屏幕大小以判断是否为移动设备
+  // Detect screen size for mobile
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -432,12 +431,11 @@ function App() {
 
   const PACKAGE_ID = "0xb90158d50ac951784409a6876ac860e24564ed5257e51944d3c693efb9fdbd78";
   const POOL_REGISTRY = "0xfc8c69858d070b639b3db15ff0f78a10370950434c5521c83eaa7e2285db8d2a";
-  const CETUS_AGGREGATOR = "0xsome_cetus_aggregator_id";
   const CRYPTOCOMPARE_API = "https://min-api.cryptocompare.com/data";
 
   const priceCache = useRef<{ [key: string]: { price: number; change_24h: number; timestamp: number } }>({});
   const historyCache = useRef<{ [key: string]: { data: { x: number; y: number }[]; timestamp: number } }>({});
-  const CACHE_DURATION = 5 * 60 * 1000;
+  const CACHE_DURATION = 2 * 60 * 1000; // Reduced to 2 minutes for more frequent updates
 
   const cryptoCompareIds: { [key: string]: string } = {
     SUI: "SUI",
@@ -686,9 +684,9 @@ function App() {
     };
 
     fetchPrices();
-    const interval = setInterval(fetchPrices, 60000);
+    const interval = setInterval(fetchPrices, 30000); // Increased to every 30 seconds
     return () => clearInterval(interval);
-  }, [importedTokens]);
+  }, [importedTokens, refreshTrigger]);
 
   useEffect(() => {
     const fetchTokenPriceHistory = async () => {
@@ -711,18 +709,21 @@ function App() {
     };
 
     fetchTokenPriceHistory();
-  }, [tokenX, tokenY]);
+  }, [tokenX, tokenY, refreshTrigger]);
 
   const generatePath = (symbol: string) => {
     const priceData = priceHistory[symbol.toLowerCase()] || [];
     if (!priceData || priceData.length < 2) return "M15,10L180,10";
     
-    const sampledData = priceData.length > 20 
-      ? priceData.filter((_, i) => i % Math.ceil(priceData.length / 20) === 0)
-      : priceData;
+    const validData = priceData.filter(p => p.y !== null && p.y !== undefined && !isNaN(p.y));
+    if (validData.length < 2) return "M15,10L180,10";
 
-    const minPrice = Math.min(...sampledData.map((p) => p.y));
-    const maxPrice = Math.max(...sampledData.map((p) => p.y));
+    const sampledData = validData.length > 20 
+      ? validData.filter((_, i) => i % Math.ceil(validData.length / 20) === 0)
+      : validData;
+
+    const minPrice = Math.min(...sampledData.map(p => p.y));
+    const maxPrice = Math.max(...sampledData.map(p => p.y));
     const priceRange = maxPrice - minPrice || 1;
     
     const points = sampledData.map((p, i) => {
@@ -803,7 +804,7 @@ function App() {
     };
 
     fetchPoolId();
-  }, [tokenX, tokenY, client]);
+  }, [tokenX, tokenY, client, refreshTrigger]);
 
   useEffect(() => {
     const fetchBalancesAndOutput = async () => {
@@ -848,18 +849,7 @@ function App() {
           return;
         }
 
-        if (useAggregator) {
-          const amountInValue = parseFloat(debouncedAmountIn) * 10 ** getTokenDecimals(isReverseSwap ? tokenY : tokenX);
-          const outputDecimals = getTokenDecimals(isReverseSwap ? tokenX : tokenY);
-          const amountOut = amountInValue * 0.99;
-          const slippageMultiplier = 1 - parseFloat(slippage) / 100;
-          const minOut = amountOut * slippageMultiplier;
-
-          setExpectedOutput((amountOut / 10 ** outputDecimals).toFixed(4));
-          setMinAmountOut((minOut / 10 ** outputDecimals).toFixed(4));
-          setPriceImpact("0.50");
-          setPriceDifference("0.30");
-        } else if (poolId && debouncedAmountIn && parseFloat(debouncedAmountIn) > 0) {
+        if (poolId && debouncedAmountIn && parseFloat(debouncedAmountIn) > 0) {
           const pool = await client.getObject({
             id: poolId,
             options: { showContent: true },
@@ -940,7 +930,12 @@ function App() {
     };
 
     fetchBalancesAndOutput();
-  }, [account, tokenX, tokenY, debouncedAmountIn, slippage, poolId, isReverseSwap, client, importedTokens, prices]);
+  }, [account, tokenX, tokenY, debouncedAmountIn, slippage, poolId, isReverseSwap, client, importedTokens, prices, refreshTrigger]);
+
+  // Trigger data refresh on wallet change
+  useEffect(() => {
+    setRefreshTrigger(prev => prev + 1);
+  }, [account?.address]);
 
   const handleSwapTokens = () => {
     setTokenX(tokenY);
@@ -985,7 +980,7 @@ function App() {
       setError("Please connect wallet");
       return;
     }
-    if (!tokenX || !tokenY || !amountIn || parseFloat(amountIn) <= 0 || (!useAggregator && !poolId)) {
+    if (!tokenX || !tokenY || !amountIn || parseFloat(amountIn) <= 0 || !poolId) {
       setError("Please enter a valid amount and select valid token pair");
       return;
     }
@@ -1045,27 +1040,15 @@ function App() {
       const outputDecimals = getTokenDecimals(isReverseSwap ? tokenX : tokenY);
       const minAmountOutValue = Math.floor(parseFloat(minAmountOut) * 10 ** outputDecimals);
 
-      if (useAggregator) {
-        tx.moveCall({
-          target: `${CETUS_AGGREGATOR}::aggregator::swap`,
-          typeArguments: isReverseSwap ? [tokenY, tokenX] : [tokenX, tokenY],
-          arguments: [
-            tx.object(CETUS_AGGREGATOR),
-            coinToSwap,
-            tx.pure.u64(minAmountOutValue),
-          ],
-        });
-      } else {
-        tx.moveCall({
-          target: `${PACKAGE_ID}::amm::${isReverseSwap ? "swap_reverse" : "swap"}`,
-          typeArguments: isReverseSwap ? [tokenY, tokenX] : [tokenX, tokenY],
-          arguments: [
-            tx.object(poolId),
-            coinToSwap,
-            tx.pure.u64(minAmountOutValue),
-          ],
-        });
-      }
+      tx.moveCall({
+        target: `${PACKAGE_ID}::amm::${isReverseSwap ? "swap_reverse" : "swap"}`,
+        typeArguments: isReverseSwap ? [tokenY, tokenX] : [tokenX, tokenY],
+        arguments: [
+          tx.object(poolId),
+          coinToSwap,
+          tx.pure.u64(minAmountOutValue),
+        ],
+      });
 
       tx.setGasBudget(100000000);
 
@@ -1075,6 +1058,12 @@ function App() {
           account,
         },
         {
+          onSuccess: () => {
+            setSuccess("Swap successful");
+            setError("");
+            setAmountIn("");
+            setRefreshTrigger(prev => prev + 1); // Trigger data refresh after successful swap
+          },
           onError: (err: any) => {
             setError(`Transaction failed: ${err.message}`);
             setSuccess("");
@@ -1134,7 +1123,6 @@ function App() {
                       <img src="https://i.meee.com.tw/SdliTGK.png" alt="Logo" className="logo-image" />
                       <span className="logo-text">Seal</span>
                     </div>
-                    {/* 根据设备类型渲染导航菜单或汉堡菜单 */}
                     {!isMobile ? (
                       <div className={`nav-menu ${isMenuOpen ? "open" : ""}`}>
                         <div className={`nav-item ${openDropdown === "trade" ? "open" : ""}`} 
@@ -1318,7 +1306,6 @@ function App() {
                     </div>
                   </div>
                 </div>
-                {/* 移动设备时显示侧边栏 */}
                 {isMobile && (
                   <Sidebar isOpen={isMenuOpen} onClose={toggleMenu} />
                 )}
@@ -1436,9 +1423,9 @@ function App() {
                     <button
                       className={`action-button css-1y5noho ${isLoadingOutput ? "loading" : ""}`}
                       onClick={handleSwap}
-                      disabled={!account || !amountIn || parseFloat(amountIn) <= 0 || (!useAggregator && !poolId) || parseFloat(balances["0x2::sui::SUI"] || "0") < 0.1 || tokenX === tokenY || isLoadingOutput}
+                      disabled={!account || !amountIn || parseFloat(amountIn) <= 0 || !poolId || parseFloat(balances["0x2::sui::SUI"] || "0") < 0.1 || tokenX === tokenY || isLoadingOutput}
                     >
-                      {account ? (amountIn && parseFloat(amountIn) > 0 ? ((useAggregator || poolId) ? (parseFloat(balances["0x2::sui::SUI"] || "0") >= 0.1 ? (tokenX !== tokenY ? (isLoadingOutput ? "Loading..." : "Swap Now") : "Same Token") : "Insufficient SUI Balance") : "Invalid Trading Pair") : "Enter Valid Amount") : "Connect Wallet"}
+                      {account ? (amountIn && parseFloat(amountIn) > 0 ? (poolId ? (parseFloat(balances["0x2::sui::SUI"] || "0") >= 0.1 ? (tokenX !== tokenY ? (isLoadingOutput ? "Loading..." : "Swap Now") : "Same Token") : "Insufficient SUI Balance") : "Invalid Trading Pair") : "Enter Valid Amount") : "Connect Wallet"}
                     </button>
                     {error && <div className="error">{error}</div>}
                     {success && <div className="success">{success}</div>}
@@ -1501,33 +1488,9 @@ function App() {
                                   </p>
                                 </div>
                               </div>
-                              
-                                <div className="recharts-responsive-container" style={{ width: "100%", height: "100%", minWidth: "0" }}>
-                                  <div className="recharts-wrapper" style={{ position: "relative", cursor: "default", width: "100%", height: "100%", maxHeight: "20px", maxWidth: "180px" }}>
-                                   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div className="price-chart css-1r938vg"> <svg className="recharts-surface" width="180" height="20" viewBox="0 0 180 20" style={{ width: "100%", height: "100%" }}>
+                              <div className="recharts-responsive-container" style={{ width: "100%", height: "100%", minWidth: "0" }}>
+                                <div className="recharts-wrapper" style={{ position: "relative", cursor: "default", width: "100%", height: "100%", maxHeight: "20px", maxWidth: "180px" }}>
+                                  <div className="price-chart css-1r938vg"> <svg className="recharts-surface" width="180" height="20" viewBox="0 0 180 20" style={{ width: "100%", height: "100%" }}>
                                       <defs>
                                         <clipPath id={`recharts${index + 1}-clip`}>
                                           <rect x="15" y="4" height="12" width="150"></rect>
