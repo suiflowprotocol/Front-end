@@ -34,19 +34,19 @@ const SwapPreview: React.FC<SwapPreviewProps> = ({
   };
 
   return (
-    <div className="chakra-modal__container">
+    <div className="modal-overlay">
       <section className="chakra-modal__content css-xnqtk411" role="dialog" tabIndex={-1} aria-modal="true">
         <header className="chakra-modal__header css-10h09dx11">
           <h2 className="chakra-heading css-1cowq8v11">Swap Preview</h2>
+          <button type="button" aria-label="Close" className="chakra-modal__close-btn css-14njbx11" onClick={onClose}>
+            <svg viewBox="0 0 24 24" focusable="false" className="chakra-icon css-onkibi" aria-hidden="true">
+              <path
+                fill="currentColor"
+                d="M.439,21.44a1.5,1.5,0,0,0,2.122,2.121L11.823,14.3a.25.25,0,0,1,.354,0l9.262,9.263a1.5,1.5,0,1,0,2.122-2.121L14.3,12.177a.25.25,0,0,1,0-.354l9.263-9.262A1.5,1.5,0,0,0,21.439.44L12.177,9.7a.25.25,0,0,1-.354,0L2.561.44A1.5,1.5,0,0,0,.439,2.561L9.7,11.823a.25.25,0,0,1,0,.354Z"
+              />
+            </svg>
+          </button>
         </header>
-        <button type="button" aria-label="Close" className="chakra-modal__close-btn css-14njbx11" onClick={onClose}>
-          <svg viewBox="0 0 24 24" focusable="false" className="chakra-icon css-onkibi" aria-hidden="true">
-            <path
-              fill="currentColor"
-              d="M.439,21.44a1.5,1.5,0,0,0,2.122,2.121L11.823,14.3a.25.25,0,0,1,.354,0l9.262,9.263a1.5,1.5,0,1,0,2.122-2.121L14.3,12.177a.25.25,0,0,1,0-.354l9.263-9.262A1.5,1.5,0,0,0,21.439.44L12.177,9.7a.25.25,0,0,1-.354,0L2.561.44A1.5,1.5,0,0,0,.439,2.561L9.7,11.823a.25.25,0,0,1,0,.354Z"
-            />
-          </svg>
-        </button>
         <div className="chakra-modal__body css-hgczei11">
           <div className="chakra-stack css-1veteyv11">
             <div className="chakra-stack css-1xgnfuh11">
@@ -58,6 +58,11 @@ const SwapPreview: React.FC<SwapPreviewProps> = ({
                     <p className="chakra-text css-18eiei211">{tokenX.symbol}</p>
                     <p className="chakra-text css-1dis6eq11">{amountIn}</p>
                   </div>
+                </div>
+                <div className="arrow-container">
+                  <svg className="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M12 5v14M19 12l-7 7-7-7" />
+                  </svg>
                 </div>
                 <div className="token-row11">
                   <div className="token-label11">To</div>
@@ -71,9 +76,17 @@ const SwapPreview: React.FC<SwapPreviewProps> = ({
               <div className="exchange-rate-section11">
                 <div className="exchange-rate11">
                   {isSwapped ? (
-                    <p className="chakra-text css-v4hq1a11">1 {tokenY.symbol} = {reverseExchangeRate.toFixed(6)} {tokenX.symbol}</p>
+                    <p className="chakra-text css-v4hq1a11">
+                      <img className="small-token-icon" src={tokenY.icon} alt={tokenY.symbol} />
+                      1 {tokenY.symbol} = {reverseExchangeRate.toFixed(6)} {tokenX.symbol}
+                      <img className="small-token-icon" src={tokenX.icon} alt={tokenX.symbol} />
+                    </p>
                   ) : (
-                    <p className="chakra-text css-v4hq1a11">1 {tokenX.symbol} = {exchangeRate.toFixed(6)} {tokenY.symbol}</p>
+                    <p className="chakra-text css-v4hq1a11">
+                      <img className="small-token-icon" src={tokenX.icon} alt={tokenX.symbol} />
+                      1 {tokenX.symbol} = {exchangeRate.toFixed(6)} {tokenY.symbol}
+                      <img className="small-token-icon" src={tokenY.icon} alt={tokenY.symbol} />
+                    </p>
                   )}
                 </div>
                 <button className="swap-rate-button11" onClick={handleSwapRate}>
