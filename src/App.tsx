@@ -12,7 +12,7 @@ import "./App.css";
 import "./App2.css";
 import Modal from './Modal';
 import SettingsPage from './SettingsPage';
-import Ico from './Ico';
+
 import SwapPreview from './SwapPreview';
 import WaitingConfirmation from './WaitingConfirmation';
 
@@ -1226,9 +1226,7 @@ function App() {
                         <Link to="/xseal" className="nav-item">
                           <span className="nav-text">xSEAL</span>
                         </Link>
-                        <Link to="/ico" className="nav-item">
-                          <span className="nav-text">Ico</span>
-                        </Link>
+                       
                         <div className={`nav-item ${openDropdown === "bridge" ? "open" : ""}`} 
                              onMouseEnter={() => toggleDropdown("bridge")} 
                              onMouseLeave={() => toggleDropdown(null)}>
@@ -1660,7 +1658,7 @@ function App() {
           />
           <Route path="/pool" element={<Pool />} />
           <Route path="/xseal" element={<XSeal />} />
-          <Route path="/ico" element={<Ico />} />
+          
         </Routes>
       </div>
     </WalletProvider>
