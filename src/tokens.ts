@@ -1,4 +1,8 @@
 export interface Token {
+  logoURI: any;
+  logoURI: any;
+  name: any;
+  name: any;
   symbol: string;
   address: string;
   decimals: number;

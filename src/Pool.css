@@ -81,14 +81,14 @@
 }
 
 .metric-label {
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 600;
   color: var(--text-secondary);
   margin: 0;
 }
 
 .metric-value {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 700;
   color: var(--text-color);
 }
@@ -106,10 +106,10 @@
   margin-bottom: 12px;
 }
 
-.chart-volume-container {
+.chart-title-container {
   display: flex;
-  align-items: center;
-  gap: 16px;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .chart-title {
@@ -124,21 +124,27 @@
   font-weight: 700;
   color: var(--text-color);
   margin: 0;
+  padding-left: 4px; /* Align with chart-title */
 }
 
 .period-selector {
   display: flex;
-  gap: 8px;
+  gap: 0;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .period-button {
   padding: 6px 12px;
-  border-radius: 6px;
+  border: none;
+  background: var(--search-bg);
+  color: var(--text-secondary);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: none;
+  border-radius: 0; /* Rectangular buttons */
 }
 
 .period-button.active {
@@ -146,12 +152,7 @@
   color: #182435;
 }
 
-.period-button:not(.active) {
-  background: var(--search-bg);
-  color: var(--text-secondary);
-}
-
-.period-button:hover {
+.period-button:not(.active):hover {
   background: var(--hover-bg);
 }
 
@@ -160,7 +161,7 @@
   flex-direction: column;
   gap: 16px;
   padding: 16px;
-  background: var(--background-bg);
+  background: var(--header-bg);
   border-radius: 12px;
   border: 1px solid var(--card-bg);
   margin: 0 48px;
@@ -665,11 +666,11 @@
   }
 
   .metric-label {
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .metric-value {
-    font-size: 16px;
+    font-size: 20px;
   }
 
   .chart-container {
@@ -816,11 +817,11 @@
   }
 
   .metric-label {
-    font-size: 11px;
+    font-size: 14px;
   }
 
   .metric-value {
-    font-size: 14px;
+    font-size: 18px;
   }
 
   .chart-container {

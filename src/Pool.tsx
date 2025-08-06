@@ -1,11 +1,23 @@
-import { useState, useEffect, Dispatch, SetStateAction } from "react";
-import { SuiClient, getFullnodeUrl } from "@mysten/sui.js/client";
-import { ConnectButton, useCurrentAccount, useSuiClient, useSignAndExecuteTransaction, lightTheme, WalletProvider, ThemeVars, useConnectWallet, useWallets, useDisconnectWallet, ConnectModal } from "@mysten/dapp-kit";
+import { useState, useEffect } from "react";
+import { SuiClient } from "@mysten/sui.js/client";
+import { useSuiClient } from "@mysten/dapp-kit";
+import { tokens, Token } from "./tokens"; // Rely on imported Token
+import {
+  ConnectButton,
+  useCurrentAccount,
+  useSignAndExecuteTransaction,
+  lightTheme,
+  WalletProvider,
+  ThemeVars,
+  useConnectWallet,
+  useWallets,
+  useDisconnectWallet,
+  ConnectModal,
+} from "@mysten/dapp-kit";
 import CreatePool from "./CreatePool";
 import AddLiquidityModal from "./AddLiquidityModal";
 import Position from "./Position";
 import PoolList from "./PoolList";
-import { tokens, Token } from "./tokens";
 import { Link, useNavigate } from "react-router-dom";
 import Sidebar from "./SidebarMenu";
 import "./Pool.css";
@@ -13,6 +25,17 @@ import "./App.css";
 import "./App2.css";
 import "./SidebarMenu.css";
 
+// Constants provided by the user
+const PACKAGE_ID = "0xb90158d50ac951784409a6876ac860e24564ed5257e51944d3c693efb9fdbd78";
+const POOL_REGISTRY = "0xfc8c69858d070b639b3db15ff0f78a10370950434c5521c83eaa7e2285db8d2a";
+
+// Hardcoded token prices for TVL calculation (in USD)
+const tokenPrices: { [key: string]: number } = {
+  "0x2::sui::SUI": 1.0, // Example price for SUI
+  // Add more token addresses and prices as needed (e.g., USDC)
+};
+
+// Wallet logos and custom theme definitions remain unchanged
 const walletLogos = {
   'Slush': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYHwA15AKYWXvoSL-94ysbnJrmUX_oU1fJyw&s',
   'Suiet': 'https://framerusercontent.com/modules/6HmgaTsk3ODDySrS62PZ/a3c2R3qfkYJDxcZxkoVv/assets/eDZRos3xvCrlWxmLFr72sFtiyQ.png',
@@ -21,13 +44,11 @@ const walletLogos = {
 };
 
 const customTheme1: ThemeVars = {
-  blurs: {
-    modalOverlay: 'blur(0)',
-  },
+  blurs: { modalOverlay: 'blur(0)' },
   backgroundColors: {
     primaryButton: '#3b82f6',
     primaryButtonHover: '#4b9cfa',
-    outlineButtonHover: '#E4E4E7',
+    outlineButtonHover: '#E4E7',
     modalOverlay: 'rgba(24, 36, 53, 0.2)',
     modalPrimary: 'white',
     modalSecondary: '#F7F8F8',
@@ -38,9 +59,7 @@ const customTheme1: ThemeVars = {
     walletItemSelected: 'white',
     walletItemHover: '#3C424226',
   },
-  borderColors: {
-    outlineButton: '#E4E4E7',
-  },
+  borderColors: { outlineButton: '#E4E4E7' },
   colors: {
     primaryButton: '#FFFFFF',
     outlineButton: '#373737',
@@ -49,27 +68,13 @@ const customTheme1: ThemeVars = {
     bodyMuted: '#767A81',
     bodyDanger: '#FF794B',
   },
-  radii: {
-    small: '4px',
-    medium: '8px',
-    large: '12px',
-    xlarge: '16px',
-  },
+  radii: { small: '4px', medium: '8px', large: '12px', xlarge: '16px' },
   shadows: {
     primaryButton: '0 4px 12px rgba(0, 0, 0, 0.1)',
     walletItemSelected: '0 2px 8px rgba(0, 0, 0, 0.05)',
   },
-  fontWeights: {
-    normal: '400',
-    medium: '500',
-    bold: '700',
-  },
-  fontSizes: {
-    small: '12px',
-    medium: '14px',
-    large: '16px',
-    xlarge: '18px',
-  },
+  fontWeights: { normal: '400', medium: '500', bold: '700' },
+  fontSizes: { small: '12px', medium: '14px', large: '16px', xlarge: '18px' },
   typography: {
     fontFamily: 'Arial, sans-serif',
     fontStyle: 'normal',
@@ -197,9 +202,7 @@ export function CustomConnectButton() {
 }
 
 const customTheme: ThemeVars = {
-  blurs: {
-    modalOverlay: 'blur(0)',
-  },
+  blurs: { modalOverlay: 'blur(0)' },
   backgroundColors: {
     primaryButton: '#FFFFFF',
     primaryButtonHover: '#F7F8F8',
@@ -214,9 +217,7 @@ const customTheme: ThemeVars = {
     walletItemSelected: 'white',
     walletItemHover: '#3C424226',
   },
-  borderColors: {
-    outlineButton: '#E4E4E7',
-  },
+  borderColors: { outlineButton: '#E4E4E7' },
   colors: {
     primaryButton: '#182435',
     outlineButton: '#373737',
@@ -225,27 +226,13 @@ const customTheme: ThemeVars = {
     bodyMuted: '#767A81',
     bodyDanger: '#FF794B',
   },
-  radii: {
-    small: '4px',
-    medium: '8px',
-    large: '12px',
-    xlarge: '16px',
-  },
+  radii: { small: '4px', medium: '8px', large: '12px', xlarge: '16px' },
   shadows: {
     primaryButton: '0 4px 12px rgba(0, 0, 0, 0.1)',
     walletItemSelected: '0 2px 8px rgba(0, 0, 0, 0.05)',
   },
-  fontWeights: {
-    normal: '400',
-    medium: '500',
-    bold: '700',
-  },
-  fontSizes: {
-    small: '12px',
-    medium: '14px',
-    large: '16px',
-    xlarge: '18px',
-  },
+  fontWeights: { normal: '400', medium: '500', bold: '700' },
+  fontSizes: { small: '12px', medium: '14px', large: '16px', xlarge: '18px' },
   typography: {
     fontFamily: 'Arial, sans-serif',
     fontStyle: 'normal',
@@ -270,7 +257,30 @@ interface Pool {
   rewardImg: string;
 }
 
+// Export PoolListProps for use in PoolList.tsx
+export interface PoolListProps {
+  pools: Pool[];
+  activeTab: string;
+  setActiveTab: React.Dispatch<React.SetStateAction<string>>;
+  isCreatePoolOpen: boolean;
+  handleCreatePool: () => void;
+  handleCloseCreatePool: () => void;
+  isAddLiquidityOpen: boolean;
+  selectedPool: Pool | null;
+  handleAddLiquidity: (pool: Pool | null, scroll?: boolean) => void;
+  handleCloseAddLiquidityModal: () => void;
+  newPoolToken1: string;
+  newPoolToken2: string;
+  feeRate: string;
+  setNewPoolToken1: React.Dispatch<React.SetStateAction<string>>;
+  setNewPoolToken2: React.Dispatch<React.SetStateAction<string>>;
+  setFeeRate: React.Dispatch<React.SetStateAction<string>>;
+  getTokenAddress: (symbol: string) => string;
+}
+
 function Pool() {
+  const client = useSuiClient();
+  const [pools, setPools] = useState<Pool[]>([]);
   const [newPoolToken1, setNewPoolToken1] = useState("");
   const [newPoolToken2, setNewPoolToken2] = useState("");
   const [feeRate, setFeeRate] = useState("0.25");
@@ -287,6 +297,115 @@ function Pool() {
   const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
 
+  // Fetch pool data from the Sui blockchain
+  useEffect(() => {
+    const fetchPools = async () => {
+      try {
+        const registryResponse = await client.getObject({
+          id: POOL_REGISTRY,
+          options: { showContent: true },
+        });
+        if (registryResponse.data?.content?.dataType !== "moveObject") {
+          console.error("PoolRegistry is not a moveObject");
+          return;
+        }
+        const registryFields = registryResponse.data.content.fields as any;
+        const poolsField = registryFields.pools;
+        const poolInfos = poolsField.map((pool: any) => pool.fields);
+
+        const tokenMap = tokens.reduce((map, token) => {
+          map[token.address] = token;
+          return map;
+        }, {} as { [key: string]: Token });
+
+        const poolData = await Promise.all(
+          poolInfos.map(async (poolInfo: any) => {
+            try {
+              const poolObject = await client.getObject({
+                id: poolInfo.pool_addr,
+                options: { showContent: true },
+              });
+              if (poolObject.data?.content?.dataType !== "moveObject") {
+                console.error(`Pool ${poolInfo.pool_addr} is not a moveObject`);
+                return null;
+              }
+
+              const fields = poolObject.data.content.fields as any;
+              const reserveX = BigInt(fields.reserve_x.fields.value);
+              const reserveY = BigInt(fields.reserve_y.fields.value);
+              const feeRate = parseInt(fields.fee_rate, 10);
+              const volume24h = BigInt(fields.volume_24h);
+              const fees24h = BigInt(fields.fees_24h);
+
+              const tokenXAddress = poolInfo.token_x;
+              const tokenYAddress = poolInfo.token_y;
+              const tokenX = tokenMap[tokenXAddress];
+              const tokenY = tokenMap[tokenYAddress];
+
+              if (!tokenX || !tokenY) {
+                console.error(`Tokens not found: ${tokenXAddress}, ${tokenYAddress}`);
+                return null;
+              }
+
+              const decimalsX = tokenX.decimals;
+              const decimalsY = tokenY.decimals;
+              const priceX = tokenPrices[tokenXAddress] || 0;
+              const priceY = tokenPrices[tokenYAddress] || 0;
+
+              const reserveXDecimal = Number(reserveX) / Math.pow(10, decimalsX);
+              const reserveYDecimal = Number(reserveY) / Math.pow(10, decimalsY);
+              const tvlNumber = reserveXDecimal * priceX + reserveYDecimal * priceY;
+              const tvlFormatted = `$${tvlNumber.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}`;
+
+              const volumeUSDNumber = (Number(volume24h) / Math.pow(10, decimalsX)) * priceX;
+              const volumeFormatted = `$${volumeUSDNumber.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}`;
+
+              const feesUSDNumber = (Number(fees24h) / Math.pow(10, decimalsX)) * priceX;
+              const feesFormatted = `$${feesUSDNumber.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}`;
+
+              const apr = reserveX > 0n ? (Number(fees24h) * 36500) / Number(reserveX) : 0;
+              const aprFormatted = `${apr.toFixed(2)}%`;
+
+              return {
+                pair: `${tokenX.symbol}/${tokenY.symbol}`,
+                token1: tokenX.name,
+                token2: tokenY.name,
+                token1Symbol: tokenX.symbol,
+                token2Symbol: tokenY.symbol,
+                img1: tokenX.logoURI,
+                img2: tokenY.logoURI,
+                feeRate: `${(feeRate / 100).toFixed(2)}%`,
+                tvl: tvlFormatted,
+                volume: volumeFormatted,
+                fees: feesFormatted,
+                apr: aprFormatted,
+                rewardImg: '',
+              };
+            } catch (error) {
+              console.error(`Error fetching pool ${poolInfo.pool_addr}:`, error);
+              return null;
+            }
+          })
+        );
+
+        setPools(poolData.filter((pool): pool is Pool => pool !== null));
+      } catch (error) {
+        console.error("Error fetching pools:", error);
+      }
+    };
+
+    fetchPools();
+  }, [client]);
+
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -295,23 +414,6 @@ function Pool() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
-  const toggleDropdown = (menu: string | null) => {
-    setOpenDropdown(openDropdown === menu ? null : menu);
-  };
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const getTokenAddress = (symbol: string): string => {
-    const token = tokens.find(t => t.symbol === symbol);
-    if (!token) {
-      console.error(`Token ${symbol} not found in tokens list`);
-      return "0x0";
-    }
-    return token.address;
-  };
 
   useEffect(() => {
     const updateCountdown = () => {
@@ -336,6 +438,23 @@ function Pool() {
     const timer = setInterval(updateCountdown, 1000);
     return () => clearInterval(timer);
   }, []);
+
+  const toggleDropdown = (menu: string | null) => {
+    setOpenDropdown(openDropdown === menu ? null : menu);
+  };
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const getTokenAddress = (symbol: string): string => {
+    const token = tokens.find(t => t.symbol === symbol);
+    if (!token) {
+      console.error(`Token ${symbol} not found in tokens list`);
+      return "0x0";
+    }
+    return token.address;
+  };
 
   const handleCreatePool = () => {
     setIsCreatePoolOpen(true);
@@ -412,7 +531,7 @@ function Pool() {
                   <span className="nav-text">xSEAL</span>
                 </Link>
                 <Link to="/ico" className="nav-item">
-                          <span className="nav-text">Ico</span>
+                  <span className="nav-text">Ico</span>
                 </Link>
                 <div
                   className={["nav-item", openDropdown === "bridge" ? "open" : ""].join(" ")}
@@ -571,39 +690,44 @@ function Pool() {
               <div className="summary-metrics-card">
                 <div className="metric-item">
                   <p className="metric-label">Total Value Locked</p>
-                  <p className="metric-value">$114,541,220.45</p>
+                  <p className="metric-value">
+                    ${pools.reduce((sum, pool) => sum + parseFloat(pool.tvl.slice(1).replace(/,/g, '')), 0).toLocaleString('en-US', {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </p>
                 </div>
                 <div className="metric-item">
                   <p className="metric-label">Cumulative Volume</p>
-                  <p className="metric-value">$68,622,910,890.96</p>
+                  <p className="metric-value">$0.00</p>
                 </div>
               </div>
             </div>
             <div className="summary-right">
               <div className="chart-header">
-                <p className="chart-title">Trading Volume (24H)</p>
-                <div className="chart-volume-container">
-                  <p className="chart-volume">$273,688,627.57</p>
-                  <div className="period-selector">
-                    <button
-                      className={`period-button ${chartPeriod === "D" ? "active" : ""}`}
-                      onClick={() => setChartPeriod("D")}
-                    >
-                      D
-                    </button>
-                    <button
-                      className={`period-button ${chartPeriod === "W" ? "active" : ""}`}
-                      onClick={() => setChartPeriod("W")}
-                    >
-                      W
-                    </button>
-                    <button
-                      className={`period-button ${chartPeriod === "M" ? "active" : ""}`}
-                      onClick={() => setChartPeriod("M")}
-                    >
-                      M
-                    </button>
-                  </div>
+                <p className="chart-title">Trading Volume (24H):</p>
+                <div className="chart-volume">
+                  $0.00
+                </div>
+                <div className="period-selector">
+                  <button
+                    className={`period-button ${chartPeriod === "D" ? "active" : ""}`}
+                    onClick={() => setChartPeriod("D")}
+                  >
+                    D
+                  </button>
+                  <button
+                    className={`period-button ${chartPeriod === "W" ? "active" : ""}`}
+                    onClick={() => setChartPeriod("W")}
+                  >
+                    W
+                  </button>
+                  <button
+                    className={`period-button ${chartPeriod === "M" ? "active" : ""}`}
+                    onClick={() => setChartPeriod("M")}
+                  >
+                    M
+                  </button>
                 </div>
               </div>
               <div className="chart-container">
@@ -663,6 +787,7 @@ function Pool() {
           </div>
           {activeTab === "pools" ? (
             <PoolList
+              
               activeTab={activeTab}
               setActiveTab={setActiveTab}
               isCreatePoolOpen={isCreatePoolOpen}
