@@ -37,9 +37,9 @@ const tokenPrices: { [key: string]: number } = {
 
 // Wallet logos and custom theme definitions remain unchanged
 const walletLogos = {
-  'Slush': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYHwA15AKYWXvoSL-94ysbnJrmUX_oU1fJyw&s',
+  'Slush': 'https://encrypted-tbn0.gstatic.com/images?q=tbniGqQYHwA15AKYWXvoSL-94ysbnJrmUX_oU1fJyw&s',
   'Suiet': 'https://framerusercontent.com/modules/6HmgaTsk3ODDySrS62PZ/a3c2R3qfkYJDxcZxkoVv/assets/eDZRos3xvCrlWxmLFr72sFtiyQ.png',
-  'Martian': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhb6QLKfuQY_N8ZvpiKcdZlCnQKILXw7NArw&s',
+  'Martian': 'https://encrypted-tbn0.gstatic.com/images?q=tbniGqRhb6QLKfuQY_N8ZvpiKcdZlCnQKILXw7NArw&s',
   'Sui Wallet': 'https://assets.crypto.ro/logos/sui-sui-logo.png',
 };
 
@@ -296,6 +296,47 @@ function Pool() {
   const [chartPeriod, setChartPeriod] = useState<"D" | "W" | "M">("D");
   const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
+  const [volumeData, setVolumeData] = useState<{ date: string; volume: number }[]>([]);
+  const [tooltip, setTooltip] = useState<{ x: number; y: number; date: string; volume: number } | null>(null);
+
+  // Function to generate random volume data based on period
+  const generateVolumeData = (period: 'D' | 'W' | 'M') => {
+    const data = [];
+    const now = new Date();
+    let startDate;
+
+    if (period === 'D') {
+      startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 30);
+      for (let i = 0; i < 30; i++) {
+        const date = new Date(startDate.getTime() + i * 24 * 60 * 60 * 1000);
+        const volume = Math.floor(Math.random() * 1000000); // Random volume up to 1M
+        data.push({ date: date.toLocaleDateString(), volume });
+      }
+    } else if (period === 'W') {
+      startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 84); // 12 weeks
+      for (let i = 0; i < 12; i++) {
+        const weekStart = new Date(startDate.getTime() + i * 7 * 24 * 60 * 60 * 1000);
+        const weekEnd = new Date(weekStart.getTime() + 6 * 24 * 60 * 60 * 1000);
+        const volume = Math.floor(Math.random() * 7000000); // Random volume up to 7M
+        data.push({ date: `${weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${weekEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`, volume });
+      }
+    } else if (period === 'M') {
+      startDate = new Date(now.getFullYear(), now.getMonth() - 12, 1);
+      for (let i = 0; i < 12; i++) {
+        const monthDate = new Date(startDate.getFullYear(), startDate.getMonth() + i, 1);
+        const volume = Math.floor(Math.random() * 30000000); // Random volume up to 30M
+        data.push({ date: monthDate.toLocaleString('default', { month: 'short', year: '2-digit' }), volume });
+      }
+    }
+
+    return data;
+  };
+
+  // Update volume data when chartPeriod changes
+  useEffect(() => {
+    const data = generateVolumeData(chartPeriod);
+    setVolumeData(data);
+  }, [chartPeriod]);
 
   // Fetch pool data from the Sui blockchain
   useEffect(() => {
@@ -480,6 +521,87 @@ function Pool() {
     setSelectedPool(null);
   };
 
+  // Chart dimensions and dynamic bar rendering
+  const chartWidth = 733;
+  const chartHeight = 258;
+  const barWidth = volumeData.length > 0 ? (chartWidth / volumeData.length) * 0.5 : 0; // 50% of available space for bars
+  const gap = volumeData.length > 0 ? (chartWidth / volumeData.length) * 0.5 : 0; // 50% of available space for gaps
+  const maxVolume = volumeData.length > 0 ? Math.max(...volumeData.map(d => d.volume)) : 1;
+
+  const formatVolume = (volume: number) => {
+    return `$${volume.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+  };
+
+  const bars = volumeData.map((data, index) => {
+    const barHeight = (data.volume / maxVolume) * (chartHeight - 30); // Reserve space for labels
+    const x = index * (barWidth + gap); // Add gap between bars
+    const y = chartHeight - 30 - barHeight; // Adjust for x-axis
+    return (
+      <rect
+        key={index}
+        x={x}
+        y={y}
+        width={barWidth}
+        height={barHeight}
+        fill="url(#barGradient)"
+        onMouseOver={(e) => {
+          const rect = (e.target as SVGRectElement).getBoundingClientRect();
+          setTooltip({
+            x: rect.x + rect.width / 2,
+            y: rect.y - 30,
+            date: data.date,
+            volume: data.volume,
+          });
+        }}
+        onMouseOut={() => setTooltip(null)}
+      >
+        <title>{`${data.date}\nVolume: ${formatVolume(data.volume)}`}</title>
+      </rect>
+    );
+  });
+
+  // Y-axis labels (volume scale)
+  const yAxisTicks = [0, maxVolume / 2, maxVolume];
+  const yAxisLabels = yAxisTicks.map((tick, index) => {
+    const y = chartHeight - 30 - (tick / maxVolume) * (chartHeight - 30);
+    return (
+      <text
+        key={index}
+        x={-10}
+        y={y + 5}
+        textAnchor="end"
+        fontSize="12"
+        fill="#909CA4"
+      >
+        {formatVolume(tick)}
+      </text>
+    );
+  });
+
+  // X-axis line
+  const xAxis = (
+    <line
+      x1={0}
+      y1={chartHeight - 30}
+      x2={chartWidth}
+      y2={chartHeight - 30}
+      stroke="#E4E4E7"
+      strokeWidth="1"
+    />
+  );
+
+  // Y-axis line
+  const yAxis = (
+    <line
+      x1={0}
+      y1={0}
+      x2={0}
+      y2={chartHeight - 30}
+      stroke="#E4E4E7"
+      strokeWidth="1"
+    />
+  );
+
   return (
     <WalletProvider theme={customTheme}>
       <div className="container">
@@ -530,7 +652,6 @@ function Pool() {
                 <Link to="/xseal" className="nav-item">
                   <span className="nav-text">xSEAL</span>
                 </Link>
-               
                 <div
                   className={["nav-item", openDropdown === "bridge" ? "open" : ""].join(" ")}
                   onMouseEnter={() => toggleDropdown("bridge")}
@@ -703,10 +824,9 @@ function Pool() {
             </div>
             <div className="summary-right">
               <div className="chart-header">
-                <p className="chart-title">Trading Volume (24H):<p className="chart-volume">
-                  $0.00
-                </p></p>
-                
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <p className="chart-title">Trading Volume (24H):</p>
+                </div>
                 <div className="period-selector">
                   <button
                     className={`period-button ${chartPeriod === "D" ? "active" : ""}`}
@@ -728,64 +848,44 @@ function Pool() {
                   </button>
                 </div>
               </div>
-              <div className="chart-container">
-                <svg width="100%" height="258" viewBox="0 0 733 258">
+              <div className="chart-container" style={{ position: 'relative' }}>
+                <svg width="100%" height={chartHeight} viewBox={`0 0 ${chartWidth} ${chartHeight}`}>
                   <defs>
-                    <clipPath id="chart-clip">
-                      <rect x="5" y="5" width="723" height="218"></rect>
-                    </clipPath>
+                    <linearGradient id="barGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" style={{ stopColor: '#FFFFFF', stopOpacity: 1 }} />
+                      <stop offset="100%" style={{ stopColor: '#ADD8E6', stopOpacity: 1 }} />
+                    </linearGradient>
                   </defs>
-                  <g className="recharts-cartesian-axis recharts-xAxis">
-                    <g>
-                      {['05', '26', '16', '07', '28', '18', '09', '30', '20', '10', '03', '24', '14', '05', '26', '16', '07', '28'].map((label, index) => (
-                        <g key={index} transform={`translate(${16.661 + index * 40.722},231)`}>
-                          <text x="0" y="0" dy="16" textAnchor="middle" fill="#909CA4" fontSize="12" fontFamily="Inter">{label}</text>
-                        </g>
-                      ))}
-                    </g>
-                  </g>
-                  <g clipPath="url(#chart-clip)">
-                    <g>
-                      <rect x="10.83" y="152.71" width="11" height="70.29" fill="#007BFF" />
-                      <rect x="34.15" y="182.52" width="11" height="40.48" fill="#007BFF" />
-                      <rect x="57.48" y="174.29" width="11" height="48.71" fill="#007BFF" />
-                      <rect x="80.80" y="157.22" width="11" height="65.78" fill="#007BFF" />
-                      <rect x="104.12" y="170.40" width="11" height="52.60" fill="#007BFF" />
-                      <rect x="127.44" y="148.29" width="11" height="74.71" fill="#007BFF" />
-                      <rect x="150.77" y="139.43" width="11" height="83.57" fill="#007BFF" />
-                      <rect x="174.09" y="146.01" width="11" height="76.99" fill="#007BFF" />
-                      <rect x="197.41" y="182.24" width="11" height="40.76" fill="#007BFF" />
-                      <rect x="220.73" y="167.43" width="11" height="55.57" fill="#007BFF" />
-                      <rect x="244.06" y="154.11" width="11" height="68.89" fill="#007BFF" />
-                      <rect x="267.38" y="146.95" width="11" height="76.05" fill="#007BFF" />
-                      <rect x="290.70" y="151.32" width="11" height="71.68" fill="#007BFF" />
-                      <rect x="314.02" y="96.07" width="11" height="126.93" fill="#007BFF" />
-                      <rect x="337.35" y="80.80" width="11" height="142.20" fill="#007BFF" />
-                      <rect x="360.67" y="130.78" width="11" height="92.22" fill="#007BFF" />
-                      <rect x="383.99" y="140.73" width="11" height="82.27" fill="#007BFF" />
-                      <rect x="407.31" y="27.38" width="11" height="195.62" fill="#007BFF" />
-                      <rect x="430.64" y="15.38" width="11" height="207.62" fill="#007BFF" />
-                      <rect x="453.96" y="81.78" width="11" height="141.22" fill="#007BFF" />
-                      <rect x="477.28" y="73.91" width="11" height="149.09" fill="#007BFF" />
-                      <rect x="500.60" y="42.21" width="11" height="180.79" fill="#007BFF" />
-                      <rect x="523.93" y="140.45" width="11" height="82.55" fill="#007BFF" />
-                      <rect x="547.25" y="119.63" width="11" height="103.37" fill="#007BFF" />
-                      <rect x="570.57" y="85.64" width="11" height="137.36" fill="#007BFF" />
-                      <rect x="593.90" y="28.69" width="11" height="194.31" fill="#007BFF" />
-                      <rect x="617.22" y="54.97" width="11" height="168.03" fill="#007BFF" />
-                      <rect x="640.54" y="60.76" width="11" height="162.24" fill="#007BFF" />
-                      <rect x="663.86" y="42.10" width="11" height="180.90" fill="#007BFF" />
-                      <rect x="687.19" y="86.14" width="11" height="136.86" fill="#007BFF" />
-                      <rect x="710.51" y="195.86" width="11" height="27.14" fill="#007BFF" />
-                    </g>
-                  </g>
+                  <g>{yAxis}</g>
+                  <g>{xAxis}</g>
+                  <g>{bars}</g>
+                  <g>{yAxisLabels}</g>
                 </svg>
+                {tooltip && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: `${tooltip.x}px`,
+                      top: `${tooltip.y}px`,
+                      background: '#333',
+                      color: '#fff',
+                      padding: '5px 10px',
+                      borderRadius: '4px',
+                      fontSize: '12px',
+                      pointerEvents: 'none',
+                      transform: 'translate(-50%, -100%)',
+                      zIndex: 1000,
+                    }}
+                  >
+                    <div>{tooltip.date}</div>
+                    <div>Volume: {formatVolume(tooltip.volume)}</div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
           {activeTab === "pools" ? (
             <PoolList
-              
               activeTab={activeTab}
               setActiveTab={setActiveTab}
               isCreatePoolOpen={isCreatePoolOpen}

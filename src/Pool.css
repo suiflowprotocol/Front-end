@@ -136,7 +136,7 @@
 }
 
 .period-button {
-  padding: 6px 12px;
+  padding: 6px 16px; /* Increased padding to make buttons longer */
   border: none;
   background: var(--search-bg);
   color: var(--text-secondary);
@@ -945,8 +945,4 @@
     width: 100%;
     box-sizing: border-box;
   }
-}
-
-.chart-container rect {
-  fill: #007BFF;
 }
