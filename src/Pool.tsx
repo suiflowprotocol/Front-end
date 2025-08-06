@@ -705,10 +705,10 @@ function Pool() {
             </div>
             <div className="summary-right">
               <div className="chart-header">
-                <p className="chart-title">Trading Volume (24H):</p>
-                <div className="chart-volume">
+                <p className="chart-title">Trading Volume (24H):<p className="chart-volume">
                   $0.00
-                </div>
+                </p></p>
+                
                 <div className="period-selector">
                   <button
                     className={`period-button ${chartPeriod === "D" ? "active" : ""}`}
