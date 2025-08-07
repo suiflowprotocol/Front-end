@@ -617,6 +617,13 @@ function Pool() {
                       </svg>
                       Swap
                     </Link>
+                    <Link to="/limit" className="dropdown-item">
+                      <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                        <use xlinkHref="#icon-a-icon_swap2"></use>
+                      </svg>
+                      Limit Order
+                    </Link>
+
                   </div>
                 </div>
                 <div
@@ -635,11 +642,19 @@ function Pool() {
                       </svg>
                       Pool
                     </Link>
+                    <Link to="/veseal" className="dropdown-item">
+                      <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                        <use xlinkHref="#icon-icon_liquiditypools"></use>
+                      </svg>
+                      veSEAL
+                    </Link>
+
+
                   </div>
                 </div>
-                <Link to="/xseal" className="nav-item">
-                  <span className="nav-text">xSEAL</span>
-                </Link>
+
+                
+
                 <div
                   className={["nav-item", openDropdown === "bridge" ? "open" : ""].join(" ")}
                   onMouseEnter={() => toggleDropdown("bridge")}

@@ -51,9 +51,15 @@ function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
           <div className="dropdown3 trade">
             <Link to="/" onClick={onClose} className="dropdown-item3">
               <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px" viewBox="0 0 24 24">
-                <path d="M7 7h10v2H7zm10 4H7v2h10zm-3 4l4-4-4-4v3H7v2h7v3z" />
+                <path d="M15 4l-8 8 8 8M7 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
               Swap
+            </Link>
+            <Link to="/limit" onClick={onClose} className="dropdown-item3">
+              <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px" viewBox="0 0 24 24">
+                <path d="M12 2a10 10 0 0 0-10 10 10 10 0 0 0 10 10 10 10 0 0 0 10-10 10 10 0 0 0-10-10zm1 5v5l4 2" />
+              </svg>
+              Limit Order
             </Link>
           </div>
         </div>
@@ -67,18 +73,18 @@ function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
           <div className="dropdown3 earn">
             <Link to="/pool" onClick={onClose} className="dropdown-item3">
               <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px" viewBox="0 0 24 24">
-                <path d="M4 8h16v2H4zm0 4h16v2H4zm0 4h16v2H4z" />
+                <path d="M12 2a8 8 0 0 0-8 8c0 5 8 12 8 12s8-7 8-12a8 8 0 0 0-8-8z" />
               </svg>
               Pools
             </Link>
+            <Link to="/veseal" onClick={onClose} className="dropdown-item3">
+              <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px" viewBox="0 0 24 24">
+                <path d="M12 2a5 5 0 0 0-5 5v4H5v6h14v-6h-2V7a5 5 0 0 0-5-5zm0 2a3 3 0 0 1 3 3v4H9V7a3 3 0 0 1 3-3z" />
+              </svg>
+              veSeal
+            </Link>
           </div>
         </div>
-        <div className="menu-item3" onClick={(e) => toggleDropdown("xseal", e)}>
-          <Link to="/xseal" onClick={onClose} className={`menu-item-header3 ${activeMenu === "xseal" ? "active" : ""}`} style={{ textDecoration: 'none' }}>
-            <p className="chakra-text css-1sibxxu3">xSEAL</p>
-          </Link>
-        </div>
-        
         <div className="menu-item3" onClick={(e) => toggleDropdown("bridge", e)}>
           <div className={`menu-item-header3 ${activeMenu === "bridge" ? "active" : ""}`}>
             <p className="chakra-text css-1sibxxu3">Bridge</p>
@@ -89,7 +95,7 @@ function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
           <div className="dropdown3 bridge">
             <a href="https://bridge.sui.io/" target="_blank" rel="noopener noreferrer" className="dropdown-item3">
               <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px" viewBox="0 0 24 24">
-                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z" />
+                <path d="M12 2a8 8 0 0 0-8 8c0 5 8 12 8 12s8-7 8-12a8 8 0 0 0-8-8z" />
               </svg>
               Sui Bridge
             </a>
@@ -110,7 +116,7 @@ function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
           </div>
           <div className="dropdown3 more">
             <a href="#" className="dropdown-item3">
-              <svg aria-hidden="true" fill="var(--text-secondary" width="20px" height="20px" viewBox="0 0 24 24">
+              <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px" viewBox="0 0 24 24">
                 <path d="M4 4h16v2H4zm0 7h16v2H4zm0 7h16v2H4z" />
               </svg>
               Docs
@@ -128,7 +134,7 @@ function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
         <div className="chakra-stack3 css-q2safe3">
           <div className="chakra-stack3 css-chgbhg3">
             <div className="footer-text-container3">
-              <p className="chakra-text3 css-vcvc473">RPC Node</p>
+              <p className="chakra-text3 css7-vcvc473">RPC Node</p>
             </div>
             <div className="spacer3"></div>
             <div className="footer-text-right3">
@@ -146,7 +152,7 @@ function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
             </div>
             <div className="spacer3"></div>
             <div className="footer-text-right3">
-              <p className="chakra-text3 css-ry2o2l3">SuiVision</p>
+              <p className="chakra-text3 css-ry2o2l38">SuiVision</p>
             </div>
             <div className="css-w6and63">
               <svg aria-hidden="true" fill="var(--text-secondary)" width="12px" height="12px">

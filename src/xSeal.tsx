@@ -16,45 +16,45 @@ const walletLogos = {
   'Sui Wallet': 'https://assets.crypto.ro/logos/sui-sui-logo.png',
 };
 
-// Define custom theme to match Pool.tsx
+// Define custom theme with dark backgrounds and high-contrast text
 const customTheme: ThemeVars = {
   blurs: {
-    modalOverlay: 'blur(0)',
+    modalOverlay: 'blur(4px)',
   },
   backgroundColors: {
-    primaryButton: '#FFFFFF',
-    primaryButtonHover: '#F7F8F8',
-    outlineButtonHover: '#E4E4E7',
-    modalOverlay: 'rgba(24, 36, 53, 0.2)',
-    modalPrimary: 'white',
-    modalSecondary: '#F7F8F8',
+    primaryButton: 'linear-gradient(135deg, #1e293b 0%, #2d3748 100%)',
+    primaryButtonHover: '#3b82f6',
+    outlineButtonHover: '#4b5563',
+    modalOverlay: 'rgba(17, 24, 39, 0.7)',
+    modalPrimary: '#1e293b',
+    modalSecondary: '#2d3748',
     iconButton: 'transparent',
-    iconButtonHover: '#F0F1F2',
-    dropdownMenu: '#FFFFFF',
-    dropdownMenuSeparator: '#F3F6F8',
-    walletItemSelected: 'white',
-    walletItemHover: '#3C424226',
+    iconButtonHover: '#4b5563',
+    dropdownMenu: '#1e293b',
+    dropdownMenuSeparator: '#4b5563',
+    walletItemSelected: '#2d3748',
+    walletItemHover: '#374151',
   },
   borderColors: {
-    outlineButton: '#E4E4E7',
+    outlineButton: '#4b5563',
   },
   colors: {
-    primaryButton: '#182435',
-    outlineButton: '#373737',
-    iconButton: '#000000',
-    body: '#182435',
-    bodyMuted: '#767A81',
-    bodyDanger: '#FF794B',
+    primaryButton: '#ffffff',
+    outlineButton: '#ffffff',
+    iconButton: '#ffffff',
+    body: '#ffffff',
+    bodyMuted: '#d1d5db',
+    bodyDanger: '#ef4444',
   },
   radii: {
-    small: '4px',
-    medium: '8px',
-    large: '12px',
-    xlarge: '16px',
+    small: '6px',
+    medium: '10px',
+    large: '14px',
+    xlarge: '20px',
   },
   shadows: {
-    primaryButton: '0 4px 12px rgba(0, 0, 0, 0.1)',
-    walletItemSelected: '0 2px 8px rgba(0, 0, 0, 0.05)',
+    primaryButton: '0 6px 16px rgba(0, 0, 0, 0.3)',
+    walletItemSelected: '0 4px 12px rgba(0, 0, 0, 0.15)',
   },
   fontWeights: {
     normal: '400',
@@ -62,16 +62,16 @@ const customTheme: ThemeVars = {
     bold: '700',
   },
   fontSizes: {
-    small: '12px',
-    medium: '14px',
-    large: '16px',
-    xlarge: '18px',
+    small: '14px',
+    medium: '16px',
+    large: '18px',
+    xlarge: '20px',
   },
   typography: {
-    fontFamily: 'Arial, sans-serif',
+    fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     fontStyle: 'normal',
-    lineHeight: '1.5',
-    letterSpacing: '0.02em',
+    lineHeight: '1.6',
+    letterSpacing: '0.01em',
   },
 };
 
@@ -81,43 +81,41 @@ export function CustomConnectButton() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showDisconnect, setShowDisconnect] = useState(false);
 
-  // Button base style to match Pool.tsx
   const baseStyle = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '120px',
-    height: '36px',
-    background: '#1e293b',
-    border: '1px solid #808080',
-    borderRadius: '8px',
+    width: '140px',
+    height: '42px',
+    background: 'linear-gradient(135deg, #1e293b 0%, #2d3748 100%)',
+    border: '1px solid #4b5563',
+    borderRadius: '10px',
     cursor: 'pointer',
-    padding: '6px',
+    padding: '8px',
     transition: 'all 0.3s ease',
-    color: '#FFFFFF',
-    fontSize: '14px',
+    color: '#ffffff',
+    fontSize: '16px',
+    fontWeight: '500',
   };
 
-  // Truncate wallet address for display
   const truncateAddress = (address: string) => {
     if (!address) return '';
-    return `0x${address.slice(2, 5)}...${address.slice(-3)}`;
+    return `0x${address.slice(2, 6)}...${address.slice(-4)}`;
   };
 
-  // Disconnected state content
   const disconnectedContent = (
     <>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="20"
+        width="24"
+        height="24"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        style={{ marginRight: '8px' }}
+        style={{ marginRight: '10px' }}
       >
         <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path>
         <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path>
@@ -127,21 +125,19 @@ export function CustomConnectButton() {
     </>
   );
 
-  // Connected state content
   const connectedContent = (
     <>
       {currentAccount && (
         <img
-          src="https://assets.crypto.ro/logos/sui-sui-logo.png"
+          src={walletLogos['Sui Wallet']}
           alt="Wallet Logo"
-          style={{ width: '20px', height: '20px', marginRight: '8px' }}
+          style={{ width: '24px', height: '24px', marginRight: '10px' }}
         />
       )}
       <span>{truncateAddress(currentAccount?.address || '')}</span>
     </>
   );
 
-  // Handle button click
   const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (currentAccount) {
@@ -151,13 +147,11 @@ export function CustomConnectButton() {
     }
   };
 
-  // Handle disconnect
   const handleDisconnect = () => {
     disconnect();
     setShowDisconnect(false);
   };
 
-  // Wallet filter
   const allowedWallets = ['Slush', 'Suiet', 'Martian', 'Sui Wallet', 'Martian Sui Wallet'];
   const walletFilter = (wallet: any) => allowedWallets.includes(wallet.name);
 
@@ -181,17 +175,21 @@ export function CustomConnectButton() {
         <button
           style={{
             position: 'absolute',
-            top: '100%',
+            top: 'calc(100% + 8px)',
             right: 0,
-            backgroundColor: '#f0f0f0',
-            color: '#333',
-            padding: '5px 10px',
-            borderRadius: '5px',
-            border: 'none',
+            background: '#1e293b',
+            color: '#ffffff',
+            padding: '8px 16px',
+            borderRadius: '8px',
+            border: '1px solid #4b5563',
             cursor: 'pointer',
             zIndex: 1000,
+            fontSize: '14px',
+            transition: 'background 0.3s ease',
           }}
           onClick={handleDisconnect}
+          onMouseEnter={(e) => (e.currentTarget.style.background = '#374151')}
+          onMouseLeave={(e) => (e.currentTarget.style.background = '#1e293b')}
         >
           Disconnect
         </button>
@@ -200,7 +198,6 @@ export function CustomConnectButton() {
   );
 }
 
-// Constants for xSeal
 const PACKAGE_ID = "0xb90158d50ac951784409a6876ac860e24564ed5257e51944d3c693efb9fdbd78";
 const SEAL_TOKEN = "0x2::seal::SEAL";
 const XSEAL_TOKEN = "0x2::xseal::XSEAL";
@@ -223,17 +220,14 @@ const XSeal = () => {
   const { mutate: signAndExecute } = useSignAndExecuteTransaction();
   const [isMobile, setIsMobile] = useState(false);
 
-  // Toggle dropdown menu
   const toggleDropdown = (menu: string | null) => {
     setOpenDropdown(openDropdown === menu ? null : menu);
   };
 
-  // Toggle mobile menu
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Check for mobile view
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -243,7 +237,6 @@ const XSeal = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Countdown logic: Every Monday at 7 PM (UTC+8)
   useEffect(() => {
     const updateCountdown = () => {
       const now = new Date();
@@ -276,7 +269,6 @@ const XSeal = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Fetch balances
   useEffect(() => {
     const fetchBalances = async () => {
       if (!account) {
@@ -308,7 +300,6 @@ const XSeal = () => {
     fetchBalances();
   }, [account, client]);
 
-  // Handle stake or unstake
   const handleConvert = async () => {
     if (!account) {
       setError("Please connect wallet");
@@ -397,7 +388,6 @@ const XSeal = () => {
     }
   };
 
-  // Handle claim rewards
   const handleClaimRewards = async () => {
     if (!account) {
       setError("Please connect wallet");
@@ -436,7 +426,6 @@ const XSeal = () => {
     }
   };
 
-  // Set half balance
   const setHalfBalance = () => {
     const balance = parseFloat(balances[activeTab === "stake" ? SEAL_TOKEN : XSEAL_TOKEN] || "0");
     if (balance > 0) {
@@ -444,7 +433,6 @@ const XSeal = () => {
     }
   };
 
-  // Set max balance
   const setMaxBalance = () => {
     const balance = parseFloat(balances[activeTab === "stake" ? SEAL_TOKEN : XSEAL_TOKEN] || "0");
     if (balance > 0) {
@@ -503,12 +491,15 @@ const XSeal = () => {
                     </svg>
                     Pool
                   </Link>
+                  <Link to="/veseal" className="dropdown-item">
+                    <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                      <use xlinkHref="#icon-icon_liquiditypools"></use>
+                    </svg>
+                    veSeal
+                  </Link>
                 </div>
               </div>
-              <Link to="/xseal" className="nav-item">
-                <span className="nav-text">xSEAL</span>
-              </Link>
-             
+              
               <div
                 className={["nav-item", openDropdown === "bridge" ? "open" : ""].join(" ")}
                 onMouseEnter={() => toggleDropdown("bridge")}
@@ -659,208 +650,103 @@ const XSeal = () => {
       {isMobile && (
         <Sidebar isOpen={isMenuOpen} onClose={toggleMenu} />
       )}
-      <div className="xseal-container">
-        <div className="summary-container">
-          <div className="summary-left">
-            <h1 className="summary-title">Stake $SEAL to Earn Rewards</h1>
-            <div className="summary-metrics-card">
-              <div className="metric-item">
-                <p className="metric-label">My Locked SEAL</p>
-                <p className="metric-value">{balances[SEAL_TOKEN] || "0.0000"}</p>
-              </div>
-              <div className="metric-item">
-                <p className="metric-label">My veSEAL</p>
-                <p className="metric-value">{balances[XSEAL_TOKEN] || "0.0000"}</p>
-              </div>
-              <div className="metric-item">
-                <p className="metric-label">Reward Distribution Share</p>
-                <p className="metric-value">0%</p>
-              </div>
-            </div>
+      <div className="xseal-container15">
+        <div className="user-stats15">
+          <div className="stat-box15">
+            <div className="stat-box-label15">Your HAEDAL Locked</div>
+            <div className="stat-box-value15">{balances[SEAL_TOKEN] || "0.0000"}</div>
           </div>
-          <div className="summary-right">
-            <div className="rewards-metrics">
-              <div className="metric-item">
-                <p className="metric-label">Estimated APR</p>
-                <p className="metric-value">≈15.50%</p>
-              </div>
-              <div className="metric-item">
-                <p className="metric-label">Your Share</p>
-                <p className="metric-value">≈0%</p>
-              </div>
-              <div className="metric-item">
-                <p className="metric-label">Pending Yield</p>
-                <p className="metric-value">$0</p>
-              </div>
-            </div>
-            <p className="countdown-label">Next Reward Distribution:</p>
-            <p className="countdown-text">{countdown}</p>
+          <div className="stat-box15">
+            <div className="stat-box-label15">Your veHAEDAL</div>
+            <div className="stat-box-value15">{balances[XSEAL_TOKEN] || "0.0000"}</div>
           </div>
         </div>
-        <div className="xseal-content">
-          <div className="options-toggle">
+        <div className="lock-section15">
+          <div className="vehaedal-rewards">
+            <div className="vehaedal-rewards-title">veHAEDAL Rewards ℹ️</div>
+            <div className="vehaedal-rewards-apr">APR <span>31.65%</span></div>
+            <div className="vehaedal-rewards-distribution">
+              Rewards distribution in <span>4d</span> <span>21h</span> <span>7m</span> <span>41s</span>
+            </div>
+            <div className="vehaedal-rewards-stats">
+              <div className="vehaedal-rewards-stat">
+                <div className="vehaedal-rewards-stat-label">Your share</div>
+                <div className="vehaedal-rewards-stat-value">0%</div>
+              </div>
+              <div className="vehaedal-rewards-stat">
+                <div className="vehaedal-rewards-stat-label">Your Rewards</div>
+                <div className="vehaedal-rewards-stat-value">$0 HAEDAL</div>
+              </div>
+              <button className="vehaedal-rewards-claim">Claim</button>
+            </div>
+          </div>
+          <div className="lock-section-content">
+            <div className="lock-info">Lock HAEDAL to get veHAEDAL</div>
+            <div className="lock-inputs">
+              <div className="lock-amount">
+                <div className="lock-amount-label">Lock Amount</div>
+                <div className="lock-amount-input">
+                  <div className="token-info15">
+                    <img
+                      src="https://i.meee.com.tw/SdliTGK.png"
+                      alt="HAEDAL"
+                      className="token-icon15"
+                    />
+                    <span className="token-symbol15">HAEDAL</span>
+                  </div>
+                  <input
+                    type="text"
+                    value={amount}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value === "" || (parseFloat(value) >= 0 && !isNaN(parseFloat(value)))) {
+                        setAmount(value);
+                      }
+                    }}
+                    placeholder="0.0"
+                    className="amount-input15"
+                  />
+                </div>
+                <div className="input-footer15">
+                  <div className="balance-info15">
+                    <span>Balance: {balances[SEAL_TOKEN] || "0.0"} HAEDAL</span>
+                  </div>
+                  <div className="quick-select15">
+                    <button onClick={setHalfBalance} className="quick-select-btn15">50%</button>
+                    <button
+                      onClick={() => setAmount((parseFloat(balances[SEAL_TOKEN] || "0") * 0.75).toFixed(4))}
+                      className="quick-select-btn15"
+                    >
+                      75%
+                    </button>
+                    <button onClick={setMaxBalance} className="quick-select-btn15">Max</button>
+                  </div>
+                </div>
+              </div>
+              <div className="lock-duration">
+                <div className="lock-duration-label">Lock Duration</div>
+                <div className="duration-options">
+                  <button className="duration-option">4W</button>
+                  <button className="duration-option">16W</button>
+                  <button className="duration-option">32W</button>
+                  <button className="duration-option active">MAX</button>
+                </div>
+                <div className="lock-duration-value">0 weeks</div>
+              </div>
+            </div>
             <button
-              className={`tab-button ${activeTab === "stake" ? "active" : ""}`}
-              onClick={() => setActiveTab("stake")}
+              onClick={handleConvert}
+              className="action-button15"
+              disabled={!account || !amount || parseFloat(amount) <= 0}
             >
-              Stake $SEAL
-            </button>
-            <button
-              className={`tab-button ${activeTab === "unstake" ? "active" : ""}`}
-              onClick={() => setActiveTab("unstake")}
-            >
-              Unstake $SEAL
-            </button>
-            <button
-              className={`tab-button ${activeTab === "claim" ? "active" : ""}`}
-              onClick={() => setActiveTab("claim")}
-            >
-              Claim Rewards
+              {account ? (amount && parseFloat(amount) > 0 ? "Lock HAEDAL" : "Enter an Amount") : "Connect Wallet"}
             </button>
           </div>
-          {activeTab === "stake" && (
-            <div className="input-section">
-              <div className="input-card">
-                <p className="input-label">Stake Amount</p>
-                <div className="input-group">
-                  <input
-                    placeholder="0.0"
-                    type="text"
-                    value={amount}
-                    inputMode="numeric"
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (value === "" || (parseFloat(value) >= 0 && !isNaN(parseFloat(value)))) {
-                        setAmount(value);
-                      }
-                    }}
-                    className="amount-input"
-                  />
-                  <div className="token-display">
-                    <img
-                      className="token-icon"
-                      src="https://7rgiihm5sisgewirofazpjddkpvmlwphumcg5lulriu6okgf5krq.arweave.net/_EyEHZ2SJGJZEXFBl6RjTwoCq2HpnmgkbqzhKC5GM4jY"
-                      alt="SEAL"
-                    />
-                    <p className="token-symbol">SEAL</p>
-                  </div>
-                </div>
-                <div className="input-footer">
-                  <div className="balance-info">
-                    <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
-                      <use xlinkHref="#icon-icon_wallet" />
-                    </svg>
-                    <p className="balance-text">Balance: {balances[SEAL_TOKEN] || "0.0"} SEAL</p>
-                  </div>
-                  <div className="balance-buttons">
-                    <button type="button" className="balance-btn" onClick={setHalfBalance}>HALF</button>
-                    <button type="button" className="balance-btn" onClick={setMaxBalance}>MAX</button>
-                  </div>
-                </div>
-              </div>
-              <div className="vesting-section">
-                <p className="vesting-title">Vesting Duration</p>
-                <div className="vesting-options">
-                  <p className="vesting-duration">{vestingDuration} Days</p>
-                  <div className="duration-buttons">
-                    {[15, 30, 90, 180].map((duration) => (
-                      <button
-                        key={duration}
-                        className={`duration-option ${vestingDuration === duration ? "active" : ""}`}
-                        onClick={() => setVestingDuration(duration)}
-                      >
-                        {duration}D
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <div className="slider-container">
-                  <input
-                    type="range"
-                    min="15"
-                    max="180"
-                    value={vestingDuration}
-                    onChange={(e) => setVestingDuration(parseInt(e.target.value))}
-                    className="vesting-slider"
-                  />
-                </div>
-              </div>
-              <button
-                type="button"
-                className="action-button"
-                disabled={!account || !amount || parseFloat(amount) <= 0}
-                onClick={handleConvert}
-              >
-                {account ? (amount && parseFloat(amount) > 0 ? "Stake Now" : "Enter an Amount") : "Connect Wallet"}
-              </button>
-            </div>
-          )}
-          {activeTab === "unstake" && (
-            <div className="input-section">
-              <div className="input-card">
-                <p className="input-label">Unstake Amount</p>
-                <div className="input-group">
-                  <input
-                    placeholder="0.0"
-                    type="text"
-                    value={amount}
-                    inputMode="numeric"
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (value === "" || (parseFloat(value) >= 0 && !isNaN(parseFloat(value)))) {
-                        setAmount(value);
-                      }
-                    }}
-                    className="amount-input"
-                  />
-                  <div className="token-display">
-                    <img
-                      className="token-icon"
-                      src="https://uxcdefo3r2uemooidt2kk2stykakvwd2m6nasg5lhbfaxemm4i3a.arweave.net/pcQyFduOqEY5yBz0pWpTwoCq2HpnmgkbqzhKC5GM4jY"
-                      alt="XSEAL"
-                    />
-                    <p className="token-symbol">XSEAL</p>
-                  </div>
-                </div>
-                <div className="input-footer">
-                  <div className="balance-info">
-                    <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
-                      <use xlinkHref="#icon-icon_wallet" />
-                    </svg>
-                    <p className="balance-text">Balance: {balances[XSEAL_TOKEN] || "0.0"} XSEAL</p>
-                  </div>
-                  <div className="balance-buttons">
-                    <button type="button" className="balance-btn" onClick={setHalfBalance}>HALF</button>
-                    <button type="button" className="balance-btn" onClick={setMaxBalance}>MAX</button>
-                  </div>
-                </div>
-              </div>
-              <button
-                type="button"
-                className="action-button"
-                disabled={!account || !amount || parseFloat(amount) <= 0}
-                onClick={handleConvert}
-              >
-                {account ? (amount && parseFloat(amount) > 0 ? "Unstake Now" : "Enter an Amount") : "Connect Wallet"}
-              </button>
-            </div>
-          )}
-          {activeTab === "claim" && (
-            <div className="input-section">
-              <p className="input-label">Claim Rewards</p>
-              <p className="metric-value">$0</p>
-              <button
-                type="button"
-                className="action-button"
-                disabled={!account}
-                onClick={handleClaimRewards}
-              >
-                {account ? "Claim Rewards" : "Connect Wallet"}
-              </button>
-            </div>
-          )}
-          {error && <div className="error-message">{error}</div>}
-          {success && <div className="success-message">{success}</div>}
+          <div className="vehaedal-balances">
+            <div className="vehaedal-balance">veHAEDAL balance <span>--</span></div>
+            <div className="vehaedal-share">Your veHAEDAL share <span>--</span></div>
+            <button className="action-button15" onClick={handleClaimRewards} disabled={!account}>Lock HAEDAL</button>
+          </div>
         </div>
       </div>
     </div>

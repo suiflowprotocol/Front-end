@@ -15,6 +15,7 @@ import SettingsPage from './SettingsPage';
 
 import SwapPreview from './SwapPreview';
 import WaitingConfirmation from './WaitingConfirmation';
+import LimitOrderPage from "./limit";
 
 // Wallet logos
 const walletLogos = {
@@ -1205,7 +1206,16 @@ function App() {
                               </svg>
                               Swap
                             </Link>
+                            <Link to="/" className="dropdown-item">
+                              <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                                <use xlinkHref="#icon-a-icon_swap2"></use>
+                              </svg>
+                              Limit Order
+                            </Link>
                           </div>
+                          
+                            
+                          
                         </div>
                         <div className={`nav-item ${openDropdown === "earn" ? "open" : ""}`} 
                              onMouseEnter={() => toggleDropdown("earn")} 
@@ -1221,11 +1231,19 @@ function App() {
                               </svg>
                               Pool
                             </Link>
-                          </div>
+
+                            <Link to="/veseal" className="dropdown-item">
+                              <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                                <use xlinkHref="#icon-icon_liquiditypools"></use>
+                              </svg>
+                              veSeal
+                            </Link>
+                            
+                          </div>   
                         </div>
-                        <Link to="/xseal" className="nav-item">
-                          <span className="nav-text">xSEAL</span>
-                        </Link>
+
+                        
+                        
                        
                         <div className={`nav-item ${openDropdown === "bridge" ? "open" : ""}`} 
                              onMouseEnter={() => toggleDropdown("bridge")} 
@@ -1658,6 +1676,7 @@ function App() {
           />
           <Route path="/pool" element={<Pool />} />
           <Route path="/xseal" element={<XSeal />} />
+          <Route path="/limit" element={<LimitOrderPage />} />
           
         </Routes>
       </div>
