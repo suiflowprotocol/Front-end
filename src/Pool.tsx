@@ -48,7 +48,7 @@ const customTheme1: ThemeVars = {
   backgroundColors: {
     primaryButton: '#3b82f6',
     primaryButtonHover: '#4b9cfa',
-    outlineButtonHover: '#E4E7',
+    outlineButtonHover: '#E4E4E7',
     modalOverlay: 'rgba(24, 36, 53, 0.2)',
     modalPrimary: 'white',
     modalSecondary: '#F7F8F8',
@@ -296,13 +296,13 @@ function Pool() {
   const [chartPeriod, setChartPeriod] = useState<"D" | "W" | "M">("D");
   const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
-  const [volumeData, setVolumeData] = useState<{ date: string; volume: number }[]>([]);
+  const [volumeData, setVolumeData] = useState<{ date: string; volume: number; label: string }[]>([]);
   const [tooltip, setTooltip] = useState<{ x: number; y: number; date: string; volume: number } | null>(null);
 
-  // Function to generate random volume data based on period
+  // Function to generate random volume data based on period with appropriate x-axis labels
   const generateVolumeData = (period: 'D' | 'W' | 'M') => {
     const data = [];
-    const now = new Date();
+    const now = new Date(2025, 7, 7); // Hardcoded to August 7, 2025, for consistency
     let startDate;
 
     if (period === 'D') {
@@ -310,7 +310,8 @@ function Pool() {
       for (let i = 0; i < 30; i++) {
         const date = new Date(startDate.getTime() + i * 24 * 60 * 60 * 1000);
         const volume = Math.floor(Math.random() * 1000000); // Random volume up to 1M
-        data.push({ date: date.toLocaleDateString(), volume });
+        const label = date.getDate().toString(); // Day of the month (e.g., "7" for August 7)
+        data.push({ date: date.toLocaleDateString(), volume, label });
       }
     } else if (period === 'W') {
       startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 84); // 12 weeks
@@ -318,14 +319,20 @@ function Pool() {
         const weekStart = new Date(startDate.getTime() + i * 7 * 24 * 60 * 60 * 1000);
         const weekEnd = new Date(weekStart.getTime() + 6 * 24 * 60 * 60 * 1000);
         const volume = Math.floor(Math.random() * 7000000); // Random volume up to 7M
-        data.push({ date: `${weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${weekEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`, volume });
+        const label = weekStart.getDate().toString(); // Start day of the week
+        data.push({
+          date: `${weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${weekEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`,
+          volume,
+          label,
+        });
       }
     } else if (period === 'M') {
       startDate = new Date(now.getFullYear(), now.getMonth() - 12, 1);
       for (let i = 0; i < 12; i++) {
         const monthDate = new Date(startDate.getFullYear(), startDate.getMonth() + i, 1);
         const volume = Math.floor(Math.random() * 30000000); // Random volume up to 30M
-        data.push({ date: monthDate.toLocaleString('default', { month: 'short', year: '2-digit' }), volume });
+        const label = monthDate.toLocaleString('default', { month: 'short', year: '2-digit' }); // e.g., "Aug 24"
+        data.push({ date: label, volume, label });
       }
     }
 
@@ -523,7 +530,7 @@ function Pool() {
 
   // Chart dimensions and dynamic bar rendering
   const chartWidth = 733;
-  const chartHeight = 258;
+  const chartHeight = 228; // Reduced by 30px to make space for x-axis labels
   const barWidth = volumeData.length > 0 ? (chartWidth / volumeData.length) * 0.5 : 0; // 50% of available space for bars
   const gap = volumeData.length > 0 ? (chartWidth / volumeData.length) * 0.5 : 0; // 50% of available space for gaps
   const maxVolume = volumeData.length > 0 ? Math.max(...volumeData.map(d => d.volume)) : 1;
@@ -532,10 +539,30 @@ function Pool() {
     return `$${volume.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
   };
 
+  // Generate x-axis labels based on chartPeriod
+  const xAxisLabels = volumeData.map((data, index) => {
+    // For 'D', show every other day; for 'W', show start day; for 'M', show all months
+    const showLabel = chartPeriod === 'D' ? index % 2 === 0 : true; // Every other day for daily
+    if (!showLabel) return null;
+    const x = index * (barWidth + gap) + barWidth / 2; // Center under the bar
+    return (
+      <text
+        key={index}
+        x={x}
+        y={chartHeight + 20} // Position below the chart
+        textAnchor="middle"
+        fontSize="12"
+        fill="#909CA4"
+      >
+        {data.label}
+      </text>
+    );
+  }).filter(label => label !== null);
+
   const bars = volumeData.map((data, index) => {
-    const barHeight = (data.volume / maxVolume) * (chartHeight - 30); // Reserve space for labels
-    const x = index * (barWidth + gap); // Add gap between bars
-    const y = chartHeight - 30 - barHeight; // Adjust for x-axis
+    const barHeight = (data.volume / maxVolume) * chartHeight; // Use adjusted chart height
+    const x = index * (barWidth + gap); // No offset, starts at x=0
+    const y = chartHeight - barHeight; // Align bars to the bottom
     return (
       <rect
         key={index}
@@ -560,47 +587,8 @@ function Pool() {
     );
   });
 
-  // Y-axis labels (volume scale)
-  const yAxisTicks = [0, maxVolume / 2, maxVolume];
-  const yAxisLabels = yAxisTicks.map((tick, index) => {
-    const y = chartHeight - 30 - (tick / maxVolume) * (chartHeight - 30);
-    return (
-      <text
-        key={index}
-        x={-10}
-        y={y + 5}
-        textAnchor="end"
-        fontSize="12"
-        fill="#909CA4"
-      >
-        {formatVolume(tick)}
-      </text>
-    );
-  });
-
-  // X-axis line
-  const xAxis = (
-    <line
-      x1={0}
-      y1={chartHeight - 30}
-      x2={chartWidth}
-      y2={chartHeight - 30}
-      stroke="#E4E4E7"
-      strokeWidth="1"
-    />
-  );
-
-  // Y-axis line
-  const yAxis = (
-    <line
-      x1={0}
-      y1={0}
-      x2={0}
-      y2={chartHeight - 30}
-      stroke="#E4E4E7"
-      strokeWidth="1"
-    />
-  );
+  // Chart title based on period
+  const chartTitle = chartPeriod === 'D' ? 'Trading Volume (24H)' : chartPeriod === 'W' ? 'Trading Volume (7D)' : 'Trading Volume (30D)';
 
   return (
     <WalletProvider theme={customTheme}>
@@ -825,7 +813,7 @@ function Pool() {
             <div className="summary-right">
               <div className="chart-header">
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <p className="chart-title">Trading Volume (24H):</p>
+                  <p className="chart-title">{chartTitle}:</p>
                 </div>
                 <div className="period-selector">
                   <button
@@ -849,17 +837,15 @@ function Pool() {
                 </div>
               </div>
               <div className="chart-container" style={{ position: 'relative' }}>
-                <svg width="100%" height={chartHeight} viewBox={`0 0 ${chartWidth} ${chartHeight}`}>
+                <svg width="100%" height={chartHeight + 30} viewBox={`0 0 ${chartWidth} ${chartHeight + 30}`}>
                   <defs>
                     <linearGradient id="barGradient" x1="0%" y1="0%" x2="0%" y2="100%">
                       <stop offset="0%" style={{ stopColor: '#FFFFFF', stopOpacity: 1 }} />
                       <stop offset="100%" style={{ stopColor: '#ADD8E6', stopOpacity: 1 }} />
                     </linearGradient>
                   </defs>
-                  <g>{yAxis}</g>
-                  <g>{xAxis}</g>
-                  <g>{bars}</g>
-                  <g>{yAxisLabels}</g>
+                  <g transform="translate(0, -30)">{bars}</g>
+                  <g transform="translate(0, -30)">{xAxisLabels}</g>
                 </svg>
                 {tooltip && (
                   <div

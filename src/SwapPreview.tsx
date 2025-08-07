@@ -34,7 +34,7 @@ const SwapPreview: React.FC<SwapPreviewProps> = ({
   };
 
   return (
-    <div className="modal-overlay">
+    <div className="modal-overlay visible">
       <section className="chakra-modal__content css-xnqtk411" role="dialog" tabIndex={-1} aria-modal="true">
         <header className="chakra-modal__header css-10h09dx11">
           <h2 className="chakra-heading css-1cowq8v11">Swap Preview</h2>
