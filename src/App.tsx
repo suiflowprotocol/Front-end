@@ -249,7 +249,7 @@ const SettingsModal = ({ isOpen, onClose, slippage, setSlippage, customSlippage,
         <svg viewBox="0 0 24 24" focusable="false" className="chakra-icon css-onkibi" aria-hidden="true">
           <path
             fill="currentColor"
-            d="M.439,21.44a1.5,1.5,0,0,0,2.122,2.121L11.823,14.3a.25.25,0,0,1,.354,0l9.262,9.263a1.5,1.5,0,1,0,2.122-2.121L14.3,12.177a.25.25,0,0,1,0-.354l9.263-9.262A1.5,1.5,0,0,0,21.439.44L12.177,9.7a.25.25,0,0,1-.354,0L2.561.44A1.5,1.5,0,0,0,.439,2.561L9.7,11.823a.25.25,0,0,1,0,.354Z"
+            d="M.439,21.44a1.5,1.5,0,0,0,2.122,2.121L11.823,14.3a.25.25,0,0,1,.354,0l9.262,9.263a1.5,1.5,0,1,0,2.122-2.121L14.3,12.177a.25.25,0,0,1,0-.354l9.263-9.262A1.5,1 Consent,21.439.44L12.177,9.7a.25.25,0,0,1-.354,0L2.561.44A1.5,1.5,0,0,0,.439,2.561L9.7,11.823a.25.25,0,0,1,0,.354Z"
           ></path>
         </svg>
       </button>
@@ -324,7 +324,7 @@ const SettingsModal = ({ isOpen, onClose, slippage, setSlippage, customSlippage,
                     >
                       Fast Mode
                     </p>
-                  </div>
+ "                  </div>
                 </div>
               </div>
               <p className="chakra-text css-95x0qv">Standard gas based on real-time network conditions</p>
@@ -939,7 +939,7 @@ function App() {
         }
       } catch (err) {
         console.error("Failed to fetch balances or expected output:", err);
-        setError(`Unable to fetch balances or expected output: ${err instanceof Error ? err.message : "Unknown error"}`);
+        
         setExpectedOutput("0.0");
         setMinAmountOut("0");
         setPriceImpact("0.00");
@@ -1172,7 +1172,8 @@ function App() {
   return (
     <WalletProvider theme={customTheme}>
       <div className="container">
-        <div className="background-overlay"></div> {/* 添加背景纹理 */}
+        <div className="background-pattern"></div>
+        <div className="background-glow"></div>
         {toast && (
           <div className={`toast toast-${toast.type}`}>
             <p>{toast.message}</p>
