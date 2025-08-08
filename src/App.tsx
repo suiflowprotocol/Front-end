@@ -1206,7 +1206,7 @@ function App() {
                               </svg>
                               Swap
                             </Link>
-                            <Link to="/" className="dropdown-item">
+                            <Link to="/limit" className="dropdown-item">
                               <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
                                 <use xlinkHref="#icon-a-icon_swap2"></use>
                               </svg>

@@ -1,7 +1,7 @@
 /* limit.css */
 /* 与App.css保持一致的样式，并为Limit Order页面添加特定样式 */
 
-.limit-panel {
+.limit-panel18 {
   width: 100%;
   max-width: 480px;
   background: var(--card-bg);
@@ -14,99 +14,99 @@
   gap: 16px;
 }
 
-.limit-header {
+.limit-header18 {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.limit-title {
+.limit-title18 {
   font-size: 20px;
   font-weight: 600;
   color: var(--text-color);
 }
 
-.css-ec25x4 {
+.css-ec25x418 {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-.css-18fuz0p {
+.css-18fuz0p18 {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.css-5kt1vw {
+.css-5kt1vw18 {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.css-1jjq5p5 {
+.css-1jjq5p518 {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.css-1rwgceg {
+.css-1rwgceg18 {
   display: flex;
   gap: 8px;
 }
 
-.css-1grrz5v {
+.css-1grrz5v18 {
   padding: 4px 8px;
   border-radius: 4px;
   cursor: pointer;
 }
 
-.css-1grrz5v[data-active="true"] {
+.css-1grrz5v18[data-active="true"] {
   background: var(--primary-color);
   color: #ffffff;
 }
 
-.css-1gjz30r, .css-zxnh2z {
+.css-1gjz30r18, .css-zxnh2z18 {
   font-size: 14px;
   color: var(--text-secondary);
 }
 
-.css-1grrz5v[data-active="true"] .css-zxnh2z {
+.css-1grrz5v18[data-active="true"] .css-zxnh2z18 {
   color: #ffffff;
 }
 
-.css-rcj3dj {
+.css-rcj3dj18 {
   display: flex;
   align-items: center;
 }
 
-.css-gmuwbf {
+.css-gmuwbf18 {
   display: flex;
   align-items: center;
 }
 
-.css-1i8jrez {
+.css-1i8jrez18 {
   width: 24px;
   height: 24px;
 }
 
-.css-jkw8y9 {
+.css-jkw8y918 {
   display: flex;
   gap: 8px;
 }
 
-.css-0 {
+.css-018 {
   background: none;
   border: none;
   cursor: pointer;
 }
 
-.css-951vyv {
+.css-951vyv18 {
   display: flex;
   align-items: center;
 }
 
-.css-1ke24j5 {
+.css-1ke24j518 {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -114,43 +114,43 @@
   height: 20px;
 }
 
-.css-ny024p {
+.css-ny024p18 {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.css-8mpdcp {
+.css-8mpdcp18 {
   background: var(--modal-bg);
   padding: 8px;
   border-radius: 8px;
 }
 
-.css-1pm9ap2 {
+.css-1pm9ap218 {
   font-size: 14px;
   color: var(--text-color);
 }
 
-.css-4x3d3d {
+.css-4x3d3d18 {
   flex: 1;
 }
 
-.css-4qje1j {
+.css-4qje1j18 {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.css-3z5rg1 {
+.css-3z5rg118 {
   display: flex;
   align-items: center;
 }
 
-.css-5xlugw {
+.css-5xlugw18 {
   flex: 1;
 }
 
-.swap-input {
+.swap-input18 {
   width: 100%;
   background: none;
   border: none;
@@ -159,12 +159,12 @@
   font-size: 20px;
 }
 
-.css-1z0iubp {
+.css-1z0iubp18 {
   display: flex;
   align-items: center;
 }
 
-.css-159ddi2 {
+.css-159ddi218 {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -173,76 +173,76 @@
   cursor: pointer;
 }
 
-.css-1l3sdz4 {
+.css-1l3sdz418 {
   display: flex;
   align-items: center;
 }
 
-.css-kjafn5 {
+.css-kjafn518 {
   display: flex;
   align-items: center;
 }
 
-.css-1bfl2d {
+.css-1bfl2d18 {
   width: 24px;
   height: 24px;
 }
 
-.css-rmmdki {
+.css-rmmdki18 {
   width: 100%;
   height: 100%;
   border-radius: 50%;
 }
 
-.css-swxx46 {
+.css-swxx4618 {
   font-size: 16px;
   color: var(--text-color);
 }
 
-.css-3dpqkv {
+.css-3dpqkv18 {
   display: flex;
   align-items: center;
 }
 
-.css-rf2r47 {
+.css-rf2r4718 {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.css-1pzobe8 {
+.css-1pzobe818 {
   font-size: 14px;
   color: var(--text-secondary);
 }
 
-.css-1sj51x8 {
+.css-1sj51x818 {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.css-cdkrf0 {
+.css-cdkrf018 {
   display: flex;
   align-items: center;
 }
 
-.css-1mlvmbj {
+.css-1mlvmbj18 {
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
-.css-1fk5yts {
+.css-1fk5yts18 {
   display: flex;
   align-items: center;
 }
 
-.css-1prvpli {
+.css-1prvpli18 {
   font-size: 14px;
   color: var(--text-secondary);
 }
 
-.css-1gwhxmg {
+.css-1gwhxmg18 {
   padding: 4px 8px;
   background: var(--input-bg);
   border: 1px solid var(--border-color);
@@ -252,46 +252,46 @@
   cursor: pointer;
 }
 
-.css-aqzf4q {
+.css-aqzf4q18 {
   display: flex;
   justify-content: center;
   margin: 8px 0;
 }
 
-.css-17fsxoc {
+.css-17fsxoc18 {
   display: flex;
   align-items: center;
 }
 
-.css-n43gto {
+.css-n43gto18 {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.css-ozck8r {
+.css-ozck8r18 {
   background: var(--modal-bg);
   padding: 8px;
   border-radius: 8px;
 }
 
-.css-19ctck2 {
+.css-19ctck218 {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.css-1igwmid {
+.css-1igwmid18 {
   display: flex;
   align-items: center;
 }
 
-.css-6kyjl2 {
+.css-6kyjl218 {
   font-size: 14px;
   color: var(--text-color);
 }
 
-.css-ozvovq {
+.css-ozvovq18 {
   padding: 4px 8px;
   background: var(--primary-color);
   color: #ffffff;
@@ -300,12 +300,12 @@
   cursor: pointer;
 }
 
-.css-j2a1iu {
+.css-j2a1iu18 {
   font-size: 14px;
   color: var(--text-color);
 }
 
-.css-kz9308 {
+.css-kz930818 {
   width: 100%;
   padding: 12px 16px;
   background: var(--primary-color);
@@ -319,8 +319,56 @@
   text-align: center;
 }
 
-.css-kz9308:disabled {
+.css-kz930818:disabled {
   background: var(--disabled-bg);
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* 新增样式 */
+.limit-order-title18 {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 16px;
+}
+
+.rate-and-expiry-wrapper18 {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  align-items: center;
+}
+
+.css-b4r0v118, .css-dx2k3d18 {
+  flex: 1;
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.css-19ctck218, .css-4ex5kz18 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.css-1jjq5p518 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.swap-input18 {
+  width: 100px;
+  background: none;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 20px;
+  text-align: right;
 }
