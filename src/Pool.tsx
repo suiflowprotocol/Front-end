@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { SuiClient } from "@mysten/sui.js/client";
-import { useSuiClient } from "@mysten/dapp-kit";
-import { tokens, Token } from "./tokens"; // Rely on imported Token
+import { SuiClient, getFullnodeUrl, SuiHTTPTransport } from "@mysten/sui/client";
+import { Token, tokens } from "./tokens";
 import {
   ConnectButton,
   useCurrentAccount,
@@ -20,22 +19,12 @@ import Position from "./Position";
 import PoolList from "./PoolList";
 import { Link, useNavigate } from "react-router-dom";
 import Sidebar from "./SidebarMenu";
+import { usePoolData } from "./PoolDataFetcher";
 import "./Pool.css";
 import "./App.css";
 import "./App2.css";
 import "./SidebarMenu.css";
 
-// Constants provided by the user
-const PACKAGE_ID = "0xb90158d50ac951784409a6876ac860e24564ed5257e51944d3c693efb9fdbd78";
-const POOL_REGISTRY = "0xfc8c69858d070b639b3db15ff0f78a10370950434c5521c83eaa7e2285db8d2a";
-
-// Hardcoded token prices for TVL calculation (in USD)
-const tokenPrices: { [key: string]: number } = {
-  "0x2::sui::SUI": 1.0, // Example price for SUI
-  // Add more token addresses and prices as needed (e.g., USDC)
-};
-
-// Wallet logos and custom theme definitions remain unchanged
 const walletLogos = {
   'Slush': 'https://encrypted-tbn0.gstatic.com/images?q=tbniGqQYHwA15AKYWXvoSL-94ysbnJrmUX_oU1fJyw&s',
   'Suiet': 'https://framerusercontent.com/modules/6HmgaTsk3ODDySrS62PZ/a3c2R3qfkYJDxcZxkoVv/assets/eDZRos3xvCrlWxmLFr72sFtiyQ.png',
@@ -43,11 +32,11 @@ const walletLogos = {
   'Sui Wallet': 'https://assets.crypto.ro/logos/sui-sui-logo.png',
 };
 
-const customTheme1: ThemeVars = {
+const customTheme: ThemeVars = {
   blurs: { modalOverlay: 'blur(0)' },
   backgroundColors: {
-    primaryButton: '#3b82f6',
-    primaryButtonHover: '#4b9cfa',
+    primaryButton: '#FFFFFF',
+    primaryButtonHover: '#F7F8F8',
     outlineButtonHover: '#E4E4E7',
     modalOverlay: 'rgba(24, 36, 53, 0.2)',
     modalPrimary: 'white',
@@ -61,7 +50,7 @@ const customTheme1: ThemeVars = {
   },
   borderColors: { outlineButton: '#E4E4E7' },
   colors: {
-    primaryButton: '#FFFFFF',
+    primaryButton: '#182435',
     outlineButton: '#373737',
     iconButton: '#000000',
     body: '#182435',
@@ -201,46 +190,6 @@ export function CustomConnectButton() {
   );
 }
 
-const customTheme: ThemeVars = {
-  blurs: { modalOverlay: 'blur(0)' },
-  backgroundColors: {
-    primaryButton: '#FFFFFF',
-    primaryButtonHover: '#F7F8F8',
-    outlineButtonHover: '#E4E4E7',
-    modalOverlay: 'rgba(24, 36, 53, 0.2)',
-    modalPrimary: 'white',
-    modalSecondary: '#F7F8F8',
-    iconButton: 'transparent',
-    iconButtonHover: '#F0F1F2',
-    dropdownMenu: '#FFFFFF',
-    dropdownMenuSeparator: '#F3F6F8',
-    walletItemSelected: 'white',
-    walletItemHover: '#3C424226',
-  },
-  borderColors: { outlineButton: '#E4E4E7' },
-  colors: {
-    primaryButton: '#182435',
-    outlineButton: '#373737',
-    iconButton: '#000000',
-    body: '#182435',
-    bodyMuted: '#767A81',
-    bodyDanger: '#FF794B',
-  },
-  radii: { small: '4px', medium: '8px', large: '12px', xlarge: '16px' },
-  shadows: {
-    primaryButton: '0 4px 12px rgba(0, 0, 0, 0.1)',
-    walletItemSelected: '0 2px 8px rgba(0, 0, 0, 0.05)',
-  },
-  fontWeights: { normal: '400', medium: '500', bold: '700' },
-  fontSizes: { small: '12px', medium: '14px', large: '16px', xlarge: '18px' },
-  typography: {
-    fontFamily: 'Arial, sans-serif',
-    fontStyle: 'normal',
-    lineHeight: '1.5',
-    letterSpacing: '0.02em',
-  },
-};
-
 interface Pool {
   pair: string;
   token1: string;
@@ -255,9 +204,9 @@ interface Pool {
   fees: string;
   apr: string;
   rewardImg: string;
+  poolAddress: string;
 }
 
-// Export PoolListProps for use in PoolList.tsx
 export interface PoolListProps {
   pools: Pool[];
   activeTab: string;
@@ -279,8 +228,12 @@ export interface PoolListProps {
 }
 
 function Pool() {
-  const client = useSuiClient();
-  const [pools, setPools] = useState<Pool[]>([]);
+  const client = new SuiClient({
+    transport: new SuiHTTPTransport({
+      url: getFullnodeUrl('testnet'), // Use testnet for fetching pool data
+    }),
+  });
+  const pools = usePoolData(client);
   const [newPoolToken1, setNewPoolToken1] = useState("");
   const [newPoolToken2, setNewPoolToken2] = useState("");
   const [feeRate, setFeeRate] = useState("0.25");
@@ -297,29 +250,27 @@ function Pool() {
   const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
   const [volumeData, setVolumeData] = useState<{ date: string; volume: number; label: string }[]>([]);
-  const [tooltip, setTooltip] = useState<{ x: number; y: number; date: string; volume: number } | null>(null);
 
-  // Function to generate random volume data based on period with appropriate x-axis labels
   const generateVolumeData = (period: 'D' | 'W' | 'M') => {
     const data = [];
-    const now = new Date(2025, 7, 7); // Hardcoded to August 7, 2025, for consistency
+    const now = new Date(2025, 7, 7);
     let startDate;
 
     if (period === 'D') {
       startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 30);
       for (let i = 0; i < 30; i++) {
         const date = new Date(startDate.getTime() + i * 24 * 60 * 60 * 1000);
-        const volume = Math.floor(Math.random() * 1000000); // Random volume up to 1M
-        const label = date.getDate().toString(); // Day of the month (e.g., "7" for August 7)
+        const volume = Math.floor(Math.random() * 1000000);
+        const label = date.getDate().toString();
         data.push({ date: date.toLocaleDateString(), volume, label });
       }
     } else if (period === 'W') {
-      startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 84); // 12 weeks
+      startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 84);
       for (let i = 0; i < 12; i++) {
         const weekStart = new Date(startDate.getTime() + i * 7 * 24 * 60 * 60 * 1000);
         const weekEnd = new Date(weekStart.getTime() + 6 * 24 * 60 * 60 * 1000);
-        const volume = Math.floor(Math.random() * 7000000); // Random volume up to 7M
-        const label = weekStart.getDate().toString(); // Start day of the week
+        const volume = Math.floor(Math.random() * 7000000);
+        const label = weekStart.getDate().toString();
         data.push({
           date: `${weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${weekEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`,
           volume,
@@ -330,8 +281,8 @@ function Pool() {
       startDate = new Date(now.getFullYear(), now.getMonth() - 12, 1);
       for (let i = 0; i < 12; i++) {
         const monthDate = new Date(startDate.getFullYear(), startDate.getMonth() + i, 1);
-        const volume = Math.floor(Math.random() * 30000000); // Random volume up to 30M
-        const label = monthDate.toLocaleString('default', { month: 'short', year: '2-digit' }); // e.g., "Aug 24"
+        const volume = Math.floor(Math.random() * 30000000);
+        const label = monthDate.toLocaleString('default', { month: 'short', year: '2-digit' });
         data.push({ date: label, volume, label });
       }
     }
@@ -339,120 +290,10 @@ function Pool() {
     return data;
   };
 
-  // Update volume data when chartPeriod changes
   useEffect(() => {
     const data = generateVolumeData(chartPeriod);
     setVolumeData(data);
   }, [chartPeriod]);
-
-  // Fetch pool data from the Sui blockchain
-  useEffect(() => {
-    const fetchPools = async () => {
-      try {
-        const registryResponse = await client.getObject({
-          id: POOL_REGISTRY,
-          options: { showContent: true },
-        });
-        if (registryResponse.data?.content?.dataType !== "moveObject") {
-          console.error("PoolRegistry is not a moveObject");
-          return;
-        }
-        const registryFields = registryResponse.data.content.fields as any;
-        const poolsField = registryFields.pools;
-        const poolInfos = poolsField.map((pool: any) => pool.fields);
-
-        const tokenMap = tokens.reduce((map, token) => {
-          map[token.address] = token;
-          return map;
-        }, {} as { [key: string]: Token });
-
-        const poolData = await Promise.all(
-          poolInfos.map(async (poolInfo: any) => {
-            try {
-              const poolObject = await client.getObject({
-                id: poolInfo.pool_addr,
-                options: { showContent: true },
-              });
-              if (poolObject.data?.content?.dataType !== "moveObject") {
-                console.error(`Pool ${poolInfo.pool_addr} is not a moveObject`);
-                return null;
-              }
-
-              const fields = poolObject.data.content.fields as any;
-              const reserveX = BigInt(fields.reserve_x.fields.value);
-              const reserveY = BigInt(fields.reserve_y.fields.value);
-              const feeRate = parseInt(fields.fee_rate, 10);
-              const volume24h = BigInt(fields.volume_24h);
-              const fees24h = BigInt(fields.fees_24h);
-
-              const tokenXAddress = poolInfo.token_x;
-              const tokenYAddress = poolInfo.token_y;
-              const tokenX = tokenMap[tokenXAddress];
-              const tokenY = tokenMap[tokenYAddress];
-
-              if (!tokenX || !tokenY) {
-                console.error(`Tokens not found: ${tokenXAddress}, ${tokenYAddress}`);
-                return null;
-              }
-
-              const decimalsX = tokenX.decimals;
-              const decimalsY = tokenY.decimals;
-              const priceX = tokenPrices[tokenXAddress] || 0;
-              const priceY = tokenPrices[tokenYAddress] || 0;
-
-              const reserveXDecimal = Number(reserveX) / Math.pow(10, decimalsX);
-              const reserveYDecimal = Number(reserveY) / Math.pow(10, decimalsY);
-              const tvlNumber = reserveXDecimal * priceX + reserveYDecimal * priceY;
-              const tvlFormatted = `$${tvlNumber.toLocaleString('en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })}`;
-
-              const volumeUSDNumber = (Number(volume24h) / Math.pow(10, decimalsX)) * priceX;
-              const volumeFormatted = `$${volumeUSDNumber.toLocaleString('en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })}`;
-
-              const feesUSDNumber = (Number(fees24h) / Math.pow(10, decimalsX)) * priceX;
-              const feesFormatted = `$${feesUSDNumber.toLocaleString('en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })}`;
-
-              const apr = reserveX > 0n ? (Number(fees24h) * 36500) / Number(reserveX) : 0;
-              const aprFormatted = `${apr.toFixed(2)}%`;
-
-              return {
-                pair: `${tokenX.symbol}/${tokenY.symbol}`,
-                token1: tokenX.name,
-                token2: tokenY.name,
-                token1Symbol: tokenX.symbol,
-                token2Symbol: tokenY.symbol,
-                img1: tokenX.logoURI,
-                img2: tokenY.logoURI,
-                feeRate: `${(feeRate / 100).toFixed(2)}%`,
-                tvl: tvlFormatted,
-                volume: volumeFormatted,
-                fees: feesFormatted,
-                apr: aprFormatted,
-                rewardImg: '',
-              };
-            } catch (error) {
-              console.error(`Error fetching pool ${poolInfo.pool_addr}:`, error);
-              return null;
-            }
-          })
-        );
-
-        setPools(poolData.filter((pool): pool is Pool => pool !== null));
-      } catch (error) {
-        console.error("Error fetching pools:", error);
-      }
-    };
-
-    fetchPools();
-  }, [client]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -528,28 +369,25 @@ function Pool() {
     setSelectedPool(null);
   };
 
-  // Chart dimensions and dynamic bar rendering
   const chartWidth = 733;
-  const chartHeight = 228; // Reduced by 30px to make space for x-axis labels
-  const barWidth = volumeData.length > 0 ? (chartWidth / volumeData.length) * 0.5 : 0; // 50% of available space for bars
-  const gap = volumeData.length > 0 ? (chartWidth / volumeData.length) * 0.5 : 0; // 50% of available space for gaps
+  const chartHeight = 228;
+  const barWidth = volumeData.length > 0 ? (chartWidth / volumeData.length) * 0.5 : 0;
+  const gap = volumeData.length > 0 ? (chartWidth / volumeData.length) * 0.5 : 0;
   const maxVolume = volumeData.length > 0 ? Math.max(...volumeData.map(d => d.volume)) : 1;
 
   const formatVolume = (volume: number) => {
     return `$${volume.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
   };
 
-  // Generate x-axis labels based on chartPeriod
   const xAxisLabels = volumeData.map((data, index) => {
-    // For 'D', show every other day; for 'W', show start day; for 'M', show all months
-    const showLabel = chartPeriod === 'D' ? index % 2 === 0 : true; // Every other day for daily
+    const showLabel = chartPeriod === 'D' ? index % 2 === 0 : true;
     if (!showLabel) return null;
-    const x = index * (barWidth + gap) + barWidth / 2; // Center under the bar
+    const x = index * (barWidth + gap) + barWidth / 2;
     return (
       <text
         key={index}
         x={x}
-        y={chartHeight + 20} // Position below the chart
+        y={chartHeight + 20}
         textAnchor="middle"
         fontSize="12"
         fill="#909CA4"
@@ -560,9 +398,9 @@ function Pool() {
   }).filter(label => label !== null);
 
   const bars = volumeData.map((data, index) => {
-    const barHeight = (data.volume / maxVolume) * chartHeight; // Use adjusted chart height
-    const x = index * (barWidth + gap); // No offset, starts at x=0
-    const y = chartHeight - barHeight; // Align bars to the bottom
+    const barHeight = (data.volume / maxVolume) * chartHeight;
+    const x = index * (barWidth + gap);
+    const y = chartHeight - barHeight;
     return (
       <rect
         key={index}
@@ -571,23 +409,12 @@ function Pool() {
         width={barWidth}
         height={barHeight}
         fill="url(#barGradient)"
-        onMouseOver={(e) => {
-          const rect = (e.target as SVGRectElement).getBoundingClientRect();
-          setTooltip({
-            x: rect.x + rect.width / 2,
-            y: rect.y - 30,
-            date: data.date,
-            volume: data.volume,
-          });
-        }}
-        onMouseOut={() => setTooltip(null)}
       >
         <title>{`${data.date}\nVolume: ${formatVolume(data.volume)}`}</title>
       </rect>
     );
   });
 
-  // Chart title based on period
   const chartTitle = chartPeriod === 'D' ? 'Trading Volume (24H)' : chartPeriod === 'W' ? 'Trading Volume (7D)' : 'Trading Volume (30D)';
 
   return (
@@ -623,7 +450,6 @@ function Pool() {
                       </svg>
                       Limit Order
                     </Link>
-
                   </div>
                 </div>
                 <div
@@ -648,13 +474,8 @@ function Pool() {
                       </svg>
                       veSEAL
                     </Link>
-
-
                   </div>
                 </div>
-
-                
-
                 <div
                   className={["nav-item", openDropdown === "bridge" ? "open" : ""].join(" ")}
                   onMouseEnter={() => toggleDropdown("bridge")}
@@ -821,7 +642,12 @@ function Pool() {
                 </div>
                 <div className="metric-item">
                   <p className="metric-label">Cumulative Volume</p>
-                  <p className="metric-value">$0.00</p>
+                  <p className="metric-value">
+                    ${pools.reduce((sum, pool) => sum + parseFloat(pool.volume.slice(1).replace(/,/g, '')), 0).toLocaleString('en-US', {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </p>
                 </div>
               </div>
             </div>
@@ -862,31 +688,12 @@ function Pool() {
                   <g transform="translate(0, -30)">{bars}</g>
                   <g transform="translate(0, -30)">{xAxisLabels}</g>
                 </svg>
-                {tooltip && (
-                  <div
-                    style={{
-                      position: 'absolute',
-                      left: `${tooltip.x}px`,
-                      top: `${tooltip.y}px`,
-                      background: '#333',
-                      color: '#fff',
-                      padding: '5px 10px',
-                      borderRadius: '4px',
-                      fontSize: '12px',
-                      pointerEvents: 'none',
-                      transform: 'translate(-50%, -100%)',
-                      zIndex: 1000,
-                    }}
-                  >
-                    <div>{tooltip.date}</div>
-                    <div>Volume: {formatVolume(tooltip.volume)}</div>
-                  </div>
-                )}
               </div>
             </div>
           </div>
           {activeTab === "pools" ? (
             <PoolList
+              pools={pools}
               activeTab={activeTab}
               setActiveTab={setActiveTab}
               isCreatePoolOpen={isCreatePoolOpen}

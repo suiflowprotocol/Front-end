@@ -12,7 +12,6 @@ import "./App.css";
 import "./App2.css";
 import Modal from './Modal';
 import SettingsPage from './SettingsPage';
-
 import SwapPreview from './SwapPreview';
 import WaitingConfirmation from './WaitingConfirmation';
 import LimitOrderPage from "./limit";
@@ -1173,6 +1172,7 @@ function App() {
   return (
     <WalletProvider theme={customTheme}>
       <div className="container">
+        <div className="background-overlay"></div> {/* 添加背景纹理 */}
         {toast && (
           <div className={`toast toast-${toast.type}`}>
             <p>{toast.message}</p>
@@ -1213,9 +1213,6 @@ function App() {
                               Limit Order
                             </Link>
                           </div>
-                          
-                            
-                          
                         </div>
                         <div className={`nav-item ${openDropdown === "earn" ? "open" : ""}`} 
                              onMouseEnter={() => toggleDropdown("earn")} 
@@ -1231,20 +1228,14 @@ function App() {
                               </svg>
                               Pool
                             </Link>
-
                             <Link to="/veseal" className="dropdown-item">
                               <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
                                 <use xlinkHref="#icon-icon_liquiditypools"></use>
                               </svg>
                               veSeal
                             </Link>
-                            
                           </div>   
                         </div>
-
-                        
-                        
-                       
                         <div className={`nav-item ${openDropdown === "bridge" ? "open" : ""}`} 
                              onMouseEnter={() => toggleDropdown("bridge")} 
                              onMouseLeave={() => toggleDropdown(null)}>
@@ -1677,7 +1668,6 @@ function App() {
           <Route path="/pool" element={<Pool />} />
           <Route path="/xseal" element={<XSeal />} />
           <Route path="/limit" element={<LimitOrderPage />} />
-          
         </Routes>
       </div>
     </WalletProvider>
