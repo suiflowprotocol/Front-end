@@ -1,12 +1,14 @@
-import { useState, useEffect, Dispatch, SetStateAction } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
 import CreatePool from "./CreatePool";
 import AddLiquidityModal from "./AddLiquidityModal";
 import { useNavigate } from "react-router-dom";
 import "./Pool.css";
 import { PoolListProps } from "./Pool.tsx";
+import React from "react";
 
 function PoolList({
   pools,
+  isLoading,
   activeTab,
   setActiveTab,
   isCreatePoolOpen,
@@ -23,10 +25,26 @@ function PoolList({
   setNewPoolToken2,
   setFeeRate,
   getTokenAddress,
-}: PoolListProps) {
+}: PoolListProps & { isLoading: boolean }) {
   const navigate = useNavigate();
   const [incentivizedOnly, setIncentivizedOnly] = useState(false);
   const [allPools, setAllPools] = useState(true);
+
+  // Filter pools based on incentivizedOnly and allPools
+  const filteredPools = pools.filter((pool) => {
+    if (incentivizedOnly) {
+      return pool.rewardImg !== "";
+    }
+    return true;
+  });
+
+  // Fallback image URL
+  const fallbackImage = "https://via.placeholder.com/20";
+
+  // Handle image loading errors
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.src = fallbackImage;
+  };
 
   return (
     <>
@@ -85,6 +103,7 @@ function PoolList({
               boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
             }}
             onClick={() => handleAddLiquidity(pools[0], true)}
+            disabled={pools.length === 0 || isLoading}
           >
             Add Liquidity
           </button>
@@ -176,7 +195,19 @@ function PoolList({
             borderRadius: '8px',
             padding: '8px 12px'
           }}>
+            <input
+              type="checkbox"
+              id="incentivized"
+              checked={incentivizedOnly}
+              onChange={() => setIncentivizedOnly(!incentivizedOnly)}
+              style={{
+                width: '16px',
+                height: '16px',
+                cursor: 'pointer'
+              }}
+            />
             <label
+              htmlFor="incentivized"
               style={{
                 fontSize: '13px',
                 fontWeight: '600',
@@ -184,32 +215,6 @@ function PoolList({
               }}
             >
               Incentivized Only
-            </label>
-            <label style={{
-              display: 'inline-block',
-              position: 'relative',
-              width: '40px',
-              height: '20px'
-            }}>
-              <input
-                type="checkbox"
-                checked={incentivizedOnly}
-                onChange={() => setIncentivizedOnly(!incentivizedOnly)}
-                style={{
-                  border: '0',
-                  clip: 'rect(0, 0, 0, 0)',
-                  height: '1px',
-                  width: '1px',
-                  margin: '-1px',
-                  padding: '0',
-                  overflow: 'hidden',
-                  whiteSpace: 'nowrap',
-                  position: 'absolute'
-                }}
-              />
-              <span className="chakra-switch__track">
-                <span className="chakra-switch__thumb"></span>
-              </span>
             </label>
           </div>
           <div style={{
@@ -221,7 +226,19 @@ function PoolList({
             borderRadius: '8px',
             padding: '8px 12px'
           }}>
+            <input
+              type="checkbox"
+              id="allpools"
+              checked={allPools}
+              onChange={() => setAllPools(!allPools)}
+              style={{
+                width: '16px',
+                height: '16px',
+                cursor: 'pointer'
+              }}
+            />
             <label
+              htmlFor="allpools"
               style={{
                 fontSize: '13px',
                 fontWeight: '600',
@@ -230,76 +247,46 @@ function PoolList({
             >
               All pools
             </label>
-            <label style={{
-              display: 'inline-block',
-              position: 'relative',
-              width: '40px',
-              height: '20px'
-            }}>
-              <input
-                type="checkbox"
-                checked={allPools}
-                onChange={() => setAllPools(!allPools)}
-                style={{
-                  border: '0',
-                  clip: 'rect(0, 0, 0, 0)',
-                  height: '1px',
-                  width: '1px',
-                  margin: '-1px',
-                  padding: '0',
-                  overflow: 'hidden',
-                  whiteSpace: 'nowrap',
-                  position: 'absolute'
-                }}
-              />
-              <span className="chakra-switch__track">
-                <span className="chakra-switch__thumb"></span>
-              </span>
-            </label>
           </div>
-          <button style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '36px',
-            height: '36px',
-            background: 'var(--card-bg)',
-            border: 'none',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            transition: 'all 0.2s ease'
-          }}>
-            <img 
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Refresh_icon.svg/2048px-Refresh_icon.svg.png"
-              alt="Refresh"
-              style={{ width: '20px', height: '20px' }}
-            />
-          </button>
         </div>
       </div>
-      <div className="pool-table-header">
-        <div>Pool</div>
-        <div>TVL</div>
-        <div>Volume (24H)</div>
-        <div>Fees (24H)</div>
-        <div>APR</div>
-        <div>Reward</div>
-        <div></div>
-      </div>
+      {isLoading ? (
+        <div className="loading-state">Loading pools...</div>
+      ) : (
+        <div className="pool-table-header">
+          <div>Pool</div>
+          <div>TVL</div>
+          <div>Volume (24H)</div>
+          <div>Fees (24H)</div>
+          <div>APR</div>
+          <div>Reward</div>
+          <div></div>
+        </div>
+      )}
       <div className="pool-list">
-        {pools.length === 0 ? (
+        {isLoading ? null : filteredPools.length === 0 ? (
           <div className="no-positions">No positions found</div>
         ) : (
-          pools.map((pool) => (
+          filteredPools.map((pool) => (
             <div
               key={pool.poolAddress}
               className="pool-item"
               onClick={() => navigate(`/pool/${pool.pair}`)}
             >
               <div className="pool-token-info">
-                <div className="token-images">
-                  <img src={pool.img1} alt={pool.token1Symbol} />
-                  <img src={pool.img2} alt={pool.token2Symbol} />
+                <div className="token-images" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <img
+                    src={pool.img1}
+                    alt={pool.token1Symbol}
+                    style={{ width: '24px', height: '24px', borderRadius: '50%' }}
+                    onError={handleImageError}
+                  />
+                  <img
+                    src={pool.img2}
+                    alt={pool.token2Symbol}
+                    style={{ width: '24px', height: '24px', borderRadius: '50%' }}
+                    onError={handleImageError}
+                  />
                 </div>
                 <div className="token-details">
                   <div className="token-pair">
@@ -326,10 +313,25 @@ function PoolList({
               </div>
               <div className="reward-container">
                 <span className="data-label">Reward</span>
-                <div className="reward-images">
-                  <img src={pool.rewardImg} alt="Reward" />
-                  <img src={pool.img1} alt={pool.token1Symbol} />
-                  <img src={pool.img2} alt={pool.token2Symbol} />
+                <div className="reward-images" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <img
+                    src={pool.rewardImg}
+                    alt="Reward"
+                    style={{ width: '24px', height: '24px', borderRadius: '50%' }}
+                    onError={handleImageError}
+                  />
+                  <img
+                    src={pool.img1}
+                    alt={pool.token1Symbol}
+                    style={{ width: '24px', height: '24px', borderRadius: '50%' }}
+                    onError={handleImageError}
+                  />
+                  <img
+                    src={pool.img2}
+                    alt={pool.token2Symbol}
+                    style={{ width: '24px', height: '24px', borderRadius: '50%' }}
+                    onError={handleImageError}
+                  />
                 </div>
               </div>
               <div className="pool-action">
@@ -370,4 +372,26 @@ function PoolList({
   );
 }
 
-export default PoolList;
+export default React.memo(PoolList, (prevProps, nextProps) => {
+  // Custom comparison to prevent re-renders unless necessary props change
+  return (
+    prevProps.pools === nextProps.pools &&
+    prevProps.isLoading === nextProps.isLoading &&
+    prevProps.activeTab === nextProps.activeTab &&
+    prevProps.isCreatePoolOpen === nextProps.isCreatePoolOpen &&
+    prevProps.isAddLiquidityOpen === nextProps.isAddLiquidityOpen &&
+    prevProps.selectedPool === nextProps.selectedPool &&
+    prevProps.newPoolToken1 === nextProps.newPoolToken1 &&
+    prevProps.newPoolToken2 === nextProps.newPoolToken2 &&
+    prevProps.feeRate === nextProps.feeRate &&
+    prevProps.getTokenAddress === nextProps.getTokenAddress &&
+    prevProps.handleCreatePool === nextProps.handleCreatePool &&
+    prevProps.handleCloseCreatePool === nextProps.handleCloseCreatePool &&
+    prevProps.handleAddLiquidity === nextProps.handleAddLiquidity &&
+    prevProps.handleCloseAddLiquidityModal === nextProps.handleCloseAddLiquidityModal &&
+    prevProps.setNewPoolToken1 === nextProps.setNewPoolToken1 &&
+    prevProps.setNewPoolToken2 === nextProps.setNewPoolToken2 &&
+    prevProps.setFeeRate === nextProps.setFeeRate &&
+    prevProps.setActiveTab === nextProps.setActiveTab
+  );
+});

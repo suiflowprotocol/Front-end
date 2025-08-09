@@ -49,9 +49,12 @@ interface Pool {
   poolAddress: string;
 }
 
-export function usePoolData(client: SuiClient): Pool[] {
+export function usePoolData(client: SuiClient): {pools: Pool[], isLoading: boolean, refresh: () => void} {
   const [pools, setPools] = useState<Pool[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const refresh = () => setRefreshKey(prev => prev + 1);
 
   // Helper function for deep comparison of pool arrays
   const arePoolsEqual = (prev: Pool[], next: Pool[]): boolean => {
@@ -179,22 +182,57 @@ export function usePoolData(client: SuiClient): Pool[] {
               return null;
             }
 
-            const tokenX = tokenMap[tokenXAddress] || {
-              address: tokenXAddress,
-              name: `Unknown (${tokenXAddress.slice(0, 6)})`,
-              symbol: `UNK_${tokenXAddress.slice(0, 4)}`,
-              decimals: 9,
-              logoURI: "https://via.placeholder.com/20",
-              image: "https://via.placeholder.com/20",
-            };
-            const tokenY = tokenMap[tokenYAddress] || {
-              address: tokenYAddress,
-              name: `Unknown (${tokenYAddress.slice(0, 6)})`,
-              symbol: `UNK_${tokenYAddress.slice(0, 4)}`,
-              decimals: 9,
-              logoURI: "https://via.placeholder.com/20",
-              image: "https://via.placeholder.com/20",
-            };
+            let tokenX = tokenMap[tokenXAddress];
+            if (!tokenX) {
+              const metadata = await client.getCoinMetadata({ coinType: tokenXAddress });
+              if (metadata) {
+                tokenX = {
+                  address: tokenXAddress,
+                  name: metadata.name,
+                  symbol: metadata.symbol,
+                  decimals: metadata.decimals,
+                  logoURI: metadata.iconUrl || "https://via.placeholder.com/20",
+                  image: metadata.iconUrl || "https://via.placeholder.com/20",
+                };
+              } else {
+                const parts = tokenXAddress.split('::');
+                const sym = parts.length === 3 ? parts[2] : tokenXAddress.slice(0, 6);
+                tokenX = {
+                  address: tokenXAddress,
+                  name: `Unknown (${sym})`,
+                  symbol: sym,
+                  decimals: 9,
+                  logoURI: "https://via.placeholder.com/20",
+                  image: "https://via.placeholder.com/20",
+                };
+              }
+            }
+
+            let tokenY = tokenMap[tokenYAddress];
+            if (!tokenY) {
+              const metadata = await client.getCoinMetadata({ coinType: tokenYAddress });
+              if (metadata) {
+                tokenY = {
+                  address: tokenYAddress,
+                  name: metadata.name,
+                  symbol: metadata.symbol,
+                  decimals: metadata.decimals,
+                  logoURI: metadata.iconUrl || "https://via.placeholder.com/20",
+                  image: metadata.iconUrl || "https://via.placeholder.com/20",
+                };
+              } else {
+                const parts = tokenYAddress.split('::');
+                const sym = parts.length === 3 ? parts[2] : tokenYAddress.slice(0, 6);
+                tokenY = {
+                  address: tokenYAddress,
+                  name: `Unknown (${sym})`,
+                  symbol: sym,
+                  decimals: 9,
+                  logoURI: "https://via.placeholder.com/20",
+                  image: "https://via.placeholder.com/20",
+                };
+              }
+            }
             console.log(`Token Data for pool ${poolInfo.pool_addr}:`, { tokenX, tokenY });
 
             const decimalsX = tokenX.decimals || 9;
@@ -295,10 +333,8 @@ export function usePoolData(client: SuiClient): Pool[] {
 
   useEffect(() => {
     fetchPools();
-    const interval = setInterval(fetchPools, 30000);
-    return () => clearInterval(interval);
-  }, [client]);
+  }, [client, refreshKey]);
 
   // Memoize the pools array to ensure stable references
-  return useMemo(() => pools, [pools]);
+  return useMemo(() => ({pools, isLoading, refresh}), [pools, isLoading, refresh]);
 }

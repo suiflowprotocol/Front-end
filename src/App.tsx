@@ -1186,6 +1186,7 @@ function App() {
             element={
               <>
                 <div className="header">
+                  <div className="background-glow header-glow"></div>
                   <div className="header-top">
                     <div className="logo-container">
                       <img src="https://i.meee.com.tw/SdliTGK.png" alt="Logo" className="logo-image" />
