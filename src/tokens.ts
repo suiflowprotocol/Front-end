@@ -20,8 +20,8 @@ export const tokens: Token[] = [
     symbol: "USDC",
     address: "0xb677ae5448d34da319289018e7dd67c556b094a5451d7029bd52396cdd8f192f::usdc::USDC",
     decimals: 6,
-    image: "https://cryptologos.cc/logos/usd-coin-usdc-logo.png",
-    logoURI: "https://cryptologos.cc/logos/usd-coin-usdc-logo.png",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbBMfDxr1PrxlKVnOBktTGlNgXSVYUT0LB7Q&s",
+    logoURI: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbBMfDxr1PrxlKVnOBktTGlNgXSVYUT0LB7Q&s",
     name: "USD Coin",
   },
   {
@@ -44,8 +44,8 @@ export const tokens: Token[] = [
     symbol: "NAVX",
     address: "0xa16e100fcb99689d481f31a2315519923fdf45916a4fa18c5513008f5101237d::navx::NAVX",
     decimals: 9,
-    image: "https://raw.githubusercontent.com/navi-protocol/sui-tokenlist/main/logos/NAVX.png",
-    logoURI: "https://raw.githubusercontent.com/navi-protocol/sui-tokenlist/main/logos/NAVX.png",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFth8B5E6JY7Grsq1wEG-1R-CK4fmemXu-7g&s",
+    logoURI: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFth8B5E6JY7Grsq1wEG-1R-CK4fmemXu-7g&s",
     name: "Navi Token",
   },
   {

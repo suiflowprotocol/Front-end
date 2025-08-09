@@ -31,6 +31,8 @@ const POOL_REGISTRY = "0xfc8c69858d070b639b3db15ff0f78a10370950434c5521c83eaa7e2
 const ADDRESS_MAPPINGS = {
   "d52c440f67dd960bc76f599a16065abd5fbc251b78f18d9dce3578ccc44462a9": "0xd52c440f67dd960bc76f599a16065abd5fbc251b78f18d9dce3578ccc44462a9",
   "b3f153e6279045694086e8176c65e8e0f5d33aeeeb220a57b5865b849e5be5ba": "0xb3f153e6279045694086e8176c65e8e0f5d33aeeeb220a57b5865b849e5be5ba",
+  "b677ae5448d34da319289018e7dd67c556b094a5451d7029bd52396cdd8f192f": "0xb677ae5448d34da319289018e7dd67c556b094a5451d7029bd52396cdd8f192f",
+  "a16e100fcb99689d481f31a2315519923fdf45916a4fa18c5513008f5101237d":"0xa16e100fcb99689d481f31a2315519923fdf45916a4fa18c5513008f5101237d",
 };
 
 const tokenPrices: { [key: string]: number } = {
@@ -291,9 +293,11 @@ export function usePoolData(client: SuiClient): { pools: Pool[], isLoading: bool
   const normalizeAddress = (address: string): string => {
     for (const [named, actual] of Object.entries(ADDRESS_MAPPINGS)) {
       if (address.includes(named)) {
+        console.log(`Normalizing address: ${address} -> ${actual}`);
         return address.replace(named, actual);
       }
     }
+    console.warn(`Address ${address} not found in ADDRESS_MAPPINGS, returning as is`);
     return address;
   };
 
@@ -413,12 +417,13 @@ export function usePoolData(client: SuiClient): { pools: Pool[], isLoading: bool
               console.log(`Token ${tokenXAddress} not in tokenMap, fetching metadata`);
               try {
                 const metadata = await client.getCoinMetadata({ coinType: tokenXAddress });
+                console.log(`Metadata for ${tokenXAddress}:`, metadata);
                 if (metadata) {
                   tokenX = {
                     address: tokenXAddress,
-                    name: metadata.name,
-                    symbol: metadata.symbol,
-                    decimals: metadata.decimals,
+                    name: metadata.name || `Unknown (${tokenXAddress.slice(0, 6)})`,
+                    symbol: metadata.symbol || tokenXAddress.split('::').pop() || tokenXAddress.slice(0, 6),
+                    decimals: metadata.decimals || 9,
                     logoURI: metadata.iconUrl || "https://via.placeholder.com/20",
                     image: metadata.iconUrl || "https://via.placeholder.com/20",
                   };
@@ -427,7 +432,7 @@ export function usePoolData(client: SuiClient): { pools: Pool[], isLoading: bool
                   const sym = parts.length === 3 ? parts[2] : tokenXAddress.slice(0, 6);
                   tokenX = {
                     address: tokenXAddress,
-                    name: sym,
+                    name: `Unknown (${sym})`,
                     symbol: sym,
                     decimals: 9,
                     logoURI: "https://via.placeholder.com/20",
@@ -440,7 +445,7 @@ export function usePoolData(client: SuiClient): { pools: Pool[], isLoading: bool
                 const sym = parts.length === 3 ? parts[2] : tokenXAddress.slice(0, 6);
                 tokenX = {
                   address: tokenXAddress,
-                  name: sym,
+                  name: `Unknown (${sym})`,
                   symbol: sym,
                   decimals: 9,
                   logoURI: "https://via.placeholder.com/20",
@@ -454,12 +459,13 @@ export function usePoolData(client: SuiClient): { pools: Pool[], isLoading: bool
               console.log(`Token ${tokenYAddress} not in tokenMap, fetching metadata`);
               try {
                 const metadata = await client.getCoinMetadata({ coinType: tokenYAddress });
+                console.log(`Metadata for ${tokenYAddress}:`, metadata);
                 if (metadata) {
                   tokenY = {
                     address: tokenYAddress,
-                    name: metadata.name,
-                    symbol: metadata.symbol,
-                    decimals: metadata.decimals,
+                    name: metadata.name || `Unknown (${tokenYAddress.slice(0, 6)})`,
+                    symbol: metadata.symbol || tokenYAddress.split('::').pop() || tokenYAddress.slice(0, 6),
+                    decimals: metadata.decimals || 9,
                     logoURI: metadata.iconUrl || "https://via.placeholder.com/20",
                     image: metadata.iconUrl || "https://via.placeholder.com/20",
                   };
@@ -468,7 +474,7 @@ export function usePoolData(client: SuiClient): { pools: Pool[], isLoading: bool
                   const sym = parts.length === 3 ? parts[2] : tokenYAddress.slice(0, 6);
                   tokenY = {
                     address: tokenYAddress,
-                    name: sym,
+                    name: `Unknown (${sym})`,
                     symbol: sym,
                     decimals: 9,
                     logoURI: "https://via.placeholder.com/20",
@@ -481,7 +487,7 @@ export function usePoolData(client: SuiClient): { pools: Pool[], isLoading: bool
                 const sym = parts.length === 3 ? parts[2] : tokenYAddress.slice(0, 6);
                 tokenY = {
                   address: tokenYAddress,
-                  name: sym,
+                  name: `Unknown (${sym})`,
                   symbol: sym,
                   decimals: 9,
                   logoURI: "https://via.placeholder.com/20",
@@ -493,8 +499,8 @@ export function usePoolData(client: SuiClient): { pools: Pool[], isLoading: bool
 
             const decimalsX = tokenX.decimals || 9;
             const decimalsY = tokenY.decimals || 9;
-            const priceX = tokenPrices[tokenXAddress] || 0;
-            const priceY = tokenPrices[tokenYAddress] || 0;
+            const priceX = tokenPrices[tokenXAddress] || 1.0; // Fallback price
+            const priceY = tokenPrices[tokenYAddress] || 1.0; // Fallback price
             console.log(`Token Decimals and Prices for pool ${poolInfo.pool_addr}:`, {
               decimalsX,
               decimalsY,
@@ -1057,9 +1063,7 @@ function Pool() {
               setNewPoolToken2={setNewPoolToken2}
               setFeeRate={setFeeRate}
               getTokenAddress={getTokenAddress}
-              refresh={refresh}
-              isLoading={false}
-            />
+              refresh={refresh} isLoading={false}            />
           ) : (
             <Position
               activeTab={activeTab}
