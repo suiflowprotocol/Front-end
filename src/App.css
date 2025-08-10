@@ -52,6 +52,7 @@
   --card-bg: linear-gradient(145deg, #2a3447 0%, #1e2636 100%);
   --disabled-bg: #4b5563;
   --loading-spinner: #ffffff;
+  --overlay-color: rgba(30, 41, 59, 0.8);
 }
 
 *,
@@ -361,7 +362,7 @@ body {
 .swap-panel {
   width: 100%;
   max-width: 480px;
-  background: var(--card-bg);
+  background: rgba(30, 41, 59, 0.95); /* Slightly transparent for better blend */
   padding: 16px;
   border-radius: 16px;
   border: 1px solid var(--border-color);
@@ -2751,4 +2752,38 @@ button:hover {
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   width: 400px; /* 设置模态窗口的宽度 */
+}
+
+.mosaic-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  grid-auto-rows: 60px;
+  gap: 0;
+  overflow: hidden;
+  z-index: -1;
+  opacity: 0.15;
+  filter: grayscale(70%) blur(0.5px);
+  pointer-events: none;
+}
+
+.mosaic-tile {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.background-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--overlay-color);
+  z-index: -1;
+  pointer-events: none;
 }

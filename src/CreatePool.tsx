@@ -20,6 +20,8 @@ interface CreatePoolProps {
   setNewPoolToken1: React.Dispatch<React.SetStateAction<string>>;
   setNewPoolToken2: React.Dispatch<React.SetStateAction<string>>;
   setFeeRate: React.Dispatch<React.SetStateAction<string>>;
+  getTokenAddress: (symbol: string) => string;
+  refresh: () => void;
 }
 
 const tokens: Token[] = [
@@ -67,7 +69,7 @@ const tokens: Token[] = [
   },
   {
     symbol: "WAL",
-    address: "0x356a26eb9e012a68958082340d4c4116e7f55615cf27aff Gcff209cf0ae544f59::wal::WAL",
+    address: "0x356a26eb9e012a68958082340d4c4116e7f55615cf27affcff209cf0ae544f59::wal::WAL",
     icon: "https://file.coinexstatic.com/2025-03-26/43F8485DCB687E365E3187192861D19E.webp",
     description: "WAL Token",
     decimals: 6,
@@ -207,7 +209,7 @@ const tokens: Token[] = [
   },
   {
     symbol: "sudeng",
-    address: "0x8993129d72e733985f7f1a00396cbd055bad6f817fee36576ce483c8bbb8b87b::sudeng::SUDENG",
+    address: "0x8993129d72e733985f7f1a00396cbd055bad6f817fee36576ce495c8bbb8b87b::sudeng::SUDENG",
     icon: "https://i.imgur.com/j2EuFh5.png",
     description: "HIPPO",
     decimals: 6,
@@ -235,7 +237,7 @@ const tokens: Token[] = [
   },
   {
     symbol: "Wrapped Ether(Wormhole)",
-    address: "0xaf8cd5edc19c4512f4259f0bee101a40d41ebed738ade5874359610ef8eeced5::coin::COIN",
+    address: "0xaf8cd5edc19c4512f4259f0bee101a40d41ebed738ade5874359610efastanza57693a::fdusd::FDUSD",
     icon: "https://momentum-statics.s3.us-west-1.amazonaws.com/WETH.png",
     description: "wETH",
     decimals: 6,
@@ -249,7 +251,7 @@ const tokens: Token[] = [
   },
 ];
 
-function CreatePool({ isOpen, onClose, newPoolToken1, setNewPoolToken1, newPoolToken2, setNewPoolToken2, feeRate, setFeeRate }: CreatePoolProps) {
+function CreatePool({ isOpen, onClose, newPoolToken1, setNewPoolToken1, newPoolToken2, setNewPoolToken2, feeRate, setFeeRate, getTokenAddress, refresh }: CreatePoolProps) {
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [initialPrice, setInitialPrice] = useState("");
   const [amount1, setAmount1] = useState("");

@@ -252,7 +252,7 @@
   align-items: center;
   gap: 16px;
   margin: 0 48px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .filter-container {
@@ -630,6 +630,10 @@
   .deposit-button {
     width: auto;
   }
+
+  .filter-row {
+    flex-wrap: nowrap;
+  }
 }
 
 @media (max-width: 768px) {
@@ -704,8 +708,12 @@
 
   .filter-row {
     margin: 0 24px;
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: column; /* Stack elements vertically */
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 12px;
+    width: calc(100% - 48px); /* Ensure it fits within margins */
+    box-sizing: border-box;
   }
 
   .pool-table-header {
@@ -753,10 +761,10 @@
 
   .token-pair {
     font-size: 14px;
-    white-space: nowrap;
-    max-width: 150px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal;
+    max-width: none;
+    overflow: visible;
+    text-overflow: unset;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -788,6 +796,81 @@
 
   .no-positions {
     margin: 0 24px;
+  }
+
+  .tab-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 8px;
+    background: var(--search-bg);
+    border-radius: 8px;
+    padding: 6px;
+    border: 1px solid var(--border-color);
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .tab-button {
+    flex: 1;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    min-width: 0;
+  }
+
+  .tab-button.active {
+    background: var(--modal-secondary);
+    color: #182435;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .tab-button:hover {
+    background: var(--hover-bg);
+    color: var(--text-color);
+  }
+
+  .switch-group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap; /* Allow wrapping to prevent overflow */
+    gap: 8px;
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .switch-container {
+    flex: 0 0 auto; /* Prevent growing to fill space */
+    padding: 6px 8px; /* Reduced padding for mobile */
+    font-size: 12px; /* Smaller font size */
+    min-width: 0; /* Allow shrinking */
+  }
+
+  .switch-label {
+    font-size: 12px; /* Match reduced font size */
+  }
+
+  .chakra-switch {
+    width: 36px; /* Slightly smaller switch */
+    height: 18px;
+  }
+
+  .chakra-switch__thumb {
+    width: 14px;
+    height: 14px;
+    top: 2px;
+    left: 2px;
+  }
+
+  .chakra-switch__input:checked + .chakra-switch__track .chakra-switch__thumb {
+    transform: translateX(18px);
   }
 }
 
@@ -848,14 +931,42 @@
   }
 
   .tab-group {
-    flex-direction: column;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     gap: 4px;
+    background: var(--search-bg);
+    border-radius: 8px;
+    padding: 4px;
+    border: 1px solid var(--border-color);
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .tab-button {
-    padding: 6px;
+    flex: 1;
+    padding: 6px 8px;
     font-size: 12px;
+    border-radius: 6px;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
     min-width: 0;
+  }
+
+  .tab-button.active {
+    background: var(--modal-secondary);
+    color: #182435;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .tab-button:hover {
+    background: var(--hover-bg);
+    color: var(--text-color);
   }
 
   .action-button {
@@ -867,6 +978,9 @@
   .filter-row {
     margin: 0 12px;
     width: calc(100% - 24px);
+    flex-direction: column; /* Stack elements vertically */
+    align-items: stretch;
+    gap: 8px;
   }
 
   .pool-list {
@@ -911,10 +1025,10 @@
 
   .token-pair {
     font-size: 13px;
-    white-space: nowrap;
-    max-width: 120px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal;
+    max-width: none;
+    overflow: visible;
+    text-overflow: unset;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -944,5 +1058,40 @@
     padding: 6px;
     width: 100%;
     box-sizing: border-box;
+  }
+
+  .switch-group {
+    flex-direction: row;
+    flex-wrap: wrap; /* Allow wrapping */
+    gap: 6px;
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .switch-container {
+    flex: 0 0 auto;
+    padding: 4px 6px; /* Further reduced padding */
+    font-size: 11px; /* Smaller font size */
+    min-width: 0;
+  }
+
+  .switch-label {
+    font-size: 11px;
+  }
+
+  .chakra-switch {
+    width: 32px; /* Smaller switch */
+    height: 16px;
+  }
+
+  .chakra-switch__thumb {
+    width: 12px;
+    height: 12px;
+    top: 2px;
+    left: 2px;
+  }
+
+  .chakra-switch__input:checked + .chakra-switch__track .chakra-switch__thumb {
+    transform: translateX(16px);
   }
 }

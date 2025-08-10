@@ -46,6 +46,10 @@ function PoolList({
     e.currentTarget.src = fallbackImage;
   };
 
+  function refresh(): void {
+    throw new Error("Function not implemented.");
+  }
+
   return (
     <>
       <div className="pool-header">
@@ -54,13 +58,13 @@ function PoolList({
             className={`tab-button ${activeTab === "pools" ? "active" : ""}`}
             onClick={() => setActiveTab("pools")}
           >
-            Pools
+            v2
           </button>
           <button
             className={`tab-button ${activeTab === "positions" ? "active" : ""}`}
             onClick={() => setActiveTab("positions")}
           >
-            Positions
+            v3
           </button>
         </div>
         <div className="button-group" style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', border: 'none', boxShadow: 'none' }}>
@@ -351,15 +355,17 @@ function PoolList({
       </div>
       {isCreatePoolOpen && (
         <CreatePool
-          isOpen={isCreatePoolOpen}
-          onClose={handleCloseCreatePool}
-          newPoolToken1={newPoolToken1}
-          newPoolToken2={newPoolToken2}
-          feeRate={feeRate}
-          setNewPoolToken1={setNewPoolToken1}
-          setNewPoolToken2={setNewPoolToken2}
-          setFeeRate={setFeeRate}
-        />
+        isOpen={isCreatePoolOpen}
+        onClose={handleCloseCreatePool}
+        newPoolToken1={newPoolToken1}
+        newPoolToken2={newPoolToken2}
+        feeRate={feeRate}
+        setNewPoolToken1={setNewPoolToken1}
+        setNewPoolToken2={setNewPoolToken2}
+        setFeeRate={setFeeRate}
+        getTokenAddress={getTokenAddress}
+        refresh={refresh}
+      />
       )}
       {isAddLiquidityOpen && selectedPool && (
         <AddLiquidityModal
@@ -372,26 +378,4 @@ function PoolList({
   );
 }
 
-export default React.memo(PoolList, (prevProps, nextProps) => {
-  // Custom comparison to prevent re-renders unless necessary props change
-  return (
-    prevProps.pools === nextProps.pools &&
-    prevProps.isLoading === nextProps.isLoading &&
-    prevProps.activeTab === nextProps.activeTab &&
-    prevProps.isCreatePoolOpen === nextProps.isCreatePoolOpen &&
-    prevProps.isAddLiquidityOpen === nextProps.isAddLiquidityOpen &&
-    prevProps.selectedPool === nextProps.selectedPool &&
-    prevProps.newPoolToken1 === nextProps.newPoolToken1 &&
-    prevProps.newPoolToken2 === nextProps.newPoolToken2 &&
-    prevProps.feeRate === nextProps.feeRate &&
-    prevProps.getTokenAddress === nextProps.getTokenAddress &&
-    prevProps.handleCreatePool === nextProps.handleCreatePool &&
-    prevProps.handleCloseCreatePool === nextProps.handleCloseCreatePool &&
-    prevProps.handleAddLiquidity === nextProps.handleAddLiquidity &&
-    prevProps.handleCloseAddLiquidityModal === nextProps.handleCloseAddLiquidityModal &&
-    prevProps.setNewPoolToken1 === nextProps.setNewPoolToken1 &&
-    prevProps.setNewPoolToken2 === nextProps.setNewPoolToken2 &&
-    prevProps.setFeeRate === nextProps.setFeeRate &&
-    prevProps.setActiveTab === nextProps.setActiveTab
-  );
-});
+export default React.memo(PoolList);

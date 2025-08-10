@@ -240,6 +240,10 @@ interface Pool {
   apr: string;
   rewardImg: string;
   poolAddress: string;
+  token1Address: string;
+  token2Address: string;
+  decimals1: number;
+  decimals2: number;
 }
 
 export interface PoolListProps {
@@ -285,7 +289,11 @@ export function usePoolData(client: SuiClient): { pools: Pool[], isLoading: bool
         pool.fees === nextPool.fees &&
         pool.apr === nextPool.apr &&
         pool.rewardImg === nextPool.rewardImg &&
-        pool.poolAddress === nextPool.poolAddress
+        pool.poolAddress === nextPool.poolAddress &&
+        pool.token1Address === nextPool.token1Address &&
+        pool.token2Address === nextPool.token2Address &&
+        pool.decimals1 === nextPool.decimals1 &&
+        pool.decimals2 === nextPool.decimals2
       );
     });
   };
@@ -563,6 +571,10 @@ export function usePoolData(client: SuiClient): { pools: Pool[], isLoading: bool
               apr: aprFormatted,
               rewardImg: "https://i.meee.com.tw/SdliTGK.png",
               poolAddress: poolInfo.pool_addr,
+              token1Address: tokenXAddress,
+              token2Address: tokenYAddress,
+              decimals1: decimalsX,
+              decimals2: decimalsY,
             };
             console.log(`Final Pool Data for ${poolInfo.pool_addr}:`, poolData);
 
@@ -671,6 +683,8 @@ function Pool() {
     const data = generateVolumeData(chartPeriod);
     setVolumeData(data);
   }, [chartPeriod]);
+
+  const totalVolume = useMemo(() => volumeData.reduce((sum, d) => sum + d.volume, 0), [volumeData]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -1006,8 +1020,9 @@ function Pool() {
             </div>
             <div className="summary-right">
               <div className="chart-header">
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <p className="chart-title">{chartTitle}:</p>
+                <div className="chart-title-container">
+                  <p className="chart-title">{chartTitle}</p>
+                  <p className="chart-volume">{formatVolume(totalVolume)}</p>
                 </div>
                 <div className="period-selector">
                   <button
