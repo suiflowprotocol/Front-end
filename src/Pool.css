@@ -25,7 +25,7 @@
   flex-direction: column;
   gap: 24px;
   padding: 24px;
-  background: var(--card-bg);
+  background: rgba(26, 32, 44, 0.95); /* 修改为半透明，与App的swap-panel一致，允许底层背景可见 */
   color: var(--text-color);
   min-height: 100vh;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -36,6 +36,8 @@
   border-radius: 16px;
   box-shadow: 0 4px 24px var(--shadow-color);
   overflow-x: hidden; /* Prevent horizontal overflow */
+  position: relative; /* 确保相对定位，便于光晕效果 */
+  z-index: 1; /* 内容层在背景之上，但不挡住光晕 */
 }
 
 .summary-container {
@@ -71,7 +73,7 @@
 }
 
 .summary-metrics-card {
-  background: var(--card-bg);
+  background: rgba(45, 55, 72, 0.95); /* 修改为半透明渐变效果，允许背景可见 */
   color: var(--text-color);
   border-radius: 12px;
   padding: 24px;
@@ -170,7 +172,7 @@
   flex-direction: column;
   gap: 16px;
   padding: 16px;
-  background: var(--header-bg);
+  background: rgba(26, 32, 44, 0.95); /* 半透明 */
   border-radius: 12px;
   border: 1px solid var(--card-bg);
   margin: 0 48px;
@@ -395,7 +397,7 @@
   grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr;
   gap: 16px;
   padding: 16px 24px;
-  background: var(--card-bg);
+  background: rgba(45, 55, 72, 0.95); /* 半透明 */
   border: 1px solid var(--border-color);
   border-radius: 8px;
   font-size: 14px;
@@ -419,7 +421,7 @@
   grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr;
   gap: 16px;
   padding: 16px;
-  background: var(--card-bg);
+  background: rgba(45, 55, 72, 0.95); /* 半透明 */
   border: 1px solid var(--border-color);
   border-radius: 8px;
   cursor: pointer;
@@ -896,8 +898,11 @@
   }
 
   .summary-container {
+    flex-direction: column;
+    padding: 16px;
     margin: 0 12px;
     width: calc(100% - 24px);
+    align-items: stretch;
   }
 
   .summary-title {
