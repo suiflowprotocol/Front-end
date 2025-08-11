@@ -24,45 +24,45 @@ const walletLogos = {
   'Sui Wallet': 'https://assets.crypto.ro/logos/sui-sui-logo.png',
 };
 
-// Custom theme
+// Custom theme with refined colors for a more elegant look
 const customTheme: ThemeVars = {
   blurs: {
-    modalOverlay: 'blur(0)',
+    modalOverlay: 'blur(4px)', // Softer blur for overlays
   },
   backgroundColors: {
-    primaryButton: '#3b82f6',
-    primaryButtonHover: '#4b9cfa',
-    outlineButtonHover: '#E4E4E7',
-    modalOverlay: 'rgba(24, 36, 53, 0.2)',
-    modalPrimary: 'white',
-    modalSecondary: '#F7F8F8',
+    primaryButton: 'linear-gradient(135deg, #3b82f6, #2563eb)', // Gradient for buttons
+    primaryButtonHover: 'linear-gradient(135deg, #4b9cfa, #3b82f6)',
+    outlineButtonHover: '#F3F4F6',
+    modalOverlay: 'rgba(15, 23, 42, 0.3)', // Softer modal overlay
+    modalPrimary: '#ffffff',
+    modalSecondary: '#F9FAFB',
     iconButton: 'transparent',
     iconButtonHover: '#F0F1F2',
     dropdownMenu: '#FFFFFF',
     dropdownMenuSeparator: '#F3F6F8',
-    walletItemSelected: 'white',
-    walletItemHover: '#3C424226',
+    walletItemSelected: '#ffffff',
+    walletItemHover: '#E5E7EB',
   },
   borderColors: {
-    outlineButton: '#E4E4E7',
+    outlineButton: '#D1D5DB',
   },
   colors: {
     primaryButton: '#FFFFFF',
-    outlineButton: '#373737',
-    iconButton: '#000000',
-    body: '#182435',
-    bodyMuted: '#767A81',
-    bodyDanger: '#FF794B',
+    outlineButton: '#4B5563',
+    iconButton: '#1F2937',
+    body: '#111827',
+    bodyMuted: '#6B7280',
+    bodyDanger: '#EF4444',
   },
   radii: {
-    small: '4px',
-    medium: '8px',
-    large: '12px',
-    xlarge: '16px',
+    small: '6px', // Slightly larger radii for softer edges
+    medium: '10px',
+    large: '14px',
+    xlarge: '18px',
   },
   shadows: {
-    primaryButton: '0 4px 12px rgba(0, 0, 0, 0.1)',
-    walletItemSelected: '0 2px 8px rgba(0, 0, 0, 0.05)',
+    primaryButton: '0 6px 16px rgba(0, 0, 0, 0.15)', // Deeper shadows for depth
+    walletItemSelected: '0 3px 10px rgba(0, 0, 0, 0.08)',
   },
   fontWeights: {
     normal: '400',
@@ -70,16 +70,16 @@ const customTheme: ThemeVars = {
     bold: '700',
   },
   fontSizes: {
-    small: '12px',
-    medium: '14px',
-    large: '16px',
-    xlarge: '18px',
+    small: '13px',
+    medium: '15px',
+    large: '17px',
+    xlarge: '19px',
   },
   typography: {
-    fontFamily: 'Arial, sans-serif',
+    fontFamily: 'Inter, sans-serif',
     fontStyle: 'normal',
-    lineHeight: '1.5',
-    letterSpacing: '0.02em',
+    lineHeight: '1.6',
+    letterSpacing: '0.01em',
   },
 };
 
@@ -93,16 +93,16 @@ export function CustomConnectButton() {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '120px',
-    height: '36px',
+    width: '130px', // Slightly wider for better touch targets
+    height: '38px',
     background: '#1e293b',
-    border: '1px solid rgba(255, 255, 255, 0.2)',
-    borderRadius: '8px',
+    border: '1px solid rgba(255, 255, 255, 0.15)',
+    borderRadius: '10px',
     cursor: 'pointer',
-    padding: '6px',
+    padding: '8px',
     transition: 'all 0.3s ease',
     color: '#fff',
-    fontSize: '14px',
+    fontSize: '15px',
   };
 
   const truncateAddress = (address: string) => {
@@ -201,7 +201,7 @@ export function CustomConnectButton() {
   );
 }
 
-// Settings Modal Component
+// Settings Modal Component with refined styling
 const SettingsModal = ({ isOpen, onClose, slippage, setSlippage, customSlippage, setCustomSlippage, transactionMode, setTransactionMode, mevProtection, setMevProtection }: {
   isOpen: boolean;
   onClose: () => void;
@@ -249,7 +249,7 @@ const SettingsModal = ({ isOpen, onClose, slippage, setSlippage, customSlippage,
         <svg viewBox="0 0 24 24" focusable="false" className="chakra-icon css-onkibi" aria-hidden="true">
           <path
             fill="currentColor"
-            d="M.439,21.44a1.5,1.5,0,0,0,2.122,2.121L11.823,14.3a.25.25,0,0,1,.354,0l9.262,9.263a1.5,1.5,0,1,0,2.122-2.121L14.3,12.177a.25.25,0,0,1,0-.354l9.263-9.262A1.5,1 Consent,21.439.44L12.177,9.7a.25.25,0,0,1-.354,0L2.561.44A1.5,1.5,0,0,0,.439,2.561L9.7,11.823a.25.25,0,0,1,0,.354Z"
+            d="M.439,21.44a1.5,1.5,0,0,0,2.122,2.121L11.823,14.3a.25.25,0,0,1,.354,0l9.262,9.263a1.5,1.5,0,1,0,2.122-2.121L14.3,12.177a.25.25,0,0,1,0-.354l9.263-9.262A1.5,1.5,0,0,0,21.439,0.44L14.3,7.7a.25.25,0,0,1-.354,0L4.561,0.44A1.5,1.5,0,0,0,2.439,2.561L9.7,11.823a.25.25,0,0,1,0,.354Z"
           ></path>
         </svg>
       </button>
@@ -324,7 +324,7 @@ const SettingsModal = ({ isOpen, onClose, slippage, setSlippage, customSlippage,
                     >
                       Fast Mode
                     </p>
- "                  </div>
+                  </div>
                 </div>
               </div>
               <p className="chakra-text css-95x0qv">Standard gas based on real-time network conditions</p>
@@ -1202,7 +1202,9 @@ function App() {
     "https://upload.wikimedia.org/wikipedia/en/b/b9/Solana_logo.png",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIa3GDAlj9jCzDOu-MBV7_NRhZ4VlzN-i8pg&s",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxvCjJJoCU4zh4Xz5TLUPrsCXmBpaRUehl5A&s",
-    
+    "https://s2.coinmarketcap.com/static/img/coins/200x200/32864.png",
+    "https://imagedelivery.net/cBNDGgkrsEA-b_ixIp9SkQ/buck.svg/public"
+
 
   ];
 

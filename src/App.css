@@ -6,8 +6,6 @@
 @import '@fontsource/poppins/700.css';
 @import '@fontsource/poppins/800.css';
 
-
-
 /* custom-styles.css */
 /* app.css */
 .custom-connect-button {
@@ -35,24 +33,24 @@
 
 :root {
   --text-color: #ffffff;
-  --text-secondary: #94a3b8;
-  --primary-color: #3b82f6;
-  --secondary-color: #6b7280;
-  --background-color: #070b15;
-  --modal-bg: #1e293b;
-  --border-color: #374151;
-  --shadow-color: rgba(0, 0, 0, 0.3);
-  --input-bg: #2a3447;
-  --search-bg: rgba(255, 255, 255, 0.08);
-  --hover-bg: #374151;
-  --active-bg: #3b82f6;
-  --button-hover-bg: #4b9cfa;
-  --error-color: #f87171;
-  --success-color: #6ee7b7;
-  --card-bg: linear-gradient(145deg, #2a3447 0%, #1e2636 100%);
-  --disabled-bg: #4b5563;
-  --loading-spinner: #ffffff;
-  --overlay-color: rgba(30, 41, 59, 0.8);
+  --text-secondary: #a0aec0;
+  --primary-color: #4299e1;
+  --secondary-color: #718096;
+  --background-color: #0a0f1a;
+  --modal-bg: #1a202c;
+  --border-color: #2d3748;
+  --shadow-color: rgba(0, 0, 0, 0.25);
+  --input-bg: #2d3748;
+  --search-bg: rgba(255, 255, 255, 0.1);
+  --hover-bg: #4a5568;
+  --active-bg: #4299e1;
+  --button-hover-bg: #63b3ed;
+  --error-color: #f56565;
+  --success-color: #68d391;
+  --card-bg: linear-gradient(145deg, #2d3748 0%, #1a202c 100%);
+  --disabled-bg: #4a5568;
+  --loading-spinner: #e2e8f0;
+  --overlay-color: rgba(26, 32, 44, 0.85);
 }
 
 *,
@@ -65,7 +63,7 @@
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  line-height: 1.5;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   background: var(--card-bg);
   color: var(--text-color);
@@ -102,9 +100,9 @@ body {
   box-sizing: border-box;
   margin: 0 auto;
   display: flex;
-  flex-direction: row; /* 确保在同一行显示 */
-  justify-content: space-between; /* 确保内容均匀分布 */
-  align-items: center; /* 垂直居中对齐 */
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   padding: 12px 16px;
   background: var(--card-bg);
   border-bottom: 1px solid var(--border-color);
@@ -118,20 +116,20 @@ body {
 
 .header-top {
   display: flex;
-  justify-content: space-between; /* 确保内容均匀分布 */
-  align-items: center; /* 垂直居中对齐 */
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
 }
 
 .logo-container {
   display: flex;
   align-items: center;
-  gap: 8px; /* logo 和文字之间的间距 */
-  margin-right: 24px; /* 增加 logo 和导航菜单之间的空白分隔 */
+  gap: 8px;
+  margin-right: 24px;
 }
 
 .hamburger-menu {
-  display: none; /* 默认隐藏 */
+  display: none;
   background: none;
   border: none;
   cursor: pointer;
@@ -152,31 +150,27 @@ body {
   transform: scale(1.05);
 }
 
-/* 在 .logo-text 后添加 */
 .logo-text:hover {
   transform: scale(1.05);
 }
 
-
-/* 修改后的 logo-text 样式，添加艺术字效果 */
 .logo-text {
-  font-family: 'Orbitron', sans-serif; /* 使用艺术字体 Orbitron */
-  font-size: 24px; /* 增大字体以突出显示 */
+  font-family: 'Orbitron', sans-serif;
+  font-size: 24px;
   font-weight: 700;
-  letter-spacing: 2px; /* 增加字母间距，增强艺术感 */
-  color: white; /* 使用白色文字 */
-  text-shadow: 0 0 8px rgba(59, 130, 246, 0.5), 0 0 16px rgba(16, 185, 129, 0.3); /* 发光效果 */
-  text-transform: uppercase; /* 保持大写 */
-  transition: transform 0.3s ease; /* 悬停时的平滑缩放效果 */
+  letter-spacing: 2px;
+  color: white;
+  text-shadow: 0 0 8px rgba(66, 153, 225, 0.5), 0 0 16px rgba(26, 32, 44, 0.3);
+  text-transform: uppercase;
+  transition: transform 0.3s ease;
 }
 
-/* 导航菜单样式 */
 .nav-menu {
   display: flex;
   align-items: center;
-  gap: 12px; /* 保持导航项之间的间距 */
-  flex-wrap: nowrap; /* 确保不换行 */
-  margin: 0; /* 移除自动边距 */
+  gap: 12px;
+  flex-wrap: nowrap;
+  margin: 0;
   transition: max-height 0.3s ease, opacity 0.3s ease;
 }
 
@@ -189,7 +183,7 @@ body {
   font-size: 14px;
   font-weight: 500;
   color: var(--text-color);
-  padding: 6px 12px; /* 调整内边距以适应一行显示 */
+  padding: 6px 12px;
   border-radius: 8px;
   transition: all 0.3s ease;
 }
@@ -248,24 +242,24 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-left: auto; /* 将钱包按钮推到右侧 */
+  margin-left: auto;
 }
 
 .wallet-button {
-  padding: 4px 8px; /* 减小内边距 */
-  background: var(--card-bg); /* 设置为页面背景颜色 */
-  color: #ffffff; /* 文字颜色 */
-  border-radius: 20px; /* 圆角 */
-  font-size: 12px; /* 减小字体大小 */
-  font-weight: 600; /* 字体粗细 */
+  padding: 4px 8px;
+  background: var(--card-bg);
+  color: #ffffff;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
   transition: all 0.3s ease;
-  border: none; /* 移除边框 */
+  border: none;
   min-width: 80px;
 }
 
 .wallet-button:hover {
-  background: var(--button-hover-bg); /* 悬停时的背景颜色 */
-  transform: translateY(-1px); /* 悬停时的效果 */
+  background: var(--button-hover-bg);
+  transform: translateY(-1px);
 }
 
 .wallet-button img {
@@ -283,15 +277,15 @@ body {
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.2); /* 设置为细的透明白灰色 */
-  border-radius: 8px; /* 设置圆角 */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
   cursor: pointer;
-  padding: 6px; /* 按钮内边距 */
+  padding: 6px;
   transition: transform 0.3s ease;
 }
 
 .icon-button:hover {
-  background: rgba(59, 130, 246, 0.1); /* 悬停时的背景颜色 */
+  background: rgba(66, 153, 225, 0.1);
 }
 
 .icon-button-svg {
@@ -317,7 +311,7 @@ body {
   align-items: center;
   width: 100%;
   padding: 12px;
-  background: linear-gradient(135deg, #3b82f6, #10b981);
+  background: linear-gradient(135deg, #4299e1, #48bb78);
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -354,7 +348,7 @@ body {
 }
 
 .countdown-time {
-  color: #ffd700;
+  color: #ecc94b;
   font-weight: 800;
   font-size: 14px;
 }
@@ -362,7 +356,7 @@ body {
 .swap-panel {
   width: 100%;
   max-width: 480px;
-  background: rgba(30, 41, 59, 0.95); /* Slightly transparent for better blend */
+  background: rgba(26, 32, 44, 0.95);
   padding: 16px;
   border-radius: 16px;
   border: 1px solid var(--border-color);
@@ -418,19 +412,19 @@ body {
 
 .settings-row {
   display: flex;
-  align-items: center; /* 垂直居中对齐 */
-  gap: 16px; /* 调整间距以适应布局 */
+  align-items: center;
+  gap: 16px;
 }
 
 .aggregator-toggle {
   display: flex;
-  align-items: center; /* 垂直居中对齐 */
-  gap: 8px; /* 调整间距 */
+  align-items: center;
+  gap: 8px;
 }
 
 .chakra-form__label {
-  font-size: 14px; /* 标签字体大小 */
-  color: var(--text-color); /* 标签颜色 */
+  font-size: 14px;
+  color: var(--text-color);
 }
 
 .chakra-switch {
@@ -440,35 +434,35 @@ body {
 }
 
 .chakra-switch__input {
-  display: none; /* 隐藏原始输入 */
+  display: none;
 }
 
 .chakra-switch__track {
-  width: 40px; /* 开关的宽度 */
-  height: 20px; /* 开关的高度 */
-  background: var(--border-color); /* 开关的背景颜色 */
-  border-radius: 10px; /* 圆角 */
+  width: 40px;
+  height: 20px;
+  background: var(--border-color);
+  border-radius: 10px;
   position: relative;
   transition: background 0.3s ease;
 }
 
 .chakra-switch__thumb {
-  width: 16px; /* 滑块的宽度 */
-  height: 16px; /* 滑块的高度 */
-  background: white; /* 滑块的颜色 */
-  border-radius: 50%; /* 圆形滑块 */
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: 50%;
   position: absolute;
-  top: 2px; /* 滑块的顶部位置 */
-  left: 2px; /* 滑块的左侧位置 */
+  top: 2px;
+  left: 2px;
   transition: transform 0.3s ease;
 }
 
 .chakra-switch__input:checked + .chakra-switch__track {
-  background: var(--primary-color); /* 选中时的背景颜色 */
+  background: var(--primary-color);
 }
 
 .chakra-switch__input:checked + .chakra-switch__track .chakra-switch__thumb {
-  transform: translateX(20px); /* 选中时滑块移动 */
+  transform: translateX(20px);
 }
 
 .aggregator-toggle input[type="checkbox"] {
@@ -549,8 +543,6 @@ body {
   width: 20px;
   height: 20px;
 }
-
-
 
 .chakra-modal__body.css-86c2jf {
   padding: 24px;
@@ -777,8 +769,6 @@ body {
   background-color: var(--button-hover-bg);
 }
 
-
-
 .slippage-modal-content {
   display: flex;
   flex-direction: column;
@@ -837,7 +827,7 @@ body {
 
 .custom-slippage-input:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.3);
 }
 
 .custom-slippage-submit {
@@ -868,7 +858,7 @@ body {
 }
 
 .secondary-button:hover {
-  background: rgba(59, 130, 246, 0.1);
+  background: rgba(66, 153, 225, 0.1);
   transform: translateY(-2px);
   box-shadow: 0 4px 16px var(--shadow-color);
 }
@@ -1082,28 +1072,27 @@ body {
 }
 
 .info-panel {
-  margin-top: 12px; /* 增加顶部间距 */
-  padding: 8px; /* 减少内边距 */
-  background: var(--modal-bg); /* 背景颜色 */
-  border-radius: 12px; /* 圆角 */
-  box-shadow: 0 4px 12px var(--shadow-color); /* 阴影效果 */
+  margin-top: 12px;
+  padding: 8px;
+  background: var(--modal-bg);
+  border-radius: 12px;
 }
 
 .info-panel p {
   display: flex;
-  justify-content: space-between; /* 水平分布内容 */
-  margin: 4px 0; /* 减少上下间距 */
-  color: var(--text-secondary); /* 文字颜色 */
-  font-size: 14px; /* 调整字体大小 */
+  justify-content: space-between;
+  margin: 4px 0;
+  color: var(--text-secondary);
+  font-size: 14px;
 }
 
 .price-diff-section {
   display: flex;
-  justify-content: space-between; /* 水平分布内容 */
-  margin-top: 8px; /* 增加顶部间距 */
-  padding: 4px; /* 减少内边距 */
-  background: rgba(255, 255, 255, 0.05); /* 背景颜色 */
-  border-radius: 8px; /* 圆角 */
+  justify-content: space-between;
+  margin-top: 8px;
+  padding: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
 }
 
 .token-modal-container {
@@ -1741,8 +1730,8 @@ body {
 .css-rrtj52 {
   background: var(--card-bg);
   border-radius: 12px;
-  padding: 12px; /* 压缩内边距 */
-  border: none; /* 移除边框 */
+  padding: 12px;
+  border: none;
   box-shadow: 0 4px 12px var(--shadow-color);
   margin-top: 12px;
   transition: all 0.3s ease;
@@ -1754,7 +1743,7 @@ body {
   justify-content: space-between;
   width: 100%;
   padding-bottom: 8px;
-  border-bottom: none; /* 移除分界线 */
+  border-bottom: none;
 }
 
 .css-5z699w {
@@ -1779,17 +1768,17 @@ body {
 .css-47ju1k {
   display: flex;
   flex-direction: column;
-  gap: 8px; /* 压缩间距 */
-  padding-top: 8px; /* 压缩顶部内边距 */
+  gap: 8px;
+  padding-top: 8px;
 }
 
 .css-tyic7d {
   display: flex;
   align-items: flex-start;
-  gap: 8px; /* 压缩间距 */
+  gap: 8px;
   flex-wrap: nowrap;
   background: var(--card-bg);
-  padding: 8px; /* 压缩内边距 */
+  padding: 8px;
   border-radius: 8px;
 }
 
@@ -1807,7 +1796,7 @@ body {
 
 
 .css-1f7xwte {
-  font-size: 14px; /* 代币简称字体稍小 */
+  font-size: 14px;
   font-weight: 600;
   color: var(--text-color);
   margin: 0;
@@ -1893,7 +1882,7 @@ body {
 
 .css-1r938vg {
   width: 100%;
-  max-height: 20px; /* 压缩 K 线图高度 */
+  max-height: 20px;
   max-width: 180px;
 }
 
@@ -1908,7 +1897,7 @@ body {
   cursor: default;
   width: 100%;
   height: 100%;
-  max-height: 20px; /* 压缩 K 线图高度 */
+  max-height: 20px;
   max-width: 180px;
 }
 
@@ -2117,7 +2106,7 @@ body {
   .token-modal-title {
     font-size: 20px;
   }
-  .token-modal-close-btn {
+ .token-modal-close-btn {
     padding: 8px;
   }
   .token-modal-close-icon {
@@ -2618,50 +2607,50 @@ body {
 .price-reference-panel {
   background: var(--card-bg);
   border-radius: 12px;
-  padding: 12px; /* 压缩内边距 */
-  border: none; /* 移除边框 */
+  padding: 12px;
+  border: none;
   box-shadow: 0 4px 12px var(--shadow-color);
   margin-top: 12px;
   transition: all 0.3s ease;
 }
 
 .swap-info {
-  margin-top: 12px; /* 与 Swap 按钮的间距 */
-  padding: 12px; /* 内边距 */
-  background: var(--modal-bg); /* 背景颜色 */
-  border-radius: 12px; /* 圆角 */
-  box-shadow: 0 4px 12px var(--shadow-color); /* 阴影效果 */
+  margin-top: 12px;
+  padding: 12px;
+  background: var(--modal-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px var(--shadow-color);
 }
 
 .info-row {
   display: flex;
-  align-items: center; /* 垂直居中对齐 */
-  justify-content: space-between; /* 水平分布内容 */
-  margin: 8px 0; /* 上下间距 */
-  color: var(--text-secondary); /* 文字颜色 */
-  font-size: 14px; /* 字体大小 */
+  align-items: center;
+  justify-content: space-between;
+  margin: 8px 0;
+  color: var(--text-secondary);
+  font-size: 14px;
 }
 
 .info-row img {
-  width: 24px; /* 代币图标大小 */
-  height: 24px; /* 代币图标大小 */
-  margin-right: 8px; /* 图标与文字之间的间距 */
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
 }
 
 button {
-  padding: 4px 8px; /* 按钮内边距 */
-  background: var(--primary-color); /* 按钮背景颜色 */
-  color: #ffffff; /* 按钮文字颜色 */
-  border-radius: 20px; /* 按钮圆角 */
-  font-size: 12px; /* 按钮字体大小 */
-  font-weight: 600; /* 按钮字体粗细 */
-  border: none; /* 移除边框 */
-  cursor: pointer; /* 鼠标悬停时显示为手型 */
+  padding: 4px 8px;
+  background: var(--primary-color);
+  color: #ffffff;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
 }
 
 button:hover {
-  background: var(--button-hover-bg); /* 悬停时的背景颜色 */
-  transform: translateY(-1px); /* 悬停时的效果 */
+  background: var(--button-hover-bg);
+  transform: translateY(-1px);
 }
 
 .popover {
