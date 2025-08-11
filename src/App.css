@@ -226,16 +226,23 @@ body {
 }
 
 .dropdown-item {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   padding: 10px 16px;
   color: var(--text-color);
   text-decoration: none;
   font-size: 14px;
-  transition: background 0.2s ease;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 .dropdown-item:hover {
   background-color: var(--hover-bg);
+  color: var(--primary-color);
+}
+
+.dropdown-item:hover svg {
+  fill: var(--primary-color);
 }
 
 .wallet-actions {
@@ -420,6 +427,9 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
+ 
+  border-radius: 8px;
+  padding: 4px 8px;
 }
 
 .chakra-form__label {
@@ -974,7 +984,7 @@ body {
   transform: translate(-50%, -50%) scale(1.05);
 }
 
-.swap-arrow {
+.swap-icon svg {
   width: 16px;
   height: 16px;
   stroke: var(--text-secondary);
@@ -1576,7 +1586,7 @@ body {
   z-index: 10;
 }
 
-.css-h7r0o8 {
+.css-h7m0o8 {
   background: var(--modal-bg);
   border: 1px solid var(--border-color);
   border-radius: 10px;
@@ -2699,7 +2709,7 @@ button:hover {
 }
 
 /* 图标和文字的样式 */
-.dropdown-item img {
+.dropdown-item {
   margin-right: 10px; /* 图标与文字之间的间距 */
   width: 20px; /* 图标宽度 */
   height: 20px; /* 图标高度 */
@@ -2775,4 +2785,35 @@ button:hover {
   background-color: var(--overlay-color);
   z-index: -1;
   pointer-events: none;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+@media (max-width: 480px) {
+  .aggregator-toggle {
+    gap: 4px;
+    padding: 2px 4px;
+  }
+  .chakra-form__label {
+    font-size: 12px;
+  }
+  .chakra-switch__track {
+    width: 32px;
+    height: 16px;
+  }
+  .chakra-switch__thumb {
+    width: 12px;
+    height: 12px;
+    top: 2px;
+    left: 2px;
+  }
+  .chakra-switch__input:checked + .chakra-switch__track .chakra-switch__thumb {
+    transform: translateX(16px);
+  }
 }
