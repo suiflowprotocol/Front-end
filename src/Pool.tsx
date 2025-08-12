@@ -667,11 +667,11 @@ function Pool() {
         });
       }
     } else if (period === 'M') {
-      startDate = new Date(now.getFullYear(), now.getMonth() - 12, 1);
+      startDate = new Date(now.getFullYear(), now.getMonth() - 11, 1);
       for (let i = 0; i < 12; i++) {
         const monthDate = new Date(startDate.getFullYear(), startDate.getMonth() + i, 1);
         const volume = Math.floor(Math.random() * 30000000 + 10000000);
-        const label = monthDate.toLocaleString('default', { month: 'short', year: '2-digit' });
+        const label = monthDate.toLocaleString('en-US', { month: 'short' });
         data.push({ date: label, volume, label });
       }
     }
@@ -738,8 +738,9 @@ function Pool() {
 
   const chartWidth = 733;
   const chartHeight = 228;
-  const barWidth = volumeData.length > 0 ? (chartWidth / volumeData.length) * 0.5 : 0;
-  const gap = volumeData.length > 0 ? (chartWidth / volumeData.length) * 0.5 : 0;
+  const fixedBarWidth = (chartWidth / 30) * 0.5;
+  const barWidth = volumeData.length > 0 ? fixedBarWidth : 0;
+  const gap = volumeData.length > 0 ? (chartWidth / volumeData.length) - barWidth : 0;
   const maxVolume = volumeData.length > 0 ? Math.max(...volumeData.map(d => d.volume)) : 1;
 
   const formatVolume = (volume: number) => {
@@ -1122,6 +1123,8 @@ function Pool() {
             </div>
           </div>
 
+        
+
           {activeTab === "pools" ? (
             <PoolList
               pools={pools}
@@ -1141,7 +1144,7 @@ function Pool() {
               setNewPoolToken2={setNewPoolToken2}
               setFeeRate={setFeeRate}
               getTokenAddress={getTokenAddress}
-              refresh={refresh} isLoading={false}            />
+              refresh={refresh} isLoading={false} />
           ) : (
             <Position
               activeTab={activeTab}

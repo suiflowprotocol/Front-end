@@ -405,6 +405,7 @@ function App() {
   const [poolId, setPoolId] = useState("");
   const [isReverseSwap, setIsReverseSwap] = useState(false);
   const [balances, setBalances] = useState<{ [key: string]: string }>({});
+  const [exactBalances, setExactBalances] = useState<{ [key: string]: bigint }>({});
   const [expectedOutput, setExpectedOutput] = useState("0.0");
   const [priceImpact, setPriceImpact] = useState("0.00");
   const [countdown, setCountdown] = useState("0h 0m 0s");
@@ -454,6 +455,7 @@ function App() {
   const PACKAGE_ID = "0xb90158d50ac951784409a6876ac860e24564ed5257e51944d3c693efb9fdbd78";
   const POOL_REGISTRY = "0xfc8c69858d070b639b3db15ff0f78a10370950434c5521c83eaa7e2285db8d2a";
   const CRYPTOCOMPARE_API = "https://min-api.cryptocompare.com/data";
+  const SUI_TYPE = "0x2::sui::SUI";
 
   const priceCache = useRef<{ [key: string]: { price: number; change_24h: number; timestamp: number } }>({});
   const historyCache = useRef<{ [key: string]: { data: { x: number; y: number }[]; timestamp: number } }>({});
@@ -544,16 +546,39 @@ function App() {
   };
 
   const setHalfBalance = () => {
-    const balance = parseFloat(balances[tokenX] || "0");
-    if (balance > 0) {
-      setAmountIn((balance * 0.5).toFixed(getTokenDecimals(tokenX)));
+    const exactBalance = exactBalances[tokenX] || 0n;
+    if (exactBalance > 0n) {
+      const decimals = getTokenDecimals(tokenX);
+      const halfExact = exactBalance / 2n;
+      const integer = halfExact / (10n ** BigInt(decimals));
+      let fractionStr = (halfExact % (10n ** BigInt(decimals))).toString();
+      fractionStr = fractionStr.padStart(decimals, '0').replace(/0+$/, '');
+      let amountStr = integer.toString();
+      if (fractionStr) {
+        amountStr += '.' + fractionStr;
+      }
+      setAmountIn(amountStr);
     }
   };
 
   const setMaxBalance = () => {
-    const balance = parseFloat(balances[tokenX] || "0");
-    if (balance > 0) {
-      setAmountIn(balance.toFixed(getTokenDecimals(tokenX)));
+    const exactBalance = exactBalances[tokenX] || 0n;
+    if (exactBalance > 0n) {
+      const decimals = getTokenDecimals(tokenX);
+      let maxExact = exactBalance;
+      if (tokenX === SUI_TYPE) {
+        const gasReserve = 100000000n;
+        maxExact -= gasReserve;
+        if (maxExact < 0n) maxExact = 0n;
+      }
+      const integer = maxExact / (10n ** BigInt(decimals));
+      let fractionStr = (maxExact % (10n ** BigInt(decimals))).toString();
+      fractionStr = fractionStr.padStart(decimals, '0').replace(/0+$/, '');
+      let amountStr = integer.toString();
+      if (fractionStr) {
+        amountStr += '.' + fractionStr;
+      }
+      setAmountIn(amountStr);
     }
   };
 
@@ -832,6 +857,7 @@ function App() {
     const fetchBalancesAndOutput = async () => {
       if (!account) {
         setBalances({});
+        setExactBalances({});
         setExpectedOutput("0.0");
         setMinAmountOut("0");
         setPriceImpact("0.00");
@@ -843,6 +869,7 @@ function App() {
       try {
         setIsLoadingOutput(true);
         const newBalances: { [key: string]: string } = {};
+        const newExactBalances: { [key: string]: bigint } = {};
         const allBalances = await client.getAllBalances({
           owner: account.address,
         });
@@ -852,15 +879,17 @@ function App() {
             const balanceEntry = allBalances.find((b) => b.coinType === token.address);
             const decimals = getTokenDecimals(token.address);
             if (balanceEntry) {
-              const balance = parseInt(balanceEntry.totalBalance) / 10 ** decimals;
+              newExactBalances[token.address] = BigInt(balanceEntry.totalBalance);
+              const balance = Number(BigInt(balanceEntry.totalBalance)) / 10 ** decimals;
               newBalances[token.address] = balance.toFixed(4);
             } else {
+              newExactBalances[token.address] = 0n;
               newBalances[token.address] = "0.0000";
-              console.warn(`No balance found for token: ${token.symbol} (${token.address})`);
             }
           }
         }
         setBalances(newBalances);
+        setExactBalances(newExactBalances);
 
         if (debouncedAmountIn === "" || parseFloat(debouncedAmountIn) === 0) {
           setExpectedOutput("0.0");
@@ -1013,7 +1042,7 @@ function App() {
       setError("No matching trading pool found");
       return;
     }
-    if (parseFloat(balances["0x2::sui::SUI"] || "0") < 0.1) {
+    if ((exactBalances[SUI_TYPE] || 0n) < 100000000n) {
       setError("Insufficient SUI balance for transaction fee (at least 0.1 SUI required)");
       return;
     }
@@ -1037,9 +1066,11 @@ function App() {
     try {
       const suiBalance = await client.getBalance({
         owner: account.address,
-        coinType: "0x2::sui::SUI",
+        coinType: SUI_TYPE,
       });
-      if (parseInt(suiBalance.totalBalance) < 100000000) {
+      const totalSuiBalance = BigInt(suiBalance.totalBalance);
+      const gasBudgetBigInt = 100000000n;
+      if (totalSuiBalance < gasBudgetBigInt) {
         setError("Insufficient SUI balance for transaction fee (at least 0.1 SUI required)");
         return;
       }
@@ -1047,76 +1078,97 @@ function App() {
       const inputToken = tokenX;
       const outputToken = tokenY;
       const inputDecimals = getTokenDecimals(inputToken);
-      const outputDecimals = getTokenDecimals(outputToken);
-      const amountInBigInt = BigInt(Math.floor(parseFloat(amountIn) * 10 ** inputDecimals));
-      const minAmountOutBigInt = BigInt(Math.floor(parseFloat(minAmountOut) * 10 ** outputDecimals));
+      const parts = amountIn.split('.');
+      let amountStr = parts[0] || '0';
+      if (parts.length > 1) {
+        amountStr += parts[1].padEnd(inputDecimals, '0').slice(0, inputDecimals);
+      } else {
+        amountStr += '0'.repeat(inputDecimals);
+      }
+      const amountInBigInt = BigInt(amountStr);
 
-      const allInputCoins = await client.getAllCoins({
+      // Similarly for minAmountOut
+      const minParts = minAmountOut.split('.');
+      let minAmountStr = minParts[0] || '0';
+      if (minParts.length > 1) {
+        const outputDecimals = getTokenDecimals(tokenY);
+        minAmountStr += minParts[1].padEnd(outputDecimals, '0').slice(0, outputDecimals);
+      } else {
+        minAmountStr += '0'.repeat(inputDecimals);
+      }
+      const minAmountOutBigInt = BigInt(minAmountStr);
+
+      const inputCoinsResponse = await client.getCoins({
         owner: account.address,
+        coinType: inputToken,
       });
+      const inputCoins = inputCoinsResponse.data;
 
-      const filteredInputCoins = allInputCoins.data.filter(
-        (coin) => coin.coinType === inputToken
-      );
-
-      const totalInputBalance = allInputCoins.data.reduce((sum, coin) => sum + BigInt(coin.balance), 0n);
+      const totalInputBalance = inputCoins.reduce((sum, coin) => sum + BigInt(coin.balance), 0n);
 
       if (totalInputBalance < amountInBigInt) {
         setError(`Insufficient ${getTokenInfo(inputToken).symbol} balance`);
         return;
       }
 
-      const coinObjectIds = allInputCoins.data
+      const inputCoinIds = inputCoins
         .filter((coin) => BigInt(coin.balance) > 0n)
         .map((coin) => coin.coinObjectId);
 
-      if (coinObjectIds.length === 0) {
+      if (inputCoinIds.length === 0) {
         setError(`No ${getTokenInfo(inputToken).symbol} tokens found`);
         return;
       }
 
-      const gasBudgetBigInt = 100000000n;
-      if (inputToken === "0x2::sui::SUI" && totalInputBalance < amountInBigInt + gasBudgetBigInt) {
+      if (inputToken === SUI_TYPE && totalInputBalance < amountInBigInt + gasBudgetBigInt) {
         setError("Insufficient SUI for swap and gas fee");
         return;
       }
 
-      const suiCoins = await client.getCoins({
+      const suiCoinsResponse = await client.getCoins({
         owner: account.address,
-        coinType: "0x2::sui::SUI",
+        coinType: SUI_TYPE,
       });
+      const suiCoins = suiCoinsResponse.data;
 
-      if (!suiCoins.data || suiCoins.data.length === 0) {
+      if (suiCoins.length === 0) {
         setError("No SUI tokens found for gas payment");
         return;
       }
 
       const tx = new Transaction();
-      const [primaryCoin] = coinObjectIds;
-      const mergedCoin = tx.object(primaryCoin);
 
-      if (coinObjectIds.length > 1) {
-        tx.mergeCoins(mergedCoin, coinObjectIds.slice(1).map((id) => tx.object(id)));
+      // Merge input coins if necessary
+      if (inputCoinIds.length > 0) {
+        const primaryInputCoin = tx.object(inputCoinIds[0]);
+        if (inputCoinIds.length > 1) {
+          tx.mergeCoins(primaryInputCoin, inputCoinIds.slice(1).map(id => tx.object(id)));
+        }
+        const [coinToSwap] = tx.splitCoins(primaryInputCoin, [amountInBigInt]);
+
+        tx.moveCall({
+          target: `${PACKAGE_ID}::amm::${isReverseSwap ? "swap_reverse" : "swap"}`,
+          typeArguments: isReverseSwap ? [tokenY, tokenX] : [tokenX, tokenY],
+          arguments: [
+            tx.object(poolId),
+            coinToSwap,
+            tx.pure.u64(minAmountOutBigInt),
+          ],
+        });
       }
 
-      const [coinToSwap] = tx.splitCoins(mergedCoin, [amountInBigInt]);
+      // Check if need to merge SUI for gas
+      const maxSuiBalance = suiCoins.reduce((max, coin) => BigInt(coin.balance) > max ? BigInt(coin.balance) : max, 0n);
+      if (maxSuiBalance < gasBudgetBigInt && suiCoins.length > 1) {
+        const primarySuiCoin = tx.object(suiCoins[0].coinObjectId);
+        tx.mergeCoins(primarySuiCoin, suiCoins.slice(1).map(coin => tx.object(coin.coinObjectId)));
+      }
 
-      tx.moveCall({
-        target: `${PACKAGE_ID}::amm::${isReverseSwap ? "swap_reverse" : "swap"}`,
-        typeArguments: isReverseSwap ? [tokenY, tokenX] : [tokenX, tokenY],
-        arguments: [
-          tx.object(poolId),
-          coinToSwap,
-          tx.pure.u64(minAmountOutBigInt),
-        ],
-      });
-
-      tx.setGasBudget(100000000);
+      tx.setGasBudget(gasBudgetBigInt);
 
       await signAndExecute(
         {
-          transaction: tx as any,
-          account,
+          transaction: tx,
         },
         {
           onSuccess: (result) => {
@@ -1581,9 +1633,9 @@ function App() {
                     <button
                       className={`action-button css-1y5noho ${isLoadingOutput ? "loading" : ""}`}
                       onClick={handleShowPreview}
-                      disabled={!account || !amountIn || parseFloat(amountIn) <= 0 || !poolId || parseFloat(balances["0x2::sui::SUI"] || "0") < 0.1 || tokenX === tokenY || isLoadingOutput}
+                      disabled={!account || !amountIn || parseFloat(amountIn) <= 0 || !poolId || (exactBalances[SUI_TYPE] || 0n) < 100000000n || tokenX === tokenY || isLoadingOutput}
                     >
-                      {account ? (amountIn && parseFloat(amountIn) > 0 ? (poolId ? (parseFloat(balances["0x2::sui::SUI"] || "0") >= 0.1 ? (tokenX !== tokenY ? (isLoadingOutput ? "Loading..." : "Swap Now") : "Same Token") : "Insufficient SUI Balance") : "Invalid Trading Pair") : "Enter Valid Amount") : "Connect Wallet"}
+                      {account ? (amountIn && parseFloat(amountIn) > 0 ? (poolId ? ((exactBalances[SUI_TYPE] || 0n) >= 100000000n ? (tokenX !== tokenY ? (isLoadingOutput ? "Loading..." : "Swap Now") : "Same Token") : "Insufficient SUI Balance") : "Invalid Trading Pair") : "Enter Valid Amount") : "Connect Wallet"}
                     </button>
                     {error && <div className="error">{error}</div>}
                     {modalProps && <Modal {...modalProps} />}
