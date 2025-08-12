@@ -58,13 +58,13 @@ function PoolList({
             className={`tab-button ${activeTab === "pools" ? "active" : ""}`}
             onClick={() => setActiveTab("pools")}
           >
-            v2
+            Pools
           </button>
           <button
             className={`tab-button ${activeTab === "positions" ? "active" : ""}`}
             onClick={() => setActiveTab("positions")}
           >
-            v3
+            Positions
           </button>
         </div>
         <div className="button-group" style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', border: 'none', boxShadow: 'none' }}>

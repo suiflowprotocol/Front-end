@@ -1,4 +1,3 @@
-// pool.tsx
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { SuiClient, getFullnodeUrl } from "@mysten/sui/client";
 import { Token, tokens } from "./tokens";
@@ -494,14 +493,14 @@ export function usePoolData(client: SuiClient): { pools: Pool[], isLoading: bool
                 console.error(`Failed to fetch metadata for token ${tokenYAddress}:`, metadataError);
                 const parts = tokenYAddress.split('::');
                 const sym = parts.length === 3 ? parts[2] : tokenYAddress.slice(0, 6);
-                tokenY = {
-                  address: tokenYAddress,
-                  name: `Unknown (${sym})`,
-                  symbol: sym,
-                  decimals: 9,
-                  logoURI: "https://via.placeholder.com/20",
-                  image: "https://via.placeholder.com/20",
-                };
+                  tokenY = {
+                    address: tokenYAddress,
+                    name: `Unknown (${sym})`,
+                    symbol: sym,
+                    decimals: 9,
+                    logoURI: "https://via.placeholder.com/20",
+                    image: "https://via.placeholder.com/20",
+                  };
               }
             }
             console.log(`Token Data for pool ${poolInfo.pool_addr}:`, { tokenX, tokenY });
@@ -864,26 +863,6 @@ function Pool() {
                       </svg>
                       Swap
                     </Link>
-                    <Link to="/limit" className="dropdown-item">
-                      <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16" style={{transform: 'rotate(180deg)'}}>
-                        <path d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1zm1 12h2V2h-2zm-3 0V7H7v7zm-5 0v-3H2v3z"/>
-                      </svg>
-                      Limit Order
-                    </Link>
-                    <a href="#" className="dropdown-item">
-                      <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16">
-                        <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
-                        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/>
-                      </svg>
-                      DCA
-                    </a>
-                    <a href="#" className="dropdown-item">
-                      <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16">
-                        <path d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5"/>
-                        <path d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
-                      </svg>
-                      DeepBook
-                    </a>
                   </div>
                 </div>
                 <div
@@ -902,24 +881,18 @@ function Pool() {
                       </svg>
                       Pools
                     </Link>
-                    <Link to="/positions" className="dropdown-item">
-                      <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16">
-                        <path d="M5.68 5.792 7.345 7.75 5.681 9.708a2.75 2.75 0 1 1 0-3.916ZM8 6.978 6.416 5.113l-.014-.015a3.75 3.75 0 1 0 0 5.304l.014-.015L8 8.522l1.584 1.865.014.015a3.75 3.75 0 1 0 0-5.304l-.014.015zm.656.772 1.663-1.958a2.75 2.75 0 1 1 0 3.916z"/>
-                      </svg>
-                      Positions
-                    </Link>
                     <a href="#" className="dropdown-item">
                       <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16">
                         <path d="M5.493 0a.5.5 0 0 1 .493.606L5.533 4.938A.498.498 0 0 1 5.038 5.5c-1.636 0-3.087.313-4.355.869l-.706 1.947A.5.5 0 0 1-.857 7.925l3.847 2.236c-.713 1.352-1.131 2.754-1.26 4.165a.5.5 0 0 1-.968-.326c.14-1.453.59-2.888 1.325-4.29L.41 8.008A.5.5 0 0 1 .824 7.05l1.934.708c.613-1.291 1.328-2.562 2.105-3.837h-2.808a.5.5 0 0 1 .5-.5h3.5zM12 5.5c1.636 0 3.087.313 4.355.869l.706 1.947a.5.5 0 0 1 .474.391l-3.847 2.236c.713 1.352 1.131 2.754 1.26 4.165a.5.5 0 0 1 .968-.326c-.14-1.453-.59-2.888-1.325-4.29l2.536-1.468a.5.5 0 0 1-.414-.958l-1.934.708c-.613-1.291-1.328-2.562-2.105-3.837h2.808a.5.5 0 0 1-.5.5h-3.5z"/>
                       </svg>
-                      Farms
+                      Rewards
                     </a>
                     <Link to="/xseal" className="dropdown-item">
                       <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16">
                         <path d="M5.338 1.59a61 61 0 0 0-2.837.856.48.48 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.7 10.7 0 0 0 2.287 2.233c.346.244.652.42 .893.533q.18.085.293.118a1 1 0 0 0 .101.025 1 1 0 0 0 .1-.025q.114-.034.294-.118c.24-.113.547-.29.893-.533a10.7 10.7 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072 .56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.8 11.8 0 0 1-2.517 2.453 7 7 0 0 1-1.048 .625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7 7 0 0 1-1.048-.625 11.8 11.8 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692a1.54 1.54 0 0 1 1.044-1.262c.658-.215 1.777-.562 2.887-.87z"/>
                         <path d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
                       </svg>
-                      Vaults
+                      Burn
                     </Link>
                   </div>
                 </div>
@@ -964,39 +937,6 @@ function Pool() {
                     <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
                   </svg>
                   <div className={["dropdown", openDropdown === "more" ? "open" : ""].join(" ")}>
-                    <a href="#" className="dropdown-item">
-                      <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16">
-                        <path d="M7.184 1.81a7 7 0 0 1-.905-.063l.221.066.233.054.208.053 1.794.513c1.14.326 2.326.43 3.488.29l.25-.024a7 7 0 0 1-.71 13.935l-.216-.064c-1.14-.326-2.326-.43-3.489-.29l-.223.064-.233-.054a7 7 0 0 1-1.794-.513c-1.14-.326-2.326-.43-3.488-.29l-.25.024a7 7 0 0 1 .71-13.935l.216.064c1.14.326 2.326.43 3.488.29zM5.64 3.505a6 6 0 1 0 4.722 4.99H5.64z"/>
-                      </svg>
-                      Compensation
-                    </a>
-                    <a href="#" className="dropdown-item">
-                      <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16">
-                        <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z"/>
-                        <path d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
-                      </svg>
-                      Buy Crypto
-                    </a>
-                    <a href="#" className="dropdown-item">
-                      <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16" style={{transform: 'rotate(180deg)'}}>
-                        <path d="M9.752 6.193c.599.6 1.73.437 2.528-.362s.96-1.932.362-2.531c-.599-.6-1.73-.438-2.528.361-.798.8-.96 1.933-.362 2.532"/>
-                        <path d="M15.811 3.312c-.363 1.534-1.334 3.626-3.64 6.218l-.24 2.408a2.56 2.56 0 0 1-.732 1.526L8.817 15.85a.51.51 0 0 1-.867-.434l.27-1.899c.04-.28-.013-.593-.131-.956a9 9 0 0 0-.249-.657l-.082-.202c-.815-.197-1.578-.662-2.191-1.277-.614-.615-1.079-1.379-1.275-2.195l-.203-.083a10 10 0 0 0-.655-.248c-.363-.119-.675-.172-.955-.132l-1.896.27A.51.51 0 0 1 .15 7.17l2.382-2.386c.41-.41.947-.67 1.524-.734h.006l2.4-.238C9.005 1.55 11.087 .582 12.623 .208c.89-.217 1.59-.232 2.08-.188.244.023 .435.06 .57.093q.1.026.16.045c.184.06 .279.13 .351.295l.029.073a3.5 3.5 0 0 1 .157.721c.055.485.051 1.178-.159 2.065m-4.828 7.475.04-.04-.107 1.081a1.54 1.54 0 0 1-.44 .913l-1.298 1.3.054-.38c.072-.506-.034-.993-.172-1.418a9 9 0 0 0-.164-.45c.738-.065 1.462-.38 2.087-1.006M5.205 5c-.625 .626-.94 1.351-1.004 2.09a9 9 0 0 0-.45-.164c-.424-.138-.91-.244-1.416-.172l-.38.054 1.3-1.3c.245-.246.566-.401.91-.44l1.08-.107zm9.406-3.961c-.38-.034-.967-.027-1.746.163-1.558.38-3.917 1.496-6.937 4.521-.62.62-.799 1.34-.687 2.051.107.676.483 1.362 1.048 1.928.564.565 1.25.941 1.924 1.049.71.112 1.429-.067 2.048-.688 3.079-3.083 4.192-5.444 4.556-6.987.183-.771.18-1.345.138-1.713a3 3 0 0 0-.045-.283 3 3 0 0 0-.3-.041Z"/>
-                        <path d="M7.009 12.139a7.6 7.6 0 0 1-1.804-1.352A7.6 7.6 0 0 1 3.794 8.86c-1.102.992-1.965 5.054-1.839 5.18.125.126 3.936-.896 5.054-1.902Z"/>
-                      </svg>
-                      Launchpad
-                    </a>
-                    <a href="#" className="dropdown-item">
-                      <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16">
-                        <path d="M3 3h10v10H3z" fill="currentColor"/>
-                      </svg>
-                      Cetus Terminal
-                    </a>
-                    <a href="#" className="dropdown-item">
-                      <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16">
-                        <path d="M7.5 1.018a7 7 0 0 0-4.79 11.566L7.5 7.793zm1 0V7.5h6.482A7 7 0 0 0 8.5 1.018M14.982 8.5H8.207l-4.79 4.79A7 7 0 0 0 14.982 8.5M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8"/>
-                      </svg>
-                      Stats
-                    </a>
                     <a href="#" className="dropdown-item">
                       <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16">
                         <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm-1 11V9.5l6 3.6 6-3.6v4.3a1 1 0 0 0-1 1H2a1 1 0 0 0-1-1z"/>
@@ -1115,7 +1055,8 @@ function Pool() {
           <Sidebar isOpen={isMenuOpen} onClose={toggleMenu} />
         )}
         <div className="pool-container">
-          <div className="summary-container">
+   
+          <div className="summary-container" style={{ maxHeight: '600px' }}> {/* 限制高度以确保对齐 */}
             <div className="summary-left">
               <h1 className="summary-title">Liquidity Pools</h1>
               <div className="summary-metrics-card">
@@ -1170,7 +1111,7 @@ function Pool() {
                 <svg width="100%" height={chartHeight + 30} viewBox={`0 0 ${chartWidth} ${chartHeight + 30}`}>
                   <defs>
                     <linearGradient id="barGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" style={{ stopColor: '#ADD8E6', stopOpacity: 0.8 }} /> {/* Adjusted gradient for better look */}
+                      <stop offset="0%" style={{ stopColor: '#ADD8E6', stopOpacity: 0.8 }} />
                       <stop offset="100%" style={{ stopColor: '#87CEEB', stopOpacity: 1 }} />
                     </linearGradient>
                   </defs>
@@ -1180,6 +1121,7 @@ function Pool() {
               </div>
             </div>
           </div>
+
           {activeTab === "pools" ? (
             <PoolList
               pools={pools}
