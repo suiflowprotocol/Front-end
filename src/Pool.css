@@ -1,7 +1,7 @@
 :root {
   --text-color: #ffffff;
   --text-secondary: #a0aec0;
-  --primary-color: #4299e1;
+  --primary-color: #00BFFF; /* Updated to match light blue accents in images */
   --secondary-color: #718096;
   --background-color: #0a0f1a;
   --modal-bg: #1a202c;
@@ -10,8 +10,8 @@
   --input-bg: #2d3748;
   --search-bg: rgba(255, 255, 255, 0.1);
   --hover-bg: #4a5568;
-  --active-bg: #4299e1;
-  --button-hover-bg: #63b3ed;
+  --active-bg: #00BFFF; /* Updated active background */
+  --button-hover-bg: #00AFFF; /* Hover for buttons */
   --error-color: #f56565;
   --success-color: #68d391;
   --card-bg: linear-gradient(145deg, #2d3748 0%, #1a202c 100%);
@@ -25,7 +25,7 @@
   flex-direction: column;
   gap: 24px;
   padding: 24px;
-  background: rgba(26, 32, 44, 0.95); /* 修改为半透明，与App的swap-panel一致，允许底层背景可见 */
+  background: rgba(26, 32, 44, 0.95); /* Semi-transparent */
   color: var(--text-color);
   min-height: 100vh;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -35,9 +35,9 @@
   box-sizing: border-box;
   border-radius: 16px;
   box-shadow: 0 4px 24px var(--shadow-color);
-  overflow-x: hidden; /* Prevent horizontal overflow */
-  position: relative; /* 确保相对定位，便于光晕效果 */
-  z-index: 1; /* 内容层在背景之上，但不挡住光晕 */
+  overflow-x: hidden;
+  position: relative;
+  z-index: 1;
 }
 
 .summary-container {
@@ -73,7 +73,7 @@
 }
 
 .summary-metrics-card {
-  background: rgba(45, 55, 72, 0.95); /* 修改为半透明渐变效果，允许背景可见 */
+  background: var(--card-bg); /* Gradient background for beautification */
   color: var(--text-color);
   border-radius: 12px;
   padding: 24px;
@@ -107,7 +107,12 @@
 .chart-container {
   width: 100%;
   height: 258px;
-  overflow: hidden; /* Ensure chart doesn't overflow */
+  overflow: hidden;
+  background: var(--card-bg); /* Added background to chart container */
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  box-sizing: border-box;
 }
 
 .chart-header {
@@ -135,7 +140,7 @@
   font-weight: 700;
   color: var(--text-color);
   margin: 0;
-  padding-left: 4px; /* Align with chart-title */
+  padding-left: 4px;
 }
 
 .period-selector {
@@ -147,7 +152,7 @@
 }
 
 .period-button {
-  padding: 6px 16px; /* Increased padding to make buttons longer */
+  padding: 6px 16px;
   border: none;
   background: var(--search-bg);
   color: var(--text-secondary);
@@ -155,7 +160,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  border-radius: 0; /* Rectangular buttons */
+  border-radius: 0;
 }
 
 .period-button.active {
@@ -172,10 +177,11 @@
   flex-direction: column;
   gap: 16px;
   padding: 16px;
-  background: rgba(26, 32, 44, 0.95); /* 半透明 */
+  background: var(--card-bg); /* Gradient */
   border-radius: 12px;
-  border: 1px solid var(--card-bg);
+  border: 1px solid var(--border-color);
   margin: 0 48px;
+  box-shadow: 0 4px 12px var(--shadow-color);
 }
 
 .tab-group {
@@ -231,30 +237,31 @@
   min-width: 100px;
   text-align: center;
   touch-action: manipulation;
+  box-shadow: 0 2px 6px var(--shadow-color); /* Added shadow for buttons */
 }
 
 .action-button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 3px 12px var(--shadow-color);
+  box-shadow: 0 4px 12px var(--shadow-color);
 }
 
 .create-pool-button {
-  background: var(--modal-primary);
+  background: var(--primary-color);
   color: #182435;
 }
 
 .create-pool-button:hover {
-  background: var(--modal-secondary);
+  background: var(--button-hover-bg);
 }
 
 .add-liquidity-button {
   background: transparent;
-  color: #182435;
-  border: 2px solid var(--modal-secondary);
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
 }
 
 .add-liquidity-button:hover {
-  background: rgba(247, 248, 248, 0.1);
+  background: rgba(0, 191, 255, 0.1);
 }
 
 .filter-row {
@@ -285,10 +292,12 @@
   font-weight: 600;
   color: var(--text-color);
   transition: all 0.2s ease;
+  box-shadow: 0 2px 6px var(--shadow-color); /* Added shadow */
 }
 
 .filter-button:hover {
   background: var(--hover-bg);
+  transform: translateY(-1px);
 }
 
 .watchlist-container {
@@ -302,6 +311,7 @@
   border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 8px 12px;
+  box-shadow: 0 2px 6px var(--shadow-color); /* Added shadow */
 }
 
 .switch-group {
@@ -318,6 +328,7 @@
   border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 8px 12px;
+  box-shadow: 0 2px 6px var(--shadow-color); /* Added shadow */
 }
 
 .switch-label {
@@ -380,6 +391,7 @@
   display: flex;
   align-items: center;
   border-radius: 8px;
+  box-shadow: 0 2px 6px var(--shadow-color); /* Added shadow */
 }
 
 .refresh-button svg {
@@ -397,7 +409,7 @@
   grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr;
   gap: 16px;
   padding: 16px 24px;
-  background: rgba(45, 55, 72, 0.95); /* 半透明 */
+  background: var(--card-bg); /* Gradient */
   border: 1px solid var(--border-color);
   border-radius: 8px;
   font-size: 14px;
@@ -407,6 +419,7 @@
   align-items: center;
   width: calc(100% - 96px);
   box-sizing: border-box;
+  box-shadow: 0 4px 12px var(--shadow-color); /* Added shadow */
 }
 
 .pool-list {
@@ -421,7 +434,7 @@
   grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr;
   gap: 16px;
   padding: 16px;
-  background: rgba(45, 55, 72, 0.95); /* 半透明 */
+  background: var(--card-bg); /* Gradient background */
   border: 1px solid var(--border-color);
   border-radius: 8px;
   cursor: pointer;
@@ -429,11 +442,13 @@
   width: 100%;
   margin: 0;
   box-sizing: border-box;
+  box-shadow: 0 4px 12px var(--shadow-color); /* Added shadow */
 }
 
 .pool-item:hover {
   background: var(--hover-bg);
-  box-shadow: 0 2px 8px var(--shadow-color);
+  box-shadow: 0 6px 16px var(--shadow-color); /* Enhanced shadow on hover */
+  transform: translateY(-2px); /* Slight lift on hover */
 }
 
 .pool-token-info {
@@ -451,6 +466,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
+  box-shadow: 0 2px 4px var(--shadow-color); /* Added shadow to token images */
 }
 
 .token-images img:first-child {
@@ -547,6 +563,7 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
+  box-shadow: 0 2px 4px var(--shadow-color); /* Added shadow to reward images */
 }
 
 .pool-action {
@@ -558,18 +575,20 @@
 .deposit-button {
   padding: 8px 16px;
   border-radius: 8px;
-  background: #007BFF;
+  background: var(--primary-color);
   color: #FFFFFF;
   border: none;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  box-shadow: 0 2px 6px var(--shadow-color); /* Added shadow */
 }
 
 .deposit-button:hover {
-  background: #0056b3;
+  background: var(--button-hover-bg);
   transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--shadow-color); /* Enhanced on hover */
 }
 
 .no-positions {
@@ -691,6 +710,7 @@
   .chart-container {
     height: 200px;
     overflow: hidden;
+    padding: 8px;
   }
 
   .chart-title {
@@ -719,11 +739,11 @@
 
   .filter-row {
     margin: 0 24px;
-    flex-direction: column; /* Stack elements vertically */
+    flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
     gap: 12px;
-    width: calc(100% - 48px); /* Ensure it fits within margins */
+    width: calc(100% - 48px);
     box-sizing: border-box;
   }
 
@@ -754,11 +774,6 @@
   .reward-container .data-label {
     margin-bottom: 0;
     font-size: 13px;
-  }
-
-  .reward-container img {
-    width: 18px;
-    height: 18px;
   }
 
   .pool-action {
@@ -796,8 +811,8 @@
   }
 
   .reward-container img {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
   }
 
   .deposit-button {
@@ -851,25 +866,25 @@
   .switch-group {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap; /* Allow wrapping to prevent overflow */
+    flex-wrap: wrap;
     gap: 8px;
     width: 100%;
     justify-content: flex-start;
   }
 
   .switch-container {
-    flex: 0 0 auto; /* Prevent growing to fill space */
-    padding: 6px 8px; /* Reduced padding for mobile */
-    font-size: 12px; /* Smaller font size */
-    min-width: 0; /* Allow shrinking */
+    flex: 0 0 auto;
+    padding: 6px 8px;
+    font-size: 12px;
+    min-width: 0;
   }
 
   .switch-label {
-    font-size: 12px; /* Match reduced font size */
+    font-size: 12px;
   }
 
   .chakra-switch {
-    width: 36px; /* Slightly smaller switch */
+    width: 36px;
     height: 18px;
   }
 
@@ -925,6 +940,7 @@
     height: 180px;
     width: 100%;
     overflow: hidden;
+    padding: 8px;
   }
 
   .chart-title {
@@ -992,7 +1008,7 @@
   .filter-row {
     margin: 0 12px;
     width: calc(100% - 24px);
-    flex-direction: column; /* Stack elements vertically */
+    flex-direction: column;
     align-items: stretch;
     gap: 8px;
   }
@@ -1076,7 +1092,7 @@
 
   .switch-group {
     flex-direction: row;
-    flex-wrap: wrap; /* Allow wrapping */
+    flex-wrap: wrap;
     gap: 6px;
     width: 100%;
     justify-content: flex-start;
@@ -1084,8 +1100,8 @@
 
   .switch-container {
     flex: 0 0 auto;
-    padding: 4px 6px; /* Further reduced padding */
-    font-size: 11px; /* Smaller font size */
+    padding: 4px 6px;
+    font-size: 11px;
     min-width: 0;
   }
 
@@ -1094,7 +1110,7 @@
   }
 
   .chakra-switch {
-    width: 32px; /* Smaller switch */
+    width: 32px;
     height: 16px;
   }
 
@@ -1122,8 +1138,8 @@
   gap: 0;
   overflow: hidden;
   z-index: -1;
-  opacity: 0.15;
-  filter: grayscale(70%) blur(0.5px);
+  opacity: 0.08; /* Reduced opacity for subtler background */
+  filter: grayscale(100%) blur(1px); /* Enhanced filter for beauty */
   pointer-events: none;
 }
 
@@ -1150,7 +1166,7 @@
   left: 50%;
   width: 80vw;
   height: 80vh;
-  background: radial-gradient(circle, rgba(66, 153, 225, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+  background: radial-gradient(circle, rgba(0, 191, 255, 0.2) 0%, rgba(0, 0, 0, 0) 70%); /* Updated glow color to match accents */
   transform: translate(-50%, -50%);
   z-index: -1;
   pointer-events: none;

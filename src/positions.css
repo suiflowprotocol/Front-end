@@ -1,0 +1,259 @@
+/* positions.css */
+/* Share root variables and base styles from App.css */
+@import "./App.css";
+
+/* Specific styles for positions page if needed */
+.positions-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 16px;
+}
+
+/* Reuse classes from the provided HTML and App.css for consistency */
+.chakra-stack.css-1535ss {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 480px;
+}
+
+.chakra-stack.css-a37t44 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.chakra-stack.css-xlwmla {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.css-18rti1w {
+  flex: 1;
+}
+
+.css-1t2x70 {
+  width: 100%;
+  background: var(--input-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background 0.3s ease;
+}
+
+.css-1t2x70:hover {
+  background: var(--hover-bg);
+}
+
+.css-jn0mkj {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.chakra-stack.css-2qlcdh {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.css-12xzxfu {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.css-o5e85d {
+  display: flex;
+  align-items: center;
+}
+
+.css-o5e85d svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--text-secondary);
+}
+
+.chakra-text.css-1lher0p {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.chakra-stack.css-1igwmid {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.css-3wh1mk {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+.css-3wh1mk:hover {
+  background: var(--hover-bg);
+}
+
+.chakra-stack.css-yue1ly {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.css-1ke24j5 {
+  display: flex;
+  align-items: center;
+}
+
+.css-1ke24j5 svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--text-secondary);
+}
+
+.chakra-text.css-1v0j6vl {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.css-1vpx1e5 {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+.css-1vpx1e5:hover {
+  background: var(--hover-bg);
+}
+
+.css-10grt23 {
+  height: 1px;
+  background: var(--border-color);
+  margin: 16px 0;
+}
+
+.chakra-stack.css-1wgi00l {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.chakra-stack.css-1jra5w9 {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+}
+
+.chakra-text.css-17xjxxf {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.chakra-skeleton.css-a8ku0c {
+  display: flex;
+  align-items: center;
+}
+
+.chakra-text.css-1ikb94c {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.chakra-stack.css-17na8xj {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+}
+
+.chakra-skeleton.css-cdkrf0 {
+  display: flex;
+  align-items: center;
+}
+
+.chakra-stack.css-lpuqkz {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.css-gmuwbf {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+.css-gmuwbf:hover {
+  background: var(--hover-bg);
+}
+
+.chakra-text.css-bae340 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.chakra-button.css-2h2e64 {
+  padding: 8px 16px;
+  background: var(--primary-color);
+  color: #ffffff;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.chakra-button.css-2h2e64:disabled {
+  background: var(--disabled-bg);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.chakra-button.css-2h2e64:hover:not(:disabled) {
+  background: var(--button-hover-bg);
+}
+
+.chakra-stack.css-dbr0lh {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.chakra-image.css-f5j44i {
+  width: 200px;
+  height: auto;
+}
+
+.chakra-text.css-dwkbww {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
