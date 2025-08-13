@@ -17,6 +17,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@fontsource/poppins": "^5.2.6",
+    "@getnimbus/sui-agent-kit": "^0.1.25",
     "@mysten/dapp-kit": "^0.17.2",
     "@mysten/sui": "^1.37.1",
     "@mysten/sui.js": "^0.54.1",

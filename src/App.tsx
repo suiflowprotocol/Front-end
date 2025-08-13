@@ -17,6 +17,7 @@ import SettingsPage from './SettingsPage';
 import SwapPreview from './SwapPreview';
 import WaitingConfirmation from './WaitingConfirmation';
 import LimitOrderPage from "./limit";
+import LaunchPage from "./LaunchPage";
 
 // Wallet logos
 const walletLogos = {
@@ -32,8 +33,8 @@ const customTheme: ThemeVars = {
     modalOverlay: 'blur(4px)', // Softer blur for overlays
   },
   backgroundColors: {
-    primaryButton: 'linear-gradient(135deg, #3b82f6, #2563eb)', // Gradient for buttons
-    primaryButtonHover: 'linear-gradient(135deg, #4b9cfa, #3b82f6)',
+    primaryButton: 'linear-gradient(135deg, #ff8c00, #e64a19)', // Gradient for buttons
+    primaryButtonHover: 'linear-gradient(135deg, #e64a19, #ff8c00)',
     outlineButtonHover: '#F3F4F6',
     modalOverlay: 'rgba(15, 23, 42, 0.3)', // Softer modal overlay
     modalPrimary: '#ffffff',
@@ -97,7 +98,7 @@ export function CustomConnectButton() {
     justifyContent: 'center',
     width: '130px', // Slightly wider for better touch targets
     height: '38px',
-    background: '#1e293b',
+    background: '#4a2515',
     border: '1px solid rgba(255, 255, 255, 0.15)',
     borderRadius: '10px',
     cursor: 'pointer',
@@ -1300,8 +1301,9 @@ function App() {
         )}
         
         <Routes>
+          <Route path="/" element={<LaunchPage />} />
           <Route
-            path="/"
+            path="/app"
             element={
               <>
                 <div className="header">
@@ -1321,7 +1323,7 @@ function App() {
                             <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
                           </svg>
                           <div className={`dropdown ${openDropdown === "trade" ? "open" : ""}`}>
-                            <Link to="/" className="dropdown-item">
+                            <Link to="/app" className="dropdown-item">
                               <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5"/>
                               </svg>
@@ -1372,7 +1374,7 @@ function App() {
                           <div className={`dropdown ${openDropdown === "bridge" ? "open" : ""}`}>
                             <a href="https://bridge.sui.io/" target="_blank" rel="noopener noreferrer" className="dropdown-item">
                               <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16" style={{transform: 'rotate(180deg)'}}>
-                                <path fill-rule="evenodd" d="M7.21 .8C7.69.295 8 0 8 0q.164.544.371 1.038c.812 1.946 2.073 3.35 3.197 4.6C12.878 7.096 14 8.345 14 10a6 6 0 0 1-12 0C2 6.668 5.58 2.517 7.21 .8m.413 1.021A31 31 0 0 0 5.794 3.99c-.726.95-1.436 2.008-1.96 3.07C3.304 8.133 3 9.138 3 10a5 5 0 0 0 10 0c0-1.201-.796-2.157-2.181-3.7l-.03-.032C9.75 5.11 8.5 3.72 7.623 1.82z"/>
+                                <path fill-rule="evenodd" d="M7.21 .8C7.69.295 8 0 8 0q.164.544.371 1.038c.812 1.946 2.073 3.35 2.197 4.6C12.878 7.096 14 8.345 14 10a6 6 0 0 1-12 0C2 6.668 5.58 2.517 7.21 .8m.413 1.021A31 31 0 0 0 5.794 3.99c-.726.95-1.436 2.008-1.96 3.07C3.304 8.133 3 9.138 3 10a5 5 0 0 0 10 0c0-1.201-.796-2.157-2.181-3.7l-.03-.032C9.75 5.11 8.5 3.72 7.623 1.82z"/>
   <path fill-rule="evenodd" d="M4.553 7.776c.82-1.641 1.717-2.753 2.093-3.13l.708.708c-.29.29-1.128 1.311-1.907 2.87z"/>
                               </svg>
                               Sui Bridge
@@ -1460,7 +1462,7 @@ function App() {
                       >
                         <div className="css-1ke24j5">
                           <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px" viewBox="0 0 24 24">
-                            <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.30-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"></path>
+                            <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.30-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.32-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"></path>
                           </svg>
                         </div>
                       </button>
@@ -1732,8 +1734,8 @@ function App() {
                                           <rect x="15" y="4" height="12" width="150"></rect>
                                         </clipPath>
                                         <linearGradient id="priceLine" x1="0" y1="0" x2="1" y2="0">
-                                          <stop offset="0%" stopColor="rgba(117, 200, 255, 1)"></stop>
-                                          <stop offset="100%" stopColor="rgba(104, 255, 216, 1)"></stop>
+                                          <stop offset="0%" stopColor="rgba(255, 140, 0, 1)"></stop>
+                                          <stop offset="100%" stopColor="rgba(230, 74, 25, 1)"></stop>
                                         </linearGradient>
                                       </defs>
                                       <g className="recharts-layer recharts-line">
@@ -1792,16 +1794,7 @@ function App() {
               </>
             }
           />
-          <Route 
-            path="/settings" 
-            element={
-              <SettingsPage 
-                onClose={() => { throw new Error("Function not implemented."); }} 
-                slippage={slippage} 
-                setSlippage={setSlippage} 
-              />
-            } 
-          />
+          <Route path="/settings" element={<SettingsPage onClose={() => { throw new Error("Function not implemented."); }} slippage={slippage} setSlippage={setSlippage} />} />
           <Route path="/pool" element={<Pool />} />
           <Route path="/xseal" element={<XSeal />} />
           <Route path="/limit" element={<LimitOrderPage />} />

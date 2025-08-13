@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Step1SelectPair from "./Step1SelectPair";
 import Step2SetPrice from "./Step2SetPrice";
 import Step3DepositAmounts from "./Step3DepositAmounts";
+import { useCurrentAccount, useSuiClient, useSignAndExecuteTransaction } from "@mysten/dapp-kit";
+import { Transaction } from "@mysten/sui/transactions";
 
 export interface Token {
   symbol: string;
@@ -84,7 +86,7 @@ const tokens: Token[] = [
   {
     symbol: "SCA",
     address: "0x7016aae72cfc67f2fadf55769c0a7dd54291a583b63051a5ed71081cce836ac6::sca::SCA",
-    icon: "https://encrypted-tbn0.gstatic.com/images?q=tbnn:9GcQkPpvd1akVvyP8sgi3PMYAwbCnWuuIS37OKg&s",
+    icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkPpvd1akVvyP8sgi3PMYAwbCnWuuIS37OKg&s",
     description: "Scallop Token",
     decimals: 6,
   },
@@ -237,7 +239,7 @@ const tokens: Token[] = [
   },
   {
     symbol: "Wrapped Ether(Wormhole)",
-    address: "0xaf8cd5edc19c4512f4259f0bee101a40d41ebed738ade5874359610efastanza57693a::fdusd::FDUSD",
+    address: "0xaf8cd5edc19c4512f4259f0bee101a40d41ebed738ade5874359610ef8eeced5::coin::COIN",
     icon: "https://momentum-statics.s3.us-west-1.amazonaws.com/WETH.png",
     description: "wETH",
     decimals: 6,
@@ -251,6 +253,9 @@ const tokens: Token[] = [
   },
 ];
 
+const PACKAGE_ID = "0xb90158d50ac951784409a6876ac860e24564ed5257e51944d3c693efb9fdbd78";
+const POOL_REGISTRY = "0xfc8c69858d070b639b3db15ff0f78a10370950434c5521c83eaa7e2285db8d2a";
+
 function CreatePool({ isOpen, onClose, newPoolToken1, setNewPoolToken1, newPoolToken2, setNewPoolToken2, feeRate, setFeeRate, getTokenAddress, refresh }: CreatePoolProps) {
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [initialPrice, setInitialPrice] = useState("");
@@ -262,40 +267,48 @@ function CreatePool({ isOpen, onClose, newPoolToken1, setNewPoolToken1, newPoolT
   const [importError, setImportError] = useState("");
   const [activeList, setActiveList] = useState("Default");
   const [importedTokens, setImportedTokens] = useState<Token[]>([]);
-  const [balances] = useState<{ [key: string]: string }>({
-    "0x2::sui::SUI": "spiring.0",
-    "0xb677ae5448d34da319289018e7dd67c556b094a5451d7029bd52396cdd8f192f::usdc::USDC": "500.0",
-    "0xb3f153e6279045694086e8176c65e8e0f5d33aeeeb220a57b5865b849e5be5ba::NS::NS": "200.0",
-    "0xa16e100fcb99689d481f31a2315519923fdf45916a4fa18c5513008f5101237d::navx::NAVX": "150.0",
-    "0xd52c440f67dd960bc76f599a16065abd5fbc251b78f18d9dce3578ccc44462a9::cetus::CETUS": "300.0",
-    "0xdeeb7a4662eec9f2f3def03fb937a663dddaa2e215b8078a284d026b7946c270::deep::DEEP": "100.0",
-    "0x356a26eb9e012a68958082340d4c4116e7f55615cf27affcff209cf0ae544f59::wal::WAL": "200.0",
-    "0x3a304c7feba2d819ea57c3542d68439ca2c386ba02159c740f7b406e592c62ea::HAEDAL::HAEDAL": "150.0",
-    "0x7016aae72cfc67f2fadf55769c0a7dd54291a583b63051a5ed71081cce836ac6::sca::SCA": "120.0",
-    "0xbde4ba4c2e274a60ce15c1cfff9e5c42e41654ac8b6d906a57efa4bd3c29f47d::HASUI::HASUI": "180.0",
-    "0xce7ff77a83ea0cb6fd39bd8748e2ec89a3f41e8efdc3f4eb123e0ca37b184db2::buck::BUCK": "400.0",
-    "0x876a4b7bce8aeaef60464c11f4026903e9afacab79b9b142686158aa86560b50::xbtc::XBTC": "50.0",
-    "0x375f70cf2ae4c00bf37117d0c85a2c71545e6ee05c4a5c7d282cd66a4504b068::usdt::USDT": "600.0",
-    "0x2053d08c1e2bd02791056171aab0fd12bd7cd7efad2ab8f6b9c8902f14df2ff2::ausd::AUSD": "300.0",
-    "0xfe3afec26c59e874f3c1d60b8203cb3852d2bb2aa415df9548b8d688e6683f93::alpha::ALPHA": "80.0",
-    "0xc44d97a4bc4e5a33ca847b72b123172c88a6328196b71414f32c3070233604b2::slp::SLP": "90.0",
-    "0xd1b72982e40348d069bb1ff701e634c117bb5f741f44dff91e472d3b01461e55::stsui::STSUI": "110.0",
-    "0xb45fcfcc2cc07ce0702cc2d229621e046c906ef14d9b25e8e4d25f6e8763fef7::send::SEND": "70.0",
-    "0xf7fade57462e56e2eff1d7adef32e4fd285b21fd81f983f407bb7110ca766cda::zlp::ZLP": "60.0",
-    "0xf22da9a24ad027cccb5f2d496cbe91de953d363513db08a3a734d361c7c17503::LOFI::LOFI": "40.0",
-    "0x5f496ed5d9d045c5b788dc1bb85f54100f2ede11e46f6a232c29daada4c5bdb6::coin::COIN": "30.0",
-    "0x960b531667636f39e85867775f52f6b1f220a058c4de786905bdf761e06a56bb::usdy::USDY": "200.0",
-    "0xc060006111016b8a020ad5b33834984a437aaa7d3c74c18e09a95d48aceab08c::coin::COIN": "250.0",
-    "0x3e8e9423d80e1774a7ca128fccd8bf5f1f7753be658c5e645929037f7c819040::lbtc::LBTC": "20.0",
-    "0x0ef38abcdaaafedd1e2d88929068a3f65b59bf7ee07d7e8f573c71df02d27522::attn::ATTN": "15.0",
-    "0xf16e6b723f242ec745dfd7634ad072c42d5c1d9ac9d62a39c381303eaa57693a::fdusd::FDUSD": "300.0",
-    "0x8993129d72e733985f7f1a00396cbd055bad6f817fee36576ce483c8bbb8b87b::sudeng::SUDENG": "25.0",
-    "0xaafb102dd0902f5055cadecd687fb5b71ca82ef0e0285d90afde828ec58ca96b::btc::BTC": "35.0",
-    "0x8b4d553839b219c3fd47608a0cc3d5fcc572cb25d41b7df3833208586a8d2470::hawal::HAWAL": "45.0",
-    "0x549e8b69270defbfafd4f94e17ec44cdbdd99820b33bda2278dea3b9a32d3f55::cert::CERT": "55.0",
-    "0xaf8cd5edc19c4512f4259f0bee101a40d41ebed738ade5874359610ef8eeced5::coin::COIN": "65.0",
-    "0x027792d9fed7f9844eb4839566001bb6f6cb4804f66aa2da6fe1ee242d896881::coin::COIN": "75.0",
-  });
+  const [balances, setBalances] = useState<{ [key: string]: string }>({});
+  const [transactionError, setTransactionError] = useState<string | null>(null);
+  const currentAccount = useCurrentAccount();
+  const client = useSuiClient();
+  const { mutate: signAndExecuteTransaction } = useSignAndExecuteTransaction();
+
+  useEffect(() => {
+    const fetchBalances = async () => {
+      if (!currentAccount) return;
+
+      try {
+        const allBalances = await client.getAllBalances({ owner: currentAccount.address });
+        const newBalances: { [key: string]: string } = {};
+
+        tokens.forEach((token) => {
+          const balanceEntry = allBalances.find((b) => b.coinType === token.address);
+          if (balanceEntry) {
+            const balance = (Number(balanceEntry.totalBalance) / 10 ** token.decimals).toFixed(4);
+            newBalances[token.address] = balance;
+          } else {
+            newBalances[token.address] = "0.0";
+          }
+        });
+
+        importedTokens.forEach((token) => {
+          const balanceEntry = allBalances.find((b) => b.coinType === token.address);
+          if (balanceEntry) {
+            const balance = (Number(balanceEntry.totalBalance) / 10 ** token.decimals).toFixed(4);
+            newBalances[token.address] = balance;
+          } else {
+            newBalances[token.address] = "0.0";
+          }
+        });
+
+        setBalances(newBalances);
+      } catch (err) {
+        console.error("Failed to fetch balances:", err);
+      }
+    };
+
+    fetchBalances();
+  }, [currentAccount, client, importedTokens]);
 
   const handleNextStep = () => {
     if (step < 3) setStep((step + 1) as 1 | 2 | 3);
@@ -305,9 +318,136 @@ function CreatePool({ isOpen, onClose, newPoolToken1, setNewPoolToken1, newPoolT
     if (step > 1) setStep((step - 1) as 1 | 2 | 3);
   };
 
-  const handleCreatePool = () => {
-    console.log(`创建池子: ${newPoolToken1}-${newPoolToken2}，费率 ${feeRate}%`);
-    onClose();
+  const handleCreatePool = async () => {
+    if (!currentAccount) {
+      setTransactionError("Please connect your wallet");
+      return;
+    }
+
+    try {
+      setTransactionError(null);
+
+      const token1 = tokens.find((t) => t.symbol === newPoolToken1) || importedTokens.find((t) => t.symbol === newPoolToken1);
+      const token2 = tokens.find((t) => t.symbol === newPoolToken2) || importedTokens.find((t) => t.symbol === newPoolToken2);
+
+      if (!token1 || !token2) {
+        setTransactionError("Invalid token selection");
+        return;
+      }
+
+      const amount1Num = parseFloat(amount1);
+      const amount2Num = parseFloat(amount2);
+      const initialPriceNum = parseFloat(initialPrice);
+
+      if (isNaN(amount1Num) || isNaN(amount2Num) || isNaN(initialPriceNum) || initialPriceNum <= 0) {
+        setTransactionError("Invalid input amounts or price");
+        return;
+      }
+
+      // Convert amounts to raw units (accounting for decimals)
+      const amount1Raw = BigInt(Math.floor(amount1Num * 10 ** token1.decimals));
+      const amount2Raw = BigInt(Math.floor(amount2Num * 10 ** token2.decimals));
+
+      // Determine token order (ensure token1.address < token2.address for canonical ordering)
+      const isToken1First = token1.address < token2.address;
+      const tokenA = isToken1First ? token1 : token2;
+      const tokenB = isToken1First ? token2 : token1;
+      const amountA = isToken1First ? amount1Raw : amount2Raw;
+      const amountB = isToken1First ? amount2Raw : amount1Raw;
+
+      // Calculate sqrt price in Q64.96 format (Uniswap V3-like)
+      // sqrtPrice = sqrt(price) * 2^96
+      const Q96 = BigInt(2) ** BigInt(96);
+      const priceNum = isToken1First ? initialPriceNum : 1 / initialPriceNum; // Adjust price based on token order
+      const sqrtPrice = Math.sqrt(priceNum); // Get square root of price
+      const sqrtPriceX96 = BigInt(Math.floor(sqrtPrice * Number(Q96))); // Scale to Q64.96 and convert to BigInt
+
+      // Validate sqrtPriceX96 fits within u64 range (0 to 2^64 - 1)
+      const MAX_U64 = BigInt("18446744073709551615"); // 2^64 - 1
+      if (sqrtPriceX96 <= 0 || sqrtPriceX96 > MAX_U64) {
+        setTransactionError("Calculated square root price is out of valid range");
+        return;
+      }
+
+      const tx = new Transaction();
+
+      // Fetch and prepare coins for tokenA
+      let coinA;
+      if (tokenA.address === "0x2::sui::SUI") {
+        coinA = tx.splitCoins(tx.gas, [tx.pure.u64(amountA)]);
+      } else {
+        const coinsA = await client.getCoins({
+          owner: currentAccount.address,
+          coinType: tokenA.address,
+        });
+        const totalBalanceA = coinsA.data.reduce((sum, coin) => sum + BigInt(coin.balance), BigInt(0));
+        if (totalBalanceA < amountA) {
+          setTransactionError(`Insufficient balance for ${tokenA.symbol}`);
+          return;
+        }
+        const coinObjectsA = coinsA.data.map((coin) => tx.object(coin.coinObjectId));
+        const mergedCoinA = coinObjectsA.length > 1 ? tx.mergeCoins(coinObjectsA[0], coinObjectsA.slice(1)) : coinObjectsA[0];
+        coinA = tx.splitCoins(mergedCoinA, [tx.pure.u64(amountA)]);
+      }
+
+      // Fetch and prepare coins for tokenB
+      let coinB;
+      if (tokenB.address === "0x2::sui::SUI") {
+        coinB = tx.splitCoins(tx.gas, [tx.pure.u64(amountB)]);
+      } else {
+        const coinsB = await client.getCoins({
+          owner: currentAccount.address,
+          coinType: tokenB.address,
+        });
+        const totalBalanceB = coinsB.data.reduce((sum, coin) => sum + BigInt(coin.balance), BigInt(0));
+        if (totalBalanceB < amountB) {
+          setTransactionError(`Insufficient balance for ${tokenB.symbol}`);
+          return;
+        }
+        const coinObjectsB = coinsB.data.map((coin) => tx.object(coin.coinObjectId));
+        const mergedCoinB = coinObjectsB.length > 1 ? tx.mergeCoins(coinObjectsB[0], coinObjectsB.slice(1)) : coinObjectsB[0];
+        coinB = tx.splitCoins(mergedCoinB, [tx.pure.u64(amountB)]);
+      }
+
+      // Call the contract to create the pool and add liquidity
+      tx.moveCall({
+        target: `${PACKAGE_ID}::pool::create_pool`,
+        arguments: [
+          tx.object(POOL_REGISTRY),
+          tx.pure.string(tokenA.address),
+          tx.pure.string(tokenB.address),
+          tx.pure.u64(Math.floor(parseFloat(feeRate) * 10000)), // Convert percentage to basis points (0.3% -> 3000)
+          tx.pure.u64(sqrtPriceX96),
+          coinA,
+          coinB,
+          tx.pure.u64(amountA),
+          tx.pure.u64(amountB),
+        ],
+        typeArguments: [tokenA.address, tokenB.address],
+      });
+
+      // Execute the transaction
+      await signAndExecuteTransaction(
+        {
+          transaction: tx,
+          chain: "sui:testnet",
+        },
+        {
+          onSuccess: (result) => {
+            console.log("Pool created successfully:", result);
+            refresh();
+            onClose();
+          },
+          onError: (error) => {
+            console.error("Transaction failed:", error);
+            setTransactionError("Failed to create pool: " + error.message);
+          },
+        }
+      );
+    } catch (error) {
+      console.error("Error creating pool:", error);
+      setTransactionError("Error creating pool: " + (error as Error).message);
+    }
   };
 
   const handleAmount1Change = (value: string) => {
@@ -380,6 +520,7 @@ function CreatePool({ isOpen, onClose, newPoolToken1, setNewPoolToken1, newPoolT
           --success-color: #10b981;
           --input-bg: #2d3748;
           --hover-bg: #334155;
+          --error-color: #ff5555;
         }
 
         .create-pool-modal {
@@ -404,7 +545,7 @@ function CreatePool({ isOpen, onClose, newPoolToken1, setNewPoolToken1, newPoolT
           border-radius: 10px;
           width: 100%;
           max-width: 460px;
-          max-height: 85vh;
+          max-height: 90vh;
           overflow-y: auto;
           display: flex;
           flex-direction: column;
@@ -432,6 +573,8 @@ function CreatePool({ isOpen, onClose, newPoolToken1, setNewPoolToken1, newPoolT
           display: flex;
           justify-content: flex-start;
           align-items: center;
+          background: var(--modal-bg);
+          padding: 10px;
         }
         .back-button {
           display: flex;
@@ -906,7 +1049,7 @@ function CreatePool({ isOpen, onClose, newPoolToken1, setNewPoolToken1, newPoolT
           border-color: var(--border-color);
         }
         .error {
-          color: #ff5555;
+          color: var(--error-color);
           font-size: 10px;
           text-align: center;
         }
@@ -1045,6 +1188,12 @@ function CreatePool({ isOpen, onClose, newPoolToken1, setNewPoolToken1, newPoolT
           font-size: 12px;
           margin: 10px 0;
         }
+        .error-message {
+          color: var(--error-color);
+          font-size: 12px;
+          text-align: center;
+          margin: 10px 0;
+        }
         @media (max-width: 768px) {
           .modal-content {
             padding: 10px;
@@ -1164,6 +1313,9 @@ function CreatePool({ isOpen, onClose, newPoolToken1, setNewPoolToken1, newPoolT
           .price-range-input-group input {
             font-size: 11px;
           }
+          .error-message {
+            font-size: 11px;
+          }
         }
       `}</style>
       <div className="modal-content">
@@ -1175,6 +1327,7 @@ function CreatePool({ isOpen, onClose, newPoolToken1, setNewPoolToken1, newPoolT
             Back
           </button>
         </div>
+        {transactionError && <div className="error-message">{transactionError}</div>}
         {step === 1 && (
           <Step1SelectPair
             newPoolToken1={newPoolToken1}
