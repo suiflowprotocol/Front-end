@@ -1,14 +1,14 @@
 :root {
-  --card-bg: #F7F8F8;
-  --text-color: #182435;
-  --text-secondary: #767A81;
-  --border-color: #E4E4E7;
-  --shadow-color: rgba(0, 0, 0, 0.1);
-  --modal-primary: #FFFFFF;
-  --modal-secondary: #F7F8F8;
-  --hover-bg: #F0F1F2;
-  --search-bg: #F3F6F8;
-  --success-color: #28A745;
+  --card-bg: #1a202c;
+  --text-color: #ffffff;
+  --text-secondary: #a0aec0;
+  --border-color: #2d3748;
+  --shadow-color: rgba(0, 0, 0, 0.25);
+  --modal-primary: #1a202c;
+  --modal-secondary: #2d3748;
+  --hover-bg: #4a5568;
+  --search-bg: #2d3748;
+  --success-color: #68d391;
 }
 
 .pos-container2 {
@@ -315,31 +315,6 @@
   font-size: 16px;
   font-weight: 500;
   color: var(--text-secondary);
-}
-
-@media (min-width: 1024px) {
-  .pos-summary-container2 {
-    flex-direction: row;
-  }
-
-  .pos-summary-left2 {
-    flex: 0.8;
-  }
-
-  .pos-summary-right2 {
-    flex: 1.2;
-  }
-
-  .pos-header2 {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .pos-button-group2 {
-    flex-wrap: nowrap;
-    justify-content: flex-end;
-  }
 }
 
 @media (max-width: 768px) {

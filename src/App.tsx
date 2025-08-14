@@ -5,7 +5,7 @@ import '@mysten/dapp-kit/dist/index.css';
 import { Transaction } from "@mysten/sui/transactions";
 import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import Pool from "./Pool";
-import Positions from "./positions.tsx";
+import Position from "./positions.tsx";
 import XSeal from "./xSeal";
 import TokenModal, { tokens } from "./TokenModal";
 import CoverPage from "./CoverPage";
@@ -33,8 +33,8 @@ const customTheme: ThemeVars = {
     modalOverlay: 'blur(4px)', // Softer blur for overlays
   },
   backgroundColors: {
-    primaryButton: 'linear-gradient(135deg, #ff8c00, #e64a19)', // Gradient for buttons
-    primaryButtonHover: 'linear-gradient(135deg, #e64a19, #ff8c00)',
+    primaryButton: 'linear-gradient(135deg, #3b82f6, #2563eb)', // Gradient for buttons
+    primaryButtonHover: 'linear-gradient(135deg, #4b9cfa, #3b82f6)',
     outlineButtonHover: '#F3F4F6',
     modalOverlay: 'rgba(15, 23, 42, 0.3)', // Softer modal overlay
     modalPrimary: '#ffffff',
@@ -98,7 +98,7 @@ export function CustomConnectButton() {
     justifyContent: 'center',
     width: '130px', // Slightly wider for better touch targets
     height: '38px',
-    background: '#4a2515',
+    background: '#1e293b',
     border: '1px solid rgba(255, 255, 255, 0.15)',
     borderRadius: '10px',
     cursor: 'pointer',
@@ -1374,7 +1374,7 @@ function App() {
                           <div className={`dropdown ${openDropdown === "bridge" ? "open" : ""}`}>
                             <a href="https://bridge.sui.io/" target="_blank" rel="noopener noreferrer" className="dropdown-item">
                               <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16" style={{transform: 'rotate(180deg)'}}>
-                                <path fill-rule="evenodd" d="M7.21 .8C7.69.295 8 0 8 0q.164.544.371 1.038c.812 1.946 2.073 3.35 2.197 4.6C12.878 7.096 14 8.345 14 10a6 6 0 0 1-12 0C2 6.668 5.58 2.517 7.21 .8m.413 1.021A31 31 0 0 0 5.794 3.99c-.726.95-1.436 2.008-1.96 3.07C3.304 8.133 3 9.138 3 10a5 5 0 0 0 10 0c0-1.201-.796-2.157-2.181-3.7l-.03-.032C9.75 5.11 8.5 3.72 7.623 1.82z"/>
+                                <path fill-rule="evenodd" d="M7.21 .8C7.69.295 8 0 8 0q.164.544.371 1.038c.812 1.946 2.073 3.35 3.197 4.6C12.878 7.096 14 8.345 14 10a6 6 0 0 1-12 0C2 6.668 5.58 2.517 7.21 .8m.413 1.021A31 31 0 0 0 5.794 3.99c-.726.95-1.436 2.008-1.96 3.07C3.304 8.133 3 9.138 3 10a5 5 0 0 0 10 0c0-1.201-.796-2.157-2.181-3.7l-.03-.032C9.75 5.11 8.5 3.72 7.623 1.82z"/>
   <path fill-rule="evenodd" d="M4.553 7.776c.82-1.641 1.717-2.753 2.093-3.13l.708.708c-.29.29-1.128 1.311-1.907 2.87z"/>
                               </svg>
                               Sui Bridge
@@ -1734,8 +1734,8 @@ function App() {
                                           <rect x="15" y="4" height="12" width="150"></rect>
                                         </clipPath>
                                         <linearGradient id="priceLine" x1="0" y1="0" x2="1" y2="0">
-                                          <stop offset="0%" stopColor="rgba(255, 140, 0, 1)"></stop>
-                                          <stop offset="100%" stopColor="rgba(230, 74, 25, 1)"></stop>
+                                          <stop offset="0%" stopColor="rgba(117, 200, 255, 1)"></stop>
+                                          <stop offset="100%" stopColor="rgba(104, 255, 216, 1)"></stop>
                                         </linearGradient>
                                       </defs>
                                       <g className="recharts-layer recharts-line">
@@ -1798,7 +1798,11 @@ function App() {
           <Route path="/pool" element={<Pool />} />
           <Route path="/xseal" element={<XSeal />} />
           <Route path="/limit" element={<LimitOrderPage />} />
-          <Route path="/positions" element={<Positions />} />
+          <Route path="/positions" element={<Position activeTab={""} setActiveTab={function (tab: string): void {
+            throw new Error("Function not implemented.");
+          } } handleAddLiquidity={function (pool: any, scroll?: boolean): void {
+            throw new Error("Function not implemented.");
+          } } />} />
         </Routes>
       </div>
     </WalletProvider>

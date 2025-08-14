@@ -1,7 +1,6 @@
-import { useState, Dispatch, SetStateAction } from "react";
+import { useState } from "react";
 import CreatePool from "./CreatePool";
 import AddLiquidityModal from "./AddLiquidityModal";
-import { useNavigate } from "react-router-dom";
 import "./Pool.css";
 import { PoolListProps } from "./Pool.tsx";
 import React from "react";
@@ -26,17 +25,10 @@ function PoolList({
   setFeeRate,
   getTokenAddress,
 }: PoolListProps & { isLoading: boolean }) {
-  const navigate = useNavigate();
-  const [incentivizedOnly, setIncentivizedOnly] = useState(false);
-  const [allPools, setAllPools] = useState(true);
+  const [activeFilter, setActiveFilter] = useState('incentivized');
 
-  // Filter pools based on incentivizedOnly and allPools
-  const filteredPools = pools.filter((pool) => {
-    if (incentivizedOnly) {
-      return pool.rewardImg !== "";
-    }
-    return true;
-  });
+  // Filter pools based on activeFilter
+  const filteredPools = pools; // Placeholder, add logic based on filter if data available
 
   // Fallback image URL
   const fallbackImage = "https://via.placeholder.com/20";
@@ -52,233 +44,57 @@ function PoolList({
 
   return (
     <>
-      <div className="pool-header">
-        <div className="tab-group">
-          <button
-            className={`tab-button ${activeTab === "pools" ? "active" : ""}`}
-            onClick={() => setActiveTab("pools")}
-          >
-            Pools
-          </button>
-          <button
-            className={`tab-button ${activeTab === "positions" ? "active" : ""}`}
-            onClick={() => setActiveTab("positions")}
-          >
-            Positions
-          </button>
-        </div>
-        <div className="button-group" style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', border: 'none', boxShadow: 'none' }}>
-          <button
-            type="button"
-            className="action-button create-pool-button"
+      
+      <div className="filter-row100">
+        <button className={`filter-button100 ${activeFilter === 'stables' ? 'active' : ''}`} onClick={() => setActiveFilter('stables')}>Stables</button>
+        <button className={`filter-button100 ${activeFilter === 'auto' ? 'active' : ''}`} onClick={() => setActiveFilter('auto')}>Auto</button>
+        <button className={`filter-button100 ${activeFilter === 'incentivized' ? 'active' : ''}`} onClick={() => setActiveFilter('incentivized')}>Incentivized</button>
+        <button className={`filter-button100 ${activeFilter === 'verified' ? 'active' : ''}`} onClick={() => setActiveFilter('verified')}>Verified</button>
+        <button className={`filter-button100 ${activeFilter === 'btcfi' ? 'active' : ''}`} onClick={() => setActiveFilter('btcfi')}>BTCFI</button>
+        <div className="filter-container100">
+          <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+            <use xlinkHref="#icon-icon_search"></use>
+          </svg>
+          <input
+            type="text"
+            placeholder="Search"
             style={{
-              maxWidth: '200px',
-              height: '40px',
-              padding: '10px 16px',
-              background: 'linear-gradient(90deg, #007BFF 0%, #00B7FF 100%)',
-              color: '#FFFFFF',
+              flex: '1',
               border: 'none',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              transition: 'background 0.3s, transform 0.2s, box-shadow 0.2s',
-              fontSize: '14px',
-              fontWeight: '600',
-              boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
+              outline: 'none',
+              fontSize: '13px',
+              fontWeight: '400',
+              color: '#FFFFFF',
+              background: 'transparent'
             }}
-            onClick={handleCreatePool}
-          >
-            Create New Pool
-          </button>
-          <button
-            type="button"
-            className="action-button add-liquidity-button"
-            style={{
-              maxWidth: '200px',
-              height: '40px',
-              padding: '10px 16px',
-              background: 'transparent',
-              color: '#007BFF',
-              border: '2px solid #007BFF',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              transition: 'background 0.3s, transform 0.2s, box-shadow 0.2s',
-              fontSize: '14px',
-              fontWeight: '600',
-              boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
-            }}
-            onClick={() => handleAddLiquidity(pools[0], true)}
-            disabled={pools.length === 0 || isLoading}
-          >
-            Add Liquidity
-          </button>
-        </div>
-      </div>
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        gap: '16px',
-        margin: '0 48px',
-        flexWrap: 'nowrap',
-        padding: '12px 0'
-      }}>
-        <div style={{
-          flex: '1',
-          display: 'flex',
-          alignItems: 'center',
-          maxWidth: '300px'
-        }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            width: '100%',
-            background: 'var(--card-bg)',
-            border: '1px solid var(--border-color)',
-            borderRadius: '8px',
-            padding: '8px 12px',
-            gap: '8px'
-          }}>
-            <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
-              <use xlinkHref="#icon-icon_search"></use>
-            </svg>
-            <input
-              type="text"
-              placeholder="Filter by token"
-              style={{
-                flex: '1',
-                border: 'none',
-                outline: 'none',
-                fontSize: '13px',
-                fontWeight: '400',
-                color: '#FFFFFF',
-                background: 'transparent'
-              }}
-            />
-          </div>
-        </div>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '16px'
-        }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            background: 'var(--card-bg)',
-            border: '1px solid var(--border-color)',
-            borderRadius: '8px',
-            padding: '8px 12px'
-          }}>
-            <input
-              type="checkbox"
-              id="watchlist"
-              style={{
-                width: '16px',
-                height: '16px',
-                cursor: 'pointer'
-              }}
-            />
-            <label
-              htmlFor="watchlist"
-              style={{
-                fontSize: '13px',
-                fontWeight: '600',
-                color: '#FFFFFF'
-              }}
-            >
-              Watchlist
-            </label>
-          </div>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            background: 'var(--card-bg)',
-            border: '1px solid var(--border-color)',
-            borderRadius: '8px',
-            padding: '8px 12px'
-          }}>
-            <input
-              type="checkbox"
-              id="incentivized"
-              checked={incentivizedOnly}
-              onChange={() => setIncentivizedOnly(!incentivizedOnly)}
-              style={{
-                width: '16px',
-                height: '16px',
-                cursor: 'pointer'
-              }}
-            />
-            <label
-              htmlFor="incentivized"
-              style={{
-                fontSize: '13px',
-                fontWeight: '600',
-                color: '#FFFFFF'
-              }}
-            >
-              Incentivized Only
-            </label>
-          </div>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            background: 'var(--card-bg)',
-            border: '1px solid var(--border-color)',
-            borderRadius: '8px',
-            padding: '8px 12px'
-          }}>
-            <input
-              type="checkbox"
-              id="allpools"
-              checked={allPools}
-              onChange={() => setAllPools(!allPools)}
-              style={{
-                width: '16px',
-                height: '16px',
-                cursor: 'pointer'
-              }}
-            />
-            <label
-              htmlFor="allpools"
-              style={{
-                fontSize: '13px',
-                fontWeight: '600',
-                color: '#FFFFFF'
-              }}
-            >
-              All pools
-            </label>
-          </div>
+          />
         </div>
       </div>
       {isLoading ? (
-        <div className="loading-state">Loading pools...</div>
+        <div className="loading-state100">Loading pools...</div>
       ) : (
-        <div className="pool-table-header">
-          <div>Pool</div>
+        <div className="pool-table-header100">
+          <div>#</div>
+          <div>Pools</div>
           <div>TVL</div>
-          <div>Volume (24H)</div>
-          <div>Fees (24H)</div>
-          <div>APR</div>
-          <div>Reward</div>
-          <div></div>
+          <div>24h Volume</div>
+          <div>24h Fees</div>
+          <div>24h APR</div>
+          <div>Actions</div>
         </div>
       )}
-      <div className="pool-list">
+      <div className="pool-list100">
         {isLoading ? null : filteredPools.length === 0 ? (
-          <div className="no-positions">No positions found</div>
+          <div className="no-positions100">No positions found</div>
         ) : (
-          filteredPools.map((pool) => (
+          filteredPools.map((pool, index) => (
             <div
               key={pool.poolAddress}
-              className="pool-item"
-              onClick={() => navigate(`/pool/${pool.pair}`)}
+              className="pool-item100"
             >
-              <div className="pool-token-info">
-                <div className="token-images" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <div>{index + 1}</div>
+              <div className="pool-token-info100">
+                <div className="token-images100" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                   <img
                     src={pool.img1}
                     alt={pool.token1Symbol}
@@ -292,55 +108,28 @@ function PoolList({
                     onError={handleImageError}
                   />
                 </div>
-                <div className="token-details">
-                  <div className="token-pair">
+                <div className="token-details100">
+                  <div className="token-pair100">
                     <p>{pool.pair}</p>
                     <span>({pool.feeRate})</span>
                   </div>
                 </div>
               </div>
-              <div className="pool-data">
-                <span className="data-label">TVL</span>
+              <div className="pool-data100">
                 {pool.tvl}
               </div>
-              <div className="pool-data">
-                <span className="data-label">Volume (24H)</span>
+              <div className="pool-data100">
                 {pool.volume}
               </div>
-              <div className="pool-data">
-                <span className="data-label">Fees (24H)</span>
+              <div className="pool-data100">
                 {pool.fees}
               </div>
-              <div className="apr-container">
-                <span className="data-label">APR</span>
-                <span className="apr-text">{pool.apr}</span>
+              <div className="apr-container100">
+                <span className="apr-text100">{pool.apr}</span>
               </div>
-              <div className="reward-container">
-                <span className="data-label">Reward</span>
-                <div className="reward-images" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <img
-                    src={pool.rewardImg}
-                    alt="Reward"
-                    style={{ width: '24px', height: '24px', borderRadius: '50%' }}
-                    onError={handleImageError}
-                  />
-                  <img
-                    src={pool.img1}
-                    alt={pool.token1Symbol}
-                    style={{ width: '24px', height: '24px', borderRadius: '50%' }}
-                    onError={handleImageError}
-                  />
-                  <img
-                    src={pool.img2}
-                    alt={pool.token2Symbol}
-                    style={{ width: '24px', height: '24px', borderRadius: '50%' }}
-                    onError={handleImageError}
-                  />
-                </div>
-              </div>
-              <div className="pool-action">
+              <div className="pool-action100">
                 <button
-                  className="deposit-button"
+                  className="deposit-button100"
                   onClick={(e) => {
                     e.stopPropagation();
                     handleAddLiquidity(pool);
@@ -355,17 +144,17 @@ function PoolList({
       </div>
       {isCreatePoolOpen && (
         <CreatePool
-        isOpen={isCreatePoolOpen}
-        onClose={handleCloseCreatePool}
-        newPoolToken1={newPoolToken1}
-        newPoolToken2={newPoolToken2}
-        feeRate={feeRate}
-        setNewPoolToken1={setNewPoolToken1}
-        setNewPoolToken2={setNewPoolToken2}
-        setFeeRate={setFeeRate}
-        getTokenAddress={getTokenAddress}
-        refresh={refresh}
-      />
+          isOpen={isCreatePoolOpen}
+          onClose={handleCloseCreatePool}
+          newPoolToken1={newPoolToken1}
+          newPoolToken2={newPoolToken2}
+          feeRate={feeRate}
+          setNewPoolToken1={setNewPoolToken1}
+          setNewPoolToken2={setNewPoolToken2}
+          setFeeRate={setFeeRate}
+          getTokenAddress={getTokenAddress}
+          refresh={refresh}
+        />
       )}
       {isAddLiquidityOpen && selectedPool && (
         <AddLiquidityModal
