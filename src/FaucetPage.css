@@ -1,0 +1,457 @@
+/* FaucetPage.css */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+.cover-container30101 {
+  position: relative;
+  width: 100vw;
+  min-height: 100vh;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 80px 40px 40px;
+  overflow: visible;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+}
+
+.mosaic-background30101 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  grid-auto-rows: 60px;
+  gap: 0;
+  overflow: hidden;
+  z-index: -1;
+  opacity: 0.1;
+  filter: grayscale(70%) blur(0.5px);
+  pointer-events: none;
+}
+
+.mosaic-tile30101 {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.background-overlay30101 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0, 80, 120, 0.8), rgba(0, 50, 80, 0.8));
+  z-index: -1;
+  pointer-events: none;
+}
+
+.background-glow30101 {
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  background: radial-gradient(circle, rgba(0, 188, 212, 0.4) 0%, rgba(0, 50, 80, 0) 70%);
+  filter: blur(200px);
+  z-index: -1;
+  pointer-events: none;
+  transition: left 0.5s ease-out, top 0.5s ease-out;
+  animation: pulse30101 2s ease-in-out infinite;
+}
+
+@keyframes pulse30101 {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.logo-container30101 {
+  position: absolute;
+  top: 20px;
+  left: 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 2;
+}
+
+.logo-image30101 {
+  height: 40px;
+  transition: transform 0.3s ease;
+}
+
+.logo-image30101:hover {
+  transform: scale(1.05);
+}
+
+.logo-text30101 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px rgba(0, 188, 212, 0.3);
+  text-transform: uppercase;
+  transition: transform 0.3s ease;
+}
+
+.logo-text30101:hover {
+  transform: scale(1.05);
+}
+
+.right-header101 {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  z-index: 2;
+}
+
+.social-buttons30101 {
+  display: flex;
+  gap: 15px;
+}
+
+.social-link30101 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.social-link30101:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(0, 188, 212, 0.3);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.social-icon30101 {
+  width: 28px;
+  height: 28px;
+}
+
+.content-wrapper101 {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  z-index: 1;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.faucet-form101 {
+  flex: 1;
+  max-width: 700px;
+}
+
+.description101 {
+  font-size: 16px;
+  opacity: 0.8;
+  margin-bottom: 20px;
+}
+
+.note101 {
+  font-size: 14px;
+  opacity: 0.7;
+  margin-bottom: 10px;
+}
+
+.title101 {
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.claim-all-button101 {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #00bcd4, #0288d1);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  margin-bottom: 30px;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.claim-all-button101:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 188, 212, 0.4);
+}
+
+.claim-all-button101:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.tokens-table-wrapper101 {
+  overflow-x: auto;
+  width: 100%;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+}
+
+.tokens-table101 {
+  width: 100%;
+}
+
+.token-row101 {
+  display: grid;
+  grid-template-columns: 80px 1fr 1fr 1fr 1fr 100px;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background 0.3s ease;
+}
+
+.token-row101:hover {
+  background: rgba(0, 188, 212, 0.05);
+}
+
+.token-row101:last-child {
+  border-bottom: none;
+}
+
+.header-row101 {
+  font-weight: 600;
+  border-bottom: 2px solid #00bcd4;
+  opacity: 0.8;
+}
+
+.token-image101 {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+.token-symbol101 {
+  font-size: 16px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.token-balance101 {
+  font-size: 14px;
+  opacity: 0.9;
+  text-align: left;
+}
+
+.deposit-input101 {
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: transparent;
+  color: #ffffff;
+  font-size: 14px;
+  width: 100%;
+}
+
+.deposit-button101 {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: transparent;
+  color: #ffffff;
+  border: 2px solid #00bcd4;
+}
+
+.deposit-button101:hover {
+  background: rgba(0, 188, 212, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 188, 212, 0.3);
+}
+
+.deposit-button101:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.error-message101 {
+  color: #ff5252;
+  margin-bottom: 20px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.success-message101 {
+  color: #00e676;
+  margin-bottom: 20px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.faq101 {
+  flex: 1;
+  max-width: 400px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.faq-title101 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.faq-item101 {
+  margin-bottom: 10px;
+}
+
+.faq-item101 summary {
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  list-style: none;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.faq-item101 summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item101 summary::after {
+  content: '▼';
+  float: right;
+  font-size: 12px;
+}
+
+.faq-item101[open] summary::after {
+  content: '▲';
+}
+
+.faq-item101 p {
+  font-size: 14px;
+  opacity: 0.8;
+  padding: 10px 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .content-wrapper101 {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .cover-container30101 {
+    padding: 80px 20px 20px;
+  }
+
+  .logo-container30101 {
+    left: 20px;
+  }
+
+  .right-header101 {
+    right: 20px;
+  }
+
+  .content-wrapper101 {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .faucet-form101,
+  .faq101 {
+    max-width: 100%;
+  }
+
+  .title101 {
+    font-size: 36px;
+  }
+
+  .token-row101 {
+    grid-template-columns: 60px 1fr 1fr 1fr 1fr 80px;
+    padding: 10px;
+  }
+
+  .token-image101 {
+    width: 30px;
+    height: 30px;
+  }
+
+  .token-symbol101,
+  .token-balance101 {
+    font-size: 14px;
+  }
+
+  .deposit-input101,
+  .deposit-button101 {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cover-container30101 {
+    padding: 70px 10px 10px;
+  }
+
+  .logo-text30101 {
+    font-size: 24px;
+  }
+
+  .social-link30101 {
+    width: 35px;
+    height: 35px;
+  }
+
+  .social-icon30101 {
+    width: 20px;
+    height: 20px;
+  }
+
+  .title101 {
+    font-size: 28px;
+  }
+
+  .description101 {
+    font-size: 14px;
+  }
+
+  .note101 {
+    font-size: 12px;
+  }
+
+  .claim-all-button101 {
+    font-size: 16px;
+  }
+
+  .tokens-table-wrapper101 {
+    overflow-x: auto;
+  }
+
+  .token-row101 {
+    grid-template-columns: repeat(6, minmax(100px, 1fr));
+    font-size: 12px;
+  }
+
+  .header-row101 div {
+    font-size: 12px;
+  }
+}

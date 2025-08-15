@@ -18,6 +18,8 @@ import SwapPreview from './SwapPreview';
 import WaitingConfirmation from './WaitingConfirmation';
 import LimitOrderPage from "./limit";
 import LaunchPage from "./LaunchPage";
+import FaucetPage from "./FaucetPage";
+
 
 // Wallet logos
 const walletLogos = {
@@ -1302,6 +1304,7 @@ function App() {
         
         <Routes>
           <Route path="/" element={<LaunchPage />} />
+          <Route path="/faucet" element={<FaucetPage />} />
           <Route
             path="/app"
             element={
@@ -1804,6 +1807,7 @@ function App() {
             throw new Error("Function not implemented.");
           } } />} />
         </Routes>
+        
       </div>
     </WalletProvider>
   );

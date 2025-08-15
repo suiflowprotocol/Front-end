@@ -1,3 +1,4 @@
+// Modified LaunchPage.tsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LaunchPage.css';
@@ -9,8 +10,8 @@ function LaunchPage() {
     navigate('/app');
   };
 
-  const handleReadDoc = () => {
-    window.open('https://sealprotocol.gitbook.io', '_blank');
+  const handleFaucet = () => {
+    navigate('/faucet');
   };
 
   const [glowPosition] = useState({ x: 50, y: 50 });
@@ -115,8 +116,8 @@ function LaunchPage() {
             <button className="launch-button30" onClick={handleLaunchApp}>
               Launch App
             </button>
-            <button className="doc-button30" onClick={handleReadDoc}>
-              Read the Doc
+            <button className="doc-button30" onClick={handleFaucet}>
+              Faucet for Test
             </button>
           </div>
         </div>
