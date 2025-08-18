@@ -221,12 +221,14 @@ body {
   padding: 6px 12px;
   border-radius: 8px;
   transition: all 0.3s ease;
+  background: transparent;
+  backdrop-filter: blur(8px);
 }
 
 .nav-item:hover,
 .nav-item.active {
   color: var(--primary-color);
-  background: var(--modal-bg);
+  background: transparent;
 }
 
 .nav-text {
@@ -438,9 +440,9 @@ body {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: var(--input-bg);
-  border: 1px solid var(--border-color);
-  color: var(--text-color);
+  background: rgba(128, 128, 128, 0.5);
+  border: none;
+  color: #ffffff;
   font-size: 13px;
   padding: 6px 10px;
   border-radius: 8px;
@@ -449,7 +451,7 @@ body {
 }
 
 .settings-button:hover {
-  background: var(--hover-bg);
+  background: rgba(128, 128, 128, 0.6);
 }
 
 .settings-icon {
@@ -468,16 +470,16 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: #111827;
+  background: rgba(128, 128, 128, 0.5);
   border-radius: 8px;
   padding: 6px 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  border: 1px solid rgba(255,255,255,0.1);
+  border: none;
 }
 
 .chakra-form__label {
   font-size: var(--toggle-label-font-size);
-  color: var(--toggle-label-color);
+  color: #ffffff;
   font-weight: 500;
 }
 
@@ -660,13 +662,14 @@ body {
 }
 
 .input-card {
-  background: var(--card-bg);
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
   padding: 12px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  border: 1px solid var(--border-color);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
   transition: all 0.3s ease;
 }
 
@@ -713,14 +716,14 @@ body {
   align-items: center;
   gap: 6px;
   padding: 6px 10px;
-  background: var(--modal-bg);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .token-selector:hover {
-  background: var(--hover-bg);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .token-icon {
@@ -800,8 +803,8 @@ body {
 }
 
 .balance-button {
-  background: var(--input-bg);
-  border: 1px solid var(--border-color);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   color: var(--primary-color);
   font-size: 11px;
   padding: 4px 10px;
@@ -811,14 +814,14 @@ body {
 }
 
 .balance-button:hover {
-  background: var(--hover-bg);
+  background: rgba(255, 255, 255, 0.1);
   color: #ffffff;
 }
 
 .action-button {
   width: 100%;
   padding: 12px 16px;
-  background: var(--primary-color);
+  background: linear-gradient(135deg, #4299e1, #63b3ed);
   color: #ffffff;
   border-radius: 10px;
   font-size: 15px;
@@ -831,7 +834,7 @@ body {
 }
 
 .action-button:hover:not(:disabled) {
-  background: var(--button-hover-bg);
+  background: linear-gradient(135deg, #63b3ed, #4299e1);
   transform: translateY(-2px);
 }
 
@@ -2204,22 +2207,865 @@ body {
     font-size: 13px;
     padding: 8px 16px;
   }
+}
 
+@media (max-width: 480px) {
+  .header {
+    padding: 8px;
+  }
+  .logo-text {
+    font-size: 18px;
+  }
+  .nav-item {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+  .wallet-button {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+  .wallet-button img {
+    width: 18px;
+    height: 18px;
+  }
+  .icon-button {
+    width: 36px;
+    height: 36px;
+  }
+  .icon-button-svg {
+    width: 16px;
+    height: 16px;
+  }
   .main-content {
-    flex-direction: column;
+    padding: 8px;
   }
-
-  .trade-menu {
-    flex-direction: row;
+  .swap-panel {
+    padding: 12px;
+  }
+  .swap-title {
+    font-size: 18px;
+  }
+  .settings-button {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+  .settings-icon {
+    width: 16px;
+    height: 16px;
+  }
+  .aggregator-toggle .aggregator-slider {
+    font-size: 11px;
+    padding: 4px 6px;
+  }
+  .slippage-modal {
     width: 100%;
-    overflow-x: auto;
+    max-width: 160px;
+  }
+  .slippage-modal-title {
+    font-size: 14px;
+  }
+  .slippage-option {
+    font-size: 12px;
+    padding: 6px;
+  }
+  .custom-slippage-input {
+    font-size: 12px;
+    padding: 6px;
+  }
+  .custom-slippage-submit {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+  .input-card {
+    padding: 10px;
     gap: 8px;
-    margin-bottom: 16px;
+  }
+  .input-label {
+    font-size: 12px;
+  }
+  .swap-input {
+    font-size: 16px;
+  }
+  .token-selector {
+    padding: 6px 8px;
+  }
+  .token-icon {
+    width: 20px;
+    height: 20px;
+  }
+  .token-selector span {
+    font-size: 14px;
+  }
+  .chevron-down {
+    width: 12px;
+    height: 12px;
+  }
+  .swap-icon {
+    width: 28px;
+    height: 28px;
+  }
+  .swap-arrow {
+    width: 14px;
+    height: 14px;
+  }
+  .price-text {
+    font-size: 12px;
+  }
+  .balance-group span {
+    font-size: 12px;
+  }
+  .balance-button {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+  .action-button {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+  .error {
+    font-size: 12px;
+    margin-top: 8px;
+  }
+  .success {
+    font-size: 12px;
+    margin-top: 8px;
+  }
+  .info-panel {
+    margin-top: 10px;
+    font-size: 12px;
+    padding: 12px;
+  }
+  .info-panel p {
+    margin: 6px 0;
+  }
+  .price-diff-section {
+    margin-top: 8px;
+    padding: 4px;
+  }
+  .token-modal-content {
+    padding: 12px;
+  }
+  .token-modal-title {
+    font-size: 16px;
+  }
+  .token-modal-close-btn {
+    padding: 6px;
+  }
+  .token-modal-close-icon {
+    width: 16px;
+    height: 16px;
+  }
+  .token-modal-body {
+    gap: 8px;
+  }
+  .search-group {
+    gap: 6px;
+  }
+  .search-icon {
+    width: 18px;
+    height: 18px;
+    left: 8px;
+  }
+  .search-input {
+    padding: 8px 8px 8px 32px;
+    font-size: 12px;
+  }
+  .token-tabs {
+    gap: 6px;
+    padding-bottom: 6px;
+  }
+  .token-tab {
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+  .token-tab[data-active="true"]::after {
+    bottom: -7px;
+  }
+  .token-list {
+    gap: 6px;
+  }
+  .token-list-item {
+    padding: 6px 4px;
+  }
+  .token-list-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+  }
+  .token-name {
+    font-size: 14px;
+  }
+  .verified-icon {
+    width: 12px;
+    height: 12px;
+  }
+  .token-symbol {
+    font-size: 10px;
+  }
+  .token-balance {
+    font-size: 12px;
+  }
+  .token-address {
+    font-size: 10px;
+  }
+  .token-link svg {
+    width: 10px;
+    height: 10px;
+  }
+  .positions-placeholder {
+    padding: 12px;
+  }
+  .placeholder-text {
+    font-size: 14px;
+  }
+  .css-1rg57k7 {
+    padding: 16px;
+  }
+  .css-1hmocdy {
+    gap: 12px;
+  }
+  .css-1hsegr7 {
+    gap: 12px;
+  }
+  .css-gmuwbf {
+    gap: 12px;
+  }
+  .css-1txlnq4 {
+    gap: 12px;
+  }
+  .css-urzsqz {
+    gap: 8px;
+  }
+  .css-v4hq1a {
+    font-size: 16px;
+  }
+  .css-3c533j {
+    font-size: 16px;
+    margin: 0 12px;
+  }
+  .css-759u60 {
+    gap: 8px;
+  }
+  .css-1us4ioa {
+    font-size: 16px;
+  }
+  .css-wiq74l {
+    font-size: 16px;
+  }
+  .css-3l2vxh {
+    width: 28px;
+    height: 28px;
+  }
+  .css-1ke24j5 {
+    width: 24px;
+    height: 24px;
+  }
+  .css-1ke24j5 svg {
+    width: 18px;
+    height: 18px;
+  }
+  .css-mh0esh {
+    gap: 12px;
+  }
+  .css-1havq56 {
+    font-size: 14px;
+  }
+  .css-1dtrlpp {
+    font-size: 14px;
+  }
+  .css-f81823 {
+    width: 18px;
+    height: 18px;
+  }
+  .css-h7r0o8 {
+    padding: 12px;
+  }
+  .css-14htw7e {
+    font-size: 14px;
+  }
+  .css-9imny6 {
+    font-size: 14px;
+  }
+  .css-rc64l8 {
+    font-size: 14px;
+  }
+  .css-1s1k413 {
+    font-size: 14px;
+  }
+  .css-4jxs7j {
+    width: 24px;
+    height: 24px;
+  }
+  .css-12z9sey {
+    width: 24px;
+    height: 24px;
+  }
+  .css-12z9sey svg {
+    width: 18px;
+    height: 18px;
+  }
+  .css-rrtj52 {
+    padding: 16px;
+  }
+  .css-f7m5r6 {
+    gap: 12px;
+  }
+  .css-47ju1k {
+    gap: 12px;
+  }
+  .css-tyic7d {
+    gap: 12px;
+  }
+  .css-tkdzxl {
+    width: 28px;
+    height: 28px;
+  }
+  .css-1rfq7px {
+    gap: 4px;
+  }
+  .css-1f7xwte {
+    font-size: 16px;
+  }
+  .css-18pnfvf {
+    font-size: 12px;
+  }
+  .css-1m1g51m {
+    font-size: 12px;
+  }
+  .css-1ec3nbv {
+    font-size: 12px;
+  }
+  .css-t4u65q {
+    gap: 12px;
+  }
+  .css-1a87bas {
+    gap: 8px;
+  }
+  .css-43igym {
+    font-size: 12px;
+  }
+}
+
+/* 窄屏幕下的导航菜单样式 */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 8px 4px;
+    padding: 12px;
   }
 
-  .trade-menu-item {
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo-text {
+    font-size: 20px; /* 窄屏幕下稍微减小字体 */
+  }
+
+  .wallet-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hamburger-menu {
+    display: flex; /* 窄屏幕下显示汉堡菜单按钮 */
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: var(--modal-bg);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .hamburger-menu:hover {
+    background: var(--hover-bg);
+  }
+
+  .nav-menu {
+    display: none; /* 默认隐藏导航菜单 */
+    flex-direction: column;
+    align-items: flex-start;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    background: var(--modal-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .nav-menu.open {
+    display: flex; /* 展开时显示 */
+    max-height: 500px; /* 设置足够大的最大高度以适应内容 */
+    opacity: 1;
+    padding: 12px;
+  }
+
+  .nav-item {
+    width: 100%;
+    text-align: left;
     padding: 8px 12px;
-    white-space: nowrap;
+    font-size: 14px;
+  }
+
+  .dropdown {
+    position: static;
+    width: 100%;
+    background: var(--card-bg);
+    border: var(--dropdown-border);
+    border-radius: var(--dropdown-radius);
+    box-shadow: var(--dropdown-shadow);
+    border: 1px solid var(--border-color);
+    margin-top: 4px;
+    width: 100%;
+    min-width: var(--dropdown-width);
+  }
+
+  .dropdown-item {
+    font-size: 13px;
+    padding: 8px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 8px;
+  }
+  .logo-text {
+    font-size: 18px;
+  }
+  .nav-item {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+  .wallet-button {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+  .wallet-button img {
+    width: 18px;
+    height: 18px;
+  }
+  .icon-button {
+    width: 36px;
+    height: 36px;
+  }
+  .icon-button-svg {
+    width: 16px;
+    height: 16px;
+  }
+  .main-content {
+    padding: 8px;
+  }
+  .swap-panel {
+    padding: 12px;
+  }
+  .swap-title {
+    font-size: 18px;
+  }
+  .settings-button {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+  .settings-icon {
+    width: 16px;
+    height: 16px;
+  }
+  .aggregator-toggle .aggregator-slider {
+    font-size: 11px;
+    padding: 4px 6px;
+  }
+  .slippage-modal {
+    width: 100%;
+    max-width: 160px;
+  }
+  .slippage-modal-title {
+    font-size: 14px;
+  }
+  .slippage-option {
+    font-size: 12px;
+    padding: 6px;
+  }
+  .custom-slippage-input {
+    font-size: 12px;
+    padding: 6px;
+  }
+  .custom-slippage-submit {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+  .input-card {
+    padding: 10px;
+    gap: 8px;
+  }
+  .input-label {
+    font-size: 12px;
+  }
+  .swap-input {
+    font-size: 16px;
+  }
+  .token-selector {
+    padding: 6px 8px;
+  }
+  .token-icon {
+    width: 20px;
+    height: 20px;
+  }
+  .token-selector span {
+    font-size: 14px;
+  }
+  .chevron-down {
+    width: 12px;
+    height: 12px;
+  }
+  .swap-icon {
+    width: 28px;
+    height: 28px;
+  }
+  .swap-arrow {
+    width: 14px;
+    height: 14px;
+  }
+  .price-text {
+    font-size: 12px;
+  }
+  .balance-group span {
+    font-size: 12px;
+  }
+  .balance-button {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+  .action-button {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+  .error {
+    font-size: 12px;
+    margin-top: 8px;
+  }
+  .success {
+    font-size: 12px;
+    margin-top: 8px;
+  }
+  .info-panel {
+    margin-top: 10px;
+    font-size: 12px;
+    padding: 12px;
+  }
+  .info-panel p {
+    margin: 6px 0;
+  }
+  .price-diff-section {
+    margin-top: 8px;
+    padding: 4px;
+  }
+  .token-modal-content {
+    padding: 12px;
+  }
+  .token-modal-title {
+    font-size: 16px;
+  }
+  .token-modal-close-btn {
+    padding: 6px;
+  }
+  .token-modal-close-icon {
+    width: 16px;
+    height: 16px;
+  }
+  .token-modal-body {
+    gap: 8px;
+  }
+  .search-group {
+    gap: 6px;
+  }
+  .search-icon {
+    width: 18px;
+    height: 18px;
+    left: 8px;
+  }
+  .search-input {
+    padding: 8px 8px 8px 32px;
+    font-size: 12px;
+  }
+  .token-tabs {
+    gap: 6px;
+    padding-bottom: 6px;
+  }
+  .token-tab {
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+  .token-tab[data-active="true"]::after {
+    bottom: -7px;
+  }
+  .token-list {
+    gap: 6px;
+  }
+  .token-list-item {
+    padding: 6px 4px;
+  }
+  .token-list-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+  }
+  .token-name {
+    font-size: 14px;
+  }
+  .verified-icon {
+    width: 12px;
+    height: 12px;
+  }
+  .token-symbol {
+    font-size: 10px;
+  }
+  .token-balance {
+    font-size: 12px;
+  }
+  .token-address {
+    font-size: 10px;
+  }
+  .token-link svg {
+    width: 10px;
+    height: 10px;
+  }
+  .positions-placeholder {
+    padding: 12px;
+  }
+  .placeholder-text {
+    font-size: 14px;
+  }
+  .css-1rg57k7 {
+    padding: 16px;
+  }
+  .css-1hmocdy {
+    gap: 12px;
+  }
+  .css-1hsegr7 {
+    gap: 12px;
+  }
+  .css-gmuwbf {
+    gap: 12px;
+  }
+  .css-1txlnq4 {
+    gap: 12px;
+  }
+  .css-urzsqz {
+    gap: 8px;
+  }
+  .css-v4hq1a {
+    font-size: 16px;
+  }
+  .css-3c533j {
+    font-size: 16px;
+    margin: 0 12px;
+  }
+  .css-759u60 {
+    gap: 8px;
+  }
+  .css-1us4ioa {
+    font-size: 16px;
+  }
+  .css-wiq74l {
+    font-size: 16px;
+  }
+  .css-3l2vxh {
+    width: 28px;
+    height: 28px;
+  }
+  .css-1ke24j5 {
+    width: 24px;
+    height: 24px;
+  }
+  .css-1ke24j5 svg {
+    width: 18px;
+    height: 18px;
+  }
+  .css-mh0esh {
+    gap: 12px;
+  }
+  .css-1havq56 {
+    font-size: 14px;
+  }
+  .css-1dtrlpp {
+    font-size: 14px;
+  }
+  .css-f81823 {
+    width: 18px;
+    height: 18px;
+  }
+  .css-h7r0o8 {
+    padding: 12px;
+  }
+  .css-14htw7e {
+    font-size: 14px;
+  }
+  .css-9imny6 {
+    font-size: 14px;
+  }
+  .css-rc64l8 {
+    font-size: 14px;
+  }
+  .css-1s1k413 {
+    font-size: 14px;
+  }
+  .css-4jxs7j {
+    width: 24px;
+    height: 24px;
+  }
+  .css-12z9sey {
+    width: 24px;
+    height: 24px;
+  }
+  .css-12z9sey svg {
+    width: 18px;
+    height: 18px;
+  }
+  .css-rrtj52 {
+    padding: 16px;
+  }
+  .css-f7m5r6 {
+    gap: 12px;
+  }
+  .css-47ju1k {
+    gap: 12px;
+  }
+  .css-tyic7d {
+    gap: 12px;
+  }
+  .css-tkdzxl {
+    width: 28px;
+    height: 28px;
+  }
+  .css-1rfq7px {
+    gap: 4px;
+  }
+  .css-1f7xwte {
+    font-size: 16px;
+  }
+  .css-18pnfvf {
+    font-size: 12px;
+  }
+  .css-1m1g51m {
+    font-size: 12px;
+  }
+  .css-1ec3nbv {
+    font-size: 12px;
+  }
+  .css-t4u65q {
+    gap: 12px;
+  }
+  .css-1a87bas {
+    gap: 8px;
+  }
+  .css-43igym {
+    font-size: 12px;
+  }
+}
+
+/* 窄屏幕下的导航菜单样式 */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 8px 4px;
+    padding: 12px;
+  }
+
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo-text {
+    font-size: 20px; /* 窄屏幕下稍微减小字体 */
+  }
+
+  .wallet-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hamburger-menu {
+    display: flex; /* 窄屏幕下显示汉堡菜单按钮 */
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: var(--modal-bg);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .hamburger-menu:hover {
+    background: var(--hover-bg);
+  }
+
+  .nav-menu {
+    display: none; /* 默认隐藏导航菜单 */
+    flex-direction: column;
+    align-items: flex-start;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    background: var(--modal-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .nav-menu.open {
+    display: flex; /* 展开时显示 */
+    max-height: 500px; /* 设置足够大的最大高度以适应内容 */
+    opacity: 1;
+    padding: 12px;
+  }
+
+  .nav-item {
+    width: 100%;
+    text-align: left;
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  .dropdown {
+    position: static;
+    width: 100%;
+    background: var(--card-bg);
+    border: var(--dropdown-border);
+    border-radius: var(--dropdown-radius);
+    box-shadow: var(--dropdown-shadow);
+    border: 1px solid var(--border-color);
+    margin-top: 4px;
+    width: 100%;
+    min-width: var(--dropdown-width);
+  }
+
+  .dropdown-item {
+    font-size: 13px;
+    padding: 8px 16px;
   }
 }
 
@@ -3359,15 +4205,15 @@ button:hover {
 
 /* 修改下拉菜单的背景颜色 */
 .dropdown {
-  background-color: var(--menu-bg);
-  border: 1px solid var(--menu-border);
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  background-color: rgba(26, 32, 44, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
 }
 
 /* 修改展开状态的下拉菜单 */
 .dropdown.open {
-  background-color: var(--menu-bg);
+  background-color: rgba(26, 32, 44, 0.95);
 }
 
 /* 美化下拉菜单项 */
@@ -3376,10 +4222,10 @@ button:hover {
   align-items: center;
   gap: 8px;
   padding: 12px 20px;
-  color: var(--menu-text);
+  color: #ffffff;
   transition: background 0.2s ease, color 0.2s ease;
-  background-color: var(--menu-item-bg);
-  border-bottom: 1px solid var(--border-color);
+  background-color: transparent;
+  border-bottom: none;
   border-radius: 8px;
   margin: 4px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -3391,8 +4237,8 @@ button:hover {
 }
 
 .dropdown-item:hover {
-  background-color: var(--menu-hover-bg);
-  color: var(--menu-hover-text);
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
@@ -3408,7 +4254,7 @@ button:hover {
 .dropdown-item {
   font-size: 15px;
   font-weight: 400;
-  color: var(--menu-text);
+  color: #ffffff;
 }
 
 /* src/App.css */

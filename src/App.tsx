@@ -1258,7 +1258,7 @@ function App() {
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4IbguWBJU4ypOHKKdMw7kFnrn1d7WzHTbSA&s",
     "https://play-lh.googleusercontent.com/ladsNim2g-g_Yc8NUcF2fo3qdxDsg91ZmJZmgQe-GKrwlvm1Mpaalt8y4dlWe4TuaD8",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMQG3m5mz0C4h30kNIou_4Vnq5oPuv-6cgTg&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYctZXhV-vC9i7jSqG0ODo9sZ30kDa99USxQ&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxvCjJJoCU4zh4Xz5TLUPrsCXmBpaRUehl5A&s",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfW7UPMh0MA58qOWZe5Mv5_SvrLME0c6Q9Hg&s",
     "https://avatars.githubusercontent.com/u/194261944?s=200&v=4",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNK5Dd0ahUta40pXXS-foPtlqwkKaxszKAmQ&s",
@@ -1411,7 +1411,7 @@ function App() {
                             <a href="#" className="dropdown-item">
                               <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16">
                                 <path d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5"/>
-  <path d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+  <path d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5zm0 1v3.5H11V4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
                               </svg>
                               Docs
                             </a>
@@ -1434,90 +1434,20 @@ function App() {
                     )}
                     <div className="wallet-actions">
                       <CustomConnectButton />
-                      <button
-                        id="popover-trigger-notification"
-                        aria-haspopup="dialog"
-                        aria-expanded="false"
-                        aria-controls="popover-content-notification"
-                        className="icon-button css-fi49l4"
-                      >
+                      <a href="https://x.com/sealprotocol_" target="_blank" rel="noopener noreferrer" className="icon-button css-fi49l4">
                         <div className="css-1ke24j5">
                           <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px" viewBox="0 0 24 24">
-                            <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-1.1-.9-2-2-2s-2 .9-2 2v.68C6.63 5.36 5 7.92 5 11v5l-2 2v1h18v-1l-2-2z"></path>
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1 2.25h7.28l4.71 6.23zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                           </svg>
                         </div>
-                      </button>
-                      {showNotificationPopover && (
-                        <div className="chakra-popover__body css-1q40f86">
-                          <div className="chakra-stack css-13uh600">
-                            <img src="/images/logo_paw_sel@2x.png" alt="Pawtato" className="chakra-image css-1tq2rxf" />
-                            <p className="chakra-text css-136jcmy">Visit Pawtato to manage notification settings for LP Range Alert</p>
-                            <button type="button" className="chakra-button css-fpjdn4">Subscribe</button>
-                          </div>
-                        </div>
-                      )}
-                      <button
-                        id="popover-trigger-rpc"
-                        aria-haspopup="dialog"
-                        aria-expanded="false"
-                        aria-controls="popover-content-rpc"
-                        className="icon-button css-163hjq3"
-                      >
+                      </a>
+                      <a href="https://t.me/sealprotocol" target="_blank" rel="noopener noreferrer" className="icon-button css-163hjq3">
                         <div className="css-1ke24j5">
                           <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px" viewBox="0 0 24 24">
-                            <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.30-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.32-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"></path>
+                            <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.06L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/>
                           </svg>
                         </div>
-                      </button>
-                      {showRpcPopover && (
-                        <div className="chakra-popover__body css-1q40f86">
-                          <div className="chakra-stack css-1opork5">
-                            <div className="chakra-stack css-1ysm3zc">
-                              <div className="css-1ke24j5">
-                                <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px" viewBox="0 0 24 24">
-                                  <path d="M20 6L9 17l-5-5"></path>
-                                </svg>
-                              </div>
-                              <p className="chakra-text css-vcvc47">RPC Node</p>
-                            </div>
-                            <div className="css-122co4m">
-                              {[
-                                { name: "Sui Official", latency: "249ms", selected: true },
-                                { name: "BlockVision", latency: "562ms" },
-                                { name: "BlockVision 2", latency: "909ms" },
-                                { name: "Suiet", latency: "553ms" },
-                                { name: "Blast", latency: "554ms" },
-                                { name: "Suiscan", latency: "3181ms" },
-                                { name: "Triton", latency: "436ms" },
-                                { name: "Custom RPC URL", latency: "" },
-                              ].map((node, index) => (
-                                <div key={index} className="chakra-stack css-k5o0vm">
-                                  <div className="chakra-stack css-1jjq5p5">
-                                    <div className="chakra-stack css-edyt6g">
-                                      <div className={node.selected ? "css-sopywd" : "css-empty-check"}>
-                                        {node.selected && (
-                                          <div className="css-1ke24j5">
-                                            <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px" viewBox="0 0 24 24">
-                                              <path d="M20 6L9 17l-5-5"></path>
-                                            </svg>
-                                          </div>
-                                        )}
-                                      </div>
-                                      <p className={`chakra-text ${node.selected ? "css-swgav2" : "css-sezabi"}`}>{node.name}</p>
-                                    </div>
-                                    {node.latency && (
-                                      <div className="chakra-stack css-cp3a5l">
-                                        <div className="css-18uefe2"></div>
-                                        <p className="chakra-text css-1ec3nbv">{node.latency}</p>
-                                      </div>
-                                    )}
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      )}
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -1530,7 +1460,7 @@ function App() {
                       <h2 className="swap-title">Swap</h2>
                       <div className="settings-row">
                         <div className="aggregator-toggle" ref={switchRef}>
-                          <label className="chakra-form__label gradient-text" htmlFor="aggregator-mode">Mine $SEAL tokens</label>
+                          <label className="chakra-form__label" htmlFor="aggregator-mode">Mine $SEAL</label>
                           <label className="chakra-switch">
                             <input
                               type="checkbox"
@@ -1738,7 +1668,7 @@ function App() {
                                         </clipPath>
                                         <linearGradient id="priceLine" x1="0" y1="0" x2="1" y2="0">
                                           <stop offset="0%" stopColor="rgba(117, 200, 255, 1)"></stop>
-                                          <stop offset="100%" stopColor="rgba(104, 255, 216, 1)"></stop>
+                                          <stop offset="100%" stopColor="rgba(104, 255, 255, 1)"></stop>
                                         </linearGradient>
                                       </defs>
                                       <g className="recharts-layer recharts-line">
