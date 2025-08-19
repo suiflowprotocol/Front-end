@@ -1460,7 +1460,7 @@ function App() {
                       <h2 className="swap-title">Swap</h2>
                       <div className="settings-row">
                         <div className="aggregator-toggle" ref={switchRef}>
-                          <label className="chakra-form__label" htmlFor="aggregator-mode">Mine $SEAL</label>
+                          <label className="chakra-form__label gradient-text" htmlFor="aggregator-mode">Mine $SEAL</label>
                           <label className="chakra-switch">
                             <input
                               type="checkbox"
