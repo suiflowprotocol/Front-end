@@ -1,4 +1,3 @@
-// Pool.tsx
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { SuiClient, getFullnodeUrl } from "@mysten/sui/client";
 import { Token, tokens } from "./tokens";
@@ -17,7 +16,6 @@ import {
 } from "@mysten/dapp-kit";
 import CreatePool from "./CreatePool";
 import AddLiquidityModal from "./AddLiquidityModal";
-// Position is now defined inline below
 import PoolList from "./PoolList";
 import { Link, useNavigate } from "react-router-dom";
 import Sidebar from "./SidebarMenu";
@@ -25,6 +23,7 @@ import "./Pool.css";
 import "./App.css";
 import "./App2.css";
 import "./SidebarMenu.css";
+import { BarChart, Bar, XAxis, ResponsiveContainer } from 'recharts';
 
 const PACKAGE_ID = "0xb90158d50ac951784409a6876ac860e24564ed5257e51944d3c693efb9fdbd78";
 const POOL_REGISTRY = "0xfc8c69858d070b639b3db15ff0f78a10370950434c5521c83eaa7e2285db8d2a";
@@ -36,31 +35,6 @@ const ADDRESS_MAPPINGS = {
   "a16e100fcb99689d481f31a2315519923fdf45916a4fa18c5513008f5101237d":"0xa16e100fcb99689d481f31a2315519923fdf45916a4fa18c5513008f5101237d",
 };
 
-const tokenPrices: { [key: string]: number } = {
-  "0x2::sui::SUI": 1.0,
-  "0xb677ae5448d34da319289018e7dd67c556b094a5451d7029bd52396cdd8f192f::usdc::USDC": 1.0,
-  "0xb3f153e6279045694086e8176c65e8e0f5d33aeeeb220a57b5865b849e5be5ba::NS::NS": 0.5,
-  "0xd52c440f67dd960bc76f599a16065abd5fbc251b78f18d9dce3578ccc44462a9::cetus::CETUS": 0.2,
-  "0xa16e100fcb99689d481f31a2315519923fdf45916a4fa18c5513008f5101237d::navx::NAVX": 0.4,
-  "0xe76d0a9c03e7e8e1ff3b8f70412b0e1e7b3a8f30b0f3f7d0b5b6f2e0a0c2b1f7::wal::WAL": 0.2,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::deep::DEEP": 0.1,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::hasui::HASUI": 1.0,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::lbtc::LBTC": 60000,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::wbtc::WBTC": 60000,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::xbtc::XBTC": 60000,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::hawal::HAWAL": 0.3,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::eth::ETH": 2500,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::buck::BUCK": 1.0,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::wusdt::WUSDT": 1.0,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::ausd::AUSD": 1.0,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::usdy::USDY": 1.0,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::sca::SCA": 0.5,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::lofi::LOFI": 0.1,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::vsui::VSUI": 1.0,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::stsui::STSUI": 1.0,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::haedal::HAEDAL": 0.3,
-};
-
 const walletLogos = {
   'Slush': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYHwA15AKYWXvoSL-94ysbnJrmUX_oU1fJyw&s',
   'Suiet': 'https://framerusercontent.com/modules/6HmgaTsk3ODDySrS62PZ/a3c2R3qfkYJDxcZxkoVv/assets/eDZRos3xvCrlWxmLFr72sFtiyQ.png',
@@ -68,16 +42,15 @@ const walletLogos = {
   'Sui Wallet': 'https://assets.crypto.ro/logos/sui-sui-logo.png',
 };
 
-// Custom theme with refined colors for a more elegant look
 const customTheme: ThemeVars = {
   blurs: {
-    modalOverlay: 'blur(4px)', // Softer blur for overlays
+    modalOverlay: 'blur(4px)',
   },
   backgroundColors: {
-    primaryButton: 'linear-gradient(135deg, #3b82f6, #2563eb)', // Gradient for buttons
-    primaryButtonHover: 'linear-gradient(135deg, #4b9cfa, #3b82f6)',
+    primaryButton: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+    primaryButtonHover: 'linear-gradient(135deg, #4b9内核9cfa, #3b82f6)',
     outlineButtonHover: '#F3F4F6',
-    modalOverlay: 'rgba(15, 23, 42, 0.3)', // Softer modal overlay
+    modalOverlay: 'rgba(15, 23, 42, 0.3)',
     modalPrimary: '#ffffff',
     modalSecondary: '#F9FAFB',
     iconButton: 'transparent',
@@ -99,13 +72,13 @@ const customTheme: ThemeVars = {
     bodyDanger: '#EF4444',
   },
   radii: {
-    small: '6px', // Slightly larger radii for softer edges
+    small: '6px',
     medium: '10px',
     large: '14px',
     xlarge: '18px',
   },
   shadows: {
-    primaryButton: '0 6px 16px rgba(0, 0, 0, 0.15)', // Deeper shadows for depth
+    primaryButton: '0 6px 16px rgba(0, 0, 0, 0.15)',
     walletItemSelected: '0 3px 10px rgba(0, 0, 0, 0.08)',
   },
   fontWeights: {
@@ -137,7 +110,7 @@ export function CustomConnectButton() {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '130px', // Slightly wider for better touch targets
+    width: '130px',
     height: '38px',
     background: '#1e293b',
     border: '1px solid rgba(255, 255, 255, 0.15)',
@@ -254,20 +227,21 @@ interface Pool {
   img1: string;
   img2: string;
   feeRate: string;
-  tvl: string;
-  volume: string;
-  fees: string;
-  apr: string;
   rewardImg: string;
   poolAddress: string;
   token1Address: string;
   token2Address: string;
   decimals1: number;
   decimals2: number;
+  reserveX: bigint;
+  reserveY: bigint;
+  volume24h: bigint;
+  fees24h: bigint;
 }
 
 export interface PoolListProps {
   pools: Pool[];
+  prices: { [key: string]: number };
   activeTab: string;
   setActiveTab: React.Dispatch<React.SetStateAction<string>>;
   isCreatePoolOpen: boolean;
@@ -305,16 +279,16 @@ export function usePoolData(client: SuiClient): { pools: Pool[], isLoading: bool
         pool.img1 === nextPool.img1 &&
         pool.img2 === nextPool.img2 &&
         pool.feeRate === nextPool.feeRate &&
-        pool.tvl === nextPool.tvl &&
-        pool.volume === nextPool.volume &&
-        pool.fees === nextPool.fees &&
-        pool.apr === nextPool.apr &&
         pool.rewardImg === nextPool.rewardImg &&
         pool.poolAddress === nextPool.poolAddress &&
         pool.token1Address === nextPool.token1Address &&
         pool.token2Address === nextPool.token2Address &&
         pool.decimals1 === nextPool.decimals1 &&
-        pool.decimals2 === nextPool.decimals2
+        pool.decimals2 === nextPool.decimals2 &&
+        pool.reserveX === nextPool.reserveX &&
+        pool.reserveY === nextPool.reserveY &&
+        pool.volume24h === nextPool.volume24h &&
+        pool.fees24h === nextPool.fees24h
       );
     });
   };
@@ -528,57 +502,6 @@ export function usePoolData(client: SuiClient): { pools: Pool[], isLoading: bool
             }
             console.log(`Token Data for pool ${poolInfo.pool_addr}:`, { tokenX, tokenY });
 
-            const decimalsX = tokenX.decimals || 9;
-            const decimalsY = tokenY.decimals || 9;
-            const priceX = tokenPrices[tokenXAddress] || 1.0; // Fallback price
-            const priceY = tokenPrices[tokenYAddress] || 1.0; // Fallback price
-            console.log(`Token Decimals and Prices for pool ${poolInfo.pool_addr}:`, {
-              decimalsX,
-              decimalsY,
-              priceX,
-              priceY,
-            });
-
-            const reserveXDecimal = Number(reserveX) / Math.pow(10, decimalsX);
-            const reserveYDecimal = Number(reserveY) / Math.pow(10, decimalsY);
-            const tvlNumber = reserveXDecimal * priceX + reserveYDecimal * priceY;
-            const tvlFormatted = `$${tvlNumber.toLocaleString('en-US', {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}`;
-            console.log(`TVL Calculation for pool ${poolInfo.pool_addr}:`, {
-              reserveXDecimal,
-              reserveYDecimal,
-              tvlNumber,
-              tvlFormatted,
-            });
-
-            const volumeUSDNumber = (Number(volume24h) / Math.pow(10, decimalsX)) * priceX;
-            const volumeFormatted = `$${volumeUSDNumber.toLocaleString('en-US', {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}`;
-            console.log(`Volume Calculation for pool ${poolInfo.pool_addr}:`, {
-              volume24h,
-              volumeUSDNumber,
-              volumeFormatted,
-            });
-
-            const feesUSDNumber = (Number(fees24h) / Math.pow(10, decimalsX)) * priceX;
-            const feesFormatted = `$${feesUSDNumber.toLocaleString('en-US', {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}`;
-            console.log(`Fees Calculation for pool ${poolInfo.pool_addr}:`, {
-              fees24h,
-              feesUSDNumber,
-              feesFormatted,
-            });
-
-            const apr = reserveX > 0n ? (Number(fees24h) * 36500) / Number(reserveX) : 0;
-            const aprFormatted = `${apr.toFixed(2)}%`;
-            console.log(`APR Calculation for pool ${poolInfo.pool_addr}:`, { apr, aprFormatted });
-
             const poolData = {
               pair: `${tokenX.symbol}/${tokenY.symbol}`,
               token1: tokenX.name,
@@ -588,16 +511,16 @@ export function usePoolData(client: SuiClient): { pools: Pool[], isLoading: bool
               img1: tokenX.logoURI,
               img2: tokenY.logoURI,
               feeRate: `${(feeRate / 100).toFixed(2)}%`,
-              tvl: tvlFormatted,
-              volume: volumeFormatted,
-              fees: feesFormatted,
-              apr: aprFormatted,
               rewardImg: "https://i.meee.com.tw/SdliTGK.png",
               poolAddress: poolInfo.pool_addr,
               token1Address: tokenXAddress,
               token2Address: tokenYAddress,
-              decimals1: decimalsX,
-              decimals2: decimalsY,
+              decimals1: tokenX.decimals || 9,
+              decimals2: tokenY.decimals || 9,
+              reserveX: reserveX,
+              reserveY: reserveY,
+              volume24h: volume24h,
+              fees24h: fees24h,
             };
             console.log(`Final Pool Data for ${poolInfo.pool_addr}:`, poolData);
 
@@ -658,6 +581,7 @@ function Pool() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
+  const [prices, setPrices] = useState<{ [key: string]: number }>({});
 
   useEffect(() => {
     const handleResize = () => {
@@ -709,39 +633,134 @@ function Pool() {
     setSelectedPool(null);
   };
 
+  const cryptoCompareIds: { [key: string]: string } = {
+    SUI: "SUI",
+    USDC: "USDC",
+    USDT: "USDT",
+    BTC: "BTC",
+    ARB: "ARB",
+    SOL: "SOL",
+    APT: "APT",
+    SEI: "SEI",
+    AVAX: "AVAX",
+    TIA: "TIA",
+    POL: "MATIC",
+    BLUE: "BLUE",
+    AUSD: "AUSD",
+    AFSUI: "BLUE",
+    VSUI: "BLUE",
+    NAVX: "NAVX",
+    USDY: "USDY",
+    FUD: "FUD",
+    HAEDAL: "HAEDAL",
+    NS: "NS",
+    CETUS: "CETUS",
+    DEEP: "DEEP",
+    WAL: "WAL",
+    SCA: "SCA",
+    HASUI: "BLUE",
+    BUCK: "BUCK",
+    "OKX_WRAPPED_BTC": "BTC",
+    "TETHER_SUI_BRIDGE": "USDT"
+  };
+
+  useEffect(() => {
+    const fetchPrices = async () => {
+      const uniqueSymbols = new Set<string>();
+      pools.forEach(pool => {
+        uniqueSymbols.add(pool.token1Symbol.toUpperCase());
+        uniqueSymbols.add(pool.token2Symbol.toUpperCase());
+      });
+      const symbols = Array.from(uniqueSymbols).filter(sym => cryptoCompareIds[sym]).join(',');
+      if (!symbols) return;
+
+      try {
+        const response = await fetch(`https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${symbols}&tsyms=USD`);
+        const data = await response.json();
+        const newPrices: { [key: string]: number } = {};
+        for (const sym of Array.from(uniqueSymbols)) {
+          const ccId = cryptoCompareIds[sym];
+          const raw = data.RAW[ccId];
+          if (raw && raw.USD && raw.USD.PRICE) {
+            newPrices[sym.toLowerCase()] = raw.USD.PRICE;
+          } else {
+            newPrices[sym.toLowerCase()] = 1;
+          }
+        }
+        setPrices(newPrices);
+      } catch (err) {
+        console.error('Failed to fetch prices:', err);
+      }
+    };
+    fetchPrices();
+    const interval = setInterval(fetchPrices, 60000);
+    return () => clearInterval(interval);
+  }, [pools]);
+
+  const chartData = [
+    { date: '20', volume: 120 },
+    { date: '22', volume: 110 },
+    { date: '24', volume: 100 },
+    { date: '26', volume: 90 },
+    { date: '28', volume: 80 },
+    { date: '30', volume: 70 },
+    { date: '01', volume: 60 },
+    { date: '03', volume: 50 },
+    { date: '05', volume: 40 },
+    { date: '07', volume: 30 },
+    { date: '09', volume: 20 },
+    { date: '11', volume: 10 },
+    { date: '13', volume: 20 },
+    { date: '15', volume: 30 },
+    { date: '17', volume: 40 },
+    { date: '19', volume: 50 },
+  ];
+
+  const totalTVL = pools.reduce((sum, p) => {
+    const price1 = prices[p.token1Symbol.toLowerCase()] || 1;
+    const price2 = prices[p.token2Symbol.toLowerCase()] || 1;
+    const rx = Number(p.reserveX) / 10 ** p.decimals1 * price1;
+    const ry = Number(p.reserveY) / 10 ** p.decimals2 * price2;
+    return sum + rx + ry;
+  }, 0);
+
+  const cumulativeVolume = 0;
+
+  const tradingVolume = 206684958.77;
+
   const logos = [
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqYyygKaispLzlgNY95kc5HBQd3qW7ugzAkg&s",
     "https://s2.coinmarketcap.com/static/img/coins/200x200/34187.png",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7PSlNuhwWmSkl8hUhvKcDI2sFhPN5izx9EQ&s",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyEbrXvJmpRWuhl4sKr6Uz2QcUqdp9A_3QDA&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuyM97kd62m-EjaM66Mo_2bIN8yP2pzaG4wQ&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:TN3k8gb2jDmPGNp9mgyKqQ",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXD5KutC2Bejkpf6igB2cmPVxV87_ezYxvBQ&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROKkNFn6cYC29l8MXEmZEXbXaj13LE9HZhOQ&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:TN3k8gb2jDmPGNp9mgyKqQ",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:S_c8ST7JTdrKIS90tznsZIVt4ZaQ42LB3K0Q&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:QnwaCfj5XYzFZySTIxL7BN1eHABFqIUkuAXQ&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:Tb68QfLt2aDOzW2dk-H1sdvh98nEOS5Uy74A&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:S4IbguWBJU4ypOHKKdMw7kFnrn1d7WzHTbSA&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcRuyM97kd62m-EjaM66Mo_2bIN8yP2pzaG4wQ&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcTKEZG8ITXUh3I1FCfC4K2E5g6MtizSHKJF_A&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcSXD5KutC2Bejkpf6igB2cmPVxV87_ezYzhOQ&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcROKkNFn6cYC29l8MXEmZEXbXaj13LE9HZhOQ&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcTbiGb-G_KsIcCG_4pQNEwoKJUWFywbr-NAUQ&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcS4IbguWBJU4ypOHKKdMw7kFnrn1d7WzHThSA&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcQnwaCfj5XYzFZySTIxL7BN1eHABFqIUkuAXQ&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcTb68QfLt2aDOzW2dk-H1sdvh98nEOS5Uy74A&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcS4IbguWBJU4ypOHKKdMw7kFnrn1d7WzHThSA&s",
     "https://play-lh.googleusercontent.com/ladsNim2g-g_Yc8NUcF2fo3qdxDsg91ZmJZmgQe-GKrwlvm1Mpaalt8y4dlWe4TuaD8",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:TMQG3m5mz0C4h30kNIou_4Vnq5oPuv-6cgTg&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:RYctZXhV-vC9i7jSqG0ODo9sZ30kDa99USxQ&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:SfW7UPMh0MA58qOWZe5Mv5_SvrLME0c6Q9Hg&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcTMQG3m5mz0C4h30kNIou_4Vnq5oPuv-6cgTg&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcRxvCjJJoCU4zh4Xz5TLUPrsCXmBpaRUehl5A&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcSfW7UPMh0MA58qOWZe5Mv5_SvrLME0c6Q9Hg&s",
     "https://avatars.githubusercontent.com/u/194261944?s=200&v=4",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:RNK5Dd0ahUta40pXXS-foPtlqwkKaxszKAmQ&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:TB2VQthDtGP_61Rk7QEN-HgdiuAxZFEwQgKA&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcRNK5Dd0ahUta40pXXS-foPtlqwkKaxszKAmQ&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcTB2VQthDtGP_61Rk7QEN-HgdiuAxZFEwQgKA&s",
     "https://pbs.twimg.com/profile_images/1946262175850373120/s26duOOP_400x400.png",
     "https://static.chainbroker.io/mediafiles/projects/flowx-finance/flowx-finance.jpeg",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:RFNsFeJJP1psoI-XZIj8HvNicR5WpOdXoiPw&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:RbcKGWTYEUYvZuEHSUYJGOCqv0L2KMZa55cA&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:Q5vZMGhRDTiYHpqC3AjQ1N7M7NIMuGwpz0pQ&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcRFNsFeJJP1psoI-XZIj8HvNicR5WpOdXoiPw&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcRbcKGWTYEUYvZuEHSUYJGOCqv0L2KMZa55cA&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcQ5vZMGhRDTiYHpqC3AjQ1N7M7NIMuGwpz0pQ&s",
     "https://s2.coinmarketcap.com/static/img/coins/200x200/25114.png",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:RB1Mass2PEeP8hXGhHmRpVBbrd7Mdryfw5kA&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:SDn1pdMpOFqEVQxBcH_r5_Mr6aCLvokRQAKA&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:QM2cTZ2RynkVJewgh-jofDoPwr5UjsOV0Vkg&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcRB1Mass2PEeP8hXGhHmRpVBbrd7Mdryfw5kA&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcSDn1pdMpOFqEVQxBcH_r5_Mr6aCLvokRQAKA&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcQM2cTZ2RynkVJewgh-jofDoPwr5UjsOV0Vkg&s",
     "https://upload.wikimedia.org/wikipedia/en/b/b9/Solana_logo.png",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:TIa3GDAlj9jCzDOu-MBV7_NRhZ4VlzN-i8pg&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:RxvCjJJoCU4zh4Xz5TLUPrsCXmBpaRUehl5A&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcTIa3GDAlj9jCzDOu-MBV7_NRhZ4VlzN-i8pg&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcRxvCjJJoCU4zh4Xz5TLUPrsCXmBpaRUehl5A&s",
     "https://s2.coinmarketcap.com/static/img/coins/200x200/32864.png",
     "https://imagedelivery.net/cBNDGgkrsEA-b_ixIp9SkQ/buck.svg/public"
   ];
@@ -749,18 +768,6 @@ function Pool() {
   return (
     <WalletProvider theme={customTheme}>
       <div className="container">
-        <div className="mosaic-background">
-          {Array.from({ length: 400 }).map((_, i) => (
-            <img
-              key={i}
-              src={logos[i % logos.length]}
-              alt={`logo-${i}`}
-              className="mosaic-tile"
-            />
-          ))}
-        </div>
-        <div className="background-overlay"></div>
-        <div className="background-glow"></div>
         <div className="header">
           <div className="background-glow header-glow"></div>
           <div className="header-top">
@@ -831,7 +838,7 @@ function Pool() {
                   <div className={["dropdown", openDropdown === "bridge" ? "open" : ""].join(" ")}>
                     <a href="https://bridge.sui.io/" target="_blank" rel="noopener noreferrer" className="dropdown-item">
                       <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16" style={{transform: 'rotate(180deg)'}}>
-                        <path fillRule="evenodd" d="M7.21 .8C7.69.295 8 0 8 0q.164.544.371 1.038c.812 1.946 2.073 3.35 3.197 4.6C12.878 7.096 14 8.345 14 10a6 6 0 0 1-12 0C2 6.668 5.58 2.517 7.21 .8m.413 1.021A31 31 0 0 0 5.794 3.99c-.726.95-1.436 2.008-1.96 3.07C3.304 8.133 3 9.138 3 10a5 5 0 0 0 10 0c0-1.201-.796-2.157-2.181-3.7l-.03-.032C9.75 5.11 8.5 3.72 7.623 1.82z"/>
+                        <path fillRule="evenodd" d="M7.21 .8C7.69.295 8 0 8 0q.164.544.371 1.038c.812 1.946 2.073 3.35 3.197 4.6C12.878 7.096 14 8.345 14 10a6 6 0 0 1-12 0C2 6.668 5.58 2.517 7.21 .8m.413 1.021A31 31 0 0 0 5.794 3.99c-.726.95-1.436 2.008-1.96 3.07C3.304 8.133 3 9.138 3 10a5 5 0 0 0 10 0c0-1.201-.796-2.157-2.181-3.7l-.03-.032C9.75 5.11 9.75 3.72 7.623 1.82z"/>
                         <path fillRule="evenodd" d="M4.553 7.776c.82-1.641 1.717-2.753 2.093-3.13l.708.708c-.29.29-1.128 1.311-1.907 2.87z"/>
                       </svg>
                       Sui Bridge
@@ -922,27 +929,52 @@ function Pool() {
         <div className="pool-container100">
           <div className="summary-container100" style={{ maxHeight: '600px' }}>
             <div className="summary-left100">
-              <div className="metric-item100">
-                <p className="metric-label100">Total TVL</p>
-                <p className="metric-value100">
-                  ${pools.reduce((sum, pool) => sum + parseFloat(pool.tvl.slice(1).replace(/,/g, '')), 0).toLocaleString('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}
-                </p>
-               
-               
+              <p className="chakra-text css-rtl097">Liquidity Pools</p>
+              <div className="chakra-stack css-17eny3d card-style">
+                <div className="chakra-stack css-17ivrr5 card-metric">
+                  <p className="chakra-text css-1s14ber">Total Value Locked</p>
+                  <div className="chakra-stack css-1igwmid">
+                    <p className="chakra-text css-wg8tsw">${totalTVL.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                  </div>
+                </div>
+                <div className="chakra-stack css-17ivrr5 card-metric">
+                  <p className="chakra-text css-1s14ber">Cumulative Volume</p>
+                  <div className="chakra-stack css-1igwmid">
+                    <p className="chakra-text css-wg8tsw">$0.00</p>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="summary-right100">
-              <div className="metric-item100">
-                <p className="metric-label100">Seal Volume(Today)</p>
-                <p className="metric-value100">$0 </p>
+            <div className="css-ziizt4 card-style">
+              <div className="css-tjbszq">
+                <div className="chakra-stack css-1jjq5p5 card-metric">
+                  <div className="chakra-stack css-1rfq7px">
+                    <p className="chakra-text css-9co0bh">Trading Volume (24H)</p>
+                    <div className="chakra-skeleton css-gbrdq1">
+                      <p className="chakra-text css-abv05r">${tradingVolume.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                    </div>
+                  </div>
+                  <div className="css-yswd5i">
+                    <div data-active="true" className="css-7fe9c2">
+                      <p className="chakra-text css-1kznzez" data-active="true">D</p>
+                    </div>
+                    <div data-active="false" className="css-1kilo2x">
+                      <p className="chakra-text css-elj7q0" data-active="false">W</p>
+                    </div>
+                    <div data-active="false" className="css-1kilo2x">
+                      <p className="chakra-text css-elj7q0" data-active="false">M</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="css-xxk67h card-chart">
+                  <ResponsiveContainer width="100%" height={258}>
+                    <BarChart data={chartData}>
+                      <XAxis dataKey="date" stroke="#909CA4" fontSize={12} fontFamily="Inter" />
+                      <Bar dataKey="volume" fill="#75C8FF" radius={0} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
               </div>
-
-             
-               
-           
             </div>
           </div>
           <div className="pool-header100">
@@ -951,7 +983,7 @@ function Pool() {
                 className={`tab-button100 ${activeTab === "pools" ? "active" : ""}`}
                 onClick={() => setActiveTab("pools")}
               >
-                Pools
+                Pools ({pools.length})
               </button>
               <button
                 className={`tab-button100 ${activeTab === "positions" ? "active" : ""}`}
@@ -961,12 +993,13 @@ function Pool() {
               </button>
             </div>
             <button className="create-pool-button100" onClick={handleCreatePool}>
-              Create new pool
+              Create a new pool
             </button>
           </div>
           {activeTab === "pools" ? (
             <PoolList
               pools={pools}
+              prices={prices}
               activeTab={activeTab}
               setActiveTab={setActiveTab}
               isCreatePoolOpen={isCreatePoolOpen}
@@ -1009,7 +1042,6 @@ function Pool() {
   );
 }
 
-// Rewritten Position component
 interface PositionProps {
   activeTab: string;
   setActiveTab: React.Dispatch<React.SetStateAction<string>>;
@@ -1095,59 +1127,85 @@ const PositionComponent = ({ activeTab, setActiveTab, handleAddLiquidity, pools 
     return <div className="no-positions100">Loading positions...</div>;
   }
 
-  if (positions.length === 0) {
-    return (
-      <div className="no-positions100">
-        No existing positions found.
-        <button onClick={() => handleAddLiquidity(null, true)}>Add Liquidity</button>
-      </div>
-    );
-  }
-
   return (
-    <>
-      <div className="pool-table-header100">
-        <div>#</div>
-        <div>Pair</div>
-        <div>Liquidity</div>
-        <div>Unclaimed Fees</div>
-        <div>Share</div>
-        <div>APR</div>
-        <div>Rewards</div>
-        <div>Actions</div>
-      </div>
-      <div className="pool-list100">
-        {positions.map((pos, index) => (
-          <div key={index} className="pool-item100">
-            <div>{index + 1}</div>
-            <div className="pool-token-info100">
-              <div className="token-images100">
-                <img src={pos.img1} alt={pos.token1Symbol} />
-                <img src={pos.img2} alt={pos.token2Symbol} />
+    <div className="positions-container">
+      <div className="chakra-stack css-1535ss">
+        <div className="chakra-stack css-a37t44">
+          <div className="chakra-stack css-xlwmla">
+            <div className="css-18rti1w">
+              <div style={{width: '100%'}}>
+                <button id="popover-trigger-:r76o:" className="css-1t2x70">
+                  <div className="css-jn0mkj">
+                    <div className="chakra-stack css-2qlcdh">
+                      <div className="css-12xzxfu">
+                        <div className="css-o5e85d">
+                          <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                            <use xlinkHref="#icon-icon_search"></use>
+                          </svg>
+                        </div>
+                        <p className="chakra-text css-1lher0p">Filter by token</p>
+                      </div>
+                      <div className="chakra-stack css-1igwmid"></div>
+                    </div>
+                  </div>
+                </button>
               </div>
-              <div className="token-details100">
-                <div className="token-pair100">
-                  <p>{pos.pair}</p>
-                  <span>{pos.feeRate}</span>
+            </div>
+            <div className="chakra-stack css-1igwmid">
+              <div className="css-3wh1mk">
+                <div className="chakra-stack css-yue1ly">
+                  <div className="css-1ke24j5">
+                    <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                      <use xlinkHref="#icon-icon_collapse"></use>
+                    </svg>
+                  </div>
+                  <p className="chakra-text css-1v0j6vl">Collapse All</p>
+                </div>
+              </div>
+              <div className="css-1vpx1e5">
+                <div className="css-1pin1cu">
+                  <div className="css-0">
+                    <div className="css-0">
+                      <div className="css-1ke24j5">
+                        <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
+                          <use xlinkHref="#icon-icon_refresh"></use>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="pool-data100">{pos.liquidity}</div>
-            <div className="pool-data100">{pos.unclaimedFees}</div>
-            <div className="pool-data100">{pos.share}</div>
-            <div className="apr-container100">{pos.apr}</div>
-            <div className="reward-container100">
-              <div className="reward-images100">
-                <img src={pos.rewardImg} alt="Reward" />
-              </div>
-            </div>
-            <div className="pool-action100">
-              <button className="deposit-button100">Manage</button>
+          </div>
+        </div>
+        <div className="css-10grt23"></div>
+        <div className="chakra-stack css-1wgi00l">
+          <div className="chakra-stack css-1jra5w9">
+            <p className="chakra-text css-17xjxxf">Total Liquidity</p>
+            <div className="chakra-skeleton css-a8ku0c">
+              <p className="chakra-text css-1ikb94c">$--</p>
             </div>
           </div>
-        ))}
+          <div className="chakra-stack css-17na8xj">
+            <p className="chakra-text css-17xjxxf">Pending Yield</p>
+            <div className="chakra-skeleton css-cdkrf0">
+              <div className="chakra-stack css-1igwmid">
+                <div className="chakra-stack css-lpuqkz">
+                  <button id="popover-trigger-:r76t:" className="css-gmuwbf">
+                    <p className="chakra-text css-bae340">$0</p>
+                  </button>
+                </div>
+                <button type="button" className="chakra-button css-2h2e64" disabled>Claim All</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="chakra-stack css-dbr0lh">
+          <img src="/images/img_nopositions@2x.png" className="chakra-image css-f5j44i" />
+          <p className="chakra-text css-dwkbww">No liquidity positions</p>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 

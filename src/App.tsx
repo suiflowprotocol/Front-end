@@ -1459,21 +1459,7 @@ function App() {
                     <div className="swap-header">
                       <h2 className="swap-title">Swap</h2>
                       <div className="settings-row">
-                        <div className="aggregator-toggle" ref={switchRef}>
-                          <label className="chakra-form__label gradient-text" htmlFor="aggregator-mode">Mine $SEAL</label>
-                          <label className="chakra-switch">
-                            <input
-                              type="checkbox"
-                              id="aggregator-mode"
-                              checked={useAggregator}
-                              onChange={() => setUseAggregator(!useAggregator)}
-                              className="chakra-switch__input"
-                            />
-                            <span className="chakra-switch__track">
-                              <span className="chakra-switch__thumb"></span>
-                            </span>
-                          </label>
-                        </div>
+                       
                         <div className="settings-button-container">
                           <button
                             className="settings-button"
