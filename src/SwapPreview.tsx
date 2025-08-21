@@ -98,16 +98,16 @@ const SwapPreview: React.FC<SwapPreviewProps> = ({
               </div>
               <div className="info-section11">
                 <div className="info-row11">
-                  <p className="chakra-text css-1k06fd211">Slippage Tolerance</p>
+                  <p className="chakra-text css-1k06fd211">Slippage Tolerance：</p>
                   <p className="chakra-text css-dfqnbt11">{slippage}%</p>
                 </div>
                 <div className="info-row11">
-                  <p className="chakra-text css-1k06fd211">Minimum Received</p>
+                  <p className="chakra-text css-1k06fd211">Minimum Received：</p>
                   <p className="chakra-text css-dfqnbt11">{minAmountOut} {tokenY.symbol}</p>
                 </div>
                 <div className="info-row11">
-                  <p className="chakra-text css-1k06fd211">Price Difference <span className="info-icon">ⓘ</span></p>
-                  <p className="chakra-text css-dfqnbt11 price-diff-value">{priceDifference}</p>
+                  <p className="chakra-text css-1k06fd211">Price Difference： <span className="info-icon"></span></p>
+                  <p className="chakra-text css-dfqnbt11 price-diff-value">{priceDifference}%</p>
                 </div>
               </div>
             </div>

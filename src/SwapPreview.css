@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
+/* Modal Overlay */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -21,13 +22,14 @@
   opacity: 1;
 }
 
+/* Modal Content */
 .chakra-modal__content.css-xnqtk411 {
-  background: linear-gradient(135deg, #1e293b, #2a3447);
+  background: #1a202c;
   border-radius: 16px;
   padding: 20px;
-  width: 420px;
+  width: 480px;
   height: auto;
-  max-height: 90vh;
+  max-height: 80vh;
   max-width: 95%;
   border: 1px solid rgba(55, 65, 81, 0.5);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 8px rgba(59, 130, 246, 0.1);
@@ -37,9 +39,9 @@
   font-family: 'Inter', sans-serif;
 }
 
+/* Modal Header */
 .chakra-modal__header.css-10h09dx11 {
   padding-bottom: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -72,6 +74,7 @@
   height: 16px;
 }
 
+/* Modal Body */
 .chakra-modal__body.css-hgczei11 {
   padding: 0;
   flex-grow: 1;
@@ -86,16 +89,16 @@
 }
 
 .chakra-stack.css-1xgnfuh11 {
-  background: linear-gradient(135deg, #1e293b, #2a3447);
+  background: #1a202c;
   border-radius: 8px;
   padding: 16px;
-  border: 1px solid rgba(55, 65, 81, 0.5);
   display: flex;
   flex-direction: column;
   gap: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
+/* Token Section */
 .token-section11 {
   display: flex;
   flex-direction: column;
@@ -109,7 +112,6 @@
   background: rgba(0, 0, 0, 0.2);
   border-radius: 12px;
   padding: 12px 16px;
-  border: 1px solid rgba(55, 65, 81, 0.5);
 }
 
 .token-amount {
@@ -156,30 +158,34 @@
   transform: scale(1.2);
 }
 
+/* Exchange Rate Section */
 .exchange-rate-section11 {
   padding: 8px 0;
   display: flex;
+  justify-content: center;
   align-items: center;
 }
 
 .exchange-rate11 {
-  font-size: 13px;
+  font-size: 16px; /* Increased font size */
   font-weight: 500;
   color: #d1d5db;
   display: flex;
   align-items: center;
   gap: 8px;
+  justify-content: center;
 }
 
 .chakra-text.css-v4hq1a11 {
   display: flex;
   align-items: center;
   gap: 6px;
+  justify-content: center;
 }
 
 .small-token-icon {
-  width: 16px;
-  height: 16px;
+  width: 20px; /* Increased icon size */
+  height: 20px;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -198,6 +204,7 @@
   transform: scale(1.1);
 }
 
+/* Info Section */
 .info-section11 {
   display: flex;
   flex-direction: column;
@@ -207,9 +214,9 @@
 
 .info-row11 {
   display: flex;
-  justify-content: space-between;
+  justify-content: center; /* Center-align info rows */
   align-items: center;
-  font-size: 12px;
+  font-size: 14px; /* Increased font size */
   color: #9ca3af;
   padding: 6px 0;
 }
@@ -220,11 +227,13 @@
   display: flex;
   align-items: center;
   gap: 4px;
+  font-size: 14px; /* Increased font size */
 }
 
 .chakra-text.css-dfqnbt11 {
   color: #f0f0f0;
   font-weight: 500;
+  font-size: 14px; /* Increased font size */
 }
 
 .price-diff-value {
@@ -233,10 +242,11 @@
 
 .info-icon {
   color: #9ca3af;
-  font-size: 12px;
+  font-size: 14px; /* Increased icon size */
   font-weight: normal;
 }
 
+/* Warning and Accept Row */
 .warning-accept-row {
   display: flex;
   justify-content: space-between;
@@ -280,9 +290,10 @@
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
 }
 
+/* Responsive Design */
 @media (max-width: 480px) {
   .chakra-modal__content.css-xnqtk411 {
-    width: 90%;
+    width: 95%;
     padding: 16px;
   }
 
@@ -296,8 +307,8 @@
   }
 
   .small-token-icon {
-    width: 14px;
-    height: 14px;
+    width: 16px; /* Adjusted for smaller screens */
+    height: 16px;
   }
 
   .chakra-text.css-18eiei211 {
@@ -309,11 +320,23 @@
   }
 
   .exchange-rate11 {
-    font-size: 12px;
+    font-size: 14px; /* Slightly smaller for mobile */
   }
 
   .info-row11 {
-    font-size: 11px;
+    font-size: 12px; /* Slightly smaller for mobile */
+  }
+
+  .chakra-text.css-1k06fd211 {
+    font-size: 12px;
+  }
+
+  .chakra-text.css-dfqnbt11 {
+    font-size: 12px;
+  }
+
+  .info-icon {
+    font-size: 12px;
   }
 
   .chakra-button.css-1tn2n5q11 {

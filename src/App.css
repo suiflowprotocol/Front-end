@@ -927,18 +927,58 @@ body {
   padding: 16px;
 }
 
+.quick-tokens {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+  justify-content: flex-start;
+}
+
+
+.quick-token-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 20px;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+
+.quick-token-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-right: 4px;
+}
+
+.quick-token-text {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+
+.quick-token-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
 .token-modal-content {
-  background: rgba(26, 32, 44, 0);
+  background: rgb(38, 47, 65);
   border-radius: 16px;
   width: 100%;
   max-width: 400px;
-  max-height: 80vh;
+  max-height: 100vh;
   padding: 16px;
   border: 1px solid var(--border-color);
   box-shadow: 0 8px 24px var(--shadow-color);
   position: relative;
   overflow: hidden;
 }
+
 
 .token-modal-header {
   padding-bottom: 10px;
@@ -2378,6 +2418,42 @@ body {
   .token-modal-title {
     font-size: 16px;
   }
+
+  .quick-select-tokens {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.quick-select-button {
+  display: flex;
+  align-items: center;
+  background: #2a344a;
+  border: none;
+  border-radius: 8px;
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.quick-select-button:hover {
+  background: #3a4060;
+}
+
+.quick-select-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+}
+
+.quick-select-text {
+  color: #fff;
+  font-size: 14px;
+  margin: 0;
+}
+
+
   .token-modal-close-btn {
     padding: 6px;
   }
