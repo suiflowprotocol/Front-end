@@ -6,32 +6,6 @@ import { SuiClient } from "@mysten/sui/client";
 const PACKAGE_ID = "0xb90158d50ac951784409a6876ac860e24564ed5257e51944d3c693efb9fdbd78";
 const POOL_REGISTRY = "0xfc8c69858d070b639b3db15ff0f78a10370950434c5521c83eaa7e2285db8d2a";
 
-const tokenPrices: { [key: string]: number } = {
-  "0x2::sui::SUI": 1.0,
-  "0xb677ae5448d34da319289018e7dd67c556b094a5451d7029bd52396cdd8f192f::usdc::USDC": 1.0,
-  "0xb3f153e6279045694086e8176c65e8e0f5d33aeeeb220a57b5865b849e5be5ba::NS::NS": 0.5,
-  "0xd52c440f67dd960bc76f599a16065abd5fbc251b78f18d9dce3578ccc44462a9::cetus::CETUS": 0.2,
-  "0xa16e100fcb99689d481f31a2315519923fdf45916a4fa18c5513008f5101237d::navx::NAVX": 0.4,
-  "0xc060006111016b8a020ad5b15c1e32d4d9f8b7c1b8b3590b1a5f1c0e67a46e3b::coin::COIN": 1.0,
-  "0xe76d0a9c03e7e8e1ff3b8f70412b0e1e7b3a8f30b0f3f7d0b5b6f2e0a0c2b1f7::wal::WAL": 0.2,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::deep::DEEP": 0.1,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::HASUI::HASUI": 1.0,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::lbtc::LBTC": 60000,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::wbtc::WBTC": 60000,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::xbtc::XBTC": 60000,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::hawal::HAWAL": 0.3,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::eth::ETH": 2500,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::buck::BUCK": 1.0,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::wusdt::WUSDT": 1.0,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::ausd::AUSD": 1.0,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::usdy::USDY": 1.0,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::sca::SCA": 0.5,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::lofi::LOFI": 0.1,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::vsui::VSUI": 1.0,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::stsui::STSUI": 1.0,
-  "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::haedal::HAEDAL": 0.3,
-};
-
 interface Pool {
   pair: string;
   token1: string;
@@ -41,16 +15,16 @@ interface Pool {
   img1: string;
   img2: string;
   feeRate: string;
-  tvl: string;
-  volume: string;
-  fees: string;
-  apr: string;
   rewardImg: string;
   poolAddress: string;
   token1Address: string;
   token2Address: string;
   decimals1: number;
   decimals2: number;
+  reserveX: bigint;
+  reserveY: bigint;
+  volume24h: bigint;
+  fees24h: bigint;
 }
 
 export function usePoolData(client: SuiClient): {pools: Pool[], isLoading: boolean, refresh: () => void} {
@@ -74,16 +48,16 @@ export function usePoolData(client: SuiClient): {pools: Pool[], isLoading: boole
         pool.img1 === nextPool.img1 &&
         pool.img2 === nextPool.img2 &&
         pool.feeRate === nextPool.feeRate &&
-        pool.tvl === nextPool.tvl &&
-        pool.volume === nextPool.volume &&
-        pool.fees === nextPool.fees &&
-        pool.apr === nextPool.apr &&
         pool.rewardImg === nextPool.rewardImg &&
         pool.poolAddress === nextPool.poolAddress &&
         pool.token1Address === nextPool.token1Address &&
         pool.token2Address === nextPool.token2Address &&
         pool.decimals1 === nextPool.decimals1 &&
-        pool.decimals2 === nextPool.decimals2
+        pool.decimals2 === nextPool.decimals2 &&
+        pool.reserveX === nextPool.reserveX &&
+        pool.reserveY === nextPool.reserveY &&
+        pool.volume24h === nextPool.volume24h &&
+        pool.fees24h === nextPool.fees24h
       );
     });
   };
@@ -245,54 +219,6 @@ export function usePoolData(client: SuiClient): {pools: Pool[], isLoading: boole
 
             const decimalsX = tokenX.decimals || 9;
             const decimalsY = tokenY.decimals || 9;
-            const priceX = tokenPrices[tokenXAddress] || 0;
-            const priceY = tokenPrices[tokenYAddress] || 0;
-            console.log(`Token Decimals and Prices for pool ${poolInfo.pool_addr}:`, {
-              decimalsX,
-              decimalsY,
-              priceX,
-              priceY,
-            });
-
-            const reserveXDecimal = Number(reserveX) / Math.pow(10, decimalsX);
-            const reserveYDecimal = Number(reserveY) / Math.pow(10, decimalsY);
-            const tvlNumber = reserveXDecimal * priceX + reserveYDecimal * priceY;
-            const tvlFormatted = `$${tvlNumber.toLocaleString('en-US', {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}`;
-            console.log(`TVL Calculation for pool ${poolInfo.pool_addr}:`, {
-              reserveXDecimal,
-              reserveYDecimal,
-              tvlNumber,
-              tvlFormatted,
-            });
-
-            const volumeUSDNumber = (Number(volume24h) / Math.pow(10, decimalsX)) * priceX;
-            const volumeFormatted = `$${volumeUSDNumber.toLocaleString('en-US', {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}`;
-            console.log(`Volume Calculation for pool ${poolInfo.pool_addr}:`, {
-              volume24h,
-              volumeUSDNumber,
-              volumeFormatted,
-            });
-
-            const feesUSDNumber = (Number(fees24h) / Math.pow(10, decimalsX)) * priceX;
-            const feesFormatted = `$${feesUSDNumber.toLocaleString('en-US', {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}`;
-            console.log(`Fees Calculation for pool ${poolInfo.pool_addr}:`, {
-              fees24h,
-              feesUSDNumber,
-              feesFormatted,
-            });
-
-            const apr = reserveX > 0n ? (Number(fees24h) * 36500) / Number(reserveX) : 0;
-            const aprFormatted = `${apr.toFixed(2)}%`;
-            console.log(`APR Calculation for pool ${poolInfo.pool_addr}:`, { apr, aprFormatted });
 
             const poolData = {
               pair: `${tokenX.symbol}/${tokenY.symbol}`,
@@ -303,16 +229,16 @@ export function usePoolData(client: SuiClient): {pools: Pool[], isLoading: boole
               img1: tokenX.logoURI || "https://via.placeholder.com/20",
               img2: tokenY.logoURI || "https://via.placeholder.com/20",
               feeRate: `${(feeRate / 100).toFixed(2)}%`,
-              tvl: tvlFormatted,
-              volume: volumeFormatted,
-              fees: feesFormatted,
-              apr: aprFormatted,
               rewardImg: "https://i.meee.com.tw/SdliTGK.png",
               poolAddress: poolInfo.pool_addr,
               token1Address: tokenXAddress,
               token2Address: tokenYAddress,
               decimals1: decimalsX,
               decimals2: decimalsY,
+              reserveX: reserveX,
+              reserveY: reserveY,
+              volume24h: volume24h,
+              fees24h: fees24h,
             };
             console.log(`Final Pool Data for ${poolInfo.pool_addr}:`, poolData);
 

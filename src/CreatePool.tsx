@@ -979,7 +979,7 @@ function CreatePool({ isOpen, onClose, newPoolToken1, setNewPoolToken1, newPoolT
           z-index: 1100;
         }
         .token-modal-content {
-          background: var(--modal-bg);
+          background: rgba(26, 32, 44, 0);
           border-radius: 10px;
           width: 100%;
           max-width: 360px;

@@ -23,7 +23,6 @@ import "./Pool.css";
 import "./App.css";
 import "./App2.css";
 import "./SidebarMenu.css";
-import { BarChart, Bar, XAxis, ResponsiveContainer } from 'recharts';
 
 const PACKAGE_ID = "0xb90158d50ac951784409a6876ac860e24564ed5257e51944d3c693efb9fdbd78";
 const POOL_REGISTRY = "0xfc8c69858d070b639b3db15ff0f78a10370950434c5521c83eaa7e2285db8d2a";
@@ -47,12 +46,12 @@ const customTheme: ThemeVars = {
     modalOverlay: 'blur(4px)',
   },
   backgroundColors: {
-    primaryButton: 'linear-gradient(135deg, #3b82f6, #2563eb)',
-    primaryButtonHover: 'linear-gradient(135deg, #4b9内核9cfa, #3b82f6)',
+    primaryButton: 'linear-gradient(135deg, #4a5568, #2d3748)',
+    primaryButtonHover: 'linear-gradient(135deg, #5a667a, #3d4858)',
     outlineButtonHover: '#F3F4F6',
     modalOverlay: 'rgba(15, 23, 42, 0.3)',
-    modalPrimary: '#ffffff',
-    modalSecondary: '#F9FAFB',
+    modalPrimary: '#2d3748',
+    modalSecondary: '#1a202c',
     iconButton: 'transparent',
     iconButtonHover: '#F0F1F2',
     dropdownMenu: '#FFFFFF',
@@ -733,34 +732,34 @@ function Pool() {
     "https://s2.coinmarketcap.com/static/img/coins/200x200/34187.png",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7PSlNuhwWmSkl8hUhvKcDI2sFhPN5izx9EQ&s",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyEbrXvJmpRWuhl4sKr6Uz2QcUqdp9A_3QDA&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcRuyM97kd62m-EjaM66Mo_2bIN8yP2pzaG4wQ&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcTKEZG8ITXUh3I1FCfC4K2E5g6MtizSHKJF_A&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcSXD5KutC2Bejkpf6igB2cmPVxV87_ezYzhOQ&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcROKkNFn6cYC29l8MXEmZEXbXaj13LE9HZhOQ&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcTbiGb-G_KsIcCG_4pQNEwoKJUWFywbr-NAUQ&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcS4IbguWBJU4ypOHKKdMw7kFnrn1d7WzHThSA&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcQnwaCfj5XYzFZySTIxL7BN1eHABFqIUkuAXQ&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcTb68QfLt2aDOzW2dk-H1sdvh98nEOS5Uy74A&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcS4IbguWBJU4ypOHKKdMw7kFnrn1d7WzHThSA&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuyM97kd62m-EjaM66Mo_2bIN8yP2pzaG4wQ&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKEZG8ITXUh3I1FCfC4K2E5g6MtizSHKJF_A&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXD5KutC2Bejkpf6igB2cmPVxV87_ezYzhOQ&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROKkNFn6cYC29l8MXEmZEXbXaj13LE9HZhOQ&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbiGb-G_KsIcCG_4pQNEwoKJUWFywbr-NAUQ&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4IbguWBJU4ypOHKKdMw7kFnrn1d7WzHThSA&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnwaCfj5XYzFZySTIxL7BN1eHABFqIUkuAXQ&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTb68QfLt2aDOzW2dk-H1sdvh98nEOS5Uy74A&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4IbguWBJU4ypOHKKdMw7kFnrn1d7WzHThSA&s",
     "https://play-lh.googleusercontent.com/ladsNim2g-g_Yc8NUcF2fo3qdxDsg91ZmJZmgQe-GKrwlvm1Mpaalt8y4dlWe4TuaD8",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcTMQG3m5mz0C4h30kNIou_4Vnq5oPuv-6cgTg&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcRxvCjJJoCU4zh4Xz5TLUPrsCXmBpaRUehl5A&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcSfW7UPMh0MA58qOWZe5Mv5_SvrLME0c6Q9Hg&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMQG3m5mz0C4h30kNIou_4Vnq5oPuv-6cgTg&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxvCjJJoCU4zh4Xz5TLUPrsCXmBpaRUehl5A&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfW7UPMh0MA58qOWZe5Mv5_SvrLME0c6Q9Hg&s",
     "https://avatars.githubusercontent.com/u/194261944?s=200&v=4",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcRNK5Dd0ahUta40pXXS-foPtlqwkKaxszKAmQ&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcTB2VQthDtGP_61Rk7QEN-HgdiuAxZFEwQgKA&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNK5Dd0ahUta40pXXS-foPtlqwkKaxszKAmQ&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTB2VQthDtGP_61Rk7QEN-HgdiuAxZFEwQgKA&s",
     "https://pbs.twimg.com/profile_images/1946262175850373120/s26duOOP_400x400.png",
     "https://static.chainbroker.io/mediafiles/projects/flowx-finance/flowx-finance.jpeg",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcRFNsFeJJP1psoI-XZIj8HvNicR5WpOdXoiPw&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcRbcKGWTYEUYvZuEHSUYJGOCqv0L2KMZa55cA&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcQ5vZMGhRDTiYHpqC3AjQ1N7M7NIMuGwpz0pQ&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFNsFeJJP1psoI-XZIj8HvNicR5WpOdXoiPw&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbcKGWTYEUYvZuEHSUYJGOCqv0L2KMZa55cA&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5vZMGhRDTiYHpqC3AjQ1N7M7NIMuGwpz0pQ&s",
     "https://s2.coinmarketcap.com/static/img/coins/200x200/25114.png",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcRB1Mass2PEeP8hXGhHmRpVBbrd7Mdryfw5kA&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcSDn1pdMpOFqEVQxBcH_r5_Mr6aCLvokRQAKA&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcQM2cTZ2RynkVJewgh-jofDoPwr5UjsOV0Vkg&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRB1Mass2PEeP8hXGhHmRpVBbrd7Mdryfw5kA&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDn1pdMpOFqEVQxBcH_r5_Mr6aCLvokRQAKA&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQM2cTZ2RynkVJewgh-jofDoPwr5UjsOV0Vkg&s",
     "https://upload.wikimedia.org/wikipedia/en/b/b9/Solana_logo.png",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcTIa3GDAlj9jCzDOu-MBV7_NRhZ4VlzN-i8pg&s",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn=GcRxvCjJJoCU4zh4Xz5TLUPrsCXmBpaRUehl5A&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIa3GDAlj9jCzDOu-MBV7_NRhZ4VlzN-i8pg&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxvCjJJoCU4zh4Xz5TLUPrsCXmBpaRUehl5A&s",
     "https://s2.coinmarketcap.com/static/img/coins/200x200/32864.png",
     "https://imagedelivery.net/cBNDGgkrsEA-b_ixIp9SkQ/buck.svg/public"
   ];
@@ -769,7 +768,6 @@ function Pool() {
     <WalletProvider theme={customTheme}>
       <div className="container">
         <div className="header">
-          <div className="background-glow header-glow"></div>
           <div className="header-top">
             <div className="logo-container">
               <img src="https://i.meee.com.tw/SdliTGK.png" alt="Logo" className="logo-image" />
@@ -807,7 +805,7 @@ function Pool() {
                   <div className={["dropdown", openDropdown === "earn" ? "open" : ""].join(" ")}>
                     <Link to="/pool" className="dropdown-item">
                       <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16">
-                        <path d="M5.68 5.792 7.345 7.75 5.681 9.708a2.75 2.75 0 1 1 0-3.916ZM8 6.978 6.416 5.113l-.014-.015a3.75 3.75 0 1 0 0 5.304l.014-.015L8 8.522l1.584 1.865.014.015a3.75 3.75 0 1 0 0-5.304l-.014.015zm.656.772 1.663-1.958a2.75 2.75 0 1 1 0 3.916z"/>
+                        <path d="M5.68 5.792 7.345 7.75 5.681 9.708a2.75 2.75 0 1 1 0-3.916ZM8 6.978 6.416 5.113l-.014-.015a3.75 3.75 0 1 0 0 5.304l.014-.015L8 8.522l1.584 1.865.014.015a3.75 3.75 0 1 0 0-5.304l-.014.015zm.656 .772 1.663-1.958a2.75 2.75 0 1 1 0 3.916z"/>
                       </svg>
                       Pools
                     </Link>
@@ -820,7 +818,7 @@ function Pool() {
                     <Link to="/xseal" className="dropdown-item">
                       <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16">
                         <path d="M5.338 1.59a61 61 0 0 0-2.837.856.48.48 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.7 10.7 0 0 0 2.287 2.233c.346.244.652.42 .893.533q.18.085.293.118a1 1 0 0 0 .101.025 1 1 0 0 0 .1-.025q.114-.034.294-.118c.24-.113.547-.29.893-.533a10.7 10.7 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072 .56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.8 11.8 0 0 1-2.517 2.453 7 7 0 0 1-1.048 .625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7 7 0 0 1-1.048-.625 11.8 11.8 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692a1.54 1.54 0 0 1 1.044-1.262c.658-.215 1.777-.562 2.887-.87z"/>
-                        <path d="M9.5 6.5a1.5 1.5 0 0 1-1 1.415l.385 1.99a.5.5 0 0 1-.491.595h-.788a.5.5 0 0 1-.49-.595l.384-1.99a1.5 1.5 0 1 1 2-1.415"/>
+                        <path d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
                       </svg>
                       Burn
                     </Link>
@@ -838,14 +836,14 @@ function Pool() {
                   <div className={["dropdown", openDropdown === "bridge" ? "open" : ""].join(" ")}>
                     <a href="https://bridge.sui.io/" target="_blank" rel="noopener noreferrer" className="dropdown-item">
                       <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16" style={{transform: 'rotate(180deg)'}}>
-                        <path fillRule="evenodd" d="M7.21 .8C7.69.295 8 0 8 0q.164.544.371 1.038c.812 1.946 2.073 3.35 3.197 4.6C12.878 7.096 14 8.345 14 10a6 6 0 0 1-12 0C2 6.668 5.58 2.517 7.21 .8m.413 1.021A31 31 0 0 0 5.794 3.99c-.726.95-1.436 2.008-1.96 3.07C3.304 8.133 3 9.138 3 10a5 5 0 0 0 10 0c0-1.201-.796-2.157-2.181-3.7l-.03-.032C9.75 5.11 9.75 3.72 7.623 1.82z"/>
-                        <path fillRule="evenodd" d="M4.553 7.776c.82-1.641 1.717-2.753 2.093-3.13l.708.708c-.29.29-1.128 1.311-1.907 2.87z"/>
+                        <path fill-rule="evenodd" d="M7.21 .8C7.69.295 8 0 8 0q.164.544.371 1.038c.812 1.946 2.073 3.35 3.197 4.6C12.878 7.096 14 8.345 14 10a6 6 0 0 1-12 0C2 6.668 5.58 2.517 7.21 .8m.413 1.021A31 31 0 0 0 5.794 3.99c-.726.95-1.436 2.008-1.96 3.07C3.304 8.133 3 9.138 3 10a5 5 0 0 0 10 0c0-1.201-.796-2.157-2.181-3.7l-.03-.032C9.75 5.11 8.5 3.72 7.623 1.82z"/>
+                        <path fill-rule="evenodd" d="M4.553 7.776c.82-1.641 1.717-2.753 2.093-3.13l.708.708c-.29.29-1.128 1.311-1.907 2.87z"/>
                       </svg>
                       Sui Bridge
                     </a>
                     <a href="https://bridge.cetus.zone/sui" target="_blank" rel="noopener noreferrer" className="dropdown-item">
                       <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16">
-                        <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"/>
+                        <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342 .474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"/>
                       </svg>
                       Wormhole
                     </a>
@@ -884,42 +882,24 @@ function Pool() {
                 </div>
               </div>
             ) : (
-              <button onClick={toggleMenu} className="menu-toggle">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <line x1="3" y1="12" x2="21" y2="12"></line>
-                  <line x1="3" y1="6" x2="21" y2="6"></line>
-                  <line x1="3" y1="18" x2="21" y2="18"></line>
+              <button className="hamburger-menu" onClick={toggleMenu}>
+                <svg className="hamburger-icon" viewBox="0 0 24 24" width="24px" height="24px">
+                  <path d="M3 6h18M3 12h18M3 18h18" stroke="var(--text-color)" strokeWidth="2" strokeLinecap="round" />
                 </svg>
               </button>
             )}
             <div className="wallet-actions">
               <CustomConnectButton />
-              <button
-                id="popover-trigger-notification"
-                aria-haspopup="dialog"
-                aria-expanded="false"
-                aria-controls="popover-content-notification"
-                className="icon-button css-fi49l4"
-              >
-                <div className="css-1ke24j5">
-                  <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px" viewBox="0 0 24 24">
-                    <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-1.1-.9-2-2-2s-2 .9-2 2v.68C6.63 5.36 5 7.92 5 11v5l-2 2v1h18v-1l-2-2z"></path>
-                  </svg>
-                </div>
-              </button>
-              <button
-                id="popover-trigger-rpc"
-                aria-haspopup="dialog"
-                aria-expanded="false"
-                aria-controls="popover-content-rpc"
-                className="icon-button css-163hjq3"
-              >
-                <div className="css-1ke24j5">
-                  <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px" viewBox="0 0 24 24">
-                    <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.30-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"></path>
-                  </svg>
-                </div>
-              </button>
+              <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="icon-button">
+                <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px" viewBox="0 0 24 24">
+                  <path d="M18.901 1.153h3.68l-8.04 9.19 9.46 12.504h-7.404l-5.8-7.585-6.638 7.585H.3l8.59-9.82L.001 1.154h7.594l5.243 6.932 6.063-6.932zM17.61 20.644h2.039L6.486 3.24H4.298l13.312 17.404z"/>
+                </svg>
+              </a>
+              <a href="https://telegram.org" target="_blank" rel="noopener noreferrer" className="icon-button">
+                <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px" viewBox="0 0 24 24">
+                  <path d="M9.417 15.181l-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972.001-.001c.321-1.496-.541-2.081-2.027-1.738l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176 .69 .218l-10.916 6.727z"/>
+                </svg>
+              </a>
             </div>
           </div>
         </div>
@@ -927,74 +907,38 @@ function Pool() {
           <Sidebar isOpen={isMenuOpen} onClose={toggleMenu} />
         )}
         <div className="pool-container100">
-          <div className="summary-container100" style={{ maxHeight: '600px' }}>
-            <div className="summary-left100">
-              <p className="chakra-text css-rtl097">Liquidity Pools</p>
-              <div className="chakra-stack css-17eny3d card-style">
-                <div className="chakra-stack css-17ivrr5 card-metric">
-                  <p className="chakra-text css-1s14ber">Total Value Locked</p>
-                  <div className="chakra-stack css-1igwmid">
-                    <p className="chakra-text css-wg8tsw">${totalTVL.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                  </div>
-                </div>
-                <div className="chakra-stack css-17ivrr5 card-metric">
-                  <p className="chakra-text css-1s14ber">Cumulative Volume</p>
-                  <div className="chakra-stack css-1igwmid">
-                    <p className="chakra-text css-wg8tsw">$0.00</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="css-ziizt4 card-style">
-              <div className="css-tjbszq">
-                <div className="chakra-stack css-1jjq5p5 card-metric">
-                  <div className="chakra-stack css-1rfq7px">
-                    <p className="chakra-text css-9co0bh">Trading Volume (24H)</p>
-                    <div className="chakra-skeleton css-gbrdq1">
-                      <p className="chakra-text css-abv05r">${tradingVolume.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                    </div>
-                  </div>
-                  <div className="css-yswd5i">
-                    <div data-active="true" className="css-7fe9c2">
-                      <p className="chakra-text css-1kznzez" data-active="true">D</p>
-                    </div>
-                    <div data-active="false" className="css-1kilo2x">
-                      <p className="chakra-text css-elj7q0" data-active="false">W</p>
-                    </div>
-                    <div data-active="false" className="css-1kilo2x">
-                      <p className="chakra-text css-elj7q0" data-active="false">M</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="css-xxk67h card-chart">
-                  <ResponsiveContainer width="100%" height={258}>
-                    <BarChart data={chartData}>
-                      <XAxis dataKey="date" stroke="#909CA4" fontSize={12} fontFamily="Inter" />
-                      <Bar dataKey="volume" fill="#75C8FF" radius={0} />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
-            </div>
-          </div>
+          
           <div className="pool-header100">
-            <div className="tab-group100">
-              <button
-                className={`tab-button100 ${activeTab === "pools" ? "active" : ""}`}
-                onClick={() => setActiveTab("pools")}
-              >
-                Pools ({pools.length})
+            <div className="tab-wrapper">
+              <div className="tab-group100">
+                <button
+                  className={`tab-button100 ${activeTab === "pools" ? "active" : ""}`}
+                  onClick={() => setActiveTab("pools")}
+                >
+                  <svg width="16" height="16" viewBox="0 0 16 16" style={{marginRight: '8px'}}>
+                    <circle cx="8" cy="8" r="8" fill="#00bfff" />
+                  </svg>
+                  Pools ({pools.length})
+                </button>
+                <button
+                  className={`tab-button100 ${activeTab === "positions" ? "active" : ""}`}
+                  onClick={() => setActiveTab("positions")}
+                >
+                  <svg width="16" height="16" viewBox="0 0 16 16" style={{marginRight: '8px'}}>
+                    <polygon points="8 0, 16 8, 8 16, 0 8" fill="#00bfff" />
+                  </svg>
+                  Positions (0)
+                </button>
+              </div>
+            </div>
+            <div className="button-group100">
+              <button className="create-pool-button100" onClick={handleCreatePool}>
+                Create a new pool
               </button>
-              <button
-                className={`tab-button100 ${activeTab === "positions" ? "active" : ""}`}
-                onClick={() => setActiveTab("positions")}
-              >
-                Positions (0)
+              <button className="add-liquidity-button100" onClick={() => handleAddLiquidity(null)}>
+                Add Liquidity
               </button>
             </div>
-            <button className="create-pool-button100" onClick={handleCreatePool}>
-              Create a new pool
-            </button>
           </div>
           {activeTab === "pools" ? (
             <PoolList

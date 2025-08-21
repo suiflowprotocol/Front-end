@@ -99,55 +99,50 @@
 .token-section11 {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 4px;
 }
 
-.token-row11 {
+.token-box {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 12px;
-}
-
-.token-label11 {
-  font-size: 14px;
-  font-weight: 500;
-  color: #9ca3af;
-  min-width: 50px;
-}
-
-.token-info11 {
-  display: flex;
   align-items: center;
-  gap: 12px;
-  flex-grow: 1;
-  justify-content: flex-end;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  padding: 12px 16px;
+  border: 1px solid rgba(55, 65, 81, 0.5);
+}
+
+.token-amount {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
 }
 
 .chakra-image.css-rmmdki11 {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .chakra-text.css-18eiei211 {
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 600;
   color: #f0f0f0;
 }
 
 .chakra-text.css-1dis6eq11 {
-  font-size: 14px;
-  font-weight: 500;
-  color: #d1d5db;
+  font-size: 18px;
+  font-weight: 600;
+  color: #f0f0f0;
 }
 
 .arrow-container {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   height: 20px;
+  margin: 0 16px;
 }
 
 .arrow-icon {
@@ -162,11 +157,8 @@
 }
 
 .exchange-rate-section11 {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 12px;
-  border-radius: 8px;
+  padding: 8px 0;
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
@@ -176,7 +168,7 @@
   color: #d1d5db;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .chakra-text.css-v4hq1a11 {
@@ -225,6 +217,9 @@
 .chakra-text.css-1k06fd211 {
   color: #9ca3af;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .chakra-text.css-dfqnbt11 {
@@ -232,18 +227,45 @@
   font-weight: 500;
 }
 
+.price-diff-value {
+  color: #10b981;
+}
+
+.info-icon {
+  color: #9ca3af;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.warning-accept-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.warning-message {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.warning-icon {
+  font-size: 16px;
+  color: #f59e0b;
+}
+
 .chakra-button.css-1tn2n5q11 {
   background: linear-gradient(90deg, #3b82f6, #2563eb);
   color: #ffffff;
   border-radius: 8px;
-  padding: 10px;
-  width: 100%;
+  padding: 10px 24px;
+  width: auto;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   border: none;
-  margin-top: auto;
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
 }
 
@@ -279,11 +301,11 @@
   }
 
   .chakra-text.css-18eiei211 {
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .chakra-text.css-1dis6eq11 {
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .exchange-rate11 {
@@ -296,7 +318,7 @@
 
   .chakra-button.css-1tn2n5q11 {
     font-size: 12px;
-    padding: 8px;
+    padding: 8px 16px;
   }
 
   .arrow-icon {
