@@ -1106,20 +1106,8 @@ function CreatePool({ isOpen, onClose, newPoolToken1, setNewPoolToken1, newPoolT
           background: var(--border-color);
           border-radius: 3px;
         }
-        .token-list-item {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          padding: 8px;
-          background-color: var(--input-bg);
-          border-radius: 8px;
-          cursor: pointer;
-          transition: background-color 0.2s ease;
-          border: 1px solid var(--border-color);
-        }
-        .token-list-item:hover {
-          background-color: var(--hover-bg);
-        }
+        
+        
         .token-list-icon {
           width: 24px;
           height: 24px;
@@ -1242,9 +1230,7 @@ function CreatePool({ isOpen, onClose, newPoolToken1, setNewPoolToken1, newPoolT
             height: 14px;
             left: 6px;
           }
-          .token-list-item {
-            padding: 6px;
-          }
+          
           .token-list-icon {
             width: 22px;
             height: 22px;

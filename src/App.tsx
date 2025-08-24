@@ -19,6 +19,7 @@ import WaitingConfirmation from './WaitingConfirmation';
 import LimitOrderPage from "./limit";
 import LaunchPage from "./LaunchPage";
 import FaucetPage from "./FaucetPage";
+import CreatePoolPage from "./CreatePoolPage.tsx";
 
 
 // Wallet logos
@@ -544,7 +545,7 @@ function App() {
   const debouncedAmountIn = useDebounce(amountIn, 300);
 
   const getTokenDecimals = (tokenAddress: string) => {
-    const token = [...tokens, ...importedTokens].find((t) => t.address === tokenAddress);
+    const token = [...tokens, ...importedTokens].find(t => t.address === tokenAddress);
     return token?.decimals || 6;
   };
 
@@ -1240,7 +1241,7 @@ function App() {
   const outputValue = parseFloat(expectedOutput) * (prices[getTokenInfo(tokenY).symbol.toLowerCase()]?.price || 0);
   const profitLoss = outputValue - inputValue;
   const profitLossPercentage = inputValue > 0 ? ((profitLoss / inputValue) * 100).toFixed(2) : 0;
-  const profitLossColor = profitLoss >= 0 ? 'green' : 'red';
+  const profitLossColor = profitLoss >= 0 ? 'blue' : 'red';
 
   const logos = [
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqYyygKaispLzlgNY95kc5HBQd3qW7ugzAkg&s",
@@ -1379,7 +1380,7 @@ function App() {
                           <div className={`dropdown ${openDropdown === "bridge" ? "open" : ""}`}>
                             <a href="https://bridge.sui.io/" target="_blank" rel="noopener noreferrer" className="dropdown-item">
                               <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16" style={{transform: 'rotate(180deg)'}}>
-                                <path fill-rule="evenodd" d="M7.21 .8C7.69.295 8 0 8 0q.164.544.371 1.038c.812 1.946 2.073 3.35 3.197 4.6C12.878 7.096 14 8.345 14 10a6 6 0 0 1-12 0C2 6.668 5.58 2.517 7.21 .8m.413 1.021A31 31 0 0 0 5.794 3.99c-.726.95-1.436 2.008-1.96 3.07C3.304 8.133 3 9.138 3 10a5 5 0 0 0 10 0c0-1.201-.796-2.157-2.181-3.7l-.03-.032C9.75 5.11 8.5 3.72 7.623 1.82z"/>
+                                <path fill-rule="evenodd" d="M7.21 .8C7.69.295 8 0 8 0q.164.544.371 1.038c.812 1.946 2.073 3.35 3.197 4.6C12.12 7.096 14 8.345 14 10a6 6 0 0 1-12 0C2 6.668 5.58 2.517 7.21 .8m.413 1.021A31 31 0 0 0 5.794 3.99c-.726.95-1.436 2.008-1.96 3.07C3.304 8.133 3 9.138 3 10a5 5 0 0 0 10 0c0-1.201-.796-2.157-2.181-3.7l-.03-.032C9.75 5.11 8.5 3.72 7.623 1.82z"/>
   <path fill-rule="evenodd" d="M4.553 7.776c.82-1.641 1.717-2.753 2.093-3.13l.708.708c-.29.29-1.128 1.311-1.907 2.87z"/>
                               </svg>
                               Sui Bridge
@@ -1617,7 +1618,7 @@ function App() {
                                 </div>
                                 <div className="token-name-details css-token-name-details">
                                   <div className="token-name-group css-token-name-group">
-                                    <p className="chakra-text css-1f7xwte">{symbol}</p>
+                                    <p className="chakra-text css-1f2xwte">{symbol}</p>
                                   </div>
                                   <div className="token-address css-t4u65q">
                                     <div className="address-details css-1a87bas">
@@ -1719,13 +1720,15 @@ function App() {
           <Route path="/pool" element={<Pool />} />
           <Route path="/xseal" element={<XSeal />} />
           <Route path="/limit" element={<LimitOrderPage />} />
+          <Route path="/create-pool" element={<CreatePoolPage />} />
+
           <Route path="/positions" element={<Position activeTab={""} setActiveTab={function (tab: string): void {
             throw new Error("Function not implemented.");
           } } handleAddLiquidity={function (pool: any, scroll?: boolean): void {
             throw new Error("Function not implemented.");
           } } />} />
         </Routes>
-        
+       
       </div>
     </WalletProvider>
   );

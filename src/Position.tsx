@@ -71,7 +71,7 @@ function Position({ activeTab, setActiveTab, handleAddLiquidity }: PositionProps
             <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
               <use xlinkHref="#icon-icon_search"></use>
             </svg>
-            <p>Filter by token</p>
+            
           </button>
         </div>
         <div className="pos-filter-container2">

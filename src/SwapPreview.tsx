@@ -112,13 +112,9 @@ const SwapPreview: React.FC<SwapPreviewProps> = ({
               </div>
             </div>
           </div>
-          <div className="warning-accept-row">
-            <div className="warning-message">
-              <span className="warning-icon">⚠️</span>
-              <p className="chakra-text css-1k06fd211">Price updated</p>
-            </div>
+          <div className="confirm-button-container">
             <button type="button" className="chakra-button css-1tn2n5q11" onClick={onConfirm}>
-              Accept
+              Confirm Swap
             </button>
           </div>
         </div>
