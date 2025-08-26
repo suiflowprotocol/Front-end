@@ -50,7 +50,7 @@ export const tokens: Token[] = [
   },
   {
     symbol: "WAL",
-    address: "0xe76d0a9c03e7e8e1ff3b8f70412b0e1e7b3a8f30b0f3f7d0b5b6f2e0a0c2b1f7::wal::WAL",
+    address: "0x16c59472305767de5d4ff834240c46ee537ab6be4503477abfaaf33ecb26e668::wal::WAL",
     decimals: 9,
     image: "https://via.placeholder.com/20",
     logoURI: "https://via.placeholder.com/20",
@@ -81,12 +81,12 @@ export const tokens: Token[] = [
     name: "Liquid Bitcoin",
   },
   {
-    symbol: "WBTC",
-    address: "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::wbtc::WBTC",
+    symbol: "wBTC",
+    address: "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::wBTC::wBTC",
     decimals: 8,
     image: "https://via.placeholder.com/20",
     logoURI: "https://via.placeholder.com/20",
-    name: "Wrapped Bitcoin",
+    name: "wBTC",
   },
   {
     symbol: "XBTC",

@@ -71,7 +71,7 @@ const tokens: Token[] = [
   },
   {
     symbol: "WAL",
-    address: "0x356a26eb9e012a68958082340d4c4116e7f55615cf27affcff209cf0ae544f59::wal::WAL",
+    address: "0x16c59472305767de5d4ff834240c46ee537ab6be4503477abfaaf33ecb26e668::wal::WAL",
     icon: "https://file.coinexstatic.com/2025-03-26/43F8485DCB687E365E3187192861D19E.webp",
     description: "WAL Token",
     decimals: 6,
@@ -217,7 +217,7 @@ const tokens: Token[] = [
     decimals: 6,
   },
   {
-    symbol: "Wrapped Bitcoin(Sui Bridge)",
+    symbol: "wBTC",
     address: "0xaafb102dd0902f5055cadecd687fb5b71ca82ef0e0285d90afde828ec58ca96b::btc::BTC",
     icon: "https://bridge-assets.sui.io/suiWBTC.png",
     description: "wBTC",

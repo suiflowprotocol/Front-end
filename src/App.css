@@ -410,8 +410,7 @@ body {
   background: rgba(26, 32, 44, 0);
   padding: 16px;
   border-radius: 16px;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 8px 24px var(--shadow-color);
+  box-shadow: none;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -755,7 +754,7 @@ body {
   align-items: center;
   width: 32px;
   height: 32px;
-  background: var(--modal-bg);
+  background: rgba(26, 32, 44, 0.539);
   border-radius: 50%;
   border: 1px solid var(--border-color);
   cursor: pointer;
@@ -1585,7 +1584,7 @@ body {
   border-radius: 12px;
   padding: 12px;
   border: none;
-  box-shadow: 0 4px 12px var(--shadow-color);
+  box-shadow: none;
   margin-top: 12px;
   transition: all 0.3s ease;
 }

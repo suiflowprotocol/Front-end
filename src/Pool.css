@@ -126,6 +126,7 @@
   display: flex;
   gap: 24px;
   justify-content: flex-start;
+  background-color: rgba(26, 32, 44, 0);;
 }
 
 .tab-button100 {
@@ -401,7 +402,7 @@
   margin: 0;
   box-sizing: border-box;
   border: none;
-  box-shadow: var(--card-shadow);
+  
 }
 
 .pool-item100:hover {

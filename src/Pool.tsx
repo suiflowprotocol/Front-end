@@ -1,4 +1,5 @@
 // Pool.tsx
+import React from "react";
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { SuiClient, getFullnodeUrl } from "@mysten/sui/client";
 import { Token, tokens } from "./tokens";
@@ -23,6 +24,7 @@ import "./Pool.css";
 import "./App.css";
 import "./App2.css";
 import "./SidebarMenu.css";
+import { Transaction } from "@mysten/sui/transactions";
 
 const PACKAGE_ID = "0xb90158d50ac951784409a6876ac860e24564ed5257e51944d3c693efb9fdbd78";
 const POOL_REGISTRY = "0xfc8c69858d070b639b3db15ff0f78a10370950434c5521c83eaa7e2285db8d2a";
@@ -816,10 +818,21 @@ function Pool() {
     "https://imagedelivery.net/cBNDGgkrsEA-b_ixIp9SkQ/buck.svg/public"
   ];
 
+  const mosaicTiles = [];
+  for (let i = 0; i < 200; i++) {
+    mosaicTiles.push(logos[i % logos.length]);
+  }
+
   return (
     <>
+      <div className="mosaic-background">
+        {mosaicTiles.map((logo, index) => (
+          <img key={index} src={logo} alt="" className="mosaic-tile" />
+        ))}
+      </div>
+      <div className="background-overlay"></div>
       <div className="header">
-        <div className="background-glow header-glow"></div>
+        <div className="background-glow"></div>
         <div className="header-top">
           <div className="logo-container">
             <img src="https://i.meee.com.tw/SdliTGK.png" alt="Logo" className="logo-image" />
@@ -963,7 +976,7 @@ function Pool() {
       {isMobile && (
         <Sidebar isOpen={isMenuOpen} onClose={toggleMenu} />
       )}
-      <div className="pool-container100">
+      <div className="container123">
         <div className="summary-container" style={{ maxHeight: '600px' }}>
           <div className="summary-left">
             <h1 className="summary-title">Liquidity Pools</h1>
@@ -1037,7 +1050,7 @@ function Pool() {
                 onClick={() => setActiveTab("pools")}
               >
                 <div data-active={activeTab === "pools"} className="css-1vz5i52">
-                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADQAAAAwCAYAAABe6Vn9AAAAAXNSR0IArs4c6QAABW1JREFUaEPtmX9MlVUYxz+viaCJSAoxDDFBmFG6wLUcWGDNsmxhUJLxhxQ11x9ZgTgwWsvwR2JkW2urNFspOFGhtazVBENileSy1gJ/DZ0oohUqyq/xdh/ee/VygXvfc1+S5jjbu9299/k+5/me57zPOed7NG6wpt1gfBgm9H/P6HCGhjN0nUfAmyl3M/AQ8AgQAYTaHwm90f4cBb4CvgFaXThZxbsdIhVCdwP5wHzAz+TAtwF7gFV2eyv4g2b6NEMoHCgAFgMamqYTf4dGcjzETYPQCcbTk5/zxlN7GMqqofoPHV2XPnR7MBpoOgHxGkHJMC4OfENhlCQZ6GiE9ka4UAvNZdBSrcNV/DZgJdDgjpgnQpKNYiAAXx+dZQs1slIgONDMYEHxXliyATo6YYQvhC2DyVkwKtgcvuMsnNgAJzfqdLdLrC3A0/as9+vDHaEs4G1gBCkJULQUwkwGIl1tKIXlH4GuQ1AKRBWBX5g5Iq5WbSeh/hVo3in/dAM50kN/zgYiJGQKe6ZKQYZGngyKQhMy2R8agKkFcHueAtiN6fHVcGylTF+JO7s/Uv0Rkmn2ZQ+oJE9jUaJaMHt+gkfzjczcWQK3LlLDe7Ju2g6/pwkpeRa4Tj9XQlIAfu35ZgoyUM5MQxPMWAoXWgc3M64kjxfAsdfkrXxTM50LhSuhz4Fner6Z0tc9jVXf/9PXwta9xjczo1Qdr4I4lOr4prYC6Q6oMyFZZ2rx9YHDn2hKBUC8HTwCsS8a1Wz2Ye8LgFlSUihqpkn1E0ScRCA/nAntBpLJeQrWZZp1e81u4RtQ9gOE50DkOnW8N4gjK6BBCjES+xPOhGQ7cg5N8+VMiWZ6nXEE0XoFJqRCexfMOWN+nfGGhDNG1qmqEFl8JU0TZZvlyJCw20lCDFQVqXezaz+kvAkBCTCrSh1vBXFgDrTsFw8pwC4HoY+B5yh8AbJS1d1nvgObvobIQgiXJew6toZCOLJcOtwEZDoIVQCJVKyHRKmCii0pGyoPQWwFBCquW4pd9TH/uxJ+SZLXlUCSg1AdEEXdZoi6Tb2L6AyoPwWz62BMlDreCuJyPdREi4d6274z2kHoom2rM5aL5TB2tLp7bZ46pj/E3G7QPO2XXYBdl2Cfv7y8ZNsK+fcmdKEM/MeoBzdmAVzpUMc5IzQfmOuFj66LsG9cH0LWppwVKkcbIXIJ+E2FeDnoKrYBppy1oqAYQy/zb2thXi4EPgCx36l7GqAoWCvb6mFcQ2zcDS9/AKHPw3T7kUPF3wBl29rCqhKAq+39WfD9bxBTDCFp6p4GWFitbX3UwzAQp8/DpMWg+cJ95+AmCUOhudn6iBdrm1OFOK6a5m+Bt7ZBcCrctUPdg5vNqTizdnxQDefEWYh+Fto6YNaPEHCPmgcTxwdxaO2ApxLSk6ugtApC0iHmMxWkYWvigCdm1o7gZsNaWwK5m41v5t4/wU9xu6VwBJeQrIkknkhtr4S01cbZckY5BD3mCdH7f0WRxAG2JmMNFOKaYli5xVCEpr0Lk5epkfFSxnIm5b3Q6BzqqXPw0vuwq9rITMQamLLCPJlBEBodnVmTgpv/gfU74L0ynfZOrUdAmf4phJjU6gZZCnaQ8izWTwkx9OvTfxli/c918EWNIdZ3dzvEemNnr43UCXxQY+J88I+D0REwcjzoXU5i/QFoLv9PxHrnaSHrlIh1D/e5TkmaCRWiT/Zpom6eBl61i4G59qLjY3K+OV/HDNp1imvf/V1YSRZH2a47Om1C+mWgybZQl9u157MuDm6xaWiP2y7DZgOxwCRgPNBl8sLM7VgoHg9NjusQmg0TGsLBN9X1cIZMDdMQGg1naAgH31TX/wKFcsNAOFcQtQAAAABJRU5ErkJggg==" className="chakra-image css-1or3okw" />
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADQAAAAwCAYAAABe6Vn9AAAAAXNSR0IArs4c6QAABW1JREFUaEPtmX9MlVUYxz+viaCJSAoxDDFBmFG6wLUcWGDNsmxhUJLxhxQ11x9ZgTgwWsvwR2JkW2urNFspOFGhtazVBENileSy1gJ/DZ0oohUqyq/xdh/ee/VygXvfc1+S5jjbu9299/k+5/me57zPOed7NG6wpt1gfBgm9H/P6HCGhjN0nUfAmyl3M/AQ8AgQAYTaHwm90f4cBb4CvgFaXThZxbsdIhVCdwP5wHzAz+TAtwF7gFV2eyv4g2b6NEMoHCgAFgMamqYTf4dGcjzETYPQCcbTk5/zxlN7GMqqofoPHV2XPnR7MBpoOgHxGkHJMC4OfENhlCQZ6GiE9ka4UAvNZdBSrcNV/DZgJdDgjpgnQpKNYiAAXx+dZQs1slIgONDMYEHxXliyATo6YYQvhC2DyVkwKtgcvuMsnNgAJzfqdLdLrC3A0/as9+vDHaEs4G1gBCkJULQUwkwGIl1tKIXlH4GuQ1AKRBWBX5g5Iq5WbSeh/hVo3in/dAM50kN/zgYiJGQKe6ZKQYZGngyKQhMy2R8agKkFcHueAtiN6fHVcGylTF+JO7s/Uv0Rkmn2ZQ+oJE9jUaJaMHt+gkfzjczcWQK3LlLDe7Ju2g6/pwkpeRa4Tj9XQlIAfu35ZgoyUM5MQxPMWAoXWgc3M64kjxfAsdfkrXxTM50LhSuhz4Fner6Z0tc9jVXf/9PXwta9xjczo1Qdr4I4lOr4prYC6Q6oMyFZZ2rx9YHDn2hKBUC8HTwCsS8a1Wz2Ye8LgFlSUihqpkn1E0ScRCA/nAntBpLJeQrWZZp1e81u4RtQ9gOE50DkOnW8N4gjK6BBCjES+xPOhGQ7cg5N8+VMiWZ6nXEE0XoFJqRCexfMOWN+nfGGhDNG1qmqEFl8JU0TZZvlyJCw20lCDFQVqXezaz+kvAkBCTCrSh1vBXFgDrTsFw8pwC4HoY+B5yh8AbJS1d1nvgObvobIQgiXJew6toZCOLJcOtwEZDoIVQCJVKyHRKmCii0pGyoPQWwFBCquW4pd9TH/uxJ+SZLXlUCSg1AdEEXdZoi6Tb2L6AyoPwWz62BMlDreCuJyPdREi4d6274z2kHoom2rM5aL5TB2tLp7bZ46pj/E3G7QPO2XXYBdl2Cfv7y8ZNsK+fcmdKEM/MeoBzdmAVzpUMc5IzQfmOuFj66LsG9cH0LWppwVKkcbIXIJ+E2FeDnoKrYBppy1oqAYQy/zb2thXi4EPgCx36l7GqAoWCvb6mFcQ2zcDS9/AKHPw3T7kUPF3wBl29rCqhKAq+39WfD9bxBTDCFp6p4GWFitbX3UwzAQp8/DpMWg+cJ95+AmCUOhudn6iBdrm1OFOK6a5m+b t7ZBcCrctUPdg5vNqTizdnxQDefEWYh+Fto6YNaPEHCPmgcTxwdxaO2ApxLSk6ugtApC0iHmMxWkYWvigCdm1o7gZsNaWwK5m41v5t4/wU9xu6VwBJeQrIkknkhtr4S01cbZckY5BD3mCdH7f0WRxAG2JmMNFOKaYli5xVCEpr0Lk5epkfFSxnIm5b3Q6BzqqXPw0vuwq9rITMQamLLCPJlBEBodnVmTgpv/gfU74L0ynfZOrUdAmf4phJjU6gZZCnaQ8izWTwkx9OvTfxli/c918EWNIdZ3dzvEemNnr43UCXxQY+J88I+D0REwcjzoXU5i/QFoLv9PxHrnaSHrlIh1D/e5TkmaCRWiT/Zpom6eBl61i4G59qLjY3K+OV/HDNp1imvf/V1YSRZH2a47Om1C+mWgybZQl9u157MuDm6xaWiP2y7DZgOxwCRgPNBl8sLM7VgoHg9NjusQmg0TGsLBN9X1cIZMDdMQGg1naAgH31TX/wKFcsNAOFcQtQAAAABJRU5ErkJggg==" className="chakra-image css-1or3okw" />
                   <p className="chakra-text css-19ucwcx" data-active={activeTab === "pools"}>Pools</p>
                   <div className="css-1gnvmfy">{pools.length}</div>
                 </div>
@@ -1047,7 +1060,7 @@ function Pool() {
                 onClick={() => setActiveTab("positions")}
               >
                 <div data-active={activeTab === "positions"} className="css-1vz5i52">
-                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAB+5JREFUaEPVmG2IXFcZx3/n3HPv7OxmNy8mXUVL4xqq1QTBopaKH6YKvlToB0uFKPjWImgaI6I0lGZmEGtFqBQj2qpgP0i1NSjRDxU/VOgXi4gilPtBoR/WRmPTukl2kro7c495zrnnzpnZ990ZwV2Gmbl35s7/9/z/z3POjOL//E+NVf+TNuEu1RvnZ4wPwNqUV5jlB+zmPvX8uCDGA2Ct4WVmOcsNPMNZEk7zY9UaB8ToAUT8PNdxPSmf4QxdbsYAKW0eGz3EaAFE/AUOYMh4iI9xjm+SOPGgS4jTo4UYHYCI7/AaNCl/Zi/f53co9jnh3gFKmDYPjw5iNAAiHvZylRr/wXCKL3GJ45X4GCBzIG0eHA3EzgGslZDsc7IWqJEzw6M8i2a3q3iIkDgwCNLmgZ1D7AxAxL/IHrJrLarQ7Cfly3yOC5x0kRHBAUAeBwCJVQ3IaPOVnUFsH8BXfhfnqTGN4VUSuqSc5DdYDq0qXKACmMBMlHG6d/sQ2wMQ8QtMo9HMkHKODE3CGd7OH/jlgPggOjRxPXLF94N34rPbg9g6gLWaC0yRYhzANCn/viZBIvQAp1jk01VU4tiI2AAjoqX6AUrOCcTHtw6xNQARf546GYa9JCySuLE5WUboGE9juXFF40reg/h+1UHc8OtDuLX56NYgNg8QxM+6DYHhMoYrJBhSElJ+zwF+ynMYlHMgVDw0bgwhx+S53EKTx3G6ffMQmwMQ8X+nxhuQ+Mi0SfgnqYuQB8h4mA8xz2knXqoash7EisDQuGEKBYAA5/vBbzvetzmIjQGsldfIZTUvkXARTUZCjZRdaJbcM0nwvSxwvBqdccVjgQIWQwXRww5p2rx3Y4j1Abx4SajiHy4uMms0VzDscWHpA9zHt1niI05cHCF5t29SfyUROhwhORcDxHund64PsTaAF5/wNydcUUPzOhcOzSUMM2UPiAPda1uIk5xBcbhqSifY9mPjoFSy/V7w5CordQDs90abI2tDrA4QxEu7xgCSdnHAOC+8AxIoRcbneYaE11dN6YRY36QSG+eE8o+DQ7EboYmDY/EKrmjzttUhVgJ48VJpfy4AHJQGvpCQJJorxpDMvzZV524lXXqL6vVutOcmP6jqy4ZaF2rL/rvLcgpLBruUYS/vwi5OYxdnKBb2g8r6UyisCWFiVRNJ+QLITXrizSshBgFEfBtF04lXPPZHxW27NcYoajVtzF9uVly9Syl7GxQ34WFX/7N27S9gSmMvC8h1FC9fj13e43vENbQKI6O/0LktuYNp86ZBiL6AIGYY4PaFmSxbvBvV+yTW3tRXFQkcFruO9tLXATj76m6KVw7Su3QQTBp/AepvCJPSDSnxG/sQKwFUW/HkWxW3mj1ZYr+I4RjW7oVNCg5XdFDDBpXXUGrgctXLehm9i4fodQ6BKkGk8n50eBj50+oYB9V35eEggFyYlkr/dfhTGh6y2ANVqUKVh6sbV381zWtGrDzhwjoE2qvRvXSYYukGSCMAcUGpnCkazKrzgwDy7IVf7KlNLv/aot7jLi/XHRAYqS+GlLnX2fI9G/z+4K4bhEfifedVQHZpH8sX3wVq0veAVjmJajDnxa8EkE3iS0+1CkvTnR2ougURHY7FUYkrXwyTrQGjdQkx7IBUuYoK9CZYvvxuLPtzUj0gflUAOThxXiBss/qEYRcKW4IMVVxeF6q7lgkVeChheaCKUQkQASqS3Fx9R6MzN1dVfk0HwgkH0Sv8QBVhchPh1TvjY+VxueuVDsS5Hu4bZUEEViUss6PjXnCRQWmVG11vdGbvWCF+TQcqiBd/1iqUOFFChHgIjHx+ECzHQ+UDrCwRsZ4AMZRzEVk1sUBJkQReifgkN2Zt8RsCuDjNP9EqKPoQzomidENckFcV/t6JLx8PRyg0rVTfuRMJV9o74s7JvUIlKjepbnRmj65a+Q0jFH/+xPxPWoUtmnR7ZZTk80uhRfnjc1FgBSw09PA64I6XPYJy/w4iEcGyCssyLIcSH5vJdEPxm3KgitMLj7eKXq9ZrWdBeK/AStXlRHAmjlNciaryodJyUqMchAdRSZIbPdHozK1f+S05UEH89UclhPWiQ2OLM65PymMuVmFShfUkGpdlxn3WNaRSfedJntZNozN3z7qxGajJcFQ3ep49/72WLYqmmzYuMuVNms89Lxe0eGq58eqnSmhQNwXkuTuWyOE8TacanSObF7+lCMVg2Z++07K223Riu13olaJLIOtgyoau5n4p3o/GqlnFAZXoPJXMHzmx6cpvK0IDEM99yzshDix3fWtYafJo5LqRGH2UPHbTxj1w57RO8jSbanRu2br4bTsQJGXPfr1VdLtNpKFDpMKkCmtHtfWI4iMOJDJtdJ5NTzQ6t9y/5crv2IEK4renWkV32TvhIIIL0XoQRqpMG1c2iU2SZxNJo/P+B7ctfscOVBC/+mqrKLpN6QeX/3hBq/ZR5bZYxqZJ8pqZanTu2Jn4kQHIhcxTx1tWnHBrQbkuiCMD2xuNUiqvJZONztFHdlT5kUUobmzz+N0eQuIURmq01VaJyWuTWaNz9IcjET9SBwKIefQTLWuLpg17pqpUKq+nuxqde0YnfiwALk6P3NkqCtl2VPvovC5b4hNPjKzyY4nQQJy+8WG/FbdFXq/XGp0TZ0cufmwOBBD9tQ98oa5rP+/cPx7xYwfYaF81ivPDP9yM4pr/02v8F6pCzk+EsR79AAAAAElFTkSuQmCC" className="chakra-image css-1or3okw" />
+                  <img src="data:image/png;base64,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" className="chakra-image css-1or3okw" />
                   <p className="chakra-text css-19ucwcx" data-active={activeTab === "positions"}>Positions</p>
                   <div className="css-1gnvmfy">0</div>
                 </div>
@@ -1110,85 +1123,155 @@ interface PositionProps {
   pools: Pool[];
 }
 
+interface Position extends Pool {
+  liquidity: string;
+  unclaimedFees: string;
+  share: string;
+  userLiquidity: string;
+}
+
 const PositionComponent = ({ activeTab, setActiveTab, handleAddLiquidity, pools }: PositionProps) => {
   const currentAccount = useCurrentAccount();
   const client = useSuiClient();
-  const [positions, setPositions] = useState<any[]>([]);
+  const [positions, setPositions] = useState<Position[]>([]);
   const [isLoadingPositions, setIsLoadingPositions] = useState(true);
+  const [totalLiquidity, setTotalLiquidity] = useState(0);
+  const [pendingYield, setPendingYield] = useState(0);
+  const { mutate: signAndExecute } = useSignAndExecuteTransaction();
 
-  useEffect(() => {
+  const fetchPositions = useCallback(async () => {
     if (!currentAccount) {
       setPositions([]);
       setIsLoadingPositions(false);
+      setTotalLiquidity(0);
+      setPendingYield(0);
       return;
     }
 
-    const fetchPositions = async () => {
-      setIsLoadingPositions(true);
-      const userPositions = [];
-      for (const pool of pools) {
-        try {
-          const poolObj = await client.getObject({
-            id: pool.poolAddress,
-            options: { showContent: true },
-          });
-          if (poolObj.data?.content?.dataType !== "moveObject") continue;
+    setIsLoadingPositions(true);
+    const userPositions: Position[] = [];
+    let totalLiq = 0;
+    let totalPend = 0;
 
-          const fields = poolObj.data.content.fields as any;
-          const total_liquidity = BigInt(fields.total_liquidity || 0);
-          if (total_liquidity === 0n) continue;
+    for (const pool of pools) {
+      try {
+        const poolObj = await client.getObject({
+          id: pool.poolAddress,
+          options: { showContent: true },
+        });
+        if (poolObj.data?.content?.dataType !== "moveObject") continue;
 
-          const user_shares_id = fields.user_shares?.fields?.id?.id;
-          if (!user_shares_id) continue;
+        const fields = poolObj.data.content.fields as any;
+        const total_liquidity = BigInt(fields.total_liquidity || 0);
+        if (total_liquidity === 0n) continue;
 
-          const shareObjResponse = await client.getDynamicFieldObject({
-            parentId: user_shares_id,
-            name: { type: 'address', value: currentAccount.address },
-          });
+        const user_shares_id = fields.user_shares?.fields?.id?.id;
+        if (!user_shares_id) continue;
 
-          if (!shareObjResponse || !shareObjResponse.data) continue;
+        const shareObjResponse = await client.getDynamicFieldObject({
+          parentId: user_shares_id,
+          name: { type: 'address', value: currentAccount.address },
+        });
 
-          const user_liquidity = BigInt((shareObjResponse.data.content as any).fields.value || 0);
-          if (user_liquidity === 0n) continue;
+        if (!shareObjResponse || !shareObjResponse.data) continue;
 
-          const reserve_x = BigInt(fields.reserve_x || 0);
-          const reserve_y = BigInt(fields.reserve_y || 0);
-          const fee_balance_x = BigInt(fields.fee_balance_x || 0);
-          const fee_balance_y = BigInt(fields.fee_balance_y || 0);
+        const user_liquidity = BigInt((shareObjResponse.data.content as any).fields.value || 0);
+        if (user_liquidity === 0n) continue;
 
-          const amount_x = (user_liquidity * reserve_x) / total_liquidity;
-          const amount_y = (user_liquidity * reserve_y) / total_liquidity;
-          const user_fee_x = (user_liquidity * fee_balance_x) / total_liquidity;
-          const user_fee_y = (user_liquidity * fee_balance_y) / total_liquidity;
+        const reserve_x = BigInt(fields.reserve_x || 0);
+        const reserve_y = BigInt(fields.reserve_y || 0);
+        const fee_balance_x = BigInt(fields.fee_balance_x || 0);
+        const fee_balance_y = BigInt(fields.fee_balance_y || 0);
 
-          const priceX = await getTokenPrice(pool.token1Symbol);
-          const priceY = await getTokenPrice(pool.token2Symbol);
+        const amount_x = (user_liquidity * reserve_x) / total_liquidity;
+        const amount_y = (user_liquidity * reserve_y) / total_liquidity;
+        const user_fee_x = (user_liquidity * fee_balance_x) / total_liquidity;
+        const user_fee_y = (user_liquidity * fee_balance_y) / total_liquidity;
 
-          const formatted_amount_x = Number(amount_x) / Math.pow(10, pool.decimals1);
-          const formatted_amount_y = Number(amount_y) / Math.pow(10, pool.decimals2);
-          const formatted_fee_x = Number(user_fee_x) / Math.pow(10, pool.decimals1);
-          const formatted_fee_y = Number(user_fee_y) / Math.pow(10, pool.decimals2);
-          const sharePercent = ((Number(user_liquidity) / Number(total_liquidity)) * 100).toFixed(2);
+        const priceX = await getTokenPrice(pool.token1Symbol);
+        const priceY = await getTokenPrice(pool.token2Symbol);
 
-          const user_liquidity_usd = formatted_amount_x * priceX + formatted_amount_y * priceY;
-          const user_fees_usd = formatted_fee_x * priceX + formatted_fee_y * priceY;
+        const formatted_amount_x = Number(amount_x) / Math.pow(10, pool.decimals1);
+        const formatted_amount_y = Number(amount_y) / Math.pow(10, pool.decimals2);
+        const formatted_fee_x = Number(user_fee_x) / Math.pow(10, pool.decimals1);
+        const formatted_fee_y = Number(user_fee_y) / Math.pow(10, pool.decimals2);
+        const sharePercent = ((Number(user_liquidity) / Number(total_liquidity)) * 100).toFixed(2);
 
-          userPositions.push({
-            ...pool,
-            liquidity: `$${user_liquidity_usd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-            unclaimedFees: `$${user_fees_usd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-            share: `${sharePercent}%`,
-          });
-        } catch (error) {
-          console.error(`Error fetching position for pool ${pool.poolAddress}:`, error);
-        }
+        const user_liquidity_usd = formatted_amount_x * priceX + formatted_amount_y * priceY;
+        const user_fees_usd = formatted_fee_x * priceX + formatted_fee_y * priceY;
+
+        const pos: Position = {
+          ...pool,
+          liquidity: `$${user_liquidity_usd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+          unclaimedFees: `$${user_fees_usd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+          share: `${sharePercent}%`,
+          userLiquidity: user_liquidity.toString(),
+        };
+
+        userPositions.push(pos);
+        totalLiq += user_liquidity_usd;
+        totalPend += user_fees_usd;
+      } catch (error) {
+        console.error(`Error fetching position for pool ${pool.poolAddress}:`, error);
       }
-      setPositions(userPositions);
-      setIsLoadingPositions(false);
-    };
+    }
 
-    fetchPositions();
+    setPositions(userPositions);
+    setTotalLiquidity(totalLiq);
+    setPendingYield(totalPend);
+    setIsLoadingPositions(false);
   }, [currentAccount, client, pools]);
+
+  useEffect(() => {
+    fetchPositions();
+  }, [fetchPositions]);
+
+  const handleClaimAll = async () => {
+    const tx = new Transaction();
+    for (const pos of positions) {
+      const unclaimed = parseFloat(pos.unclaimedFees.slice(1).replace(/,/g, ''));
+      if (unclaimed > 0) {
+        tx.moveCall({
+          target: `${PACKAGE_ID}::amm::claim_fees`,
+          typeArguments: [pos.token1Address, pos.token2Address],
+          arguments: [tx.object(pos.poolAddress)],
+        });
+      }
+    }
+    await signAndExecute(
+      { transaction: tx },
+      { onSuccess: () => fetchPositions() }
+    );
+  };
+
+  const handleClaimFees = async (pos: Position) => {
+    const tx = new Transaction();
+    tx.moveCall({
+      target: `${PACKAGE_ID}::amm::claim_fees`,
+      typeArguments: [pos.token1Address, pos.token2Address],
+      arguments: [tx.object(pos.poolAddress)],
+    });
+    await signAndExecute(
+      { transaction: tx },
+      { onSuccess: () => fetchPositions() }
+    );
+  };
+
+  const handleRemoveAll = async (pos: Position) => {
+    const tx = new Transaction();
+    tx.moveCall({
+      target: `${PACKAGE_ID}::amm::remove_liquidity`,
+      typeArguments: [pos.token1Address, pos.token2Address],
+      arguments: [
+        tx.object(pos.poolAddress),
+        tx.pure.u128(pos.userLiquidity),
+      ],
+    });
+    await signAndExecute(
+      { transaction: tx },
+      { onSuccess: () => fetchPositions() }
+    );
+  };
 
   if (isLoadingPositions) {
     return <div className="card-style no-positions">Loading positions...</div>;
@@ -1199,7 +1282,7 @@ const PositionComponent = ({ activeTab, setActiveTab, handleAddLiquidity, pools 
       <div className="filter-row100">
         <div className="chakra-stack css-1igwmid">
           <div className="css-3wh1mk">
-            <div className="chakra-stack css-yue1ly">
+            <div className="chakra-stack css-yue5ly">
               <div className="css-1ke24j5">
                 <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
                   <use xlinkHref="#icon-icon_collapse"></use>
@@ -1208,7 +1291,7 @@ const PositionComponent = ({ activeTab, setActiveTab, handleAddLiquidity, pools 
             </div>
           </div>
           <div className="css-1vpx1e5">
-            <div className="css-1pin1cu">
+            <button onClick={fetchPositions} className="css-1pin1cu">
               <div className="css-0">
                 <div className="css-0">
                   <div className="css-1ke24j5">
@@ -1218,7 +1301,7 @@ const PositionComponent = ({ activeTab, setActiveTab, handleAddLiquidity, pools 
                   </div>
                 </div>
               </div>
-            </div>
+            </button>
           </div>
         </div>
       </div>
@@ -1226,31 +1309,80 @@ const PositionComponent = ({ activeTab, setActiveTab, handleAddLiquidity, pools 
         <div className="card-style">
           <div className="chakra-stack css-1jra5w9">
             <p className="chakra-text css-17xjxxf">Total Liquidity</p>
-            <div className="chakra-skeleton css-a8ku0c">
-              <p className="chakra-text css-1ikb94c">$--</p>
-            </div>
+            <p className="chakra-text css-1ikb94c">
+              ${totalLiquidity.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </p>
           </div>
         </div>
         <div className="card-style">
           <div className="chakra-stack css-17na8xj">
             <p className="chakra-text css-17xjxxf">Pending Yield</p>
-            <div className="chakra-skeleton css-cdkrf0">
-              <div className="chakra-stack css-1igwmid">
-                <div className="chakra-stack css-lpuqkz">
-                  <button id="popover-trigger-:r76t:" className="css-gmuwbf">
-                    <p className="chakra-text css-bae340">$0</p>
-                  </button>
-                </div>
-                <button type="button" className="chakra-button css-2h2e64" disabled>Claim All</button>
+            <div className="chakra-stack css-1igwmid">
+              <div className="chakra-stack css-lpuqkz">
+                <button id="popover-trigger-:r76t:" className="css-gmuwbf">
+                  <p className="chakra-text css-bae340">
+                    ${pendingYield.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </p>
+                </button>
               </div>
+              <button 
+                type="button" 
+                className="chakra-button css-2h2e64" 
+                disabled={pendingYield === 0}
+                onClick={handleClaimAll}
+              >
+                Claim All
+              </button>
             </div>
           </div>
         </div>
       </div>
-      <div className="card-style no-positions">
-        <img src="https://app.cetus.zone/images/img_nopositions@2x.png" className="chakra-image css-f5j44i" />
-        <p className="chakra-text css-dwkbww">No liquidity positions</p>
-      </div>
+      {positions.length === 0 ? (
+        <div className="card-style no-positions">
+          <img src="https://app.cetus.zone/images/img_nopositions@2x.png" className="chakra-image css-f5j44i" />
+          <p className="chakra-text css-dwkbww">No liquidity positions</p>
+        </div>
+      ) : (
+        <div className="positions-list">
+          <div className="pool-table-header100">
+            <div>Pool</div>
+            <div>Liquidity</div>
+            <div>Share</div>
+            <div>Unclaimed Fees</div>
+            <div>APR</div>
+            <div>Actions</div>
+          </div>
+          {positions.map((pos, index) => (
+            <div key={index} className="pool-item100">
+              <div className="pool-token-info100">
+                <div className="token-images100">
+                  <img src={pos.img1} alt={pos.token1Symbol} />
+                  <img src={pos.img2} alt={pos.token2Symbol} />
+                </div>
+                <div className="token-details100">
+                  <div className="token-pair100">
+                    <p>{pos.token1Symbol} / {pos.token2Symbol}</p>
+                    <span>{pos.feeRate}</span>
+                  </div>
+                </div>
+              </div>
+              <div className="pool-data100">{pos.liquidity}</div>
+              <div className="pool-data100">{pos.share}</div>
+              <div className="pool-data100">{pos.unclaimedFees}</div>
+              <div className="apr-container100">{pos.apr}</div>
+              <div className="pool-action100">
+                <button className="deposit-button100" onClick={() => handleAddLiquidity(pos)}>Add</button>
+                <button 
+                  className="deposit-button100" 
+                  onClick={() => handleClaimFees(pos)}
+                  disabled={parseFloat(pos.unclaimedFees.slice(1).replace(/,/g, '')) === 0}
+                >Claim</button>
+                <button className="deposit-button100" onClick={() => handleRemoveAll(pos)}>Remove All</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

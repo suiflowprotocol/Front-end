@@ -1,594 +1,643 @@
 /* CreatePoolPage.css */
 
 /* General container and layout */
+.container123 {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: rgba(30, 41, 59, 0.95);
+  color: #e2e8f0;
+  font-family: 'Arial', sans-serif;
+  width: 100%;
+}
 
-
-
+.main-content {
+  flex: 1;
+  display: flex;
+  justify-content: center; /* Ensures horizontal centering */
+  align-items: center; /* Vertically centers content */
+  padding: 20px;
+}
 
 .card-container {
   background: rgba(30, 41, 59, 0.95);
   border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   padding: 30px;
   width: 100%;
-  max-width: 900px;
-  border: 1px solid rgba(51, 65, 85, 0.5);
+  max-width: 1200px; /* Maintains max width but centers it */
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Adjusted gap */
   backdrop-filter: blur(10px);
 }
 
-.chakra-stack.css-1jjq5p5 {
-  flex-direction: row;
+.content-header {
+  display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.chakra-button.css-angksy {
-  background: #3b82f6;
-  color: white;
-  border-radius: 8px;
-  padding: 10px 20px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.chakra-button.css-angksy:hover {
-  background: #2563eb;
-}
-
-.chakra-stack.css-k197oj {
-  display: flex;
-  gap: 40px;
-}
-
-.chakra-stack.css-w37624 {
-  flex-direction: column;
-  gap: 20px;
-  width: 250px;
-}
-
-.chakra-stack.css-1cc7i27, .chakra-stack.css-z66f8c {
-  flex-direction: row;
   align-items: center;
-  gap: 12px;
 }
 
-.css-t1xpzk, .css-oumye3 {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #475569;
-  color: #94a3b8;
+.back-button {
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.css-t1xpzk {
-  background: #3b82f6;
-  color: white;
-}
-
-.chakra-text.css-1ueu68z, .chakra-text.css-143cdu {
-  font-size: 14px;
-  font-weight: 600;
-  color: #f1f5f9;
-}
-
-.chakra-text.css-1vxpc54, .chakra-text.css-11t8qxz {
-  font-size: 12px;
-  color: #94a3b8;
-}
-
-.chakra-text.css-1ueu68z, .chakra-text.css-1vxpc54 {
-  color: #3b82f6;
-}
-
-.css-1n6b9wv {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.chakra-divider.css-10sagix {
-  border-left: 1px solid #475569;
-  height: 30px;
-  margin: 0;
-}
-
-.chakra-stack.css-1ve3njp {
-  flex-direction: column;
-  gap: 25px;
-  flex: 1;
-}
-
-.chakra-heading.css-12i2057 {
-  font-size: 20px;
-  font-weight: 700;
-  color: #f1f5f9;
-}
-
-.chakra-text.css-6sb3bn {
-  font-size: 14px;
-  color: #94a3b8;
-}
-
-.chakra-stack.css-apf3oj {
-  flex-direction: column;
-  gap: 20px;
-}
-
-.chakra-stack.css-nhlc8j {
-  flex-direction: row;
-  gap: 15px;
-}
-
-.css-8atqhb {
-  flex: 1;
-  background: #0f172a;
-  border-radius: 8px;
-  padding: 15px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.css-8atqhb:hover {
-  background: #1e293b;
-}
-
-.chakra-stack.css-mihgr0 {
-  flex-direction: column;
   gap: 5px;
-}
-
-.chakra-text.css-6sb3bn {
-  font-size: 12px;
-  color: #94a3b8;
-  text-transform: uppercase;
-}
-
-.chakra-stack.css-f5zjnu {
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px;
-  background: #1e293b;
-  border-radius: 6px;
-}
-
-.chakra-text.css-1bojbkj {
-  font-size: 16px;
-  color: #f1f5f9;
-  font-weight: 500;
-}
-
-.css-zsbpc0 {
-  display: flex;
-  align-items: center;
-}
-
-.chakra-stack.css-1igwmid {
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
-}
-
-.css-kjafn5 {
-  position: relative;
-}
-
-.css-tkdzxl {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 1px solid #334155;
-}
-
-.chakra-image.css-rmmdki {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.chakra-text.css-kdb9bl {
-  font-size: 16px;
-  font-weight: 500;
-  color: #f1f5f9;
-}
-
-.chakra-stack.css-4g2vb0 {
-  flex-direction: column;
-  gap: 10px;
-}
-
-.chakra-button.css-xq9fcu {
-  background: #3b82f6;
-  color: white;
-  font-weight: 600;
-  border-radius: 8px;
-  padding: 15px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-  font-size: 16px;
-}
-
-.chakra-button.css-xq9fcu:disabled {
-  background: #475569;
-  cursor: not-allowed;
-}
-
-.chakra-button.css-xq9fcu:hover:not(:disabled) {
-  background: #2563eb;
-}
-
-.chakra-stack.css-1kkejoh {
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  background: #0f172a;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.chakra-stack.css-qlxuh7 {
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
-}
-
-.chakra-stack.css-1hohgv6 {
-  flex-direction: row;
-  position: relative;
-}
-
-.css-x8m2iu, .css-xz0zx7 {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 1px solid #334155;
-}
-
-.css-xz0zx7 {
-  position: absolute;
-  left: 20px;
-}
-
-.chakra-text.css-3c533j {
-  font-size: 16px;
-  font-weight: 500;
-  color: #f1f5f9;
-}
-
-.css-15pf7d3 {
-  background-color: #334155;
-  padding: 5px 12px;
-  border-radius: 16px;
-  font-size: 12px;
-  color: #94a3b8;
-  text-transform: uppercase;
-}
-
-.chakra-button.css-13u89jn {
   background: none;
+  border: none;
   color: #94a3b8;
-  display: flex;
-  align-items: center;
-  gap: 6px;
   cursor: pointer;
+  font-size: 14px;
   transition: color 0.3s ease;
 }
 
-.chakra-button.css-13u89jn:hover {
-  color: #3b82f6;
+.back-button:hover {
+  color: #e2e8f0;
 }
 
-.chakra-stack.css-kd79qt {
-  flex-direction: column;
-  gap: 25px;
-}
-
-.chakra-stack.css-rrtj52 {
-  flex-direction: column;
-  gap: 6px;
-}
-
-.chakra-stack.css-1hveprx {
-  flex-direction: column;
-  gap: 10px;
-}
-
-.css-1dwt61j {
-  flex-direction: row;
-  gap: 10px;
-}
-
-.css-oxxruv, .css-1xtg1qg {
-  flex-direction: row;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: 6px;
-  background-color: #1e293b;
-  font-size: 14px;
-  color: #94a3b8;
-}
-
-.css-272zay {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  overflow: hidden;
-}
-
-.chakra-text.css-k1n7h1, .chakra-text.css-15hd3s5 {
-  font-size: 14px;
-  color: #f1f5f9;
-}
-
-.css-16jz1vp {
-  background-color: #0f172a;
-  border-radius: 8px;
-  padding: 15px;
-}
-
-.chakra-input__group.css-i10nnd {
-  display: flex;
-  align-items: center;
-}
-
-input[placeholder="0.0"] {
-  flex: 1;
+.refresh-button {
   background: none;
   border: none;
-  color: #f1f5f9;
-  font-size: 24px;
-  font-weight: 500;
-  outline: none;
-}
-
-.chakra-input__right-addon.css-1gc1fhw {
-  color: #94a3b8;
-  font-size: 14px;
-}
-
-.chakra-stack.css-ts2dz3 {
-  flex-direction: column;
-  gap: 15px;
-}
-
-.css-1hzrelx {
-  display: flex;
-  gap: 10px;
-}
-
-.css-ipaq8f, .css-1ffr2cz {
-  flex: 1;
-  padding: 10px;
-  text-align: center;
-  border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
-.css-ipaq8f[data-active="true"], .css-1ffr2cz[data-active="true"] {
-  background-color: #3b82f6;
-  color: white;
+.refresh-button:hover {
+  transform: rotate(360deg);
 }
 
-.css-ipaq8f:not([data-active="true"]), .css-1ffr2cz:not([data-active="true"]) {
-  background-color: #334155;
-  color: #94a3b8;
-}
-
-.chakra-stack.css-qcs42j {
-  flex-direction: row;
-  gap: 15px;
-}
-
-.css-4ufs5k {
-  flex: 1;
-  background-color: #0f172a;
-  padding: 15px;
-  border-radius: 8px;
-}
-
-.chakra-stack.css-tl3ftk {
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
-
-.chakra-text.css-1cfxn2o {
-  font-size: 12px;
-  color: #94a3b8;
-}
-
-.chakra-input.css-gigt1b {
-  text-align: center;
-  background: none;
-  border: none;
-  color: #f1f5f9;
-  font-size: 16px;
+/* Step Container and Sidebar */
+.step-container {
+  display: flex;
+  justify-content: center; /* Center the content horizontally */
+  align-items: flex-start; /* Align items to the top */
   width: 100%;
-  outline: none;
+  min-width: 0; /* Prevents flex child compression */
+  gap: 60px;
 }
 
-.chakra-button.css-1g9boj3 {
-  background-color: #475569;
-  color: #94a3b8;
-  font-weight: 600;
-  border-radius: 8px;
-  padding: 15px;
-  cursor: not-allowed;
-  transition: background 0.3s ease;
-  font-size: 16px;
-}
-
-.chakra-button.css-1g9boj3:not(:disabled) {
-  background-color: #3b82f6;
-  color: white;
-  cursor: pointer;
-}
-
-.chakra-button.css-1g9boj3:hover:not(:disabled) {
-  background-color: #2563eb;
-}
-
-.chakra-stack.css-17ivrr5 {
+.step-sidebar {
+  width: 240px; /* Increased width to prevent compression */
+  background: rgba(30, 41, 59, 0.95); /* Matching container background */
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
   flex-direction: column;
+  gap: 30px; /* Increased gap for steps */
+  box-shadow: none; /* Removed shadow to align with page layer */
+  min-width: 240px; /* Ensures minimum width */
+}
+
+.step-item {
+  display: flex;
+  align-items: center;
   gap: 10px;
-}
-
-.chakra-text.css-1v0j6vl {
-  font-size: 12px;
+  padding: 10px 20px; /* Increased padding for more space */
+  border-radius: 8px;
   color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 0; /* Prevents text overflow */
 }
 
-.chakra-stack.css-1bhzudw {
+.step-item:hover {
+  background: rgba(59, 130, 246, 0.1);
+  color: #e2e8f0;
+}
+
+.step-item.active {
+  background: rgba(59, 130, 246, 0.3);
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+.step-item.disabled {
+  color: #64748b;
+  cursor: not-allowed;
+}
+
+.step-item.disabled:hover {
+  background: none;
+  color: #64748b;
+}
+
+.step-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #334155;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.step-item.active .step-circle {
+  background: #3b82f6;
+  color: white;
+}
+
+.step-label {
+  font-size: 14px;
+  white-space: pre-line; /* Allow line breaks */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Adds ellipsis if text overflows */
+}
+
+/* Content Section */
+.content-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 600px; /* Narrower content section */
+  min-width: 0; /* Prevents compression */
+}
+
+.step-content {
+  display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.chakra-stack.css-19yxdaf {
-  flex-direction: column;
-  gap: 15px;
-}
-
-.css-18d67ug {
-  background-color: #0f172a;
-  padding: 15px;
-  border-radius: 8px;
-}
-
-.chakra-stack.css-dk69dq {
-  flex-direction: column;
-  gap: 6px;
-}
-
-.chakra-input__group.css-3z5rg1 {
-  display: flex;
-  align-items: center;
-  background: #1e293b;
-  border-radius: 6px;
-  padding: 10px;
-}
-
-.chakra-skeleton.css-5xlugw {
-  flex: 1;
-}
-
-input[placeholder="0.0"] {
-  font-size: 24px;
+.section-title {
+  font-size: 18px;
   font-weight: 500;
   color: #f1f5f9;
-  outline: none;
-  background: none;
-  border: none;
+  margin: 0;
+  text-align: left;
 }
 
-.chakra-input__right-addon.css-1z0iubp {
+/* Token Selection */
+.token-selection {
+  display: flex;
+  gap: 15px;
+  max-width: 100%; /* Ensure it fits within the narrower section */
+}
+
+.token-button {
+  flex: 1;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: pointer;
+  transition: border-color 0.3s ease, transform 0.2s ease;
+}
+
+.token-button:hover {
+  border-color: #3b82f6;
+  transform: translateY(-2px);
+}
+
+.token-display {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
 }
 
-.chakra-stack.css-tl92kj {
-  flex-direction: row;
-  justify-content: flex-end;
+.token-info {
+  display: flex;
+  
+  gap: 5px;
+}
+.token-info123 {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.token-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+.dropdown-arrow {
+  width: 12px;
+  height: 12px;
+}
+
+/* Fee Tier */
+.fee-tier {
+  display: flex;
+  flex-direction: column;
   gap: 10px;
 }
 
-.chakra-text.css-1pzobe8 {
-  background-color: #334155;
-  padding: 5px 10px;
-  border-radius: 6px;
+.fee-label {
+  font-size: 14px;
+  color: #f1f5f9;
+}
+
+.fee-description {
   font-size: 12px;
   color: #94a3b8;
+}
+
+.fee-tier-dropdown {
+  position: relative;
+}
+
+.fee-button {
+  width: 100%;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: border-color 0.3s ease, transform 0.2s ease;
+}
+
+.fee-button:hover {
+  border-color: #3b82f6;
+  transform: translateY(-2px);
+}
+
+.fee-options {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 10px 0;
+  z-index: 10;
+  margin-bottom: 5px;
+  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.fee-option-item {
+  width: 100%;
+  padding: 10px 15px;
+  background: none;
+  border: none;
+  color: #f1f5f9;
   cursor: pointer;
   transition: background 0.3s ease;
-}
-
-.chakra-text.css-1pzobe8:hover {
-  background-color: #475569;
-}
-
-.chakra-stack.css-177x6t7 {
-  flex-direction: column;
-  gap: 10px;
-}
-
-.chakra-stack.css-1qjyqx0 {
-  flex-direction: row;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 
-.chakra-text.css-1k06fd2 {
+.fee-option-item:hover {
+  background: #334155;
+}
+
+.fee-value {
   font-size: 14px;
+}
+
+.fee-status {
+  font-size: 12px;
   color: #94a3b8;
 }
 
-.chakra-stack.css-1gkzamg {
-  font-size: 14px;
-  color: #f1f5f9;
-}
-
-.chakra-stack.css-7vxi93 {
-  flex-direction: column;
-  gap: 6px;
-}
-
-.chakra-stack.css-1mlvmbj {
-  flex-direction: row;
-  align-items: center;
-  gap: 8px;
-}
-
-.chakra-stack.css-uwkfa4 {
-  flex-direction: row;
-  gap: 15px;
-}
-
-.chakra-stack.css-1drxq5e {
-  flex-direction: row;
-  align-items: center;
-  gap: 6px;
-}
-
-.css-3l2vxh {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  overflow: hidden;
-}
-
-.chakra-text.css-k8ipta, .chakra-text.css-onsugd {
-  font-size: 12px;
-  color: #f1f5f9;
-}
-
-.chakra-button.css-1kufseg {
-  background-color: #3b82f6;
+/* Continue Button */
+.continue-button {
+  background: #475569;
   color: white;
   font-weight: 600;
   border-radius: 8px;
-  padding: 15px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-  font-size: 16px;
-}
-
-.chakra-button.css-1kufseg:disabled {
-  background-color: #475569;
+  padding: 12px;
+  border: none;
   cursor: not-allowed;
+  font-size: 16px;
+  box-shadow: none;
+  width: 100%;
 }
 
-.chakra-button.css-1kufseg:hover:not(:disabled) {
-  background-color: #2563eb;
+.continue-button:not(:disabled) {
+  background: linear-gradient(90deg, #3b82f6, #2563eb);
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.continue-button:hover:not(:disabled) {
+  background: linear-gradient(90deg, #2563eb, #1d4ed8);
+  transform: translateY(-2px);
+}
+
+/* Summary and Price/Range Sections */
+.summary {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: #1e293b;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #334155;
+}
+
+.token-pair {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pair-text {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.fee-tag {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+.edit-button {
+  background: #334155;
+  border: none;
+  color: #3b82f6;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  transition: background 0.3s ease, color 0.3s ease;
+  position: absolute;
+  right: 15px;
+  top: 15px;
+}
+
+.edit-button:hover {
+  background: #475569;
+  color: #2563eb;
+}
+
+.edit-icon {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.price-section, .range-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.token-switch-wrapper {
+  display: inline-flex;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-left: 10px;
+}
+
+.token-switch-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  background: #1e293b;
+  cursor: pointer;
+  border: none;
+  color: #e2e8f0;
+  transition: background 0.3s ease;
+}
+
+.token-switch-btn:first-child {
+  border-right: 1px solid #334155;
+}
+
+.token-switch-btn.active {
+  background: #334155;
+}
+
+.price-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #1e293b;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+}
+
+.price-field, .range-field {
+  flex: 1;
+  background: none;
+  border: none;
+  color: #f1f5f9;
+  font-size: 18px;
+  outline: none;
+  text-align: center;
+}
+
+.price-unit {
+  color: #94a3b8;
+  font-size: 14px;
+  text-align: center;
+  width: 100%;
+}
+
+.current-price {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #94a3b8;
+  font-size: 12px;
+  padding: 0 12px;
+}
+
+.swap-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #94a3b8;
+}
+
+.range-options {
+  display: flex;
+  gap: 10px;
+}
+
+.range-option {
+  flex: 1;
+  padding: 10px;
+  background: #334155;
+  border: none;
+  border-radius: 8px;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.range-option.active {
+  background: #3b82f6;
+  color: white;
+}
+
+.range-option:hover:not(.active) {
+  background: #475569;
+  transform: translateY(-2px);
+}
+
+.range-inputs {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}
+
+.range-input {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #1e293b;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  gap: 5px;
+}
+
+.range-label {
+  color: #64748b;
+  font-size: 14px;
+  text-align: center;
+  width: 100%;
+}
+
+.input-value-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.adjust-btn {
+  background: transparent;
+  color: #94a3b8;
+  border: none;
+  font-size: 20px;
+  padding: 0 10px;
+  cursor: pointer;
+}
+
+.price-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.price-info {
+  display: flex;
+  justify-content: space-between;
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+/* Deposit Section */
+.deposit-inputs {
+  display: flex;
+  gap: 15px;
+}
+
+.deposit-input {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #1e293b;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  transition: transform 0.2s ease;
+}
+
+.deposit-input:hover {
+  transform: translateY(-2px);
+}
+
+.deposit-field {
+  flex: 1;
+  background: none;
+  border: none;
+  color: #f1f5f9;
+  font-size: 18px;
+  outline: none;
+}
+
+.deposit-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.ratio-display {
+  display: flex;
+  gap: 10px;
+}
+
+.ratio-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .card-container {
+    padding: 15px;
+    flex-direction: column;
+  }
+  .step-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .step-sidebar {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 10px;
+    min-width: 0; /* Reset min-width for mobile */
+  }
+  .step-item {
+    flex-direction: column;
+    padding: 8px;
+    min-width: 0; /* Reset min-width for mobile */
+  }
+  .content-section {
+    max-width: 100%;
+    min-width: 0; /* Reset min-width for mobile */
+  }
+  .token-selection, .deposit-inputs {
+    flex-direction: column;
+  }
+  .token-button, .deposit-input {
+    width: 100%;
+  }
+  .fee-tier-dropdown {
+    width: 100%;
+  }
+  .continue-button {
+    width: 100%;
+  }
+  .range-inputs {
+    flex-direction: column;
+  }
 }
