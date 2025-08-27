@@ -17,7 +17,6 @@ import {
   useSuiClient,
 } from "@mysten/dapp-kit";
 import AddLiquidityModal from "./AddLiquidityModal";
-import PoolList from "./PoolList";
 import { Link, useNavigate } from "react-router-dom";
 import Sidebar from "./SidebarMenu";
 import "./Pool.css";
@@ -242,19 +241,6 @@ interface Pool {
   volume: string;
   fees: string;
   apr: string;
-}
-
-export interface PoolListProps {
-  pools: Pool[];
-  prices: { [key: string]: number };
-  activeTab: string;
-  setActiveTab: React.Dispatch<React.SetStateAction<string>>;
-  isAddLiquidityOpen: boolean;
-  selectedPool: Pool | null;
-  handleAddLiquidity: (pool: Pool | null, scroll?: boolean) => void;
-  handleCloseAddLiquidityModal: () => void;
-  refresh: () => void;
-  isLoading: boolean;
 }
 
 async function getTokenPrice(symbol: string): Promise<number> {
@@ -823,6 +809,12 @@ function Pool() {
     mosaicTiles.push(logos[i % logos.length]);
   }
 
+  const fallbackImage = "https://via.placeholder.com/20";
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.src = fallbackImage;
+  };
+
   return (
     <>
       <div className="mosaic-background">
@@ -831,7 +823,7 @@ function Pool() {
         ))}
       </div>
       <div className="background-overlay"></div>
-      <div className="header">
+      <div className="pool-header100">
         <div className="background-glow"></div>
         <div className="header-top">
           <div className="logo-container">
@@ -1090,18 +1082,86 @@ function Pool() {
           </div>
         </div>
         {activeTab === "pools" ? (
-          <PoolList
-            pools={pools}
-            prices={{}}
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            isAddLiquidityOpen={isAddLiquidityOpen}
-            selectedPool={selectedPool}
-            handleAddLiquidity={handleAddLiquidity}
-            handleCloseAddLiquidityModal={handleCloseAddLiquidityModal}
-            refresh={refresh}
-            isLoading={isLoading}
-          />
+          <>
+            {isLoading ? (
+              <div className="loading-state100">Loading pools...</div>
+            ) : (
+              <div className="pool-table-header100">
+                <div>Pools</div>
+                <div>Liquidity</div>
+                <div>Volume (24H)</div>
+                <div>Fees (24H)</div>
+                <div>Rewards</div>
+                <div>APR</div>
+                <div>Actions</div>
+              </div>
+            )}
+            <div className="pool-list100">
+              {isLoading ? null : pools.length === 0 ? (
+                <div className="no-positions100">No pools found</div>
+              ) : (
+                pools.map((pool, index) => {
+                  return (
+                    <div
+                      key={pool.poolAddress}
+                      className="pool-item100"
+                    >
+                      <div className="pool-token-info100">
+                        <div className="token-images100" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <img
+                            src={pool.img1}
+                            alt={pool.token1Symbol}
+                            style={{ width: '24px', height: '24px', borderRadius: '50%' }}
+                            onError={handleImageError}
+                          />
+                          <img
+                            src={pool.img2}
+                            alt={pool.token2Symbol}
+                            style={{ width: '24px', height: '24px', borderRadius: '50%' }}
+                            onError={handleImageError}
+                          />
+                        </div>
+                        <div className="token-details100">
+                          <div className="token-pair100">
+                            <p>{pool.pair}</p>
+                            <span>({pool.feeRate})</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="pool-data100">
+                        {pool.liquidity}
+                      </div>
+                      <div className="pool-data100">
+                        {pool.volume}
+                      </div>
+                      <div className="pool-data100">
+                        {pool.fees}
+                      </div>
+                      <div className="reward-container100">
+                        <div className="reward-images100">
+                          <img src={pool.rewardImg} alt="Reward" />
+                        </div>
+                      </div>
+                      <div className="apr-container100">
+                        <span className="apr-text100">{pool.apr} ○</span>
+                      </div>
+                      <div className="pool-action100">
+                        <button
+                          className="deposit-button100"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleAddLiquidity(pool);
+                          }}
+                        >
+                          Deposit
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          </>
         ) : (
           <PositionComponent
             activeTab={activeTab}
@@ -1110,7 +1170,14 @@ function Pool() {
             pools={pools}
           />
         )}
-        
+        {isAddLiquidityOpen && selectedPool && (
+          <AddLiquidityModal
+            isOpen={isAddLiquidityOpen}
+            onClose={handleCloseAddLiquidityModal}
+            selectedPool={selectedPool}
+            refresh={refresh}
+          />
+        )}
       </div>
     </>
   );
@@ -1280,60 +1347,32 @@ const PositionComponent = ({ activeTab, setActiveTab, handleAddLiquidity, pools 
   return (
     <div className="positions-container">
       <div className="filter-row100">
-        <div className="chakra-stack css-1igwmid">
-          <div className="css-3wh1mk">
-            <div className="chakra-stack css-yue5ly">
-              <div className="css-1ke24j5">
-                <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
-                  <use xlinkHref="#icon-icon_collapse"></use>
-                </svg>
-              </div>
-            </div>
-          </div>
-          <div className="css-1vpx1e5">
-            <button onClick={fetchPositions} className="css-1pin1cu">
-              <div className="css-0">
-                <div className="css-0">
-                  <div className="css-1ke24j5">
-                    <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
-                      <use xlinkHref="#icon-icon_refresh"></use>
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </button>
-          </div>
-        </div>
+        
       </div>
-      <div className="card-container">
-        <div className="card-style">
-          <div className="chakra-stack css-1jra5w9">
-            <p className="chakra-text css-17xjxxf">Total Liquidity</p>
-            <p className="chakra-text css-1ikb94c">
-              ${totalLiquidity.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-            </p>
-          </div>
+      <div className="position-summary card-style">
+        <div className="total-liquidity">
+          <p className="chakra-text css-17xjxxf">Total Liquidity</p>
+          <p className="chakra-text css-1ikb94c">
+            ${totalLiquidity.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          </p>
         </div>
-        <div className="card-style">
-          <div className="chakra-stack css-17na8xj">
-            <p className="chakra-text css-17xjxxf">Pending Yield</p>
-            <div className="chakra-stack css-1igwmid">
-              <div className="chakra-stack css-lpuqkz">
-                <button id="popover-trigger-:r76t:" className="css-gmuwbf">
-                  <p className="chakra-text css-bae340">
-                    ${pendingYield.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                  </p>
-                </button>
-              </div>
-              <button 
-                type="button" 
-                className="chakra-button css-2h2e64" 
-                disabled={pendingYield === 0}
-                onClick={handleClaimAll}
-              >
-                Claim All
-              </button>
-            </div>
+        <div className="summary-divider"></div>
+        <div className="pending-yield">
+          <p className="chakra-text css-17xjxxf">Pending Yield</p>
+          <div className="yield-info">
+            <button id="popover-trigger-:r76t:" className="css-gmuwbf">
+              <p className="chakra-text css-bae340">
+                ${pendingYield.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </p>
+            </button>
+            <button 
+              type="button" 
+              className="chakra-button css-2h2e64" 
+              disabled={pendingYield === 0}
+              onClick={handleClaimAll}
+            >
+              Claim All
+            </button>
           </div>
         </div>
       </div>
@@ -1366,12 +1405,24 @@ const PositionComponent = ({ activeTab, setActiveTab, handleAddLiquidity, pools 
                   </div>
                 </div>
               </div>
-              <div className="pool-data100">{pos.liquidity}</div>
-              <div className="pool-data100">{pos.share}</div>
-              <div className="pool-data100">{pos.unclaimedFees}</div>
-              <div className="apr-container100">{pos.apr}</div>
+              <div className="pool-data100">
+                <span className="data-label">Liquidity</span>
+                {pos.liquidity}
+              </div>
+              <div className="pool-data100">
+                <span className="data-label">Share</span>
+                {pos.share}
+              </div>
+              <div className="pool-data100">
+                <span className="data-label">Unclaimed Fees</span>
+                {pos.unclaimedFees}
+              </div>
+              <div className="apr-container100">
+                <span className="data-label">APR</span>
+                {pos.apr}
+              </div>
               <div className="pool-action100">
-                <button className="deposit-button100" onClick={() => handleAddLiquidity(pos)}>Add</button>
+                <button className="deposit-button100" onClick={() => handleAddLiquidity(pos)}>Deposit</button>
                 <button 
                   className="deposit-button100" 
                   onClick={() => handleClaimFees(pos)}

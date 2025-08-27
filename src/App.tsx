@@ -20,6 +20,7 @@ import LimitOrderPage from "./limit";
 import LaunchPage from "./LaunchPage";
 import FaucetPage from "./FaucetPage";
 import CreatePoolPage from "./CreatePoolPage.tsx";
+import AddLiquidityPage from "./AddLiquidityPage.tsx"
 
 
 // Wallet logos
@@ -1505,13 +1506,31 @@ function App() {
                               ? (parseFloat(amountIn) * (prices[getTokenInfo(tokenX).symbol.toLowerCase()]?.price || 0)).toFixed(2) 
                               : "0.00"}
                           </span>
-                          <div className="balance-group">
-                            <div className="balance-buttons">
-                              <button onClick={setHalfBalance} className="balance-button">50%</button>
-                              <button onClick={setMaxBalance} className="balance-button">Max</button>
-                            </div>
-                            <span>Balance: {balances[tokenX] || "0.0"}</span>
-                          </div>
+                          <div className="balance-group" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+  <div className="balance-buttons">
+    <button onClick={setHalfBalance} className="balance-button">50%</button>
+    <button onClick={setMaxBalance} className="balance-button">Max</button>
+  </div>
+  <span style={{ display: 'inline-flex', alignItems: 'center', whiteSpace: 'nowrap' }}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      style={{ marginRight: '4px', verticalAlign: 'middle' }}
+    >
+      <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path>
+      <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path>
+      <path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path>
+    </svg>
+    {balances[tokenX] || "0.0"}
+  </span>
+</div>
                         </div>
                       </div>
                       <div className="swap-icon" onClick={handleSwapTokens}>
@@ -1548,9 +1567,27 @@ function App() {
                               </span>
                             )}
                           </span>
-                          <div className="balance-group">
-                            <span>Balance: {balances[tokenY] || "0.0"}</span>
-                          </div>
+                          <div className="balance-group" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+  <span style={{ display: 'inline-flex', alignItems: 'center', whiteSpace: 'nowrap' }}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      style={{ marginRight: '4px', verticalAlign: 'middle' }}
+    >
+      <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path>
+      <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path>
+      <path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path>
+    </svg>
+    {balances[tokenY] || "0.0"}
+  </span>
+</div>
                         </div>
                       </div>
                     </div>
@@ -1720,7 +1757,9 @@ function App() {
           <Route path="/pool" element={<Pool />} />
           <Route path="/xseal" element={<XSeal />} />
           <Route path="/limit" element={<LimitOrderPage />} />
+          <Route path="/add-liquidity" element={<AddLiquidityPage />} />
           <Route path="/create-pool" element={<CreatePoolPage />} />
+          
 
           <Route path="/positions" element={<Position activeTab={""} setActiveTab={function (tab: string): void {
             throw new Error("Function not implemented.");

@@ -22,12 +22,12 @@
 .card-container {
   background: rgba(30, 41, 59, 0.95);
   border-radius: 16px;
-  padding: 30px;
+  padding: 0px;
   width: 100%;
   max-width: 1200px; /* Maintains max width but centers it */
   display: flex;
   flex-direction: column;
-  gap: 20px; /* Adjusted gap */
+  gap: 0px; /* Adjusted gap */
   backdrop-filter: blur(10px);
 }
 

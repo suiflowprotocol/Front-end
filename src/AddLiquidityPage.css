@@ -1,0 +1,344 @@
+/* AddLiquidityPage.css */
+
+/* Reuse styles from CreatePoolPage.css and add new ones */
+
+.container1234312, .main-content4312, .card-container4312, .content-header4312, .back-button4312, .refresh-button4312 {
+  /* Copy from CreatePoolPage.css */
+}
+
+/* Pool Header */
+.pool-header4312 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.token-pair4312 {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.dot4312 {
+  width: 4px;
+  height: 4px;
+}
+
+/* Header Icons */
+.header-icons4312 {
+  display: flex;
+  gap: 10px;
+}
+
+.icon-btn4312 {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Pool Stats */
+.pool-stats4312 {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.stat-item4312 {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.stat-item4312 span:last-child {
+  color: #e2e8f0;
+  font-weight: 500;
+}
+
+/* Tabs */
+.tabs4312 {
+  display: flex;
+  border-bottom: 1px solid #334155;
+  margin-bottom: 20px;
+}
+
+.tab4312 {
+  padding: 10px 20px;
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  position: relative;
+}
+
+.tab4312.active4312 {
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+.tab4312.active4312::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #3b82f6;
+}
+
+/* Range Section */
+.range-header4312 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.token-toggle4312 {
+  display: flex;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.token-btn4312 {
+  padding: 6px 12px;
+  background: #1e293b;
+  color: #e2e8f0;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.token-btn4312.active4312 {
+  background: #334155;
+}
+
+.current-price4312 {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #94a3b8;
+  margin-bottom: 10px;
+}
+
+.range-types4312 {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.range-type4312 {
+  flex: 1;
+  padding: 10px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  color: #94a3b8;
+  cursor: pointer;
+}
+
+.range-type4312.active4312 {
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+
+.price-range-info4312 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.price-range4312 {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+}
+
+.period-selectors4312 {
+  display: flex;
+  gap: 5px;
+}
+
+.period-btn4312 {
+  padding: 4px 8px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 4px;
+  color: #94a3b8;
+  cursor: pointer;
+}
+
+.period-btn4312.active4312 {
+  background: #3b82f6;
+  color: white;
+}
+
+.leverage-info4312 {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #94a3b8;
+  margin-bottom: 10px;
+}
+
+.price-inputs4312 {
+  display: flex;
+  gap: 15px;
+}
+
+.price-input4312 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.input-group4312 {
+  display: flex;
+  align-items: center;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.input-group4312 button {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.input-group4312 input {
+  background: none;
+  border: none;
+  color: #e2e8f0;
+  text-align: center;
+  width: 100px;
+  outline: none;
+}
+
+/* Deposit Section */
+.deposit-header4312 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.zap-toggle4312 {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+}
+
+.switch4312 {
+  position: relative;
+  display: inline-block;
+  width: 34px;
+  height: 20px;
+}
+
+.switch4312 input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider4312 {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #334155;
+  transition: .4s;
+  border-radius: 20px;
+}
+
+.slider4312:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider4312 {
+  background-color: #3b82f6;
+}
+
+input:checked + .slider4312:before {
+  transform: translateX(14px);
+}
+
+.deposit-inputs4312 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.deposit-input4312 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #1e293b;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+}
+
+.deposit-field4312 {
+  flex: 1;
+  background: none;
+  border: none;
+  color: #f1f5f9;
+  font-size: 28px;
+  outline: none;
+}
+
+.connect-wallet-btn4312 {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.connect-wallet-btn4312:disabled {
+  background: #475569;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .pool-stats4312 {
+    flex-direction: column;
+  }
+  .tabs4312 {
+    justify-content: space-around;
+  }
+  .price-inputs4312 {
+    flex-direction: column;
+  }
+}

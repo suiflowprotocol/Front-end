@@ -58,10 +58,10 @@ export const tokens: Token[] = [
   },
   {
     symbol: "DEEP",
-    address: "0x5e339e0e9a0c3b3f0a7383510a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f0a0c3b3f::deep::DEEP",
+    address: "0x16c59472305767de5d4ff834240c46ee537ab6be4503477abfaaf33ecb26e668::deep::DEEP",
     decimals: 9,
-    image: "https://via.placeholder.com/20",
-    logoURI: "https://via.placeholder.com/20",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYQ9gJibsC5HVoD4tW06Oyv0_WIE2090XVsQ&s",
+    logoURI: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYQ9gJibsC5HVoD4tW06Oyv0_WIE2090XVsQ&s",
     name: "Deep Token",
   },
   {
