@@ -1,5 +1,5 @@
 // App.tsx
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ConnectButton, useCurrentAccount, useSuiClient, useSignAndExecuteTransaction, lightTheme, WalletProvider, ThemeVars, useConnectWallet, useWallets, useDisconnectWallet, ConnectModal } from "@mysten/dapp-kit";
 import '@mysten/dapp-kit/dist/index.css';
 import { Transaction } from "@mysten/sui/transactions";
@@ -21,6 +21,8 @@ import LaunchPage from "./LaunchPage";
 import FaucetPage from "./FaucetPage";
 import CreatePoolPage from "./CreatePoolPage.tsx";
 import AddLiquidityPage from "./AddLiquidityPage.tsx"
+import Market from "./Market.tsx";
+
 
 
 // Wallet logos
@@ -1338,9 +1340,38 @@ function App() {
                             </Link>
                          
                            
+                            </div>
+                        </div>
+
+
+
+                        <div className={`nav-item ${openDropdown === "Lend" ? "open" : ""}`} 
+                             onMouseEnter={() => toggleDropdown("Lend")} 
+                             onMouseLeave={() => toggleDropdown(null)}>
+                          <span className="nav-text">Lend</span>
+                          <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
+                            <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+                          </svg>
+                          <div className={`dropdown ${openDropdown === "Lend" ? "open" : ""}`}>
+                            <Link to="/market" className="dropdown-item">
+  <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M2 4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4zm11 0H3v8h10V4zm-8 2h1v4H5V6zm3 0h1v6H8V6zm3 0h1v3h-1V6z"/>
+  </svg>
+  Market
+</Link>
+<Link to="/liquidation" className="dropdown-item">
+  <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v9.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 12.293V2.5A.5.5 0 0 1 8 2z"/>
+  </svg>
+  Liquidation
+</Link>
+                         
+                           
                            
                           </div>
                         </div>
+
+
                         <div className={`nav-item ${openDropdown === "earn" ? "open" : ""}`} 
                              onMouseEnter={() => toggleDropdown("earn")} 
                              onMouseLeave={() => toggleDropdown(null)}>
@@ -1759,7 +1790,7 @@ function App() {
           <Route path="/limit" element={<LimitOrderPage />} />
           <Route path="/add-liquidity" element={<AddLiquidityPage />} />
           <Route path="/create-pool" element={<CreatePoolPage />} />
-          
+          <Route path="/market" element={<Market />} />
 
           <Route path="/positions" element={<Position activeTab={""} setActiveTab={function (tab: string): void {
             throw new Error("Function not implemented.");

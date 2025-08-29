@@ -138,6 +138,7 @@
 
 .tab-group100 {
   display: flex;
+  border: 1px solid var(--border-color);
   gap: 24px;
   justify-content: flex-start;
   background: rgba(30, 41, 59, 0.95);;
