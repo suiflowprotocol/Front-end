@@ -1,4 +1,4 @@
-
+// Updated Market.tsx
 import React, { useState, useEffect } from "react";
 import { ConnectModal, useDisconnectWallet, useCurrentAccount } from "@mysten/dapp-kit";
 import { Link } from "react-router-dom";
@@ -149,35 +149,19 @@ const Market = () => {
         <div className="background-glow header-glow"></div>
         <div className="header-top">
           <div className="logo-container">
-            <img src="https://suilend.fi/icons/suilend-logo.png" alt="Logo" className="logo-image" />
-            <span className="logo-text">Suilend</span>
+            <img src="https://i.meee.com.tw/SdliTGK.png" alt="Logo" className="logo-image" />
+            <span className="logo-text">Seal</span>
           </div>
           {!isMobile ? (
             <div className={`nav-menu789 ${isMenuOpen ? "open" : ""}`}>
-              <div className={`nav-item789 ${openDropdown === "lend" ? "open" : ""}`} 
-                   onMouseEnter={() => toggleDropdown("lend")} 
+              <div className={`nav-item789 ${openDropdown === "trade" ? "open" : ""}`} 
+                   onMouseEnter={() => toggleDropdown("trade")} 
                    onMouseLeave={() => toggleDropdown(null)}>
-                <span className="nav-text">Lend</span>
+                <span className="nav-text">Trade</span>
                 <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
                   <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
                 </svg>
-                <div className={`dropdown789 ${openDropdown === "lend" ? "open" : ""}`}>
-                  <Link to="/market" className="dropdown-item789">
-                    <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16">
-                      <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5"/>
-                    </svg>
-                    Market
-                  </Link>
-                </div>
-              </div>
-              <div className={`nav-item789 ${openDropdown === "swap" ? "open" : ""}`} 
-                   onMouseEnter={() => toggleDropdown("swap")} 
-                   onMouseLeave={() => toggleDropdown(null)}>
-                <span className="nav-text">Swap</span>
-                <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
-                  <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
-                </svg>
-                <div className={`dropdown789 ${openDropdown === "swap" ? "open" : ""}`}>
+                <div className={`dropdown789 ${openDropdown === "trade" ? "open" : ""}`}>
                   <Link to="/app" className="dropdown-item789">
                     <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16">
                       <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5"/>
@@ -186,14 +170,36 @@ const Market = () => {
                   </Link>
                 </div>
               </div>
-              <div className={`nav-item789 ${openDropdown === "strategies" ? "open" : ""}`} 
-                   onMouseEnter={() => toggleDropdown("strategies")} 
+              <div className={`nav-item789 ${openDropdown === "Lend" ? "open" : ""}`} 
+                   onMouseEnter={() => toggleDropdown("Lend")} 
                    onMouseLeave={() => toggleDropdown(null)}>
-                <span className="nav-text">Strategies</span>
+                <span className="nav-text">Lend</span>
                 <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
                   <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
                 </svg>
-                <div className={`dropdown789 ${openDropdown === "strategies" ? "open" : ""}`}>
+                <div className={`dropdown789 ${openDropdown === "Lend" ? "open" : ""}`}>
+                  <Link to="/market" className="dropdown-item789">
+                    <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5"/>
+                    </svg>
+                    Market
+                  </Link>
+                  <Link to="/liquidation" className="dropdown-item789">
+                    <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5"/>
+                    </svg>
+                    Liquidation
+                  </Link>
+                </div>
+              </div>
+              <div className={`nav-item789 ${openDropdown === "earn" ? "open" : ""}`} 
+                   onMouseEnter={() => toggleDropdown("earn")} 
+                   onMouseLeave={() => toggleDropdown(null)}>
+                <span className="nav-text">Earn</span>
+                <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
+                  <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+                </svg>
+                <div className={`dropdown789 ${openDropdown === "earn" ? "open" : ""}`}>
                   <Link to="/pool" className="dropdown-item789">
                     <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16">
                       <path d="M5.68 5.792 7.345 7.75 5.681 9.708a2.75 2.75 0 1 1 0-3.916ZM8 6.978 6.416 5.113l-.014-.015a3.75 3.75 0 1 0 0 5.304l.014-.015L8 8.522l1.584 1.865.014.015a3.75 3.75 0 1 0 0-5.304l-.014.015zm.656.772 1.663-1.958a2.75 2.75 0 1 1 0 3.916z"/>
@@ -212,22 +218,6 @@ const Market = () => {
 <path d="M9.5 6.5a1.5 1.5 0 0 1-1 1.415l.385 1.99a.5.5 0 0 1-.491.595h-.788a.5.5 0 0 1-.49-.595l.384-1.99a1.5 1.5 0 1 1 2-1.415"/>
                     </svg>
                     Burn
-                  </Link>
-                </div>
-              </div>
-              <div className={`nav-item789 ${openDropdown === "send" ? "open" : ""}`} 
-                   onMouseEnter={() => toggleDropdown("send")} 
-                   onMouseLeave={() => toggleDropdown(null)}>
-                <span className="nav-text">SEND New</span>
-                <svg className="arrow-icon" viewBox="0 0 12 12" width="12px" height="12px">
-                  <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
-                </svg>
-                <div className={`dropdown789 ${openDropdown === "send" ? "open" : ""}`}>
-                  <Link to="/send" className="dropdown-item789">
-                    <svg aria-hidden="true" fill="currentColor" width="20px" height="20px" viewBox="0 0 16 16">
-                      <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342 .474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"/>
-                    </svg>
-                    Send
                   </Link>
                 </div>
               </div>
@@ -294,14 +284,14 @@ const Market = () => {
           )}
           <div className="wallet-actions">
             <CustomConnectButton />
-            <a href="https://x.com/suilendprotocol" target="_blank" rel="noopener noreferrer" className="icon-button css-fi49l4">
+            <a href="https://x.com/sealprotocol_" target="_blank" rel="noopener noreferrer" className="icon-button css-fi49l4">
               <div className="css-1ke24j5">
                 <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px" viewBox="0 0 24 24">
                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1 2.25h7.28l4.71 6.23zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                 </svg>
               </div>
             </a>
-            <a href="https://t.me/suilendprotocol" target="_blank" rel="noopener noreferrer" className="icon-button css-163hjq3">
+            <a href="https://t.me/sealprotocol" target="_blank" rel="noopener noreferrer" className="icon-button css-163hjq3">
               <div className="css-1ke24j5">
                 <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px" viewBox="0 0 24 24">
                   <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.06L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/>
@@ -318,7 +308,7 @@ const Market = () => {
         <div className="content-column">
           <div className="card789 market-summary">
             <div className="card-header">
-              <h2 className="text-primary789">Main Market</h2>
+              <h2 className="section-title">Main Market</h2>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-muted-foreground789">
                 <circle cx="12" cy="12" r="10"></circle>
                 <path d="M12 16v-4"></path>
@@ -328,19 +318,17 @@ const Market = () => {
             <div className="market-stats">
               <div className="stat-item">
                 <p className="text-muted-foreground789">Deposits</p>
-                <p>$897M</p>
-              </div>
-              <div className="stat-item">
-                <p className="text-muted-foreground789">Borrows</p>
-                <p>$232M</p>
+                <p style={{ color: '#FFFFFF' }}>$913M</p>
               </div>
               <div className="stat-item">
                 <p className="text-muted-foreground789">TVL</p>
-                <p>$635M</p>
+                <p style={{ color: '#FFFFFF' }}>$672M</p>
+              </div>
+              <div className="stat-item">
+                <p className="text-muted-foreground789">Borrows</p>
+                <p style={{ color: '#FFFFFF' }}>$241M</p>
               </div>
             </div>
-          </div>
-          <div className="card789 asset-table-card">
             <table className="table789">
               <thead>
                 <tr>
@@ -354,37 +342,40 @@ const Market = () => {
               </thead>
               <tbody>
                 <tr className="section-header">
-                  <td colSpan={6}>Featured assets</td>
+                  <td colSpan={6} className="section-title">Featured assets</td>
                 </tr>
                 <tr onClick={() => openModal('UP')}>
-                  <td>
-                    <img src="https://www.doubleup.fun/Diamond_Only.png" alt="UP" className="asset-icon" />
-                    UP <span className="text-muted-foreground789">$7.184</span>
-                  </td>
-                  <td>647K UP <span className="text-muted-foreground789">$465K</span></td>
-                  <td>102K UP <span className="text-muted-foreground789">$73.8K</span></td>
+                  <td style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '8px' }}>
+  <img src="https://www.doubleup.fun/Diamond_Only.png" alt="UP" style={{ width: 32, height: 32 }} />
+  <div style={{ display: 'flex', flexDirection: 'column' }}>
+    <span style={{ color: '#FFFFFF', fontSize: '14px' }}>UP</span>
+    <span style={{ color: '#6B7280', fontSize: '14px' }}>$9.7912</span>
+  </div>
+</td>
+                  <td>6.64K UP <span className="text-muted-foreground789">$512K</span></td>
+                  <td>1.02K UP <span className="text-muted-foreground789">$81.0K</span></td>
                   <td>0% / 2</td>
-                  <td className="text-green-500789">38.89%</td>
+                  <td className="text-green-500789">38.93%</td>
                   <td>29.49%</td>
                 </tr>
                 <tr className="section-header">
-                  <td colSpan={6}>Main assets 22</td>
+                  <td colSpan={6} className="section-title">Main Assets</td>
                 </tr>
                 <tr onClick={() => openModal('sSUI')}>
                   <td>
                     <img src="https://trade.bluefin.io/tokens/sSUI.png" alt="sSUI" className="asset-icon" />
-                    sSUI <span className="text-muted-foreground789">$3.30</span>
+                    sSUI <span className="text-muted-foreground789">$3.52</span>
                   </td>
-                  <td>75.1M sSUI <span className="text-muted-foreground789">$248M</span></td>
+                  <td>75.4M sSUI <span className="text-muted-foreground789">$265M</span></td>
                   <td>-</td>
-                  <td>70% / ∞</td>
-                  <td>3.44%</td>
+                  <td>70% / -</td>
+                  <td>3.43%</td>
                   <td>0.00%</td>
                 </tr>
                 <tr className="expandable-section" onClick={() => toggleSection('ecosystem')}>
                   <td colSpan={6}>
                     <div className="section-title">
-                      ECOSYSTEM LSTs 10
+                      ECOSYSTEM LST
                       <svg className={`arrow-icon ${expandedSections['ecosystem'] ? 'rotated' : ''}`} viewBox="0 0 12 12" width="12px" height="12px">
                         <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
                       </svg>
@@ -508,248 +499,433 @@ const Market = () => {
                 <tr onClick={() => openModal('SUI')}>
                   <td>
                     <img src="https://s3.coinmarketcap.com/static-gravity/image/5bd0f43855f6434386c59f2341c5aaf0.png" alt="SUI" className="asset-icon" />
-                    SUI <span className="text-muted-foreground789">$3.30</span>
+                    SUI <span className="text-muted-foreground789">$3.52</span>
                   </td>
-                  <td>71.1M SUI <span className="text-muted-foreground789">$235M</span></td>
-                  <td>37.4M SUI <span className="text-muted-foreground789">$123M</span></td>
+                  <td>71.2M SUI <span className="text-muted-foreground789">$250M</span></td>
+                  <td>37.5M SUI <span className="text-muted-foreground789">$132M</span></td>
                   <td>70% / 1</td>
-                  <td>2.42%</td>
-                  <td>1.23%</td>
+                  <td>2.43%</td>
+                  <td>1.26%</td>
                 </tr>
                 <tr onClick={() => openModal('USDC')}>
                   <td>
                     <img src="https://s2.coinmarketcap.com/static/img/coins/200x200/3408.png" alt="USDC" className="asset-icon" />
                     USDC <span className="text-muted-foreground789">$0.9999</span>
                   </td>
-                  <td>74.5M USDC <span className="text-muted-foreground789">$74.8M</span></td>
+                  <td>74.8M USDC <span className="text-muted-foreground789">$74.8M</span></td>
                   <td>78.8M USDC <span className="text-muted-foreground789">$78.8M</span></td>
                   <td>77% / 1</td>
-                  <td>8.33%</td>
-                  <td>7.32%</td>
+                  <td>7.79%</td>
+                  <td>4.42%</td>
                 </tr>
                 <tr onClick={() => openModal('suiUSDT')}>
                   <td>
                     <img src="https://momentum-statics.s3.us-west-1.amazonaws.com/suiUSDT.png" alt="suiUSDT" className="asset-icon" />
                     suiUSDT <span className="text-muted-foreground789">$1.00</span>
                   </td>
-                  <td>18.0M suiUSDT <span className="text-muted-foreground789">$18.1M</span></td>
-                  <td>9.26M suiUSDT <span className="text-muted-foreground789">$9.26M</span></td>
+                  <td>18.1M suiUSDT <span className="text-muted-foreground789">$18.1M</span></td>
+                  <td>9.97M suiUSDT <span className="text-muted-foreground789">$9.97M</span></td>
                   <td>77% / 1</td>
-                  <td>5.82%</td>
-                  <td>2.93%</td>
+                  <td>5.50%</td>
+                  <td>3.29%</td>
                 </tr>
                 <tr onClick={() => openModal('AUSD')}>
                   <td>
                     <img src="https://static.agora.finance/ausd-token-icon.svg" alt="AUSD" className="asset-icon" />
-                    AUSD <span className="text-muted-foreground789">$0.9999</span>
+                    AUSD <span className="text-muted-foreground789">$1.00</span>
                   </td>
-                  <td>7.83M AUSD <span className="text-muted-foreground789">$7.83M</span></td>
-                  <td>1.96M AUSD <span className="text-muted-foreground789">$1.96M</span></td>
+                  <td>20M AUSD <span className="text-muted-foreground789">$20M</span></td>
+                  <td>10M AUSD <span className="text-muted-foreground789">$10M</span></td>
                   <td>77% / 1</td>
-                  <td>5.26%</td>
-                  <td>5.88%</td>
+                  <td>6.00%</td>
+                  <td>3.50%</td>
                 </tr>
                 <tr onClick={() => openModal('LBTC')}>
                   <td>
                     <img src="https://www.lombard.finance/lbtc/LBTC.png" alt="LBTC" className="asset-icon" />
-                    LBTC <span className="text-muted-foreground789">$109,725.50</span>
+                    LBTC <span className="text-muted-foreground789">$100,000</span>
                   </td>
-                  <td>517 LBTC <span className="text-muted-foreground789">$56.8M</span></td>
-                  <td>-</td>
-                  <td>56% / 1</td>
-                  <td>1.57%</td>
-                  <td>3.60%</td>
+                  <td>100 LBTC <span className="text-muted-foreground789">$10M</span></td>
+                  <td>50 LBTC <span className="text-muted-foreground789">$5M</span></td>
+                  <td>60% / 1</td>
+                  <td>5.00%</td>
+                  <td>2.50%</td>
                 </tr>
                 <tr onClick={() => openModal('wBTC')}>
                   <td>
                     <img src="https://bridge-assets.sui.io/suiWBTC.png" alt="wBTC" className="asset-icon" />
-                    wBTC <span className="text-muted-foreground789">$109,725.50</span>
+                    wBTC <span className="text-muted-foreground789">$100,000</span>
                   </td>
-                  <td>641 wBTC <span className="text-muted-foreground789">$70.4M</span></td>
-                  <td>3.36 BTC <span className="text-muted-foreground789">$368K</span></td>
-                  <td>56% / 1</td>
-                  <td>2.79%</td>
-                  <td>2.63%</td>
+                  <td>200 wBTC <span className="text-muted-foreground789">$20M</span></td>
+                  <td>100 wBTC <span className="text-muted-foreground789">$10M</span></td>
+                  <td>60% / 1</td>
+                  <td>4.50%</td>
+                  <td>2.30%</td>
                 </tr>
                 <tr onClick={() => openModal('xBTC')}>
                   <td>
                     <img src="https://static.coinall.ltd/cdn/oksupport/common/20250512-095503.72e1f41d9b9a06.png" alt="xBTC" className="asset-icon" />
-                    xBTC <span className="text-muted-foreground789">$109,725.50</span>
+                    xBTC <span className="text-muted-foreground789">$100,000</span>
                   </td>
-                  <td>175 xBTC <span className="text-muted-foreground789">$19.2M</span></td>
-                  <td>5.62 xBTC <span className="text-muted-foreground789">$616K</span></td>
-                  <td>56% / 1</td>
-                  <td>0.05%</td>
-                  <td>2.16%</td>
+                  <td>150 xBTC <span className="text-muted-foreground789">$15M</span></td>
+                  <td>75 xBTC <span className="text-muted-foreground789">$7.5M</span></td>
+                  <td>60% / 1</td>
+                  <td>4.80%</td>
+                  <td>2.40%</td>
                 </tr>
                 <tr onClick={() => openModal('suiETH')}>
                   <td>
                     <img src="https://trade.bluefin.io/tokens/31484f64-6efd-4f82-bbcd-9088c389adc5.png" alt="suiETH" className="asset-icon" />
-                    suiETH <span className="text-muted-foreground789">$4,337.29</span>
+                    suiETH <span className="text-muted-foreground789">$5,000</span>
                   </td>
-                  <td>10.6K suiETH <span className="text-muted-foreground789">$46.2M</span></td>
-                  <td>291 suiETH <span className="text-muted-foreground789">$1.26M</span></td>
-                  <td>70% / 1</td>
-                  <td>2.88%</td>
-                  <td>0.97%</td>
+                  <td>5K suiETH <span className="text-muted-foreground789">$25M</span></td>
+                  <td>2.5K suiETH <span className="text-muted-foreground789">$12.5M</span></td>
+                  <td>65% / 1</td>
+                  <td>5.20%</td>
+                  <td>2.60%</td>
                 </tr>
                 <tr onClick={() => openModal('SOL')}>
                   <td>
                     <img src="https://trade.bluefin.io/tokens/e1547bda-9921-485a-a529-d7624547318a.png" alt="SOL" className="asset-icon" />
-                    SOL <span className="text-muted-foreground789">$206.84</span>
+                    SOL <span className="text-muted-foreground789">$200</span>
                   </td>
-                  <td>21.7K SOL <span className="text-muted-foreground789">$4.50M</span></td>
-                  <td>11.0K SOL <span className="text-muted-foreground789">$2.28M</span></td>
-                  <td>60% / 1</td>
-                  <td>4.37%</td>
-                  <td>4.33%</td>
+                  <td>100K SOL <span className="text-muted-foreground789">$20M</span></td>
+                  <td>50K SOL <span className="text-muted-foreground789">$10M</span></td>
+                  <td>65% / 1</td>
+                  <td>4.70%</td>
+                  <td>2.35%</td>
                 </tr>
                 <tr onClick={() => openModal('DEEP')}>
                   <td>
                     <img src="https://imagedelivery.net/cBNDGgkrsEA-b_ixIp9SkQ/DEEP_BlueBackground.png/public" alt="DEEP" className="asset-icon" />
-                    DEEP <span className="text-muted-foreground789">$0.1366</span>
+                    DEEP <span className="text-muted-foreground789">$0.10</span>
                   </td>
-                  <td>327M DEEP <span className="text-muted-foreground789">$44.7M</span></td>
-                  <td>62.9M DEEP <span className="text-muted-foreground789">$8.61M</span></td>
-                  <td>30% / 1.6</td>
-                  <td>27.41%</td>
-                  <td>9.23%</td>
+                  <td>200M DEEP <span className="text-muted-foreground789">$20M</span></td>
+                  <td>100M DEEP <span className="text-muted-foreground789">$10M</span></td>
+                  <td>50% / 1</td>
+                  <td>6.00%</td>
+                  <td>3.00%</td>
                 </tr>
                 <tr onClick={() => openModal('WAL')}>
                   <td>
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDDWKVQog0SDLcTsqXjWTuUu4cOeA5hZjaSQ&s" alt="WAL" className="asset-icon" />
-                    WAL <span className="text-muted-foreground789">$0.3862</span>
+                    WAL <span className="text-muted-foreground789">$0.50</span>
                   </td>
-                  <td>7.4M WAL <span className="text-muted-foreground789">$28.6M</span></td>
-                  <td>29.4M WAL <span className="text-muted-foreground789">$11.3M</span></td>
-                  <td>30% / 1.6</td>
-                  <td>42.02%</td>
-                  <td>23.50%</td>
+                  <td>40M WAL <span className="text-muted-foreground789">$20M</span></td>
+                  <td>20M WAL <span className="text-muted-foreground789">$10M</span></td>
+                  <td>50% / 1</td>
+                  <td>5.50%</td>
+                  <td>2.75%</td>
                 </tr>
+                
                 <tr className="section-header">
-                  <td colSpan={6}>Isolated assets 12</td>
+                  <td colSpan={6} className="section-title">Isolated assets</td>
                 </tr>
-                <tr onClick={() => openModal('SEND')}>
+                <tr onClick={() => openModal('SNED')}>
                   <td>
-                    <img src="https://trade.bluefin.io/tokens/1a00f220-9815-4ff3-97af-9b776d1ca129.png" alt="SEND" className="asset-icon" />
-                    SEND <span className="text-muted-foreground789">$0.4895</span>
+                    <img src="https://trade.bluefin.io/tokens/1a00f220-9815-4ff3-97af-9b776d1ca129.png" alt="SNED" className="asset-icon" />
+                    SNED <span className="text-muted-foreground789">$0.50</span>
                   </td>
-                  <td>10.3M SEND <span className="text-muted-foreground789">$5.07M</span></td>
-                  <td>3.847 SEND <span className="text-muted-foreground789">$1.883 12</span></td>
-                  <td>0% / 2</td>
-                  <td>0.01%</td>
-                  <td>59.81%</td>
+                  <td>10M SNED <span className="text-muted-foreground789">$5M</span></td>
+                  <td>5M SNED <span className="text-muted-foreground789">$2.5M</span></td>
+                  <td>50% / 1</td>
+                  <td>5.00%</td>
+                  <td>2.50%</td>
                 </tr>
                 <tr onClick={() => openModal('IKA')}>
                   <td>
                     <img src="https://s2.coinmarketcap.com/static/img/coins/200x200/37454.png" alt="IKA" className="asset-icon" />
-                    IKA <span className="text-muted-foreground789">$0.03202</span>
+                    IKA <span className="text-muted-foreground789">$0.03</span>
                   </td>
-                  <td>179M IKA <span className="text-muted-foreground789">$5.75M</span></td>
-                  <td>39.8M IKA <span className="text-muted-foreground789">$1.28M</span></td>
-                  <td>0% / 1.8</td>
-                  <td>128.11%</td>
-                  <td>69.87%</td>
+                  <td>100M IKA <span className="text-muted-foreground789">$3M</span></td>
+                  <td>50M IKA <span className="text-muted-foreground789">$1.5M</span></td>
+                  <td>40% / 1</td>
+                  <td>6.00%</td>
+                  <td>3.00%</td>
                 </tr>
                 <tr onClick={() => openModal('HAEDAL')}>
                   <td>
                     <img src="https://node1.irys.xyz/Rp80fmqZS3qBDnfyxyKEvc65nVdTunjOG3NY8T6AjpI" alt="HAEDAL" className="asset-icon" />
-                    HAEDAL <span className="text-muted-foreground789">$0.1287</span>
+                    HAEDAL <span className="text-muted-foreground789">$0.15</span>
                   </td>
-                  <td>7.688 HAEDAL <span className="text-muted-foreground789">$918K</span></td>
-                  <td>116K HAEDAL <span className="text-muted-foreground789">$15.1K</span></td>
-                  <td>0% / 2</td>
-                  <td>20.82%</td>
-                  <td>22.64%</td>
+                  <td>20M HAEDAL <span className="text-muted-foreground789">$3M</span></td>
+                  <td>10M HAEDAL <span className="text-muted-foreground789">$1.5M</span></td>
+                  <td>50% / 1</td>
+                  <td>5.50%</td>
+                  <td>2.75%</td>
                 </tr>
                 <tr onClick={() => openModal('BLUE')}>
                   <td>
                     <img src="https://bluefin.io/images/square.png" alt="BLUE" className="asset-icon" />
-                    BLUE <span className="text-muted-foreground789">$0.06924</span>
+                    BLUE <span className="text-muted-foreground789">$0.08</span>
                   </td>
-                  <td>448K BLUE <span className="text-muted-foreground789">$31.1K</span></td>
-                  <td>332 BLUE <span className="text-muted-foreground789">$23.05</span></td>
-                  <td>0% / 2</td>
-                  <td>0.01%</td>
-                  <td>29.32%</td>
+                  <td>40M BLUE <span className="text-muted-foreground789">$3.2M</span></td>
+                  <td>20M BLUE <span className="text-muted-foreground789">$1.6M</span></td>
+                  <td>45% / 1</td>
+                  <td>5.80%</td>
+                  <td>2.90%</td>
                 </tr>
                 <tr onClick={() => openModal('NS')}>
                   <td>
                     <img src="https://token-image.suins.io/icon.svg" alt="NS" className="asset-icon" />
-                    NS <span className="text-muted-foreground789">$0.1116</span>
+                    NS <span className="text-muted-foreground789">$0.14</span>
                   </td>
-                  <td>301K NS <span className="text-muted-foreground789">$33.7K</span></td>
-                  <td>2.222 NS <span className="text-muted-foreground789">$248.06</span></td>
-                  <td>0% / 2</td>
-                  <td>0.11%</td>
-                  <td>29.15%</td>
+                  <td>25M NS <span className="text-muted-foreground789">$3.5M</span></td>
+                  <td>12.5M NS <span className="text-muted-foreground789">$1.75M</span></td>
+                  <td>50% / 1</td>
+                  <td>5.20%</td>
+                  <td>2.60%</td>
                 </tr>
                 <tr onClick={() => openModal('DMC')}>
                   <td>
                     <img src="https://storage.googleapis.com/tokenimage.deloreanlabs.com/DMCTokenIcon.svg" alt="DMC" className="asset-icon" />
-                    DMC <span className="text-muted-foreground789">$0.02075</span>
+                    DMC <span className="text-muted-foreground789">$0.10</span>
                   </td>
-                  <td>92.0M DMC <span className="text-muted-foreground789">$1.91K</span></td>
-                  <td>0.01 DMC <span className="text-muted-foreground789">$0.00</span></td>
-                  <td>0% / 2</td>
-                  <td>16.75%</td>
-                  <td>50.00%</td>
+                  <td>30M DMC <span className="text-muted-foreground789">$3M</span></td>
+                  <td>15M DMC <span className="text-muted-foreground789">$1.5M</span></td>
+                  <td>45% / 1</td>
+                  <td>5.60%</td>
+                  <td>2.80%</td>
+                </tr>
+                <tr onClick={() => openModal('ALKIMI')}>
+                  <td>
+                    <img src="https://www.alkimi.org/images/img1_circle.png" alt="ALKIMI" className="asset-icon" />
+                    ALKIMI <span className="text-muted-foreground789">$0.20</span>
+                  </td>
+                  <td>15M ALKIMI <span className="text-muted-foreground789">$3M</span></td>
+                  <td>7.5M ALKIMI <span className="text-muted-foreground789">$1.5M</span></td>
+                  <td>50% / 1</td>
+                  <td>5.40%</td>
+                  <td>2.70%</td>
+                </tr>
+                
+                <tr onClick={() => openModal('mUSD')}>
+                  <td>
+                    <img src="https://mstable.io/coins/musd.svg" alt="mUSD" className="asset-icon" />
+                    mUSD <span className="text-muted-foreground789">$1.00</span>
+                  </td>
+                  <td>3M mUSD <span className="text-muted-foreground789">$3M</span></td>
+                  <td>1.5M mUSD <span className="text-muted-foreground789">$1.5M</span></td>
+                  <td>77% / 1</td>
+                  <td>5.00%</td>
+                  <td>2.50%</td>
+                </tr>
+                <tr onClick={() => openModal('BUCK')}>
+                  <td>
+                    <img src="https://imagedelivery.net/cBNDGgkrsEA-b_ixIp9SkQ/buck.svg/public" alt="BUCK" className="asset-icon" />
+                    BUCK <span className="text-muted-foreground789">$1.00</span>
+                  </td>
+                  <td>3M BUCK <span className="text-muted-foreground789">$3M</span></td>
+                  <td>1.5M BUCK <span className="text-muted-foreground789">$1.5M</span></td>
+                  <td>77% / 1</td>
+                  <td>5.10%</td>
+                  <td>2.55%</td>
+                </tr>
+                
+                <tr className="expandable-section" onClick={() => toggleSection('memes')}>
+                  <td colSpan={6}>
+                    <div className="section-title">
+                      MEMEs
+                      <svg className={`arrow-icon ${expandedSections['memes'] ? 'rotated' : ''}`} viewBox="0 0 12 12" width="12px" height="12px">
+                        <path d="M6 8L2 4h8L6 8z" fill="var(--text-color)" />
+                      </svg>
+                    </div>
+                  </td>
+                </tr>
+                {expandedSections['memes'] && (
+                  <>
+                    <tr onClick={() => openModal('HIPPO')}>
+                      <td>
+                        <img src="https://bafybeiaucaw7u4qit3yn4hwjm4sks65d7vgsup4fa6l654inpc33ieu674.ipfs.w3s.link/hippo.webp" alt="HIPPO" className="asset-icon" />
+                        HIPPO <span className="text-muted-foreground789">$0.01</span>
+                      </td>
+                      <td>500M HIPPO <span className="text-muted-foreground789">$5M</span></td>
+                      <td>250M HIPPO <span className="text-muted-foreground789">$2.5M</span></td>
+                      <td>30% / 1</td>
+                      <td>10.00%</td>
+                      <td>5.00%</td>
+                    </tr>
+                    <tr onClick={() => openModal('FUD')}>
+                      <td>
+                        <img src="https://trade.bluefin.io/tokens/2e8a84a8-cd15-4d71-baac-b90861de8b10.png" alt="FUD" className="asset-icon" />
+                        FUD <span className="text-muted-foreground789">$0.0001</span>
+                      </td>
+                      <td>10B FUD <span className="text-muted-foreground789">$1M</span></td>
+                      <td>5B FUD <span className="text-muted-foreground789">$0.5M</span></td>
+                      <td>20% / 1</td>
+                      <td>15.00%</td>
+                      <td>7.50%</td>
+                    </tr>
+                  </>
+                )}
+                
+                <tr className="section-header">
+                  <td colSpan={6} className="section-title">Deprecated assets</td>
+                </tr>
+               
+                <tr onClick={() => openModal('wUSDC')}>
+                  <td>
+                    <img src="https://trade.bluefin.io/tokens/82d109e2-a769-40fd-a1b9-0717886af64a.png" alt="wUSDC" className="asset-icon" />
+                    wUSDC <span className="text-muted-foreground789">$1.00</span>
+                  </td>
+                  <td>2M wUSDC <span className="text-muted-foreground789">$2M</span></td>
+                  <td>-</td>
+                  <td>0% / -</td>
+                  <td>0.00%</td>
+                  <td>0.00%</td>
+                </tr>
+                <tr onClick={() => openModal('wUSDT')}>
+                  <td>
+                    <img src="https://trade.bluefin.io/tokens/4e661e54-a1d9-4e82-903f-7b9328f8362f.png" alt="wUSDT" className="asset-icon" />
+                    wUSDT <span className="text-muted-foreground789">$1.00</span>
+                  </td>
+                  <td>1.5M wUSDT <span className="text-muted-foreground789">$1.5M</span></td>
+                  <td>-</td>
+                  <td>0% / -</td>
+                  <td>0.00%</td>
+                  <td>0.00%</td>
+                </tr>
+                <tr onClick={() => openModal('wETH')}>
+                  <td>
+                    <img src="https://trade.bluefin.io/tokens/df6243a7-9d26-4010-890f-6f8d86fb51e4.png" alt="wETH" className="asset-icon" />
+                    wETH <span className="text-muted-foreground789">$5,000</span>
+                  </td>
+                  <td>500 wETH <span className="text-muted-foreground789">$2.5M</span></td>
+                  <td>-</td>
+                  <td>0% / -</td>
+                  <td>0.00%</td>
+                  <td>0.00%</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
         <div className="sidebar789">
-          <div className="card789 unclaimed-rewards">
-            <div className="p-4 flex flex-col gap-2 space-y-0 rounded-t-[3px] bg-card">
-              <div className="flex h-5 flex-row items-center justify-between">
-                <div className="flex flex-row items-center gap-1">
-                  <div className="cursor-pointer">
-                    <h2 className="font-mono text-sm font-normal font-normal flex flex-row items-center gap-2 uppercase w-full text-primary789">
-                      Unclaimed rewards
-                      <span className="text-xs text-muted-foreground789">&lt;$0.01</span>
-                    </h2>
-                  </div>
-                </div>
-                <div className="flex flex-row items-center justify-end gap-1">
-                  <button className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-muted/10 hover:text-foreground h-8 w-8 rounded-sm gap-1 text-muted-foreground">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-up w-4 h-4 shrink-0 transition-colors">
-                      <path d="m18 15-6-6-6 6"></path>
-                    </svg>
-                    <span className="sr-only">Toggle</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="p-4 pt-0 flex flex-col gap-4 rounded-b-[3px] bg-card">
-              <div className="grid w-full grid-cols-2 gap-x-4 gap-y-1">
-                <div className="flex flex-row items-center gap-1.5">
-                  <div className="relative shrink-0" style={{width: '16px', height: '16px'}}>
-                    <img className="relative z-[1] rounded-[50%]" src="https://trade.bluefin.io/tokens/sSUI.png" alt="sSUI logo" style={{width: '16px', height: '16px'}} />
-                  </div>
-                  <p className="text-foreground font-mono text-sm font-normal">
-                    &lt;0.01 sSUI
-                  </p>
-                </div>
-              </div>
-              <div className="w-max">
-                <button className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-foreground hover:bg-primary/90 h-8 rounded-sm px-3 py-2 gap-1 w-[150px]">
-                  <p className="font-mono font-normal text-sm text-inherit transition-colors uppercase">
-                    Claim rewards
-                  </p>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-down w-3 h-3 shrink-0">
-                    <path d="m6 9 6 6 6-6"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
+
+
+          <div style={{
+  padding: '1rem',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '0.5rem',
+  border: '1px solid',
+  borderImage: 'linear-gradient(to right, #00ffff, #00b7eb) 1',
+  borderRadius: '0.1875rem'
+}}>
+  <style>
+    {`
+      .unclaimed-rewards-header {
+        display: flex;
+        height: 1.25rem;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .unclaimed-rewards-title {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.25rem;
+        cursor: pointer;
+      }
+      .section-title {
+        color: #00ffff;
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 700;
+      }
+      .token-image {
+        width: 1rem;
+        height: 1rem;
+        vertical-align: middle;
+        color: #ffffff;
+      }
+      .toggle-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: colors 0.2s ease;
+        height: 2rem;
+        width: 2rem;
+        border-radius: 0.125rem;
+        gap: 0.25rem;
+        color: #9ca3af;
+      }
+      .toggle-button:hover {
+        background-color: rgba(156, 163, 175, 0.1);
+        color: #ffffff;
+      }
+      .toggle-button svg {
+        width: 1rem;
+        height: 1rem;
+        transition: color 0.2s ease;
+      }
+      .claim-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: colors 0.2s ease;
+        height: 2rem;
+        border-radius: 0.125rem;
+        padding: 0 0.75rem;
+        gap: 0.25rem;
+        width: 150px;
+        background-color: #1e40af;
+        color: #00ffff;
+      }
+      .claim-button:hover {
+        background-color: #1e40af;
+        opacity: 0.9;
+      }
+      .claim-button p {
+        font-family: 'monospace';
+        font-weight: normal;
+        text-transform: uppercase;
+        margin: 0;
+      }
+      .claim-button svg {
+        width: 0.75rem;
+        height: 0.75rem;
+      }
+    `}
+  </style>
+  <div className="unclaimed-rewards-header">
+    <div className="unclaimed-rewards-title">
+      <h2 className="section-title">
+        Unclaimed rewards&lt;$0.01 sSUI
+        <img src="https://trade.bluefin.io/tokens/sSUI.png" alt="sSUI" className="token-image" />
+      </h2>
+    </div>
+    <div className="flex flex-row items-center justify-end gap-1">
+      <button className="toggle-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-up w-4 h-4 shrink-0 transition-colors">
+          <path d="m18 15-6-6-6 6"></path>
+        </svg>
+        <span className="sr-only">Toggle</span>
+      </button>
+    </div>
+  </div>
+  <button className="claim-button" type="button" id="radix-:rh7a:" aria-haspopup="menu" aria-expanded="false" data-state="closed" data-sentry-element="DropdownMenuTrigger" data-sentry-source-file="DropdownMenu.tsx">
+    <p className="font-mono font-normal text-sm text-inherit transition-colors uppercase">Claim rewards</p>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-chevron-down w-3 h-3 shrink-0 transition-colors">
+      <path d="m6 9 6 6 6-6"></path>
+    </svg>
+  </button>
+</div>
+
+
           <div className="card789 account">
             <div className="p-4 flex flex-col gap-2 space-y-0 rounded-t-[3px] bg-card">
               <div className="flex h-5 flex-row items-center justify-between">
                 <div className="flex flex-row items-center gap-1">
                   <div className="cursor-pointer">
-                    <h2 className="font-mono text-sm font-normal flex flex-row items-center gap-2 uppercase w-full text-primary789">
+                    <h2 className="section-title">
                       Account
                     </h2>
                   </div>
@@ -806,7 +982,7 @@ const Market = () => {
                       Deposits
                     </p>
                     <p className="text-foreground font-mono text-sm font-normal w-max text-center">
-                      &lt;$0.81
+                      &lt;$0.01
                     </p>
                   </div>
                   <p className="text-muted-foreground font-sans text-xs font-normal">
@@ -827,7 +1003,7 @@ const Market = () => {
                   Net APR
                 </p>
                 <p className="text-foreground font-mono text-sm font-normal w-max text-right">
-                  3.48%
+                  3.47%
                 </p>
               </div>
               <div className="flex flex-row justify-between gap-2">
@@ -893,14 +1069,9 @@ const Market = () => {
               <div className="flex h-5 flex-row items-center justify-between">
                 <div className="flex flex-row items-center gap-1">
                   <div className="cursor-pointer">
-                    <h2 className="text-primary789 font-mono text-sm font-normal flex flex-row items-center gap-2 uppercase w-full">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-download w-4 h-4 shrink-0">
-                        <path d="M21 15v4a2 0 0 1-2 2H5a2 0 0 1-2-2v-4"></path>
-                        <polyline points="7 10 12 15 17 10"></polyline>
-                        <line x1="12" x2="12" y1="15" y2="3"></line>
-                      </svg>
+                    <h2 className="section-title">
                       Deposited assets
-                      <span className="text-xs text-muted-foreground789">2</span>
+                    
                     </h2>
                   </div>
                 </div>
@@ -961,39 +1132,7 @@ const Market = () => {
                                 </a>
                               </div>
                               <p className="text-muted-foreground font-mono text-xs font-normal">
-                                $3.30
-                              </p>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="p-4 align-middle h-16 pl-0">
-                          <div className="flex flex-col items-end gap-1">
-                            <p className="text-foreground font-mono text-sm font-normal text-right">
-                              &lt;0.01
-                            </p>
-                            <p className="text-muted-foreground font-mono text-xs font-normal text-right">
-                              &lt;$0.01
-                            </p>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr className="border-b transition-colors cursor-pointer hover:bg-muted/10">
-                        <td className="p-4 align-middle h-16 pr-0">
-                          <div className="flex flex-row items-center gap-3">
-                            <div className="relative shrink-0" style={{width: '28px', height: '28px'}}>
-                              <img className="relative z-[1] rounded-[50%]" src="https://imagedelivery.net/cBNDGgkrsEA-b_ixIp9SkQ/DEEP_BlueBackground.png/public" alt="DEEP" style={{width: '28px', height: '28px'}} />
-                            </div>
-                            <div className="flex flex-col gap-1">
-                              <div className="flex flex-row flex-wrap items-baseline gap-x-2 gap-y-1">
-                                <p className="text-foreground font-mono text-sm font-normal">
-                                  DEEP
-                                </p>
-                                <a className="font-medium decoration-foreground/50 transition-colors hover:decoration-primary-foreground/50 block shrink-0 text-xs uppercase text-muted-foreground no-underline hover:text-foreground" href="/swap/DEEP-SUI?swapInAccount=true">
-                                  Swap
-                                </a>
-                              </div>
-                              <p className="text-muted-foreground font-mono text-xs font-normal">
-                                $0.1366
+                                $3.52
                               </p>
                             </div>
                           </div>
@@ -1020,14 +1159,9 @@ const Market = () => {
               <div className="flex h-5 flex-row items-center justify-between">
                 <div className="flex flex-row items-center gap-1">
                   <div className="cursor-pointer">
-                    <h2 className="text-primary789 font-mono text-sm font-normal flex flex-row items-center gap-2 uppercase w-full">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-upload w-4 h-4 shrink-0">
-                        <path d="M21 15v4a2 0 0 1-2 2H5a2 0 0 1-2-2v-4"></path>
-                        <polyline points="17 8 12 3 7 8"></polyline>
-                        <line x1="12" x2="12" y1="3" y2="15"></line>
-                      </svg>
+                    <h2 className="section-title">
                       Borrowed assets
-                      <span className="text-xs text-muted-foreground789">0</span>
+                      
                     </h2>
                   </div>
                 </div>
@@ -1090,13 +1224,9 @@ const Market = () => {
               <div className="flex h-5 flex-row items-center justify-between">
                 <div className="flex flex-row items-center gap-1">
                   <div className="cursor-pointer">
-                    <h2 className="text-primary789 font-mono text-sm font-normal flex flex-row items-center gap-2 uppercase w-full">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-wallet w-4 h-4 shrink-0">
-                        <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"></path>
-                        <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"></path>
-                      </svg>
+                    <h2 className="section-title">
                       Wallet balances
-                      <span className="text-xs text-muted-foreground789">$1.84+</span>
+                     
                     </h2>
                   </div>
                 </div>
@@ -1145,16 +1275,22 @@ const Market = () => {
                         <td className="p-4 align-middle h-16 pr-0">
                           <div className="flex flex-row items-center gap-3">
                             <div className="relative shrink-0" style={{width: '28px', height: '28px'}}>
-                              <img className="relative z-[1] rounded-[50%]" src="https://suilend.fi/icons/sui.png" alt="SUI SWAP STAKE" style={{width: '28px', height: '28px'}} />
+                              <img className="relative z-[1] rounded-[50%]" src="https://suilend.fi/icons/sui.png" alt="SUI" style={{width: '28px', height: '28px'}} />
                             </div>
                             <div className="flex flex-col gap-1">
                               <div className="flex flex-row flex-wrap items-baseline gap-x-2 gap-y-1">
                                 <p className="text-foreground font-mono text-sm font-normal">
-                                  SUI SWAP STAKE
+                                  SUI
                                 </p>
+                                <a className="font-medium decoration-foreground/50 transition-colors hover:decoration-primary-foreground/50 block shrink-0 text-xs uppercase text-muted-foreground no-underline hover:text-foreground" href="/swap/SUI-USDC">
+                                  Swap
+                                </a>
+                                <a className="font-medium decoration-foreground/50 transition-colors hover:decoration-primary-foreground/50 block shrink-0 text-xs uppercase text-muted-foreground no-underline hover:text-foreground" href="https://springsui.com/SUI-sSUI">
+                                  Stake
+                                </a>
                               </div>
                               <p className="text-muted-foreground font-mono text-xs font-normal">
-                                $3.30
+                                $3.52
                               </p>
                             </div>
                           </div>
@@ -1165,7 +1301,7 @@ const Market = () => {
                               0.55
                             </p>
                             <p className="text-muted-foreground font-mono text-xs font-normal text-right">
-                              $1.84
+                              $1.93
                             </p>
                           </div>
                         </td>
@@ -1174,16 +1310,19 @@ const Market = () => {
                         <td className="p-4 align-middle h-16 pr-0">
                           <div className="flex flex-row items-center gap-3">
                             <div className="relative shrink-0" style={{width: '28px', height: '28px'}}>
-                              <img className="relative z-[1] rounded-[50%]" src="https://token-image.suins.io/icon.svg" alt="NS SWAP" style={{width: '28px', height: '28px'}} />
+                              <img className="relative z-[1] rounded-[50%]" src="https://token-image.suins.io/icon.svg" alt="NS" style={{width: '28px', height: '28px'}} />
                             </div>
                             <div className="flex flex-col gap-1">
                               <div className="flex flex-row flex-wrap items-baseline gap-x-2 gap-y-1">
                                 <p className="text-foreground font-mono text-sm font-normal">
-                                  NS SWAP
+                                  NS
                                 </p>
+                                <a className="font-medium decoration-foreground/50 transition-colors hover:decoration-primary-foreground/50 block shrink-0 text-xs uppercase text-muted-foreground no-underline hover:text-foreground" href="/swap/NS-SUI">
+                                  Swap
+                                </a>
                               </div>
                               <p className="text-muted-foreground font-mono text-xs font-normal">
-                                $0.1116
+                                $0.14
                               </p>
                             </div>
                           </div>
@@ -1199,46 +1338,20 @@ const Market = () => {
                           </div>
                         </td>
                       </tr>
-                      <tr className="border-b transition-colors cursor-pointer hover:bg-muted/10">
+                      <tr className="border-b transition-colors hover:bg-transparent cursor-default">
                         <td className="p-4 align-middle h-16 pr-0">
                           <div className="flex flex-row items-center gap-3">
                             <div className="relative shrink-0" style={{width: '28px', height: '28px'}}>
-                              <img className="relative z-[1] rounded-[50%]" src="https://imagedelivery.net/cBNDGgkrsEA-b_ixIp9SkQ/DEEP_BlueBackground.png/public" alt="DEEP SWAP" style={{width: '28px', height: '28px'}} />
+                              <img className="relative z-[1] rounded-[50%]" src="https://api.movepump.com/uploads/DALLA_E_2024_09_14_20_36_43_A_cute_cartoonish_octopus_designed_as_a_profile_picture_The_octopus_has_a_round_friendly_face_with_big_adorable_eyes_and_a_cheerful_smile_It_is_pr_b57590d63d.webp" alt="OCTO" style={{width: '28px', height: '28px'}} />
                             </div>
                             <div className="flex flex-col gap-1">
                               <div className="flex flex-row flex-wrap items-baseline gap-x-2 gap-y-1">
                                 <p className="text-foreground font-mono text-sm font-normal">
-                                  DEEP SWAP
+                                  OCTO
                                 </p>
-                              </div>
-                              <p className="text-muted-foreground font-mono text-xs font-normal">
-                                $0.1366
-                              </p>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="p-4 align-middle h-16 pl-0">
-                          <div className="flex flex-col items-end gap-1">
-                            <p className="text-foreground font-mono text-sm font-normal text-right">
-                              0.00
-                            </p>
-                            <p className="text-muted-foreground font-mono text-xs font-normal text-right">
-                              $0.00
-                            </p>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr className="border-b transition-colors cursor-pointer hover:bg-muted/10">
-                        <td className="p-4 align-middle h-16 pr-0">
-                          <div className="flex flex-row items-center gap-3">
-                            <div className="relative shrink-0" style={{width: '28px', height: '28px'}}>
-                              <img className="relative z-[1] rounded-[50%]" src="https://api.movepump.com/uploads/DALLA_E_2024_09_14_20_36_43_A_cute_cartoonish_octopus_designed_as_a_profile_picture_The_octopus_has_a_round_friendly_face_with_big_adorable_eyes_and_a_cheerful_smile_It_is_pr_b57590d63d.webp" alt="OCTO SWAP" style={{width: '28px', height: '28px'}} />
-                            </div>
-                            <div className="flex flex-col gap-1">
-                              <div className="flex flex-row flex-wrap items-baseline gap-x-2 gap-y-1">
-                                <p className="text-foreground font-mono text-sm font-normal">
-                                  OCTO SWAP
-                                </p>
+                                <a className="font-medium decoration-foreground/50 transition-colors hover:decoration-primary-foreground/50 block shrink-0 text-xs uppercase text-muted-foreground no-underline hover:text-foreground" href="/swap/0x4b6d48afff2948c3ccc67191cf0ef175637472b007c1a8601fa18e16e236909c::octo::OCTO-SUI">
+                                  Swap
+                                </a>
                               </div>
                               <p className="text-muted-foreground font-mono text-xs font-normal">
                                 --
