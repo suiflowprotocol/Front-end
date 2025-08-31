@@ -395,7 +395,7 @@ const Market = () => {
       )}
       <div className="main-content789">
         <div className="content-column">
-          <div className="card789 market-summary" style={{width: '95%'}}>
+          <div className="card789 market-summary" style={{width: '100%'}}>
             <div className="card-header">
               <h2 className="section-title">Main Market</h2>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-muted-foreground789">
@@ -478,7 +478,7 @@ const Market = () => {
                   <>
                     <tr onClick={() => openModal('oshiSUI')}>
                       <td style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '8px' }}>
-  <img src="https://bafybeib6vvpcgfgfql6ijoeckkzrcuijvvmnq3xmrp3krb75dgsyvq2oq5ei.ipfs.w3s.link/OSUI.png" alt="oshiSUI" style={{ width: 32, height: 32 }} />
+  <img src="https://bafybeib6vvpcgfql6ijoeckkzrcuijvvmnq3xmrp3krb75dgsyvq2oq5ei.ipfs.w3s.link/OSUI.png" alt="oshiSUI" style={{ width: 32, height: 32 }} />
   <div style={{ display: 'flex', flexDirection: 'column' }}>
     <span style={{ color: '#FFFFFF', fontSize: '14px' }}>oshiSUI</span>
     <span style={{ color: '#6B7280', fontSize: '14px' }}>${getPrice('SUI')}</span>
@@ -1025,7 +1025,7 @@ const Market = () => {
         cursor: pointer;
       }
       .section-title {
-        color: #00ffff;
+        color: #1E3A8A;
         margin: 0;
         font-size: 1rem;
         font-weight: 700;
@@ -1111,7 +1111,7 @@ const Market = () => {
     </div>
   </div>
   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-    <span className="gray-small">&lt;$0.01 sSUI</span>
+    <span className="gray-small">$0.00 sSUI</span>
     <img src="https://trade.bluefin.io/tokens/sSUI.png" alt="sSUI" className="token-image" />
   </div>
   <button className="claim-button" type="button" id="radix-:rh7a:" aria-haspopup="menu" aria-expanded="false" data-state="closed" data-sentry-element="DropdownMenuTrigger" data-sentry-source-file="DropdownMenu.tsx">
@@ -1231,8 +1231,8 @@ const Market = () => {
                     <div className="relative z-[1] h-full bg-muted/20" style={{width: '0%'}}></div>
                     <div className="relative z-[1] h-full bg-muted/20" style={{width: '0%'}}></div>
                     <div className="relative z-[1] h-full bg-muted/20" style={{width: '100%'}}></div>
-                    <div className="relative bottom-0 top-0 z-[2] w-1 -translate-x-1/2 bg-primary" style={{left: '0%'}}></div>
-                    <div className="relative bottom-0 top-0 z-[2] w-1 -translate-x-1/2 bg-secondary" style={{left: '0%'}}></div>
+                    <div className="absolute bottom-0 top-0 z-[2] w-1 -translate-x-1/2 bg-primary" style={{left: '0%'}}></div>
+                    <div className="absolute bottom-0 top-0 z-[2] w-1 -translate-x-1/2 bg-secondary" style={{left: '0%'}}></div>
                   </div>
                 </div>
                 <div className="relative flex w-full flex-row items-center justify-center">
@@ -1563,22 +1563,22 @@ const Market = () => {
             </div>
           </div>
         ) : (
-          <div className="absolute bottom-0 right-0 top-0 w-[360px] overflow-y-auto">
-            <div className="flex w-full shrink-0 flex-col gap-4">
-              <div className="border bg-card text-unset w-full overflow-hidden rounded-sm shadow-none" data-sentry-element="CardRoot" data-sentry-component="Card" data-sentry-source-file="Card.tsx" style={{backgroundImage: 'url("https://d29k09wtkr1a3e.cloudfront.net/suilend/leaderboard/header.png")', backgroundPosition: 'center center', backgroundSize: 'cover', backgroundRepeat: 'no-repeat', border: '1px solid #00ffff', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0, 255, 255, 0.2)'}}>
-                <div className="flex flex-col items-center justify-center gap-4 bg-card/75 p-4">
-                  <p className="font-mono text-sm font-normal text-center uppercase text-foreground" style={{textShadow: '0 0 4px #00ffff'}}>Start earning rewards</p>
-                  <button className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-foreground bg-transparent hover:bg-foreground/20 h-8 rounded-sm px-3 py-2 gap-1" onClick={() => setIsConnectModalOpen(true)} style={{borderColor: '#00b7eb', background: 'linear-gradient(to right, #00ffff20, #00b7eb20)', transition: 'all 0.3s ease'}}>
+          <div className="sidebar789">
+            <div className="flex w-full shrink-0 flex-col gap-8">
+              <div className="border bg-card text-unset w-full overflow-hidden rounded-sm shadow-none card789" data-sentry-element="CardRoot" data-sentry-component="Card" data-sentry-source-file="Card.tsx" style={{backgroundImage: 'url("https://d29k09wtkr1a3e.cloudfront.net/suilend/leaderboard/header.png")', backgroundPosition: 'center center', backgroundSize: 'cover', backgroundRepeat: 'no-repeat', border: '1px solid var(--border-color)', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0, 255, 255, 0.2)', backgroundColor: 'var(--light-bg)'}}>
+                <div className="flex flex-col items-center justify-center gap-4 bg-card/75 p-4" style={{padding: '24px', height: '200px'}}>
+                  <p className="font-mono text-sm font-normal text-center uppercase text-foreground" style={{textShadow: '0 0 4px #00ffff', marginBottom: '16px'}}>Start earning rewards</p>
+                  <button className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-foreground bg-transparent hover:bg-foreground/20 h-8 rounded-sm px-3 py-2 gap-1" onClick={() => setIsConnectModalOpen(true)} style={{borderColor: '#00b7eb', background: 'linear-gradient(to right, #00ffff20, #00b7eb20)', transition: 'all 0.3s ease', marginBottom: '16px'}}>
                     <p className="font-mono font-normal text-sm text-inherit transition-colors uppercase" style={{color: '#00ffff'}}>Connect wallet</p>
                   </button>
                 </div>
               </div>
-              <div className="border bg-card text-unset w-full overflow-hidden rounded-sm shadow-none" data-sentry-element="CardRoot" data-sentry-component="Card" data-sentry-source-file="Card.tsx" style={{border: '1px solid #00ffff', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0, 255, 255, 0.2)'}}>
+              <div className="border bg-card text-unset w-full overflow-hidden rounded-sm shadow-none card789" data-sentry-element="CardRoot" data-sentry-component="Card" data-sentry-source-file="Card.tsx" style={{border: '1px solid var(--border-color)', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0, 255, 255, 0.2)', backgroundColor: 'var(--light-bg)'}}>
                 <div className="p-4 flex flex-col gap-2 space-y-0">
                   <div className="flex h-5 flex-row items-center justify-between">
                     <div className="flex flex-row items-center gap-1">
                       <div className="">
-                        <h2 className="text-primary font-mono text-sm font-normal flex flex-row items-center gap-2 uppercase w-full" data-sentry-element="TTitle" data-sentry-component="TitleWithIcon" data-sentry-source-file="TitleWithIcon.tsx" style={{color: '#00ffff', textShadow: '0 0 4px #00b7eb'}}>Account</h2>
+                        <h2 className="text-primary font-mono text-xs font-normal flex flex-row items-center gap-2 uppercase w-full" data-sentry-element="TTitle" data-sentry-component="TitleWithIcon" data-sentry-source-file="TitleWithIcon.tsx" style={{color: '#3B82F6', textShadow: '0 0 4px #00b7eb'}}>Account</h2>
                       </div>
                     </div>
                   </div>
@@ -1586,7 +1586,6 @@ const Market = () => {
                 <div className="p-4 pt-0" data-sentry-element="CardContent" data-sentry-source-file="AccountPositionCard.tsx">
                   <p className="text-muted-foreground font-sans text-xs font-normal" style={{color: '#d1d5db', textAlign: 'center'}}>Get started by connecting your wallet.</p>
                 </div>
-                <ConnectModal trigger={<button className="connect-trigger" style={{display: 'block', margin: '0 auto', background: 'linear-gradient(to right, #00ffff20, #00b7eb20)', border: '1px solid #00b7eb', color: '#00ffff', padding: '8px 16px', borderRadius: '4px', transition: '0.3s'}}>Connect Wallet</button>} open={isConnectModalOpen} onOpenChange={setIsConnectModalOpen} walletFilter={walletFilter} />
               </div>
             </div>
           </div>
@@ -1595,7 +1594,7 @@ const Market = () => {
       {isModalOpen && selectedAsset && (
         <AssetModal asset={selectedAsset} onClose={closeModal} />
       )}
-     
+      <ConnectModal trigger={<div></div>} open={isConnectModalOpen} onOpenChange={setIsConnectModalOpen} walletFilter={walletFilter} />
     </div>
   );
 };
