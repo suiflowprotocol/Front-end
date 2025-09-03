@@ -380,7 +380,7 @@ const CreatePoolPage: React.FC = () => {
           <div className="header-left">
             <div className="logo-container">
               <img src="https://i.meee.com.tw/SdliTGK.png" alt="Logo" className="logo-image" />
-              <span className="logo-text">Seal</span>
+              <span className="logo-text">SuiFlow</span>
             </div>
           </div>
           {!isMobile ? (
@@ -422,7 +422,7 @@ const CreatePoolPage: React.FC = () => {
                     </svg>
                     Rewards
                   </a>
-                  <Link to="/xseal" className="dropdown-item">
+                  <Link to="/xSuiFlow" className="dropdown-item">
                     <svg aria-hidden="true" fill="#e2e8f0" width="20px" height="20px" viewBox="0 0 16 16">
                       <path d="M5.338 1.59a61 61 0 0 0-2.837.856.48.48 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.7 10.7 0 0 0 2.287 2.233c.346.244.652.42 .893.533q.18.085.293.118a1 1 0 0 0 .101.025 1 1 0 0 0 .1-.025q.114-.034.294-.118c .24-.113.547-.29.893-.533a10.7 10.7 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072 .56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.8 11.8 0 0 1-2.517 2.453 7 7 0 0 1-1.048 .625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7 7 0 0 1-1.048-.625 11.8 11.8 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692a1.54 1.54 0 0 1 1.044-1.262c.658-.215 1.777-.562 2.887-.87z"/>
 <path d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
@@ -494,12 +494,12 @@ const CreatePoolPage: React.FC = () => {
           )}
           <div className="wallet-actions">
             <CustomConnectButton />
-            <a href="https://x.com/sealprotocol_" target="_blank" rel="noopener noreferrer" className="icon-button">
+            <a href="https://x.com/SuiFlowprotocol_" target="_blank" rel="noopener noreferrer" className="icon-button">
               <svg aria-hidden="true" fill="#94a3b8" width="20px" height="20px" viewBox="0 0 24 24">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1 2.25h7.28l4.71 6.23zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
               </svg>
             </a>
-            <a href="https://t.me/sealprotocol" target="_blank" rel="noopener noreferrer" className="icon-button">
+            <a href="https://t.me/SuiFlowprotocol" target="_blank" rel="noopener noreferrer" className="icon-button">
               <svg aria-hidden="true" fill="#94a3b8" width="20px" height="20px" viewBox="0 0 24 24">
                 <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.06L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/>
               </svg>

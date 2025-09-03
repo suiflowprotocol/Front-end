@@ -87,20 +87,20 @@ function LaunchPage() {
         top: `${glowPosition.y}%`,
       }}></div>
       <div className="logo-container30">
-        <img src="https://i.meee.com.tw/SdliTGK.png" alt="Seal Logo" className="logo-image30" />
-        <span className="logo-text30">Seal</span>
+        <img src="https://i.meee.com.tw/SdliTGK.png" alt="SuiFlow Logo" className="logo-image30" />
+        <span className="logo-text30">SuiFlow</span>
       </div>
       <div className="social-buttons30">
-        <a href="https://github.com/sealprotocol?tab=repositories" target="_blank" rel="noopener noreferrer" className="social-link30">
+        <a href="https://github.com/SuiFlowprotocol?tab=repositories" target="_blank" rel="noopener noreferrer" className="social-link30">
           <img src="https://img.icons8.com/ios/50/ffffff/github" alt="Github" className="social-icon30" />
         </a>
-        <a href="https://telegram.me/sealprotocol" target="_blank" rel="noopener noreferrer" className="social-link30">
-          <img src="https://img.icons8.com/ios/50/ffffff/telegram" alt="Seal" className="social-icon30" />
+        <a href="https://telegram.me/SuiFlowprotocol" target="_blank" rel="noopener noreferrer" className="social-link30">
+          <img src="https://img.icons8.com/ios/50/ffffff/telegram" alt="SuiFlow" className="social-icon30" />
         </a>
-        <a href="https://x.com/sealprotocol_" target="_blank" rel="noopener noreferrer" className="social-link30">
+        <a href="https://x.com/SuiFlowprotocol_" target="_blank" rel="noopener noreferrer" className="social-link30">
           <img src="https://img.icons8.com/ios/50/ffffff/twitterx.png" alt="X" className="social-icon30" />
         </a>
-        <a href="https://discord.gg/sealprotocol" target="_blank" rel="noopener noreferrer" className="social-link30">
+        <a href="https://discord.gg/SuiFlowprotocol" target="_blank" rel="noopener noreferrer" className="social-link30">
           <img src="https://img.icons8.com/ios/50/ffffff/discord-logo.png" alt="Discord" className="social-icon30" />
         </a>
       </div>
@@ -111,7 +111,7 @@ function LaunchPage() {
             <span className="title-line1">The Most Open-source</span>
             <span className="title-line2">Liquidity Engine on Sui</span>
           </h1>
-          <p className="subtitle30">Seal is the first Open-source CLMM on Sui to implement secure liquidity provisioning. It offers unmatched capital efficiency, permissionless incentives, and a seamless trading experience — all secured by robust audits.</p>
+          <p className="subtitle30">SuiFlow is the first Open-source CLMM on Sui to implement secure liquidity provisioning. It offers unmatched capital efficiency, permissionless incentives, and a seamless trading experience — all secured by robust audits.</p>
           <div className="buttons30">
             <button className="launch-button30" onClick={handleLaunchApp}>
               Launch App
@@ -139,7 +139,7 @@ function LaunchPage() {
           <div className="role-card">
             <img src="https://img.icons8.com/ios/50/ffffff/coins.png" alt="Governance Participant" className="role-icon" />
             <h3 className="role-title">Governance Participants</h3>
-            <p className="role-description">Shape the future of Seal with decentralized governance.</p>
+            <p className="role-description">Shape the future of SuiFlow with decentralized governance.</p>
           </div>
         </div>
       </section>
@@ -189,28 +189,28 @@ function LaunchPage() {
               <h3 className="faq-question">How do I participate?</h3>
               <span className="faq-toggle">✨</span>
             </div>
-            <p className="faq-answer">Provide liquidity to Seal pools or trade on the platform to benefit from adaptive pricing and rewards.</p>
+            <p className="faq-answer">Provide liquidity to SuiFlow pools or trade on the platform to benefit from adaptive pricing and rewards.</p>
           </div>
           <div className="faq-item">
             <div className="faq-question-wrapper">
-              <h3 className="faq-question">Why choose Seal over other DEXs?</h3>
+              <h3 className="faq-question">Why choose SuiFlow over other DEXs?</h3>
               <span className="faq-toggle">✨</span>
             </div>
-            <p className="faq-answer">Open-source And Fair Token Economics.All codes of Seal protocol are open and available for anyone to audit, ensuring the absolute security of Defi protocol. Token economics advocates user-led</p>
+            <p className="faq-answer">Open-source And Fair Token Economics.All codes of SuiFlow protocol are open and available for anyone to audit, ensuring the absolute security of Defi protocol. Token economics advocates user-led</p>
           </div>
           <div className="faq-item">
             <div className="faq-question-wrapper">
-              <h3 className="faq-question">Is Seal audited?</h3>
+              <h3 className="faq-question">Is SuiFlow audited?</h3>
               <span className="faq-toggle">✨</span>
             </div>
-            <p className="faq-answer">Yes. Seal's smart contracts are audited by leading security firms to ensure safety and reliability.</p>
+            <p className="faq-answer">Yes. SuiFlow's smart contracts are audited by leading security firms to ensure safety and reliability.</p>
           </div>
           <div className="faq-item">
             <div className="faq-question-wrapper">
               <h3 className="faq-question">Which assets are supported?</h3>
               <span className="faq-toggle">✨</span>
             </div>
-            <p className="faq-answer">Seal supports major blue-chip assets, stablecoins, and long-tail tokens on Sui, with dynamic liquidity allocation tailored for each pair.</p>
+            <p className="faq-answer">SuiFlow supports major blue-chip assets, stablecoins, and long-tail tokens on Sui, with dynamic liquidity allocation tailored for each pair.</p>
           </div>
         </div>
       </section>

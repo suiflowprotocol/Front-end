@@ -29,7 +29,7 @@ function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
       <div className="sidebar-header3">
         <div className="logo-container3">
           <img src="https://i.meee.com.tw/SdliTGK.png" alt="Logo" className="logo-image" />
-          <span className="logo-text">SEAL</span>
+          <span className="logo-text">SuiFlow</span>
         </div>
         <button className="close-button3" onClick={onClose}>
           <svg viewBox="0 0 24 24" width="16px" height="16px">
@@ -77,11 +77,11 @@ function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
               </svg>
               Pools
             </Link>
-            <Link to="/veseal" onClick={onClose} className="dropdown-item3">
+            <Link to="/veSuiFlow" onClick={onClose} className="dropdown-item3">
               <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px" viewBox="0 0 24 24">
                 <path d="M12 2a5 5 0 0 0-5 5v4H5v6h14v-6h-2V7a5 5 0 0 0-5-5zm0 2a3 3 0 0 1 3 3v4H9V7a3 3 0 0 1 3-3z" />
               </svg>
-              veSeal
+              veSuiFlow
             </Link>
           </div>
         </div>

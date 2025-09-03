@@ -244,7 +244,7 @@ const AddLiquidityPage: React.FC = () => {
           <div className="header-left4312">
             <div className="logo-container4312">
               <img src="https://i.meee.com.tw/SdliTGK.png" alt="Logo" className="logo-image4312" />
-              <span className="logo-text4312">Seal</span>
+              <span className="logo-text4312">SuiFlow</span>
             </div>
           </div>
           {!isMobile ? (
@@ -277,12 +277,12 @@ const AddLiquidityPage: React.FC = () => {
           )}
           <div className="wallet-actions4312">
             <CustomConnectButton />
-            <a href="https://x.com/sealprotocol_" target="_blank" rel="noopener noreferrer" className="icon-button4312">
+            <a href="https://x.com/SuiFlowprotocol_" target="_blank" rel="noopener noreferrer" className="icon-button4312">
               <svg aria-hidden="true" fill="#94a3b8" width="20px" height="20px" viewBox="0 0 24 24">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1 2.25h7.28l4.71 6.23zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
               </svg>
             </a>
-            <a href="https://t.me/sealprotocol" target="_blank" rel="noopener noreferrer" className="icon-button4312">
+            <a href="https://t.me/SuiFlowprotocol" target="_blank" rel="noopener noreferrer" className="icon-button4312">
               <svg aria-hidden="true" fill="#94a3b8" width="20px" height="20px" viewBox="0 0 24 24">
                 <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.06L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/>
               </svg>

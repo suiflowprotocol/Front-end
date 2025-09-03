@@ -17,7 +17,7 @@ const tokens = [
   { symbol: 'USDC', type: `${PACKAGE_ID}::usdc::USDC`, decimals: 6, image: 'https://bafybeidzrdgq3vllhxcza6uvkvecxdumgsgkrq22pm3sqdviujttridkku.ipfs.w3s.link/usd-coin-usdc-logo.png' },
   { symbol: 'IKA', type: `${PACKAGE_ID}::ika::IKA`, decimals: 6, image: 'https://bafybeidnqru6n6hjm5she3m53jsd6ytphy6lofdvsjqlhlbpvx73nbxr3i.ipfs.w3s.link/ika.png' },
   { symbol: 'BLUE', type: `${PACKAGE_ID}::blue::BLUE`, decimals: 6, image: 'https://bafybeih2dka7qas7k6uyw2upo7xrlhxg4b7djvcg24nriov2glb7tygqc4.ipfs.w3s.link/blue.png' },
-  { symbol: 'SEAL', type: `${PACKAGE_ID}::seal::SEAL`, decimals: 6, image: 'https://i.meee.com.tw/SdliTGK.png' },
+  { symbol: 'SuiFlow', type: `${PACKAGE_ID}::SuiFlow::SuiFlow`, decimals: 6, image: 'https://i.meee.com.tw/SdliTGK.png' },
 ];
 
 function formatBalance(balance: string) {
@@ -316,21 +316,21 @@ function FaucetPage() {
         top: `${glowPosition.y}%`,
       }}></div>
       <div className="logo-container30101">
-        <img src="https://i.meee.com.tw/SdliTGK.png" alt="Seal Logo" className="logo-image30101" />
-        <span className="logo-text30101">Seal</span>
+        <img src="https://i.meee.com.tw/SdliTGK.png" alt="SuiFlow Logo" className="logo-image30101" />
+        <span className="logo-text30101">SuiFlow</span>
       </div>
       <div className="right-header101">
         <div className="social-buttons30101">
-          <a href="https://github.com/sealprotocol?tab=repositories" target="_blank" rel="noopener noreferrer" className="social-link30101">
+          <a href="https://github.com/SuiFlowprotocol?tab=repositories" target="_blank" rel="noopener noreferrer" className="social-link30101">
             <img src="https://img.icons8.com/ios/50/ffffff/github" alt="Github" className="social-icon30101" />
           </a>
-          <a href="https://telegram.me/sealprotocol" target="_blank" rel="noopener noreferrer" className="social-link30101">
+          <a href="https://telegram.me/SuiFlowprotocol" target="_blank" rel="noopener noreferrer" className="social-link30101">
             <img src="https://img.icons8.com/ios/50/ffffff/telegram" alt="Telegram" className="social-icon30101" />
           </a>
-          <a href="https://x.com/sealprotocol_" target="_blank" rel="noopener noreferrer" className="social-link30101">
+          <a href="https://x.com/SuiFlowprotocol_" target="_blank" rel="noopener noreferrer" className="social-link30101">
             <img src="https://img.icons8.com/ios/50/ffffff/twitterx.png" alt="X" className="social-icon30101" />
           </a>
-          <a href="https://discord.gg/sealprotocol" target="_blank" rel="noopener noreferrer" className="social-link30101">
+          <a href="https://discord.gg/SuiFlowprotocol" target="_blank" rel="noopener noreferrer" className="social-link30101">
             <img src="https://img.icons8.com/ios/50/ffffff/discord-logo.png" alt="Discord" className="social-icon30101" />
           </a>
         </div>
@@ -339,9 +339,9 @@ function FaucetPage() {
       <div className="content-wrapper101">
         <div className="faucet-form101">
           <h1 className="title101">Testnet Faucet</h1>
-          <p className="description101">Send testnet tokens to your wallet to experiment with Seal protocol AMM for free.</p>
+          <p className="description101">Send testnet tokens to your wallet to experiment with SuiFlow protocol AMM for free.</p>
           <p className="note101">You can only claim once within 24 hours.</p>
-          <p className="note101">Test tokens are only for use in interacting with the Seal protocol AMM.</p>
+          <p className="note101">Test tokens are only for use in interacting with the SuiFlow protocol AMM.</p>
           {error && <div className="error-message101">{error}</div>}
           {success && <div className="success-message101">{success}</div>}
           <button className="claim-all-button101" onClick={handleClaimAll} disabled={loading || !account || !canClaim}>
@@ -390,11 +390,11 @@ function FaucetPage() {
           </details>
           <details className="faq-item101">
             <summary>What's the difference between this Faucet and others?</summary>
-            <p>This faucet provides specific tokens for interacting with the Seal protocol AMM on Sui testnet.</p>
+            <p>This faucet provides specific tokens for interacting with the SuiFlow protocol AMM on Sui testnet.</p>
           </details>
           <details className="faq-item101">
             <summary>Which tokens does this Faucet support?</summary>
-            <p>DEEP, WAL, USDC, IKA, BLUE, SEAL.</p>
+            <p>DEEP, WAL, USDC, IKA, BLUE, SuiFlow.</p>
           </details>
           <details className="faq-item101">
             <summary>How much can I get from this Faucet?</summary>

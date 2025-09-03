@@ -398,10 +398,10 @@ const CoverPage: React.FC = () => {
         <div className="logo-container">
           <img 
             src="https://i.meee.com.tw/SdliTGK.png" 
-            alt="Seal Logo" 
+            alt="SuiFlow Logo" 
             className="logo-image"
           />
-          <span className="logo-text">Seal CLMM DEX</span>
+          <span className="logo-text">SuiFlow CLMM DEX</span>
         </div>
 
         {/* Built on SUI */}
@@ -417,12 +417,12 @@ const CoverPage: React.FC = () => {
 
         {/* Main Headline */}
         <h1 className="headline">
-          Seal, where<br />Decentralized Trading<br />Thrives
+          SuiFlow, where<br />Decentralized Trading<br />Thrives
         </h1>
 
         {/* Subheadline */}
         <p className="subheadline">
-          Swap tokens, provide liquidity, and earn $Seal rewards on the leading CLMM DEX on Sui.
+          Swap tokens, provide liquidity, and earn $SuiFlow rewards on the leading CLMM DEX on Sui.
         </p>
 
         {/* Feature Highlights */}
@@ -447,7 +447,7 @@ const CoverPage: React.FC = () => {
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
             </svg>
             <h3>Earn Rewards</h3>
-            <p>Stake and trade to earn $Seal token rewards with our incentivized programs.</p>
+            <p>Stake and trade to earn $SuiFlow token rewards with our incentivized programs.</p>
           </div>
         </div>
 

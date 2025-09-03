@@ -156,7 +156,7 @@ const LimitOrderPage: React.FC = () => {
         <div className="header-top">
           <div className="logo-container">
             <img src="https://i.meee.com.tw/SdliTGK.png" alt="Logo" className="logo-image" />
-            <span className="logo-text">Seal</span>
+            <span className="logo-text">SuiFlow</span>
           </div>
           <div className="nav-menu">
             <div className={`nav-item ${openDropdown === "trade" ? "open" : ""}`} 
@@ -195,11 +195,11 @@ const LimitOrderPage: React.FC = () => {
                   </svg>
                   Pool
                 </Link>
-                <Link to="/veseal" className="dropdown-item">
+                <Link to="/veSuiFlow" className="dropdown-item">
                   <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
                     <use xlinkHref="#icon-icon_liquiditypools"></use>
                   </svg>
-                  veSeal
+                  veSuiFlow
                 </Link>
               </div>
             </div>

@@ -199,10 +199,10 @@ export function CustomConnectButton() {
 }
 
 const PACKAGE_ID = "0xb90158d50ac951784409a6876ac860e24564ed5257e51944d3c693efb9fdbd78";
-const SEAL_TOKEN = "0x2::seal::SEAL";
-const XSEAL_TOKEN = "0x2::xseal::XSEAL";
+const SuiFlow_TOKEN = "0x2::SuiFlow::SuiFlow";
+const XSuiFlow_TOKEN = "0x2::xSuiFlow::XSuiFlow";
 
-const XSeal = () => {
+const XSuiFlow = () => {
   const [amount, setAmount] = useState("");
   const [activeTab, setActiveTab] = useState("stake");
   const [vestingDuration, setVestingDuration] = useState(180);
@@ -281,7 +281,7 @@ const XSeal = () => {
           owner: account.address,
         });
 
-        for (const token of [SEAL_TOKEN, XSEAL_TOKEN]) {
+        for (const token of [SuiFlow_TOKEN, XSuiFlow_TOKEN]) {
           const balanceEntry = allBalances.find((b) => b.coinType === token);
           const decimals = 6;
           if (balanceEntry) {
@@ -311,9 +311,9 @@ const XSeal = () => {
     }
 
     try {
-      const isConvertingToXSeal = activeTab === "stake";
-      const inputToken = isConvertingToXSeal ? SEAL_TOKEN : XSEAL_TOKEN;
-      const outputToken = isConvertingToXSeal ? XSEAL_TOKEN : SEAL_TOKEN;
+      const isConvertingToXSuiFlow = activeTab === "stake";
+      const inputToken = isConvertingToXSuiFlow ? SuiFlow_TOKEN : XSuiFlow_TOKEN;
+      const outputToken = isConvertingToXSuiFlow ? XSuiFlow_TOKEN : SuiFlow_TOKEN;
       const decimals = 6;
       const amountValue = Math.floor(parseFloat(amount) * 10 ** decimals);
 
@@ -327,7 +327,7 @@ const XSeal = () => {
         .map((coin) => coin.coinObjectId);
 
       if (coinObjectIds.length === 0) {
-        setError(`Insufficient ${isConvertingToXSeal ? "SEAL" : "XSEAL"} balance`);
+        setError(`Insufficient ${isConvertingToXSuiFlow ? "SuiFlow" : "XSuiFlow"} balance`);
         return;
       }
 
@@ -352,10 +352,10 @@ const XSeal = () => {
       const [coinToConvert] = tx.splitCoins(mergedCoin, [amountValue]);
 
       tx.moveCall({
-        target: `${PACKAGE_ID}::xseal::${isConvertingToXSeal ? "convert_to_xseal" : "redeem_seal"}`,
+        target: `${PACKAGE_ID}::xSuiFlow::${isConvertingToXSuiFlow ? "convert_to_xSuiFlow" : "redeem_SuiFlow"}`,
         typeArguments: [inputToken, outputToken],
         arguments: [
-          tx.object(isConvertingToXSeal ? SEAL_TOKEN : XSEAL_TOKEN),
+          tx.object(isConvertingToXSuiFlow ? SuiFlow_TOKEN : XSuiFlow_TOKEN),
           coinToConvert,
           tx.pure.u64(amountValue),
           tx.pure.u64(vestingDuration * 24 * 60 * 60),
@@ -371,7 +371,7 @@ const XSeal = () => {
         },
         {
           onSuccess: () => {
-            setSuccess(`Successfully ${isConvertingToXSeal ? "staked SEAL" : "unstaked SEAL"}`);
+            setSuccess(`Successfully ${isConvertingToXSuiFlow ? "staked SuiFlow" : "unstaked SuiFlow"}`);
             setShowConfetti(true);
             setTimeout(() => setShowConfetti(false), 3000);
             setError("");
@@ -396,9 +396,9 @@ const XSeal = () => {
     try {
       const tx = new Transaction();
       tx.moveCall({
-        target: `${PACKAGE_ID}::xseal::claim_rewards`,
-        typeArguments: [XSEAL_TOKEN],
-        arguments: [tx.object(XSEAL_TOKEN)],
+        target: `${PACKAGE_ID}::xSuiFlow::claim_rewards`,
+        typeArguments: [XSuiFlow_TOKEN],
+        arguments: [tx.object(XSuiFlow_TOKEN)],
       });
 
       tx.setGasBudget(100000000);
@@ -427,14 +427,14 @@ const XSeal = () => {
   };
 
   const setHalfBalance = () => {
-    const balance = parseFloat(balances[activeTab === "stake" ? SEAL_TOKEN : XSEAL_TOKEN] || "0");
+    const balance = parseFloat(balances[activeTab === "stake" ? SuiFlow_TOKEN : XSuiFlow_TOKEN] || "0");
     if (balance > 0) {
       setAmount((balance * 0.5).toFixed(4));
     }
   };
 
   const setMaxBalance = () => {
-    const balance = parseFloat(balances[activeTab === "stake" ? SEAL_TOKEN : XSEAL_TOKEN] || "0");
+    const balance = parseFloat(balances[activeTab === "stake" ? SuiFlow_TOKEN : XSuiFlow_TOKEN] || "0");
     if (balance > 0) {
       setAmount(balance.toFixed(4));
     }
@@ -453,7 +453,7 @@ const XSeal = () => {
         <div className="header-top">
           <div className="logo-container">
             <img src="https://i.meee.com.tw/SdliTGK.png" alt="Logo" className="logo-image" />
-            <span className="logo-text">Seal</span>
+            <span className="logo-text">SuiFlow</span>
           </div>
           {!isMobile ? (
             <div className="nav-menu">
@@ -491,11 +491,11 @@ const XSeal = () => {
                     </svg>
                     Pool
                   </Link>
-                  <Link to="/veseal" className="dropdown-item">
+                  <Link to="/veSuiFlow" className="dropdown-item">
                     <svg aria-hidden="true" fill="var(--chakra-colors-text_paragraph)" width="20px" height="20px">
                       <use xlinkHref="#icon-icon_liquiditypools"></use>
                     </svg>
-                    veSeal
+                    veSuiFlow
                   </Link>
                 </div>
               </div>
@@ -650,15 +650,15 @@ const XSeal = () => {
       {isMobile && (
         <Sidebar isOpen={isMenuOpen} onClose={toggleMenu} />
       )}
-      <div className="xseal-container15">
+      <div className="xSuiFlow-container15">
         <div className="user-stats15">
           <div className="stat-box15">
             <div className="stat-box-label15">Your HAEDAL Locked</div>
-            <div className="stat-box-value15">{balances[SEAL_TOKEN] || "0.0000"}</div>
+            <div className="stat-box-value15">{balances[SuiFlow_TOKEN] || "0.0000"}</div>
           </div>
           <div className="stat-box15">
             <div className="stat-box-label15">Your veHAEDAL</div>
-            <div className="stat-box-value15">{balances[XSEAL_TOKEN] || "0.0000"}</div>
+            <div className="stat-box-value15">{balances[XSuiFlow_TOKEN] || "0.0000"}</div>
           </div>
         </div>
         <div className="lock-section15">
@@ -709,12 +709,12 @@ const XSeal = () => {
                 </div>
                 <div className="input-footer15">
                   <div className="balance-info15">
-                    <span>Balance: {balances[SEAL_TOKEN] || "0.0"} HAEDAL</span>
+                    <span>Balance: {balances[SuiFlow_TOKEN] || "0.0"} HAEDAL</span>
                   </div>
                   <div className="quick-select15">
                     <button onClick={setHalfBalance} className="quick-select-btn15">50%</button>
                     <button
-                      onClick={() => setAmount((parseFloat(balances[SEAL_TOKEN] || "0") * 0.75).toFixed(4))}
+                      onClick={() => setAmount((parseFloat(balances[SuiFlow_TOKEN] || "0") * 0.75).toFixed(4))}
                       className="quick-select-btn15"
                     >
                       75%
@@ -753,4 +753,4 @@ const XSeal = () => {
   );
 };
 
-export default XSeal;
+export default XSuiFlow;

@@ -1,9 +1,9 @@
-# Sealprotocol Frontend
+# SuiFlowprotocol Frontend
 
-This is the frontend project for **Sealprotocol**, a CLMM (Concentrated Liquidity Market Maker) DEX built on the [Sui blockchain](https://sui.io).  
-It is based on the `@mysten/create-dapp` starter template and provides a modern React-based UI for interacting with the Sealprotocol smart contracts.
+This is the frontend project for **SuiFlowprotocol**, a CLMM (Concentrated Liquidity Market Maker) DEX built on the [Sui blockchain](https://sui.io).  
+It is based on the `@mysten/create-dapp` starter template and provides a modern React-based UI for interacting with the SuiFlowprotocol smart contracts.
 
-GitHub Repository: [https://github.com/sealprotocol/Front-end.git](https://github.com/sealprotocol/Front-end.git)
+GitHub Repository: [https://github.com/SuiFlowprotocol/Front-end.git](https://github.com/SuiFlowprotocol/Front-end.git)
 
 ## Features
 
@@ -24,7 +24,7 @@ To use this project locally:
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/sealprotocol/Front-end.git
+git clone https://github.com/SuiFlowprotocol/Front-end.git
 cd Front-end
 ```
 ### 2. Install dependencies
@@ -53,4 +53,4 @@ sui client publish --gas-budget 100000000
 Once published, the Sui CLI will return the package ID of your deployed contract. You can then start interacting with the AMM module using this package ID.
 
 3.✍️ License
-MIT License © SealProtocol
+MIT License © SuiFlowProtocol
