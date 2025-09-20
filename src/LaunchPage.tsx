@@ -109,7 +109,7 @@ function LaunchPage() {
         <div className="content-wrapper30">
           <h1 className="title30">
             <span className="title-line1">The Most Open-source</span>
-            <span className="title-line2">Liquidity Engine on Sui</span>
+            <span className="title-line2">Liquidity Engine on SEA Chain</span>
           </h1>
           <p className="subtitle30">SuiFlow is the first Open-source CLMM on Sui to implement secure liquidity provisioning. It offers unmatched capital efficiency, permissionless incentives, and a seamless trading experience — all secured by robust audits.</p>
           <div className="buttons30">
