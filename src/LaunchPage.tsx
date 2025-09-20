@@ -1,3 +1,4 @@
+// Modified LaunchPage.tsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LaunchPage.css';
@@ -86,20 +87,20 @@ function LaunchPage() {
         top: `${glowPosition.y}%`,
       }}></div>
       <div className="logo-container30">
-        <img src="https://i.meee.com.tw/SdliTGK.png" alt="Seal Logo" className="logo-image30" />
-        <span className="logo-text30">Seal</span>
+        <img src="https://i.meee.com.tw/SdliTGK.png" alt="SuiFlow Logo" className="logo-image30" />
+        <span className="logo-text30">SEAL</span>
       </div>
       <div className="social-buttons30">
-        <a href="https://github.com/SealProtocol" target="_blank" rel="noopener noreferrer" className="social-link30">
+        <a href="https://github.com/SuiFlowprotocol?tab=repositories" target="_blank" rel="noopener noreferrer" className="social-link30">
           <img src="https://img.icons8.com/ios/50/ffffff/github" alt="Github" className="social-icon30" />
         </a>
-        <a href="https://telegram.me/SealProtocol" target="_blank" rel="noopener noreferrer" className="social-link30">
-          <img src="https://img.icons8.com/ios/50/ffffff/telegram" alt="Telegram" className="social-icon30" />
+        <a href="https://telegram.me/SuiFlowprotocol" target="_blank" rel="noopener noreferrer" className="social-link30">
+          <img src="https://img.icons8.com/ios/50/ffffff/telegram" alt="SuiFlow" className="social-icon30" />
         </a>
-        <a href="https://x.com/SealProtocol" target="_blank" rel="noopener noreferrer" className="social-link30">
+        <a href="https://x.com/SuiFlowprotocol_" target="_blank" rel="noopener noreferrer" className="social-link30">
           <img src="https://img.icons8.com/ios/50/ffffff/twitterx.png" alt="X" className="social-icon30" />
         </a>
-        <a href="https://discord.gg/SealProtocol" target="_blank" rel="noopener noreferrer" className="social-link30">
+        <a href="https://discord.gg/SuiFlowprotocol" target="_blank" rel="noopener noreferrer" className="social-link30">
           <img src="https://img.icons8.com/ios/50/ffffff/discord-logo.png" alt="Discord" className="social-icon30" />
         </a>
       </div>
@@ -107,10 +108,10 @@ function LaunchPage() {
       <section className="section hero-section">
         <div className="content-wrapper30">
           <h1 className="title30">
-            <span className="title-line1">The Official DEX</span>
-            <span className="title-line2">for SEA Chain</span>
+            <span className="title-line1">The Most Open-source</span>
+            <span className="title-line2">Liquidity Engine on SEA</span>
           </h1>
-          <p className="subtitle30">Seal is the native decentralized exchange for SEA, a custom Layer-1 EVM blockchain. It provides permissionless trading services with unmatched capital efficiency and security. Contact zhenhaozhang@sealprotocol.xyz or WeChat (zhenhao156624) to list your SEA chain token.</p>
+          <p className="subtitle30">SEAL is the first Open-source CLMM on SEA to implement secure liquidity provisioning. It offers unmatched capital efficiency, permissionless incentives, and a seamless trading experience — all secured by robust audits.</p>
           <div className="buttons30">
             <button className="launch-button30" onClick={handleLaunchApp}>
               Launch App
@@ -128,17 +129,17 @@ function LaunchPage() {
           <div className="role-card">
             <img src="https://img.icons8.com/ios/50/ffffff/wallet.png" alt="Liquidity Provider" className="role-icon" />
             <h3 className="role-title">Liquidity Providers</h3>
-            <p className="role-description">Provide liquidity to Seal pools and earn optimized yields on the SEA chain.</p>
+            <p className="role-description">Provide liquidity dynamically and earn optimized yields.</p>
           </div>
           <div className="role-card">
             <img src="https://img.icons8.com/ios/50/ffffff/swap.png" alt="Trader" className="role-icon" />
             <h3 className="role-title">Traders</h3>
-            <p className="role-description">Trade seamlessly with deep liquidity and low fees on Seal's optimized AMM.</p>
+            <p className="role-description">Experience deeper liquidity and lower fees with Optimized CLMM.</p>
           </div>
           <div className="role-card">
             <img src="https://img.icons8.com/ios/50/ffffff/coins.png" alt="Governance Participant" className="role-icon" />
             <h3 className="role-title">Governance Participants</h3>
-            <p className="role-description">Shape Seal's future through decentralized governance on the SEA chain.</p>
+            <p className="role-description">Shape the future of SuiFlow with decentralized governance.</p>
           </div>
         </div>
       </section>
@@ -148,18 +149,18 @@ function LaunchPage() {
         <div className="features-wrapper">
           <div className="feature-card">
             <img src="https://img.icons8.com/ios/50/ffffff/box.png" alt="Adaptive Liquidity" className="feature-icon" />
-            <h3 className="feature-title">Permissionless Trading</h3>
-            <p className="feature-description">Trade any token on the SEA chain with no restrictions.</p>
+            <h3 className="feature-title">Adaptive Liquidity Provision</h3>
+            <p className="feature-description">Dynamic range-based liquidity for maximum capital efficiency.</p>
           </div>
           <div className="feature-card">
             <img src="https://img.icons8.com/ios/50/ffffff/coins.png" alt="Capital-Efficient" className="feature-icon" />
             <h3 className="feature-title">Capital-Efficient AMM</h3>
-            <p className="feature-description">Minimized slippage and optimized fees, tailored for SEA's ecosystem.</p>
+            <p className="feature-description">Minimized slippage. Optimized fee generation. Built for volatility.</p>
           </div>
           <div className="feature-card">
             <img src="https://img.icons8.com/ios/50/ffffff/shield.png" alt="Audited" className="feature-icon" />
             <h3 className="feature-title">Audited & Secure</h3>
-            <p className="feature-description">Secure smart contracts audited by leading firms for the SEA chain.</p>
+            <p className="feature-description">Battle-tested smart contracts and rigorous security audits.</p>
           </div>
         </div>
       </section>
@@ -170,12 +171,12 @@ function LaunchPage() {
           <div className="partner-card">
             <img src="https://pbs.twimg.com/profile_images/1585464816298336256/C-Vc3cv2.jpg" alt="MoveBit Logo" className="partner-logo" />
             <span className="partner-name">MoveBit</span>
-            <p className="partner-description">MoveBit delivers security audits for the SEA ecosystem, ensuring robust smart contract safety.</p>
+            <p className="partner-description">MoveBit is a security team focused on the Move ecosystem, building the standard and delivering security audits for secure Move ecosystem.</p>
           </div>
           <div className="partner-card">
             <img src="https://pbs.twimg.com/profile_images/1715242418457747456/FkBeZCZ5.jpg" alt="Zellic Logo" className="partner-logo" />
             <span className="partner-name">Zellic</span>
-            <p className="partner-description">Zellic specializes in securing blockchain technologies for the SEA chain.</p>
+            <p className="partner-description">Zellic specializes in securing emerging technologies.</p>
           </div>
         </div>
       </section>
@@ -188,28 +189,28 @@ function LaunchPage() {
               <h3 className="faq-question">How do I participate?</h3>
               <span className="faq-toggle">✨</span>
             </div>
-            <p className="faq-answer">Provide liquidity to Seal pools or trade tokens on the SEA chain to earn rewards.</p>
+            <p className="faq-answer">Provide liquidity to SuiFlow pools or trade on the platform to benefit from adaptive pricing and rewards.</p>
           </div>
           <div className="faq-item">
             <div className="faq-question-wrapper">
-              <h3 className="faq-question">Why choose Seal over other DEXs?</h3>
+              <h3 className="faq-question">Why choose SuiFlow over other DEXs?</h3>
               <span className="faq-toggle">✨</span>
             </div>
-            <p className="faq-answer">Seal is the official DEX for SEA, offering permissionless trading, audited security, and optimized liquidity for all SEA tokens.</p>
+            <p className="faq-answer">Open-source And Fair Token Economics.All codes of SuiFlow protocol are open and available for anyone to audit, ensuring the absolute security of Defi protocol. Token economics advocates user-led</p>
           </div>
           <div className="faq-item">
             <div className="faq-question-wrapper">
               <h3 className="faq-question">Is Seal audited?</h3>
               <span className="faq-toggle">✨</span>
             </div>
-            <p className="faq-answer">Yes, Seal's smart contracts are audited by top security firms to ensure safety on the SEA chain.</p>
+            <p className="faq-answer">Yes. Seal's smart contracts are audited by leading security firms to ensure safety and reliability.</p>
           </div>
           <div className="faq-item">
             <div className="faq-question-wrapper">
-              <h3 className="faq-question">How do I list my token?</h3>
+              <h3 className="faq-question">Which assets are supported?</h3>
               <span className="faq-toggle">✨</span>
             </div>
-            <p className="faq-answer">Contact zhenhaozhang@sealprotocol.xyz or WeChat (zhenhao156624) to add your SEA chain token to Seal's token list.</p>
+            <p className="faq-answer">Seal supports major blue-chip assets, stablecoins, and long-tail tokens on SEA, with dynamic liquidity allocation tailored for each pair.</p>
           </div>
         </div>
       </section>
