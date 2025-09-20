@@ -1320,7 +1320,7 @@ function App() {
                   <div className="header-top">
                     <div className="logo-container">
                       <img src="https://i.meee.com.tw/SdliTGK.png" alt="Logo" className="logo-image" />
-                      <span className="logo-text978">SuiFlow</span>
+                      <span className="logo-text978">Seal</span>
                     </div>
                     {!isMobile ? (
                       <div className={`nav-menu ${isMenuOpen ? "open" : ""}`}>
