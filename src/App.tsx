@@ -1,8 +1,5 @@
 // App.tsx
-import React, { useState, useEffect, useRef } from "react";
-import { ConnectButton, useCurrentAccount, useSuiClient, useSignAndExecuteTransaction, lightTheme, WalletProvider, ThemeVars, useConnectWallet, useWallets, useDisconnectWallet, ConnectModal } from "@mysten/dapp-kit";
-import '@mysten/dapp-kit/dist/index.css';
-import { Transaction } from "@mysten/sui/transactions";
+import React, { useState, useEffect, useRef, createContext, useContext } from "react";
 import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import Pool from "./Pool";
 import Position from "./positions.tsx";
@@ -23,18 +20,19 @@ import CreatePoolPage from "./CreatePoolPage.tsx";
 import AddLiquidityPage from "./AddLiquidityPage.tsx"
 import Market from "./Market.tsx";
 
-
+declare global {
+  interface Window {
+    okxwallet?: any;
+  }
+}
 
 // Wallet logos
 const walletLogos = {
-  'Slush': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYHwA15AKYWXvoSL-94ysbnJrmUX_oU1fJyw&s',
-  'Suiet': 'https://framerusercontent.com/modules/6HmgaTsk3ODDySrS62PZ/a3c2R3qfkYJDxcZxkoVv/assets/eDZRos3xvCrlWxmLFr72sFtiyQ.png',
-  'Martian': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhb6QLKfuQY_N8ZvpiKcdZlCnQKILXw7NArw&s',
-  'Sui Wallet': 'https://assets.crypto.ro/logos/sui-sui-logo.png',
+  'OKX Wallet': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSycE-l-Gv5ByiYr226AXK6usDX0Q-DfnxswA&s',
 };
 
 // Custom theme with refined colors for a more elegant look
-const customTheme: ThemeVars = {
+const customTheme = {
   blurs: {
     modalOverlay: 'blur(4px)', // Softer blur for overlays
   },
@@ -92,10 +90,106 @@ const customTheme: ThemeVars = {
   },
 };
 
+interface WalletContextType {
+  address: string | null;
+  walletName: string | null;
+  connect: (wallet: string) => Promise<void>;
+  disconnect: () => void;
+}
+
+const WalletContext = createContext<WalletContextType>({
+  address: null,
+  walletName: null,
+  connect: async () => {},
+  disconnect: () => {},
+});
+
+export function EVMWalletProvider({ children }: { children: React.ReactNode }) {
+  const [address, setAddress] = useState<string | null>(null);
+  const [walletName, setWalletName] = useState<string | null>(null);
+
+  useEffect(() => {
+    const checkConnection = async () => {
+      if (window.okxwallet) {
+        const accounts = await window.okxwallet.request({ method: 'eth_accounts' }).catch(() => []);
+        if (accounts.length > 0) {
+          setAddress(accounts[0]);
+          setWalletName('OKX Wallet');
+        }
+      }
+    };
+    checkConnection();
+  }, []);
+
+  useEffect(() => {
+    let provider;
+    if (walletName === 'OKX Wallet' && window.okxwallet) {
+      provider = window.okxwallet;
+    }
+    if (provider) {
+      const handleAccountsChanged = (accounts: string[]) => {
+        setAddress(accounts[0] || null);
+      };
+      provider.on('accountsChanged', handleAccountsChanged);
+      return () => provider.removeListener('accountsChanged', handleAccountsChanged);
+    }
+  }, [walletName]);
+
+  const connect = async (wallet: string) => {
+    let provider;
+    if (wallet === 'OKX Wallet') {
+      provider = window.okxwallet;
+    }
+    if (provider) {
+      try {
+        const accounts = await provider.request({ method: 'eth_requestAccounts' });
+        setAddress(accounts[0]);
+        setWalletName(wallet);
+      } catch (err) {
+        console.error(err);
+      }
+    } else {
+      alert(`${wallet} not installed`);
+    }
+  };
+
+  const disconnect = () => {
+    setAddress(null);
+    setWalletName(null);
+  };
+
+  return (
+    <WalletContext.Provider value={{ address, walletName, connect, disconnect }}>
+      {children}
+    </WalletContext.Provider>
+  );
+}
+
+function useEVMAccount() {
+  const context = useContext(WalletContext);
+  return context.address ? { address: context.address } : null;
+}
+
+function useEVMDisconnect() {
+  const context = useContext(WalletContext);
+  return { mutate: context.disconnect };
+}
+
+function useEVMConnect() {
+  const context = useContext(WalletContext);
+  return context.connect;
+}
+
+function useEVMWallet() {
+  const context = useContext(WalletContext);
+  return { name: context.walletName };
+}
+
 export function CustomConnectButton() {
-  const { mutate: disconnect } = useDisconnectWallet();
-  const currentAccount = useCurrentAccount();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { mutate: disconnect } = useEVMDisconnect();
+  const currentAccount = useEVMAccount();
+  const currentWallet = useEVMWallet();
+  const connectWallet = useEVMConnect();
   const [showDisconnect, setShowDisconnect] = useState(false);
 
   const baseStyle = {
@@ -116,7 +210,7 @@ export function CustomConnectButton() {
 
   const truncateAddress = (address: string) => {
     if (!address) return '';
-    return `0x${address.slice(2, 5)}...${address.slice(-3)}`;
+    return `0x${address.slice(0, 3)}...${address.slice(-3)}`;
   };
 
   const disconnectedContent = (
@@ -145,7 +239,7 @@ export function CustomConnectButton() {
     <>
       {currentAccount && (
         <img
-          src="https://assets.crypto.ro/logos/sui-sui-logo.png"
+          src={walletLogos[currentWallet?.name as keyof typeof walletLogos || 'OKX Wallet']}
           alt="Wallet Logo"
           style={{ width: '20px', height: '20px', marginRight: '8px' }}
         />
@@ -154,12 +248,12 @@ export function CustomConnectButton() {
     </>
   );
 
-  const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleButtonClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (currentAccount) {
       setShowDisconnect(!showDisconnect);
     } else {
-      setIsModalOpen(true);
+      await connectWallet('OKX Wallet');
     }
   };
 
@@ -168,25 +262,15 @@ export function CustomConnectButton() {
     setShowDisconnect(false);
   };
 
-  const allowedWallets = ['Slush', 'Suiet', 'Martian', 'Sui Wallet', 'Martian Sui Wallet'];
-  const walletFilter = (wallet: any) => allowedWallets.includes(wallet.name);
-
   return (
     <div style={{ position: 'relative' }}>
-      <ConnectModal
-        open={isModalOpen}
-        trigger={
-          <button
-            onClick={handleButtonClick}
-            style={baseStyle}
-            aria-label={currentAccount ? 'Wallet Connected' : 'Connect Wallet'}
-          >
-            {currentAccount ? connectedContent : disconnectedContent}
-          </button>
-        }
-        onOpenChange={(open) => setIsModalOpen(open)}
-        walletFilter={walletFilter}
-      />
+      <button
+        onClick={handleButtonClick}
+        style={baseStyle}
+        aria-label={currentAccount ? 'Wallet Connected' : 'Connect Wallet'}
+      >
+        {currentAccount ? connectedContent : disconnectedContent}
+      </button>
       {showDisconnect && currentAccount && (
         <button
           style={{
@@ -398,9 +482,7 @@ function App() {
   const [expiration, setExpiration] = useState("1 Day");
   const [searchQuery, setSearchQuery] = useState("");
   const [useAggregator, setUseAggregator] = useState(true);
-  const client = useSuiClient();
-  const account = useCurrentAccount();
-  const { mutate: signAndExecute } = useSignAndExecuteTransaction();
+  const account = useEVMAccount();
   const navigate = useNavigate();
   const [showSettings, setShowSettings] = useState(false);
   const [slippage, setSlippage] = useState("0.5");
@@ -468,7 +550,7 @@ function App() {
   const historyCache = useRef<{ [key: string]: { data: { x: number; y: number }[]; timestamp: number } }>({});
   const CACHE_DURATION = 2 * 60 * 1000;
 
-  const cryptoCompareIds: { [key: string]: string } = {
+  const cryptoCompareIds = {
     SUI: "SUI",
     USDC: "USDC",
     USDT: "USDT",
@@ -595,26 +677,7 @@ function App() {
       return;
     }
     try {
-      const tokenData = await client.getObject({
-        id: importAddress,
-        options: { showContent: true },
-      });
-      const content = tokenData.data?.content as any;
-      if (!content?.fields?.symbol || !content?.fields?.decimals) {
-        setImportError("Unable to fetch token metadata");
-        return;
-      }
-      const newToken = {
-        symbol: content.fields.symbol,
-        address: importAddress,
-        icon: "https://via.placeholder.com/32",
-        description: content.fields.name || `Imported Token (${content.fields.symbol})`,
-        decimals: parseInt(content.fields.decimals),
-      };
-      setImportedTokens([...importedTokens, newToken]);
-      setImportError("");
-      setImportAddress("");
-      setActiveList("Imported");
+      // EVM token import logic would go here
     } catch (err) {
       setImportError("Failed to import token: Invalid address or metadata");
     }
@@ -636,7 +699,7 @@ function App() {
   };
 
   const fetchTokenPrice = async (symbol: string) => {
-    const ccId = cryptoCompareIds[symbol.toUpperCase()];
+    const ccId = cryptoCompareIds[symbol.toUpperCase() as keyof typeof cryptoCompareIds];
     if (!ccId) {
       console.warn(`No CryptoCompare ID found for ${symbol}`);
       return null;
@@ -670,7 +733,7 @@ function App() {
   };
 
   const fetchPriceHistory = async (symbol: string) => {
-    const ccId = cryptoCompareIds[symbol.toUpperCase()];
+    const ccId = cryptoCompareIds[symbol.toUpperCase() as keyof typeof cryptoCompareIds];
     if (!ccId) {
       console.warn(`No CryptoCompare ID found for ${symbol} (price history)`);
       return [];
@@ -804,61 +867,11 @@ function App() {
         return;
       }
 
-      try {
-        const registry = await client.getObject({
-          id: POOL_REGISTRY,
-          options: { showContent: true },
-        });
-
-        const content = registry.data?.content as any;
-        if (!content?.fields?.pools) {
-          console.error("Pool registry fields or pools not found:", JSON.stringify(content, null, 2));
-          setError("Unable to fetch pool registry");
-          setPoolId("");
-          return;
-        }
-
-        const pools = content.fields.pools;
-        let foundPoolId = "";
-        let reverse = false;
-
-        for (const pool of pools) {
-          const poolTokenX = pool.fields.token_x.fields.name;
-          const poolTokenY = pool.fields.token_y.fields.name;
-          const poolFeeRate = parseInt(pool.fields.fee_rate);
-          const poolAddr = pool.fields.pool_addr;
-
-          const formattedPoolTokenX = `0x${poolTokenX}`;
-          const formattedPoolTokenY = `0x${poolTokenY}`;
-
-          if (
-            (formattedPoolTokenX === tokenX && formattedPoolTokenY === tokenY && poolFeeRate === 25) ||
-            (formattedPoolTokenX === tokenY && formattedPoolTokenY === tokenX && poolFeeRate === 25)
-          ) {
-            foundPoolId = poolAddr;
-            reverse = formattedPoolTokenX === tokenY && formattedPoolTokenY === tokenX;
-            break;
-          }
-        }
-
-        if (foundPoolId) {
-          setPoolId(foundPoolId);
-          setIsReverseSwap(reverse);
-          setError("");
-        } else {
-          setPoolId("");
-         
-          setIsReverseSwap(false);
-        }
-      } catch (err) {
-        console.error("Failed to fetch pool ID:", err);
-        setError("Unable to fetch pool ID");
-        setPoolId("");
-      }
+      // EVM pool fetch logic would go here
     };
 
     fetchPoolId();
-  }, [tokenX, tokenY, client, refreshTrigger]);
+  }, [tokenX, tokenY, refreshTrigger]);
 
   useEffect(() => {
     const fetchBalancesAndOutput = async () => {
@@ -877,24 +890,7 @@ function App() {
         setIsLoadingOutput(true);
         const newBalances: { [key: string]: string } = {};
         const newExactBalances: { [key: string]: bigint } = {};
-        const allBalances = await client.getAllBalances({
-          owner: account.address,
-        });
-
-        for (const token of [...tokens, ...importedTokens]) {
-          if (token.address && !token.address.includes("...")) {
-            const balanceEntry = allBalances.find((b) => b.coinType === token.address);
-            const decimals = getTokenDecimals(token.address);
-            if (balanceEntry) {
-              newExactBalances[token.address] = BigInt(balanceEntry.totalBalance);
-              const balance = Number(BigInt(balanceEntry.totalBalance)) / 10 ** decimals;
-              newBalances[token.address] = balance.toFixed(4);
-            } else {
-              newExactBalances[token.address] = 0n;
-              newBalances[token.address] = "0.0000";
-            }
-          }
-        }
+        // EVM balance fetch logic would go here
         setBalances(newBalances);
         setExactBalances(newExactBalances);
 
@@ -908,67 +904,7 @@ function App() {
         }
 
         if (poolId && debouncedAmountIn && parseFloat(debouncedAmountIn) > 0) {
-          const pool = await client.getObject({
-            id: poolId,
-            options: { showContent: true },
-          });
-
-          const poolContent = pool.data?.content as any;
-          if (!poolContent?.fields || !poolContent.fields.reserve_x || !poolContent.fields.reserve_y || !poolContent.fields.fee_rate) {
-            setError("Unable to fetch pool reserve information");
-            setExpectedOutput("0.0");
-            setMinAmountOut("0");
-            setPriceImpact("0.00");
-            setPriceDifference("0.00");
-            setIsLoadingOutput(false);
-            return;
-          }
-
-          const reserveX = parseInt(poolContent.fields.reserve_x);
-          const reserveY = parseInt(poolContent.fields.reserve_y);
-          const feeRate = parseInt(poolContent.fields.fee_rate);
-
-          if (isNaN(reserveX) || isNaN(reserveY) || isNaN(feeRate) || reserveX <= 0 || reserveY <= 0) {
-            setError("Invalid pool reserve or fee data");
-            setExpectedOutput("0.0");
-            setMinAmountOut("0");
-            setPriceImpact("0.00");
-            setPriceDifference("0.00");
-            setIsLoadingOutput(false);
-            return;
-          }
-
-          const inputDecimals = getTokenDecimals(tokenX);
-          const outputDecimals = getTokenDecimals(tokenY);
-          const amountInValue = parseFloat(debouncedAmountIn) * 10 ** inputDecimals;
-
-          let amountOut;
-          if (isReverseSwap) {
-            const amountInWithFee = (amountInValue * (10000 - feeRate)) / 10000;
-            amountOut = (amountInWithFee * reserveX) / (reserveY + amountInWithFee);
-          } else {
-            const amountInWithFee = (amountInValue * (10000 - feeRate)) / 10000;
-            amountOut = (amountInWithFee * reserveY) / (reserveX + amountInWithFee);
-          }
-
-          const spotPrice = isReverseSwap ? reserveX / reserveY : reserveY / reserveX;
-          const effectivePrice = amountOut / amountInValue;
-          const priceImpactValue = Math.abs((spotPrice - effectivePrice) / spotPrice) * 100;
-
-          const tokenXSymbol = getTokenInfo(tokenX).symbol.toLowerCase();
-          const tokenYSymbol = getTokenInfo(tokenY).symbol.toLowerCase();
-          const marketPrice = prices[tokenXSymbol]?.price && prices[tokenYSymbol]?.price
-            ? prices[tokenXSymbol].price / prices[tokenYSymbol].price
-            : 0;
-          const priceDiff = marketPrice ? Math.abs((spotPrice - marketPrice) / marketPrice) * 100 : 0;
-          setPriceDifference(priceDiff.toFixed(2));
-
-          const slippageMultiplier = 1 - parseFloat(slippage) / 100;
-          const minOut = amountOut * slippageMultiplier;
-
-          setExpectedOutput((amountOut / 10 ** outputDecimals).toFixed(4));
-          setMinAmountOut((minOut / 10 ** outputDecimals).toFixed(4));
-          setPriceImpact(priceImpactValue.toFixed(2));
+          // EVM swap calculation logic would go here
         } else {
           setExpectedOutput("0.0");
           setMinAmountOut("0");
@@ -988,7 +924,7 @@ function App() {
     };
 
     fetchBalancesAndOutput();
-  }, [account, tokenX, tokenY, debouncedAmountIn, slippage, poolId, isReverseSwap, client, importedTokens, prices, refreshTrigger]);
+  }, [account, tokenX, tokenY, debouncedAmountIn, slippage, poolId, isReverseSwap, importedTokens, prices, refreshTrigger]);
 
   useEffect(() => {
     setRefreshTrigger(prev => prev + 1);
@@ -1046,13 +982,9 @@ function App() {
       return;
     }
     if (!poolId) {
-     
       return;
     }
-    if ((exactBalances[SUI_TYPE] || 0n) < 100000000n) {
-      setError("Insufficient SUI balance for transaction fee (at least 0.1 SUI required)");
-      return;
-    }
+    // Adjust for EVM gas check if needed
     setShowPreview(true);
   };
 
@@ -1071,144 +1003,7 @@ function App() {
     }
 
     try {
-      const suiBalance = await client.getBalance({
-        owner: account.address,
-        coinType: SUI_TYPE,
-      });
-      const totalSuiBalance = BigInt(suiBalance.totalBalance);
-      const gasBudgetBigInt = 100000000n;
-      if (totalSuiBalance < gasBudgetBigInt) {
-        setError("Insufficient SUI balance for transaction fee (at least 0.1 SUI required)");
-        return;
-      }
-
-      const inputToken = tokenX;
-      const outputToken = tokenY;
-      const inputDecimals = getTokenDecimals(inputToken);
-      const parts = amountIn.split('.');
-      let amountStr = parts[0] || '0';
-      if (parts.length > 1) {
-        amountStr += parts[1].padEnd(inputDecimals, '0').slice(0, inputDecimals);
-      } else {
-        amountStr += '0'.repeat(inputDecimals);
-      }
-      const amountInBigInt = BigInt(amountStr);
-
-      // Similarly for minAmountOut
-      const minParts = minAmountOut.split('.');
-      let minAmountStr = minParts[0] || '0';
-      if (minParts.length > 1) {
-        const outputDecimals = getTokenDecimals(tokenY);
-        minAmountStr += minParts[1].padEnd(outputDecimals, '0').slice(0, outputDecimals);
-      } else {
-        minAmountStr += '0'.repeat(inputDecimals);
-      }
-      const minAmountOutBigInt = BigInt(minAmountStr);
-
-      const inputCoinsResponse = await client.getCoins({
-        owner: account.address,
-        coinType: inputToken,
-      });
-      const inputCoins = inputCoinsResponse.data;
-
-      const totalInputBalance = inputCoins.reduce((sum, coin) => sum + BigInt(coin.balance), 0n);
-
-      if (totalInputBalance < amountInBigInt) {
-        setError(`Insufficient ${getTokenInfo(inputToken).symbol} balance`);
-        return;
-      }
-
-      const inputCoinIds = inputCoins
-        .filter((coin) => BigInt(coin.balance) > 0n)
-        .map((coin) => coin.coinObjectId);
-
-      if (inputCoinIds.length === 0) {
-        setError(`No ${getTokenInfo(inputToken).symbol} tokens found`);
-        return;
-      }
-
-      if (inputToken === SUI_TYPE && totalInputBalance < amountInBigInt + gasBudgetBigInt) {
-        setError("Insufficient SUI for swap and gas fee");
-        return;
-      }
-
-      const suiCoinsResponse = await client.getCoins({
-        owner: account.address,
-        coinType: SUI_TYPE,
-      });
-      const suiCoins = suiCoinsResponse.data;
-
-      if (suiCoins.length === 0) {
-        setError("No SUI tokens found for gas payment");
-        return;
-      }
-
-      const tx = new Transaction();
-
-      // Merge input coins if necessary
-      if (inputCoinIds.length > 0) {
-        const primaryInputCoin = tx.object(inputCoinIds[0]);
-        if (inputCoinIds.length > 1) {
-          tx.mergeCoins(primaryInputCoin, inputCoinIds.slice(1).map(id => tx.object(id)));
-        }
-        const [coinToSwap] = tx.splitCoins(primaryInputCoin, [amountInBigInt]);
-
-        tx.moveCall({
-          target: `${PACKAGE_ID}::amm::${isReverseSwap ? "swap_reverse" : "swap"}`,
-          typeArguments: isReverseSwap ? [tokenY, tokenX] : [tokenX, tokenY],
-          arguments: [
-            tx.object(poolId),
-            coinToSwap,
-            tx.pure.u64(minAmountOutBigInt),
-          ],
-        });
-      }
-
-      // Check if need to merge SUI for gas
-      const maxSuiBalance = suiCoins.reduce((max, coin) => BigInt(coin.balance) > max ? BigInt(coin.balance) : max, 0n);
-      if (maxSuiBalance < gasBudgetBigInt && suiCoins.length > 1) {
-        const primarySuiCoin = tx.object(suiCoins[0].coinObjectId);
-        tx.mergeCoins(primarySuiCoin, suiCoins.slice(1).map(coin => tx.object(coin.coinObjectId)));
-      }
-
-      tx.setGasBudget(gasBudgetBigInt);
-
-      await signAndExecute(
-        {
-          transaction: tx,
-        },
-        {
-          onSuccess: (result) => {
-            setShowWaitingConfirmation(false);
-            setModalProps({
-              txHash: result.digest,
-              decreasedToken: {
-                address: tokenX,
-                symbol: getTokenInfo(tokenX).symbol,
-                icon: getTokenInfo(tokenX).icon,
-                amount: amountIn,
-              },
-              increasedToken: {
-                address: tokenY,
-                symbol: getTokenInfo(tokenY).symbol,
-                icon: getTokenInfo(tokenY).icon,
-                amount: expectedOutput,
-              },
-              onClose: () => setModalProps(null),
-            });
-            setError("");
-            setAmountIn("");
-            setRefreshTrigger(prev => prev + 1);
-          },
-          onError: (err: any) => {
-            setShowWaitingConfirmation(false);
-            setModalProps({
-              errorMessage: `Transaction failed: ${err.message}`,
-              onClose: () => setModalProps(null),
-            });
-          },
-        }
-      );
+      // EVM swap logic would go here, using ethers.js or web3.js
     } catch (err) {
       setShowWaitingConfirmation(false);
       setModalProps({
@@ -1249,7 +1044,7 @@ function App() {
   const logos = [
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqYyygKaispLzlgNY95kc5HBQd3qW7ugzAkg&s",
     "https://s2.coinmarketcap.com/static/img/coins/200x200/34187.png",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7PSlNuhwWmSkl8hUhvKcDI2sFhPN5izx9EQ&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhb6QLKfuQY_N8ZvpiKcdZlCnQKILXw7NArw&s",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyEbrXvJmpRWuhl4sKr6Uz2QcUqdp9A_3QDA&s",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuyM97kd62m-EjaM66Mo_2bIN8yP2pzaG4wQ&s",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKEZG8ITXUh3I1FCfC4K2E5g6MtizSHKJF_A&s",
@@ -1286,7 +1081,7 @@ function App() {
   ];
 
   return (
-    <WalletProvider theme={customTheme}>
+    <EVMWalletProvider>
       <div className="container">
         <div className="mosaic-background">
           {Array.from({ length: 400 }).map((_, i) => (
@@ -1324,7 +1119,7 @@ function App() {
                     </div>
                     {!isMobile ? (
                       <div className={`nav-menu ${isMenuOpen ? "open" : ""}`}>
-                        <div className={`nav-item ${openDropdown === "trade" ? "open" : ""}`} 
+                        {/* <div className={`nav-item ${openDropdown === "trade" ? "open" : ""}`} 
                              onMouseEnter={() => toggleDropdown("trade")} 
                              onMouseLeave={() => toggleDropdown(null)}>
                           <span className="nav-text">Trade</span>
@@ -1338,17 +1133,15 @@ function App() {
                               </svg>
                               Swap
                             </Link>
-                         
-                           
-                            </div>
-                        </div>
+                          </div>
+                        </div> */}
 
 
 
                        
 
 
-                        <div className={`nav-item ${openDropdown === "earn" ? "open" : ""}`} 
+                        {/* <div className={`nav-item ${openDropdown === "earn" ? "open" : ""}`} 
                              onMouseEnter={() => toggleDropdown("earn")} 
                              onMouseLeave={() => toggleDropdown(null)}>
                           <span className="nav-text">Earn</span>
@@ -1377,8 +1170,8 @@ function App() {
                               Burn
                             </Link>
                           </div>
-                        </div>
-                        <div className={`nav-item ${openDropdown === "bridge" ? "open" : ""}`} 
+                        </div> */}
+                        {/* <div className={`nav-item ${openDropdown === "bridge" ? "open" : ""}`} 
                              onMouseEnter={() => toggleDropdown("bridge")} 
                              onMouseLeave={() => toggleDropdown(null)}>
                           <span className="nav-text">Bridge</span>
@@ -1406,8 +1199,8 @@ function App() {
                               Mayan
                             </a>
                           </div>
-                        </div>
-                        <div className={`nav-item ${openDropdown === "more" ? "open" : ""}`} 
+                        </div> */}
+                        {/* <div className={`nav-item ${openDropdown === "more" ? "open" : ""}`} 
                              onMouseEnter={() => toggleDropdown("more")} 
                              onMouseLeave={() => toggleDropdown(null)}>
                           <span className="nav-text">More</span>
@@ -1434,7 +1227,7 @@ function App() {
                               Security
                             </a>
                           </div>
-                        </div>
+                        </div> */}
                       </div>
                     ) : (
                       <button className="hamburger-menu" onClick={toggleMenu}>
@@ -1601,9 +1394,9 @@ function App() {
                     <button
                       className={`action-button css-1y5noho ${isLoadingOutput ? "loading" : ""}`}
                       onClick={handleShowPreview}
-                      disabled={!account || !amountIn || parseFloat(amountIn) <= 0 || !poolId || (exactBalances[SUI_TYPE] || 0n) < 100000000n || tokenX === tokenY || isLoadingOutput}
+                      disabled={!account || !amountIn || parseFloat(amountIn) <= 0 || !poolId || tokenX === tokenY || isLoadingOutput}
                     >
-                      {account ? (amountIn && parseFloat(amountIn) > 0 ? (poolId ? ((exactBalances[SUI_TYPE] || 0n) >= 100000000n ? (tokenX !== tokenY ? (isLoadingOutput ? "Loading..." : "Swap Now") : "Same Token") : "Insufficient SUI Balance") : "Invalid Trading Pair") : "Enter Valid Amount") : "Connect Wallet"}
+                      {account ? (amountIn && parseFloat(amountIn) > 0 ? (poolId ? (tokenX !== tokenY ? (isLoadingOutput ? "Loading..." : "Swap Now") : "Same Token") : "Invalid Trading Pair") : "Enter Valid Amount") : "Connect Wallet"}
                     </button>
                     {error && <div className="error">{error}</div>}
                     {modalProps && <Modal {...modalProps} />}
@@ -1633,96 +1426,7 @@ function App() {
                         onClose={() => setShowWaitingConfirmation(false)}
                       />
                     )}
-                    <div className="price-reference-panel css-rrtj52">
-                      <div className="price-reference-header css-f7m5r6">
-                        <p className="chakra-text css-5z699w">Price Reference</p>
-                        <button
-                          id="popover-trigger-price-ref"
-                          aria-haspopup="dialog"
-                          aria-expanded="false"
-                          aria-controls="popover-content-price-ref"
-                          className="css-1hohgv6"
-                        >
-                          <div className="css-1ke24j5">
-                            <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px" viewBox="0 0 24 24">
-                              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path>
-                            </svg>
-                          </div>
-                        </button>
-                      </div>
-                      <div className="price-reference-content css-47ju1k">
-                        {[{ token: tokenX, symbol: getTokenInfo(tokenX).symbol }, { token: tokenY, symbol: getTokenInfo(tokenY).symbol }].map(({ token, symbol }, index) => (
-                          <div key={index} className="token-price css-tyic7d">
-                            <div className="token-info css-1igwmid">
-                              <div className="token-details css-token-details">
-                                <div className="icon-wrapper css-kjafn5">
-                                  <div className="icon css-tkdzxl">
-                                    <img className="chakra-image css-rmmdki" src={getTokenInfo(token).icon} alt={symbol} />
-                                  </div>
-                                </div>
-                                <div className="token-name-details css-token-name-details">
-                                  <div className="token-name-group css-token-name-group">
-                                    <p className="chakra-text css-1f2xwte">{symbol}</p>
-                                  </div>
-                                  <div className="token-address css-t4u65q">
-                                    <div className="address-details css-1a87bas">
-                                      <p className="chakra-text css-43igym">{token.slice(0, 6)}...{token.slice(-4)}</p>
-                                      <div className="css-1ke24j5" onClick={() => copyToClipboard(token)}>
-                                        <svg aria-hidden="true" fill="var(--text-secondary)" width="20px" height="20px" viewBox="0 0 24 24">
-                                          <path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2m2 4v10h10V7H7m2 2h6v2H9V9m0 4h6v2H9v-2z"></path>
-                                        </svg>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="price-info-container css-price-info-container">
-                              <div className="price-info css-price-info">
-                                <div className="price-source css-price-source">
-                                  <img
-                                    className="chakra-image css-price-source-img"
-                                    src="https://upload.wikimedia.org/wikipedia/commons/b/b0/CoinGecko_logo.png"
-                                    alt="CoinGecko"
-                                    style={{ width: "20px", height: "20px" }}
-                                  />
-                                  <p className="chakra-text css-v4hq1a">${(prices[symbol.toLowerCase()]?.price || 0).toFixed(3)}</p>
-                                  <p className={`chakra-text ${prices[symbol.toLowerCase()]?.change_24h >= 0 ? "css-1m1g51m" : "css-1ec3nbv"}`}>
-                                    {(prices[symbol.toLowerCase()]?.change_24h || 0).toFixed(2)}%
-                                  </p>
-                                </div>
-                              </div>
-                              <div className="recharts-responsive-container" style={{ width: "100%", height: "100%", minWidth: "0" }}>
-                                <div className="recharts-wrapper" style={{ position: "relative", cursor: "default", width: "100%", height: "100%", maxWidth: "180px" }}>
-                                  <div className="price-chart css-1r938vg"> <svg className="recharts-surface" width="180" height="20" viewBox="0 0 180 20" style={{ width: "100%", height: "100%" }}>
-                                      <defs>
-                                        <clipPath id={`recharts${index + 1}-clip`}>
-                                          <rect x="15" y="4" height="12" width="150"></rect>
-                                        </clipPath>
-                                        <linearGradient id="priceLine" x1="0" y1="0" x2="1" y2="0">
-                                          <stop offset="0%" stopColor="rgba(117, 200, 255, 1)"></stop>
-                                          <stop offset="100%" stopColor="rgba(104, 255, 255, 1)"></stop>
-                                        </linearGradient>
-                                      </defs>
-                                      <g className="recharts-layer recharts-line">
-                                        <path
-                                          stroke="url(#priceLine)"
-                                          strokeWidth="2"
-                                          fill="none"
-                                          className="recharts-curve recharts-line-curve"
-                                          d={generatePath(symbol)}
-                                        />
-                                        <g className="recharts-layer"></g>
-                                      </g>
-                                    </svg>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                  
                     {showTokenModal && (
                       <TokenModal
                         showTokenModal={showTokenModal}
@@ -1760,7 +1464,7 @@ function App() {
               </>
             }
           />
-          <Route path="/settings" element={<SettingsPage onClose={() => { throw new Error("Function not implemented."); }} slippage={slippage} setSlippage={setSlippage} />} />
+          <Route path="/settings" element={<SettingsPage onClose={() => {}} slippage={slippage} setSlippage={setSlippage} />} />
           <Route path="/pool" element={<Pool />} />
           <Route path="/xSuiFlow" element={<XSuiFlow />} />
           <Route path="/limit" element={<LimitOrderPage />} />
@@ -1768,15 +1472,11 @@ function App() {
           <Route path="/create-pool" element={<CreatePoolPage />} />
           <Route path="/market" element={<Market />} />
 
-          <Route path="/positions" element={<Position activeTab={""} setActiveTab={function (tab: string): void {
-            throw new Error("Function not implemented.");
-          } } handleAddLiquidity={function (pool: any, scroll?: boolean): void {
-            throw new Error("Function not implemented.");
-          } } />} />
+          <Route path="/positions" element={<Position activeTab={""} setActiveTab={(tab: string) => {}} handleAddLiquidity={(pool: any, scroll?: boolean) => {}} />} />
         </Routes>
        
       </div>
-    </WalletProvider>
+    </EVMWalletProvider>
   );
 }
 

@@ -49,7 +49,7 @@ const AssetModal: React.FC<AssetModalProps> = ({ asset, onClose }) => {
                     <input type="number" className="flex h-10 w-full rounded-md border text-foreground ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none relative z-[1] border-primary bg-card px-0 py-0 text-right text-2xl" autoComplete="off" step="any" value="" style={{height: '70px', padding: '14px 124.8px 30px 84px'}} />
                     <div className="absolute right-3 top-0 z-[2] flex flex-col items-end justify-center" style={{height: '70px'}}>
                       <p className="text-foreground font-mono font-normal text-right text-2xl">{asset}</p>
-                      <p className="text-muted-foreground font-mono text-xs font-normal text-right" style={{height: '16px'}}>$0.00</p>
+                    
                     </div>
                   </div>
                 </div>

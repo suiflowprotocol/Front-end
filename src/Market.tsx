@@ -1220,9 +1220,7 @@ const Market = () => {
                           <p className="text-muted-foreground978 font-sans text-xs font-normal w-max text-center decoration-muted/50 underline decoration-dotted decoration-1 underline-offset-2">
                             Borrows
                           </p>
-                          <p className="text-foreground font-mono text-sm font-normal w-max text-center">
-                            $0.00
-                          </p>
+                          
                         </div>
                       </div>
                     </div>
@@ -1242,9 +1240,7 @@ const Market = () => {
                             Weighted borrows
                           </p>
                         </div>
-                        <p className="text-foreground font-mono text-sm font-normal w-max">
-                          $0.00
-                        </p>
+                        
                       </div>
                       <div className="flex flex-col items-center gap-1">
                         <div className="flex flex-row items-center gap-1.5">
